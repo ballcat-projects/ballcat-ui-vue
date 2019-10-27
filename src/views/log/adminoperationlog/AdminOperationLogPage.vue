@@ -42,7 +42,7 @@
           @change="handleTableChange"
         >
           <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
-            <p>params:</p>{{record.params}}<br/>
+            <p>params:</p><pre v-html="record.params"></pre><br/>
             <p>userAgent:</p>{{record.userAgent}}}
           </span>
         </a-table>

@@ -94,7 +94,7 @@
           :bordered="true"
           @change="handleTableChange"
           :alert="{show: true, clear: true}"
-          :rowSelection="{onChange: onSelectChange}"
+          :rowSelection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
         >
         <!--数据表格-->
           <span slot="status-slot" slot-scope="text">

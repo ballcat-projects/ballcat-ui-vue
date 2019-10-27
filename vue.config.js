@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
-const url = 'http://ballcat-damin:8080'
+const url = 'http://ballcat-admin:8080'
 
 function resolve (dir) {
   return path.join(__dirname, dir)
