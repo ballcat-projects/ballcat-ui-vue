@@ -7,15 +7,17 @@
           <a-row :gutter="48">
             <a-col :md="8" :sm="24">
               <a-form-item label="ID">
-                <a-input v-model="queryParam.id" placeholder=""/>
+                <a-input v-model="queryParam.id" placeholder />
               </a-form-item>
             </a-col>
 
             <!-- <template v-if="advanced">
-             </template>-->
+            </template>-->
             <a-col :md="!advanced && 8 || 24" :sm="24">
-              <span class="table-page-search-submitButtons"
-                    :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
+              <span
+                class="table-page-search-submitButtons"
+                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
+              >
                 <a-button type="primary" @click="reloadTable">查询</a-button>
                 <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                 <!--<a @click="toggleAdvanced" style="margin-left: 8px">
@@ -37,14 +39,17 @@
           :columns="columns"
           :dataSource="dataSource"
           :pagination="pagination"
-          :loading ="loading"
+          :loading="loading"
           :bordered="true"
           @change="handleTableChange"
         >
           <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
-            <p>reqParams:</p><pre v-html="record.reqParams"></pre>
-            <p>reqBody:</p><pre v-html="record.reqBody"></pre>
-            <p>userAgent:</p>{{record.userAgent}}}
+            <p>reqParams:</p>
+            <pre v-html="record.reqParams"></pre>
+            <p>reqBody:</p>
+            <pre v-html="record.reqBody"></pre>
+            <p>userAgent:</p>
+            {{record.userAgent}}}
           </span>
         </a-table>
       </div>
@@ -59,7 +64,7 @@ import { PageMixin } from '@/mixins'
 export default {
   name: 'AdminAccessLogPage',
   mixins: [PageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
 

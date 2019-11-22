@@ -4,7 +4,7 @@ import { axios } from '@/utils/request'
 export function login (parameter) {
   return axios({
     headers: {
-      'Authorization': 'Basic dGVzdDp0ZXN0'
+      'Authorization': 'Basic dWk6dWk='
     },
     url: '/oauth/token',
     method: 'post',
