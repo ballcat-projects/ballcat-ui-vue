@@ -90,21 +90,22 @@
           :columns="columns"
           :dataSource="dataSource"
           :pagination="pagination"
-          :loading ="loading"
+          :loading="loading"
           :bordered="true"
           @change="handleTableChange"
           :alert="{show: true, clear: true}"
           :rowSelection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
         >
-        <!--数据表格-->
+          <!--数据表格-->
           <span slot="status-slot" slot-scope="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
           </span>
-          <span slot="avatar-slot" slot-scope="text">
-            <a-avatar shape="square" :src="text" icon="user" size="large"/>
+          <span slot="avatar-slot" slot-scope="text,record">
+            <a-avatar shape="square" :src="fileAbsoluteUrl(text)" icon="user" size="large"
+                      @click="$refs.avatarModal.edit(record.userId, $event)"/>
           </span>
 
-          <span slot="action-slot" slot-scope="text, record">
+          <span slot="action-slot" slot-scope="text,record">
             <template>
               <a v-has="'sys_sysuser_edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
@@ -120,8 +121,8 @@
                   </a-menu-item>
                   <a-menu-item v-has="'sys_sysuser_del'">
                     <a-popconfirm
-                              title="确认要删除吗？"
-                              @confirm="() => handleDel(record)">
+                      title="确认要删除吗？"
+                      @confirm="() => handleDel(record)">
                       <a href="javascript:;">删除</a>
                     </a-popconfirm>
                   </a-menu-item>
@@ -134,10 +135,12 @@
     </a-card>
 
     <!--表单页面-->
-    <a-card v-if="formInited"  v-show="!tableShow" :bordered="false" :title="cardTitle">
+    <a-card v-if="formInited" v-show="!tableShow" :bordered="false" :title="cardTitle">
       <form-page ref="formPage" @backToPage="backToPage"></form-page>
     </a-card>
 
+
+    <avatar-modal ref="avatarModal" @ok="handleUpdateAvatar"></avatar-modal>
 
     <!--用户授权-->
     <div v-if="scopeInited">
@@ -159,7 +162,8 @@ import { getPage, delObj, updateStatus } from '@/api/sys/sysuser'
 import FormPage from './SysUserForm'
 import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
-
+import AvatarModal from './AvatarModal'
+import { mapGetters } from 'vuex'
 
 const statusMap = {
   0: {
@@ -176,6 +180,7 @@ export default {
   name: 'SysUserPage',
   mixins: [PageMixin],
   components: {
+    AvatarModal,
     FormPage,
     ScopeModal,
     PasswordModal
@@ -185,7 +190,6 @@ export default {
       getPage: getPage,
       delObj: delObj,
       rowKey: 'userId',
-
 
       // 表头
       columns: [
@@ -245,8 +249,11 @@ export default {
       //授权模块初始化标识
       scopeInited: false,
       //密码模态框 初始化标识
-      passInited: false,
+      passInited: false
     }
+  },
+  computed: {
+    ...mapGetters(['userInfo'])
   },
   filters: {
     statusFilter (type) {
@@ -284,6 +291,19 @@ export default {
           this.$message.warning(res.msg)
         }
       })
+    },
+    handleUpdateAvatar (userId, avatar) {
+      // 更新表格
+      const newData = [...this.dataSource]
+      const target = newData.filter(item => userId === item.userId)[0]
+      if (target) {
+        target.avatar = avatar
+        this.dataSource = newData
+      }
+      // 更新当前登陆用户
+      if (this.userInfo.userId === userId) {
+        this.userInfo.avatar = avatar
+      }
     }
   }
 }

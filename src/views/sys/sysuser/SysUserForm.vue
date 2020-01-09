@@ -28,24 +28,6 @@
           placeholder="昵称"/>
       </a-form-item>
       <a-form-item
-        label="头像"
-        :labelCol=labelCol
-        :wrapperCol=wrapperCol>
-        <a-upload
-          v-decorator="['avatar']"
-          listType="picture-card"
-          class="avatar-uploader"
-          :showUploadList="false"
-        >
-          <img v-if="avatarUrl" :src="avatarUrl" alt="avatar"/>
-          <div v-else>
-            <a-icon :type="avatarLoading ? 'loading' : 'plus'"/>
-            <div class="ant-upload-text">上传</div>
-          </div>
-        </a-upload>
-        <a-input type="hidden" name="avtarUrl"></a-input>
-      </a-form-item>
-      <a-form-item
         label="邮箱"
         :labelCol=labelCol
         :wrapperCol=wrapperCol>
@@ -101,7 +83,10 @@
         <a-button htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
         <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
       </a-form-item>
+
     </a-form>
+
+
 </template>
 
 <script>
@@ -109,7 +94,6 @@ import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { addObj, putObj } from '@/api/sys/sysuser'
 import ScopeModal from './ScopeModal'
 import { FormMixin } from '@/mixins'
-
 
 const defaultValue = {
   sex: 0,
@@ -142,12 +126,9 @@ export default {
           initialValue: defaultValue.status
         }
       },
-      avatarLoading: false,
-      avatarUrl: '',
     }
   },
   methods: {
   }
 }
 </script>
-

@@ -6,21 +6,28 @@
     :visible="visible"
     width="600"
   >
-
-
-    <v-tree ref='tree' :data='treeData' :multiple="true" :halfcheck='true'/>
+    <a-tree
+      checkable
+      :treeData="treeData"
+      :checkedKeys="checkedKeys"
+      :expandedKeys="expandedKeys"
+      :halfCheckedKeys="halfCheckedKeys"
+      @check="onCheck"
+      @expand="onExpand"
+    >
+    </a-tree>
 
     <div
       :style="{
           position: 'absolute',
-          left: 0,
           bottom: 0,
           width: '100%',
-          zIndex:'999',
-          borderTop: '1px solid #e9e9e9',
+          borderTop: '1px solid #e8e8e8',
           padding: '10px 16px',
-          background: '#fff',
           textAlign: 'right',
+          left: 0,
+          background: '#fff',
+          borderRadius: '0 0 4px 4px',
         }"
     >
       <a-popconfirm title="确定放弃编辑？" @confirm="closeDrawer" okText="确定" cancelText="取消">
@@ -43,9 +50,8 @@ export default {
       visible: false,
       roleId: '',
       treeData: [],
-      checkedKeys: {
-        checked: []
-      },
+      checkedKeys: [],
+      halfCheckedKeys: [],
       expandedKeys: [],
       submitLoading: false
     }
@@ -59,10 +65,11 @@ export default {
       this.visible = false
     },
     onSubmit () {
-      let checkedNodes = this.$refs.tree.getCheckedNodes()
-      let permissionIds = checkedNodes.map((node) => {
-        return node.id
-      })
+      // 权限ID 求并集
+      let checkedKeySet = new Set(this.checkedKeys)
+      let halfCheckedKeySet = new Set(this.halfCheckedKeys)
+      let permissionIds = [...new Set([...checkedKeySet,...halfCheckedKeySet])]
+
       this.submitLoading = true
       putPermissionIds(this.roleId, permissionIds).then((res) => {
           this.$message.success(res.msg)
@@ -72,26 +79,47 @@ export default {
         this.submitLoading = false
       });
     },
-    onCheck (o) {
-      console.log('on check!')
+    onCheck(checkedKeys, e) {
+      this.checkedKeys = checkedKeys
+      this.halfCheckedKeys = e.halfCheckedKeys
     },
     onExpand (expandedKeys) {
       this.expandedKeys = expandedKeys
+    },
+    /**
+     * 解析出所有的太监节点id
+     * @param treeData 待解析的treeData
+     * @param keyArr 原始节点数组
+     * @param resArr 临时存放节点id的数组
+     * @return 太监节点id数组
+     */
+    resolveAllEunuchNodeId(treeData, keyArr, resArr) {
+      for (let i = 0; i < treeData.length; i++) {
+        const item = treeData[i]
+        // 存在子节点，递归遍历;不存在子节点，将json的id添加到临时数组中
+        if (item.children && item.children.length !== 0) {
+          this.resolveAllEunuchNodeId(item.children, keyArr, resArr)
+        } else if (keyArr.indexOf(item.key) !== -1){
+          resArr.push(item.key)
+        }
+      }
+      return resArr
     }
   },
   watch: {
     visible () {
       if (this.visible) {
         getList().then((res) => {
-          let treeData = res.data
+          // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
+          let treeData = listToTree(res.data, 0, {key: "id"});
           getPermissionIds(this.roleId).then((res) => {
-            for (let index in treeData) {
-              let node = treeData[index]
-              const checked = res.data.indexOf(node.id) > -1
-              node.checked = checked
-              node.expanded = checked
-            }
-            this.treeData = listToTree(treeData, 0)
+            this.treeData = treeData
+            // 由于 AntDesign 的默认父子关联，直接选中所有权限，会导致半选节点变为全选
+            // 所以这里筛选出所有太监节点，进行勾选
+            this.checkedKeys = this.resolveAllEunuchNodeId(treeData, res.data, [])
+            // 默认的半选节点为全部权限，防止未作修改直接保存导致的权限丢失
+            this.halfCheckedKeys = res.data
+            this.expandedKeys = res.data
           })
         })
       }

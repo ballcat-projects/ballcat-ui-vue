@@ -23,10 +23,18 @@ export default {
   methods: {
     add () {
       this.formAction = this.FORM_ACTION.ADD
+      // 钩子函数 处理某些页面定制需求
+      if(this.beforeStartAdd instanceof Function){
+        this.beforeStartAdd()
+      }
       this.form.resetFields()
     },
     update (record) {
       this.formAction = this.FORM_ACTION.UPDATE
+      // 钩子函数 处理某些页面打开update页面时的定制需求
+      if(this.beforeStartUpdate instanceof Function){
+        this.beforeStartUpdate(record)
+      }
       // 延迟加载 必面隐藏展示元素时出现的bug
       setTimeout(() => {
         // 获取仅展示元素
@@ -40,11 +48,16 @@ export default {
       }, 0)
     },
     handleSubmit (e) {
+      // 钩子函数 处理某些页面打开update页面时的定制需求
+      if(this.beforeSubmit instanceof Function){
+        this.beforeSubmit()
+      }
       const req = this.formAction === this.FORM_ACTION.ADD ? this.addObj : this.putObj
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           this.submitLoading = true
+
           req(values).then(res => {
             this.$message.success(res.msg)
             this.backToPage(true)

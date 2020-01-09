@@ -22,6 +22,12 @@ Vue.use(VueAxios)
 // ballcat 引入常量
 import sysConst  from './ballcat/sys_const'
 Vue.prototype.FORM_ACTION = sysConst.FORM_ACTION;
+// 文件相对路径转绝对路径
+Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
+  if (relativeUrl) {
+    return 'https://hccake-img.oss-cn-shanghai.aliyuncs.com/' + relativeUrl
+  }
+};
 
 
 new Vue({
