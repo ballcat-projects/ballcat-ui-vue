@@ -131,7 +131,7 @@ export default {
           this.modelSrc = img
           formData.append('file', data, this.fileName)
           formData.append('userId', this.userId)
-          this.$http.post('/sysuser/avatar', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+          this.$http.post('/sysuser/avatar', formData, { contentType: false, processData: false})
             .then((response) => {
               console.log('upload response:', response)
               _this.$message.success('上传成功')

@@ -91,7 +91,6 @@
           :dataSource="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :bordered="true"
           @change="handleTableChange"
           :alert="{show: true, clear: true}"
           :rowSelection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"

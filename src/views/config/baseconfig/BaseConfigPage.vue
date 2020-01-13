@@ -43,7 +43,6 @@
           :dataSource="dataSource"
           :pagination="pagination"
           :loading ="loading"
-          :bordered="true"
           @change="handleTableChange"
         >
           <span slot="action-slot" slot-scope="text, record">
@@ -87,51 +86,42 @@ export default {
         {
           title: 'ID',
           dataIndex: 'id',
-          align: 'center'
         },
         {
           title: '配置名称',
           dataIndex: 'name',
-          align: 'center'
         },
         {
-          title: '配置在缓存中的key名',
+          title: '缓存Key',
           dataIndex: 'confKey',
-          align: 'center'
         },
         {
           title: '配置值',
           dataIndex: 'confValue',
-          align: 'center'
         },
         {
           title: '组',
           dataIndex: 'groups',
-          align: 'center'
         },
         {
           title: '描述',
           dataIndex: 'description',
-          align: 'center'
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          align: 'center',
           width: '180px',
           sorter: true
         },
         {
           title: '更新时间',
           dataIndex: 'updateTime',
-          align: 'center',
           width: '180px',
           sorter: true
         },
         {
           title: '操作',
           dataIndex: 'action',
-          align: 'center',
           width: '150px',
           scopedSlots: { customRender: 'action-slot' }
         }

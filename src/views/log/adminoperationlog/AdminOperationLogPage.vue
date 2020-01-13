@@ -40,7 +40,6 @@
           :dataSource="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :bordered="true"
           @change="handleTableChange"
         >
           <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
@@ -71,47 +70,38 @@ export default {
         {
           title: '编号',
           dataIndex: 'id',
-          align: 'center'
         },
         {
           title: '日志消息',
           dataIndex: 'msg',
-          align: 'center'
         },
         {
           title: '访问IP地址',
           dataIndex: 'ip',
-          align: 'center'
         },
         {
           title: '请求URI',
           dataIndex: 'uri',
-          align: 'center'
         },
         {
           title: '操作方式',
           dataIndex: 'method',
-          align: 'center'
         },
         {
           title: '操作状态',
           dataIndex: 'status',
-          align: 'center'
         },
         {
           title: '执行时长',
           dataIndex: 'time',
-          align: 'center'
         },
         {
           title: '创建者',
           dataIndex: 'operator',
-          align: 'center'
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          align: 'center',
           width: '180px',
           sorter: true
         }
