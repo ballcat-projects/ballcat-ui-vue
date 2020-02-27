@@ -31,6 +31,8 @@
       <!-- 操作按钮区域 -->
       <div class="table-operator">
         <a-button  v-has="'config_baseconfig_edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+        <a-button  type="primary" icon="download" @click="handleAdd()">导出</a-button>
+        <a-button  type="primary" icon="import" @click="handleAdd()">导入</a-button>
       </div>
 
       <div class="table-wrapper">
@@ -56,6 +58,9 @@
               </a-popconfirm>
             </template>
           </span>
+          <span slot="ellipsis" slot-scope="text">
+            <ellipsis :length="20" tooltip>{{ text }}</ellipsis>
+          </span>
         </a-table>
       </div>
     </a-card>
@@ -72,11 +77,12 @@
 import { getPage, delObj } from '@/api/config/baseconfig'
 import FormPage from './BaseConfigForm'
 import { PageMixin } from '@/mixins'
+import { Ellipsis } from '@/components'
 
 export default {
   name: 'BaseConfigPage',
   mixins: [PageMixin],
-  components: { FormPage },
+  components: { FormPage, Ellipsis },
   data () {
     return {
       getPage: getPage,
@@ -104,19 +110,20 @@ export default {
           dataIndex: 'groups',
         },
         {
-          title: '描述',
+          title: '备注',
           dataIndex: 'description',
+          scopedSlots: { customRender: 'ellipsis' }
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '180px',
+          width: '150px',
           sorter: true
         },
         {
           title: '更新时间',
           dataIndex: 'updateTime',
-          width: '180px',
+          width: '150px',
           sorter: true
         },
         {

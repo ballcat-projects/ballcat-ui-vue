@@ -33,10 +33,10 @@
                v-decorator="['groups']"/>
     </a-form-item>
 
-    <a-form-item label="描述"
+    <a-form-item label="备注"
                  :labelCol=labelCol
                  :wrapperCol=wrapperCol>
-      <a-input placeholder="描述"
+      <a-textarea placeholder="备注"
                v-decorator="['description']"/>
     </a-form-item>
 
