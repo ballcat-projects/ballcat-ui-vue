@@ -1,7 +1,7 @@
 <template>
 
   <a-modal
-    title="修改头像"
+    title="图片上传"
     :visible="visible"
     :maskClosable="false"
     :confirmLoading="confirmLoading"
@@ -48,7 +48,7 @@
         <a-button icon="redo" @click="rotateRight"/>
       </a-col>
       <a-col :lg="{span: 2, offset: 6}" :md="2">
-        <a-button type="primary" @click="finish('blob')">保存</a-button>
+        <a-button type="primary" @click="finish()">保存</a-button>
       </a-col>
     </a-row>
   </a-modal>
@@ -76,17 +76,16 @@ export default {
         fixedBox: true
       },
       previews: {},
-      userId: null,
+      uploadProcessor: null
     }
   },
   methods: {
-    edit (userId, e) {
+    edit (uploadProcessor) {
       this.visible = true
-      this.userId = userId
+      this.uploadProcessor = uploadProcessor
       /* 获取原始头像 */
     },
     close () {
-      this.userId = null
       this.visible = false
     },
     cancelHandel () {
@@ -119,44 +118,21 @@ export default {
     },
 
     // 上传图片（点击上传按钮）
-    finish (type) {
-      console.log('finish')
+    finish () {
+      // TODO 图片上传有上传文件和Base64字符串两种方式，暂时为做Base64方式的处理
       const _this = this
-      const formData = new FormData()
+      _this.confirmLoading = true
       // 输出
-      if (type === 'blob') {
-        this.$refs.cropper.getCropBlob((data) => {
-          const img = window.URL.createObjectURL(data)
-          this.model = true
-          this.modelSrc = img
-          formData.append('file', data, this.fileName)
-          formData.append('userId', this.userId)
-          this.$http.post('/sysuser/avatar', formData, { contentType: false, processData: false})
-            .then((response) => {
-              console.log('upload response:', response)
-              _this.$message.success('上传成功')
-              _this.$emit('ok', this.userId, response.data)
-              _this.visible = false
-            })
+      this.$refs.cropper.getCropBlob((data) => {
+        _this.uploadProcessor({ data: data, name: this.fileName }).then((data) => {
+          debugger
+          _this.confirmLoading = false
+          _this.$message.success('上传图片成功')
+          _this.$emit('ok', data)
+          _this.close()
         })
-      } else {
-        this.$refs.cropper.getCropData((data) => {
-          this.model = true
-          this.modelSrc = data
-        })
-      }
+      })
     },
-    okHandel () {
-      const vm = this
-
-      vm.confirmLoading = true
-      setTimeout(() => {
-        vm.confirmLoading = false
-        vm.close()
-        vm.$message.success('上传头像成功')
-      }, 2000)
-    },
-
     realTime (data) {
       this.previews = data
     }
@@ -172,7 +148,6 @@ export default {
     transform: translate(50%, -50%);
     width: 180px;
     height: 180px;
-    border-radius: 50%;
     box-shadow: 0 0 4px #ccc;
     overflow: hidden;
 

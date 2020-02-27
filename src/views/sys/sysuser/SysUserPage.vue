@@ -99,12 +99,12 @@
           <span slot="status-slot" slot-scope="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
           </span>
-          <span slot="avatar-slot" slot-scope="text,record">
-            <a-avatar shape="square" :src="fileAbsoluteUrl(text)" icon="user" size="large"
-                      @click="$refs.avatarModal.edit(record.userId, $event)"/>
+          <span slot="avatar-slot" slot-scope="text, record">
+            <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
+                      @click="updateAvatar(record.userId)"/>
           </span>
 
-          <span slot="action-slot" slot-scope="text,record">
+          <span slot="action-slot" slot-scope="text, record">
             <template>
               <a v-has="'sys_sysuser_edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
@@ -139,7 +139,7 @@
     </a-card>
 
 
-    <avatar-modal ref="avatarModal" @ok="handleUpdateAvatar"></avatar-modal>
+    <cropper-modal ref="avatarModal"></cropper-modal>
 
     <!--用户授权-->
     <div v-if="scopeInited">
@@ -161,7 +161,7 @@ import { getPage, delObj, updateStatus } from '@/api/sys/sysuser'
 import FormPage from './SysUserForm'
 import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
-import AvatarModal from './AvatarModal'
+import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
 
 const statusMap = {
@@ -179,7 +179,7 @@ export default {
   name: 'SysUserPage',
   mixins: [PageMixin],
   components: {
-    AvatarModal,
+    CropperModal,
     FormPage,
     ScopeModal,
     PasswordModal
@@ -248,7 +248,9 @@ export default {
       //授权模块初始化标识
       scopeInited: false,
       //密码模态框 初始化标识
-      passInited: false
+      passInited: false,
+      // 正在修改头像的用户Id
+      avatarUserId: null,
     }
   },
   computed: {
@@ -291,8 +293,23 @@ export default {
         }
       })
     },
-    handleUpdateAvatar (userId, avatar) {
-      // 更新表格
+    updateAvatar (userId){
+      const _this = this
+      _this.avatarUserId = userId
+      _this.$refs.avatarModal.edit( (fileObj) => {
+        const formData = new FormData()
+        formData.append('file', fileObj.data, fileObj.name)
+        formData.append('userId', userId)
+        return _this.$http.post('/sysuser/avatar', formData, { contentType: false, processData: false})
+          .then((response) => {
+            _this.handleUpdateAvatar(response.data);
+            return response
+          });
+      })
+    },
+    handleUpdateAvatar (avatar) {
+      const userId = this.avatarUserId
+      // 更新表格头像
       const newData = [...this.dataSource]
       const target = newData.filter(item => userId === item.userId)[0]
       if (target) {

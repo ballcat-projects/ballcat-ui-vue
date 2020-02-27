@@ -16,25 +16,26 @@ export default {
       // 提交按钮防止重复提交
       submitLoading: false,
 
-      addObj: function () {},
-      putObj: function () {}
+      addObj: function () {
+      },
+      putObj: function () {
+      }
     }
   },
   methods: {
     add () {
       this.formAction = this.FORM_ACTION.ADD
       // 钩子函数 处理某些页面定制需求
-      if(this.beforeStartAdd instanceof Function){
-        this.beforeStartAdd()
-      }
+      this.beforeStartAdd()
       this.form.resetFields()
+    },
+    beforeStartAdd () {
+      // 组件复写此方法 完成添加之前的事件
     },
     update (record) {
       this.formAction = this.FORM_ACTION.UPDATE
       // 钩子函数 处理某些页面打开update页面时的定制需求
-      if(this.beforeStartUpdate instanceof Function){
-        this.beforeStartUpdate(record)
-      }
+      this.beforeStartUpdate(record)
       // 延迟加载 必面隐藏展示元素时出现的bug
       setTimeout(() => {
         // 获取仅展示元素
@@ -47,24 +48,31 @@ export default {
         })
       }, 0)
     },
+    beforeStartUpdate (record) {
+      // 组件复写此方法 完成修改之前的事件
+    },
+    beforeStartSubmit (record) {
+      // 组件复写此方法 提交之前处理的事件
+    },
+    submitDataProcess (data) {
+      // 在此处理表单提交的数据
+      return data
+    },
     handleSubmit (e) {
-      // 钩子函数 处理某些页面打开update页面时的定制需求
-      if(this.beforeSubmit instanceof Function){
-        this.beforeSubmit()
-      }
+      // 钩子函数 处理提交之前处理的事件
+      this.beforeStartSubmit()
       const req = this.formAction === this.FORM_ACTION.ADD ? this.addObj : this.putObj
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
           this.submitLoading = true
-
-          req(values).then(res => {
+          req(this.submitDataProcess(values)).then(res => {
             this.$message.success(res.msg)
             this.backToPage(true)
           })
-          .finally(() => {
-            this.submitLoading = false
-          });
+            .finally(() => {
+              this.submitLoading = false
+            })
         }
       })
     },
