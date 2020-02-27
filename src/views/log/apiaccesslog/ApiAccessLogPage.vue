@@ -41,8 +41,10 @@
           @change="handleTableChange"
         >
           <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
-            <p>reqParams:</p><pre v-html="record.params"></pre>
-            <p>reqBody:</p><pre v-html="record.reqBody"></pre>
+            <p>reqParams:</p>
+            <pre><div class="wordwrap" v-html="record.reqParams"></div></pre>
+            <p>reqBody:</p>
+            <pre><div class="wordwrap" v-html="record.reqBody"></div></pre>
             <p>userAgent:</p>{{record.userAgent}}}
           </span>
         </a-table>

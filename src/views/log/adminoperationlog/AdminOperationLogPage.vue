@@ -44,8 +44,7 @@
         >
           <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
             <p>params:</p>
-            <pre v-html="record.params"></pre>
-            <br />
+            <pre><div class="wordwrap" v-html="record.params"></div></pre>
             <p>userAgent:</p>
             {{record.userAgent}}}
           </span>
