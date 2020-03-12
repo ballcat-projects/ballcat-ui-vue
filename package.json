@@ -26,7 +26,7 @@
     "viser-vue": "^2.4.6",
     "vue": "^2.6.10",
     "vue-clipboard2": "^0.2.1",
-    "vue-cropper": "0.4.9",
+    "vue-cropper": "0.5.0",
     "vue-i18n": "^8.14.0",
     "vue-ls": "^3.2.1",
     "vue-quill-editor": "^3.0.6",

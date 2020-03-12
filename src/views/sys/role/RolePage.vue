@@ -34,7 +34,7 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator">
-        <a-button v-has="'sys_sysrole_add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+        <a-button v-has="'sys:sysrole:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
       </div>
 
       <div class="table-wrapper">
@@ -51,11 +51,11 @@
         >
           <span slot="action-slot" slot-scope="text, record">
             <template>
-              <a v-has="'sys_sysrole_edit'" @click="handleEdit(record)">编辑</a>
+              <a v-has="'sys:sysrole:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
-              <a v-has="'sys_sysrole_grant'" @click="handleGrant(record)">授权</a>
+              <a v-has="'sys:sysrole:grant'" @click="handleGrant(record)">授权</a>
               <a-divider type="vertical"/>
-              <a-popconfirm v-has="'sys_sysrole_del'"
+              <a-popconfirm v-has="'sys:sysrole:del'"
                 title="确认要删除吗？"
                 @confirm="() => handleDel(record)">
                 <a href="javascript:;">删除</a>

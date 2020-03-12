@@ -72,3 +72,11 @@ export function updateStatus(userIds, status) {
     data: userIds
   })
 }
+
+
+export function getSelectData() {
+  return axios({
+    url: '/sysuser/select',
+    method: 'get'
+  })
+}

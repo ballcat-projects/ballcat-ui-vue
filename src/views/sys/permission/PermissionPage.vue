@@ -3,9 +3,9 @@
     <a-col :span="9">
       <a-card :bordered="false">
         <a-button-group style="margin-bottom: 16px">
-          <a-button v-has="'sys_syspermission_add'" type="primary" @click="handleAdd()">添加</a-button>
-          <a-button v-has="'sys_syspermission_edit'" type="primary" @click="handleUpdate()">编辑</a-button>
-          <a-button v-has="'sys_syspermission_del'" type="primary" @click="handleDelete()">删除</a-button>
+          <a-button v-has="'sys:syspermission:add'" type="primary" @click="handleAdd()">添加</a-button>
+          <a-button v-has="'sys:syspermission:edit'" type="primary" @click="handleUpdate()">编辑</a-button>
+          <a-button v-has="'sys:syspermission:del'" type="primary" @click="handleDelete()">删除</a-button>
         </a-button-group>
 
         <a-tree

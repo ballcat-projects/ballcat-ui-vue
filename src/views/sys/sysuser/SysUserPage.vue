@@ -53,8 +53,8 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator">
-        <a-button v-has="'sys_sysuser_add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
-        <a-dropdown v-has="'sys_sysuser_edit'" v-if="selectedRowKeys.length > 0">
+        <a-button v-has="'sys:sysuser:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+        <a-dropdown v-has="'sys:sysuser:edit'" v-if="selectedRowKeys.length > 0">
           <a-menu slot="overlay" @click="handleUpdateStatus">
             <a-menu-item key="1">
               <a-icon type="delete"/>
@@ -106,19 +106,19 @@
 
           <span slot="action-slot" slot-scope="text, record">
             <template>
-              <a v-has="'sys_sysuser_edit'" @click="handleEdit(record)">编辑</a>
+              <a v-has="'sys:sysuser:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
-              <a v-has="'sys_sysuser_grant'" @click="handleGrant(record)">授权</a>
+              <a v-has="'sys:sysuser:grant'" @click="handleGrant(record)">授权</a>
               <a-divider type="vertical"/>
-              <a-dropdown v-if="$has('sys_sysuser_pass') || $has('sys_sysuser_del')">
+              <a-dropdown v-if="$has('sys:sysuser:pass') || $has('sys:sysuser:del')">
                 <a class="ant-dropdown-link" href="#">
                   操作
                 </a>
                 <a-menu slot="overlay">
-                  <a-menu-item v-has="'sys_sysuser_pass'">
+                  <a-menu-item v-has="'sys:sysuser:pass'">
                       <a @click="changePass(record)">改密</a>
                   </a-menu-item>
-                  <a-menu-item v-has="'sys_sysuser_del'">
+                  <a-menu-item v-has="'sys:sysuser:del'">
                     <a-popconfirm
                       title="确认要删除吗？"
                       @confirm="() => handleDel(record)">

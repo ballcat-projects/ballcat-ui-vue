@@ -30,7 +30,7 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator">
-        <a-button  v-has="'config_baseconfig_edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+        <a-button  v-has="'config:baseconfig:edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
         <a-button  type="primary" icon="download" @click="handleAdd()">导出</a-button>
         <a-button  type="primary" icon="import" @click="handleAdd()">导入</a-button>
       </div>
@@ -49,9 +49,9 @@
         >
           <span slot="action-slot" slot-scope="text, record">
             <template>
-              <a v-has="'config_baseconfig_edit'" @click="handleEdit(record)">编辑</a>
+              <a v-has="'config:baseconfig:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
-              <a-popconfirm v-has="'config_baseconfig_del'"
+              <a-popconfirm v-has="'config:baseconfig:del'"
                 title="确认要删除吗？"
                 @confirm="() => handleDel(record)">
                 <a href="javascript:;">删除</a>
