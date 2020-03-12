@@ -39,18 +39,18 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
             label="父级节点">
-            <a-input placeholder="父级节点" v-decorator="['parentId', decoratorOptions.title]"
+            <a-input placeholder="父级节点" v-decorator="['parentId']"
                      :disabled="true"/>
           </a-form-item>
 
           <a-form-item
-            v-if="formAction !== this.FORM_ACTION.ADD"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
             label="节点">
             <a-input placeholder="节点"
-                     v-decorator="['id', decoratorOptions.title]"
-                     :disabled="true"/>
+                     v-decorator="['id', decoratorOptions.id]"
+                     type="number"
+                     :disabled="formAction !== this.FORM_ACTION.ADD"/>
           </a-form-item>
 
 
@@ -129,7 +129,6 @@
             </a-form-item>
 
 
-
           </div>
 
           <a-form-item
@@ -156,7 +155,8 @@
           <a-form-item v-show="formAction !== FORM_ACTION.NONE"
                        :wrapperCol="{offset: 4 }"
           >
-            <a-button htmlType="submit" type="primary">{{this.formAction === this.FORM_ACTION.ADD ? '提交': '修改' }}</a-button>
+            <a-button htmlType="submit" type="primary">{{this.formAction === this.FORM_ACTION.ADD ? '提交': '修改' }}
+            </a-button>
             <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
           </a-form-item>
 
@@ -173,7 +173,6 @@ import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { getList, addObj, putObj, delObj } from '@/api/sys/permission'
 import { listToTree } from '@/utils/treeUtil'
 import IconSelectModal from './IconSelectModal'
-
 
 export default {
   name: 'PermissionPage',
@@ -192,6 +191,12 @@ export default {
       decoratorOptions: {
         title: {
           rules: [{ required: true, message: '请输入菜单名!' }]
+        },
+        id: {
+          rules: [
+            { required: true, message: 'ID必须为6位数字' },
+            { len: 6, message: '长度只能为6位数字' }
+          ]
         }
       },
       displayData: {
@@ -204,10 +209,10 @@ export default {
     }
   },
   created () {
-    this.pageLoad();
+    this.pageLoad()
   },
   methods: {
-    pageLoad (){
+    pageLoad () {
       getList().then((res) => {
         this.permission = {}
         this.formAction = this.FORM_ACTION.NONE
@@ -222,9 +227,9 @@ export default {
     onSelect (selectedKeys, e) {
       // console.log(e)
       if (e.selected) {
-        this.permission = e.selectedNodes[0].data.props;
-        this.readOnly ? this.redisplay(): this.handleUpdate()
-      }else{
+        this.permission = e.selectedNodes[0].data.props
+        this.readOnly ? this.redisplay() : this.handleUpdate()
+      } else {
         this.formAction = this.FORM_ACTION.NONE
         this.permission = {}
         this.readOnly = true
@@ -257,7 +262,7 @@ export default {
       this.form.setFieldsValue(defaultValue)
     },
     handleUpdate () {
-      if(!this.permission.id){
+      if (!this.permission.id) {
         this.$message.warn('请先选中一个目标')
         return
       }
@@ -265,16 +270,16 @@ export default {
       this.readOnly = false
       this.redisplay()
     },
-    handleDelete (){
-      if(!this.permission.id){
+    handleDelete () {
+      if (!this.permission.id) {
         this.$message.warn('请先选中一个目标')
         return
       }
       delObj(this.permission.id).then(res => {
-        if(res.code === 200){
+        if (res.code === 200) {
           this.$message.success(res.msg)
           this.pageLoad()
-        }else{
+        } else {
           this.$message.error(res.msg)
         }
       })
@@ -285,10 +290,10 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           req(values).then(res => {
-            if(res.code === 200){
+            if (res.code === 200) {
               this.$message.success(res.msg)
               this.pageLoad()
-            }else{
+            } else {
               this.$message.error(res.msg)
             }
           })
@@ -299,14 +304,14 @@ export default {
       this.permissionType = e.target.value
     },
     selectIcons () {
-      if(this.formAction !== this.FORM_ACTION.NONE){
-        this.$refs.iconSelectModal.show();
+      if (this.formAction !== this.FORM_ACTION.NONE) {
+        this.$refs.iconSelectModal.show()
       }
     },
     chooseIcon (icon) {
-      this.form.setFieldsValue({'icon': icon})
+      this.form.setFieldsValue({ 'icon': icon })
     },
-    cancel() {
+    cancel () {
       this.formAction = this.FORM_ACTION.NONE
       this.readOnly = true
       this.form.resetFields()
