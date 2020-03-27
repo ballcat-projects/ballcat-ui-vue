@@ -23,8 +23,13 @@
     <a-form-item label="字典类型"
                  :labelCol=labelCol
                  :wrapperCol=wrapperCol>
-      <a-input placeholder="字典类型"
-               v-decorator="['type']"/>
+      <a-select placeholder="字典类型"
+                v-decorator="['type']">
+        <a-select-option v-for="item in dictTypeSelectData"
+                         :key="Number(item.value)">
+          {{item.name}}
+        </a-select-option>
+      </a-select>
     </a-form-item>
 
     <a-form-item label="备注"
@@ -67,6 +72,7 @@ export default {
   name: 'SysDictFormPage',
   components: { AFormItem },
   mixins: [FormMixin],
+  props: ['dictTypeSelectData'],
   data () {
     return {
       addObj: addObj,

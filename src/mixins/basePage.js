@@ -148,7 +148,11 @@ export default {
     // 删除
     handleDel (record) {
       this.delObj(record[this.rowKey]).then(res => {
-        this.$message.success(res.msg)
+        if (res.code === 200) {
+          this.$message.success(res.msg)
+        } else {
+          this.$message.error(res.msg)
+        }
         this.reloadTable()
       })
     },

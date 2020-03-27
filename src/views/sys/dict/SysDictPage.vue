@@ -13,10 +13,10 @@
             <a-col :md="8" :sm="24">
               <a-form-item lable="字典类型">
                 <a-select placeholder="字典类型">
-                  <a-select-option v-for="item in dictTypeSelectData" :key="item.value"
-                  >{{item.name}}
-                  </a-select-option
-                  >
+                  <a-select-option v-for="item in dictTypeSelectData"
+                                   :key="item.value">
+                    {{item.name}}
+                  </a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
@@ -77,7 +77,7 @@
 
     <!--表单页面-->
     <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page ref="formPage" @backToPage="backToPage"></form-page>
+      <form-page ref="formPage" :dictTypeSelectData='dictTypeSelectData' @backToPage="backToPage"></form-page>
     </a-card>
 
 
@@ -165,17 +165,17 @@ export default {
   },
   created () {
     this.loadData()
-    this.initDictTypeSelectData();
+    this.initDictTypeSelectData()
   },
   methods: {
-    initDictTypeSelectData(){
-      getDictSelectData("dict_type").then(res => {
-        if(res.code === 200){
+    initDictTypeSelectData () {
+      getDictSelectData('dict_type').then(res => {
+        if (res.code === 200) {
           this.dictTypeSelectData = res.data
-        }else{
+        } else {
           this.$message.warning(e.message)
         }
-      });
+      })
     },
     handleShowItem (record) {
       if (!this.itemModalInited) {

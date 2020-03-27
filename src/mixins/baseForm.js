@@ -67,8 +67,12 @@ export default {
         if (!err) {
           this.submitLoading = true
           req(this.submitDataProcess(values)).then(res => {
-            this.$message.success(res.msg)
-            this.backToPage(true)
+            if (res.code === 200) {
+              this.$message.success(res.msg)
+              this.backToPage(true)
+            } else {
+              this.$message.error(res.msg)
+            }
           })
             .finally(() => {
               this.submitLoading = false
