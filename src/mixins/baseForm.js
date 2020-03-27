@@ -23,13 +23,13 @@ export default {
     }
   },
   methods: {
-    add () {
+    add (argument) {
       this.formAction = this.FORM_ACTION.ADD
-      // 钩子函数 处理某些页面定制需求
-      this.beforeStartAdd()
       this.form.resetFields()
+      // 钩子函数 处理某些页面定制需求
+      this.beforeStartAdd(argument)
     },
-    beforeStartAdd () {
+    beforeStartAdd (argument) {
       // 组件复写此方法 完成添加之前的事件
     },
     update (record) {

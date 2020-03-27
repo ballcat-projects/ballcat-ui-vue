@@ -43,16 +43,18 @@ export default {
       selectedRows: [],
       // 已选中的数据主键集合
       selectedRowKeys: [],
+      // 延迟加载，created时不主动加载数据
+      lazyLoad: false,
     }
   },
   created() {
-    this.loadData();
+    !this.lazyLoad && this.loadData();
   },
   methods:{
     /**
      * 表格重新加载方法
      * 如果参数为 true, 则强制刷新到第一页
-     * @param Boolean bool
+     * @param bool
      */
     reloadTable (bool = false) {
       bool && (this.pagination.current = 1)
@@ -128,11 +130,11 @@ export default {
       needRefresh && this.reloadTable(needRefresh)
     },
     // 新增
-    handleAdd () {
+    handleAdd (argument) {
       this.switchPage()
       this.cardTitle = '新增'
       this.$nextTick(function () {
-        this.$refs.formPage.add()
+        this.$refs.formPage.add(argument)
       })
     },
     // 编辑

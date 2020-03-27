@@ -10,7 +10,16 @@
                 <a-input v-model="queryParam.id" placeholder=""/>
               </a-form-item>
             </a-col>
-
+            <a-col :md="8" :sm="24">
+              <a-form-item lable="字典类型">
+                <a-select placeholder="字典类型">
+                  <a-select-option v-for="item in dictTypeSelectData" :key="item.value"
+                  >{{item.name}}
+                  </a-select-option
+                  >
+                </a-select>
+              </a-form-item>
+            </a-col>
             <!-- <template v-if="advanced">
              </template>-->
             <a-col :md="!advanced && 8 || 24" :sm="24">
@@ -30,13 +39,11 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator">
-        <a-button  v-has="'config:baseconfig:edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
-        <a-button  type="primary" icon="download" @click="handleAdd()">导出</a-button>
-        <a-button  type="primary" icon="import" @click="handleAdd()">导入</a-button>
+        <a-button v-has="'sys:dict:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
       </div>
 
+      <!--数据表格区域-->
       <div class="table-wrapper">
-        <!--数据表格-->
         <a-table
           ref="table"
           size="middle"
@@ -44,18 +51,24 @@
           :columns="columns"
           :dataSource="dataSource"
           :pagination="pagination"
-          :loading ="loading"
+          :loading="loading"
           @change="handleTableChange"
         >
+          <span slot="type-slot" slot-scope="text">
+            <a-tag :color="text|typeColorFilter">{{text|typeTextFilter}}</a-tag>
+          </span>
+
           <span slot="action-slot" slot-scope="text, record">
             <template>
-              <a v-has="'config:baseconfig:edit'" @click="handleEdit(record)">编辑</a>
+              <a v-has="'sys:dict:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
-              <a-popconfirm v-has="'config:baseconfig:del'"
-                title="确认要删除吗？"
-                @confirm="() => handleDel(record)">
+              <a-popconfirm v-has="'sys:dict:del'"
+                            title="确认要删除吗？"
+                            @confirm="() => handleDel(record)">
                 <a href="javascript:;">删除</a>
               </a-popconfirm>
+              <a-divider type="vertical"/>
+              <a @click="handleShowItem(record)">字典项</a>
             </template>
           </span>
         </a-table>
@@ -67,18 +80,36 @@
       <form-page ref="formPage" @backToPage="backToPage"></form-page>
     </a-card>
 
+
+    <!--字典项-->
+    <div v-if="itemModalInited">
+      <dict-item-modal ref="dictItemModal"></dict-item-modal>
+    </div>
+
   </div>
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/config/baseconfig'
-import FormPage from './BaseConfigForm'
+import { getPage, delObj, getDictSelectData } from '@/api/sys/sysdict'
+import FormPage from './SysDictForm'
 import { PageMixin } from '@/mixins'
+import DictItemModal from './SysDictItemModal'
+
+const typeMap = {
+  1: {
+    color: 'orange',
+    text: '系统类'
+  },
+  2: {
+    color: 'green',
+    text: '业务类'
+  }
+}
 
 export default {
-  name: 'BaseConfigPage',
+  name: 'SysDictPage',
   mixins: [PageMixin],
-  components: { FormPage },
+  components: { DictItemModal, FormPage },
   data () {
     return {
       getPage: getPage,
@@ -86,40 +117,29 @@ export default {
 
       columns: [
         {
-          title: 'ID',
-          dataIndex: 'id',
+          title: '编号',
+          dataIndex: 'id'
         },
         {
-          title: '配置名称',
-          dataIndex: 'name',
+          title: '标识',
+          dataIndex: 'code'
         },
         {
-          title: '缓存Key',
-          dataIndex: 'confKey',
+          title: '名称',
+          dataIndex: 'name'
         },
         {
-          title: '配置值',
-          dataIndex: 'confValue',
-        },
-        {
-          title: '组',
-          dataIndex: 'groups',
+          title: '字典类型',
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type-slot' }
         },
         {
           title: '备注',
-          dataIndex: 'description',
-          width: '150px',
-          ellipsis: true
+          dataIndex: 'remarks'
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '150px',
-          sorter: true
-        },
-        {
-          title: '更新时间',
-          dataIndex: 'updateTime',
           width: '150px',
           sorter: true
         },
@@ -129,9 +149,42 @@ export default {
           width: '150px',
           scopedSlots: { customRender: 'action-slot' }
         }
-      ]
+      ],
+
+      itemModalInited: false,
+      dictTypeSelectData: []
     }
   },
-  methods: {}
+  filters: {
+    typeTextFilter (type) {
+      return typeMap[type].text
+    },
+    typeColorFilter (type) {
+      return typeMap[type].color
+    }
+  },
+  created () {
+    this.loadData()
+    this.initDictTypeSelectData();
+  },
+  methods: {
+    initDictTypeSelectData(){
+      getDictSelectData("dict_type").then(res => {
+        if(res.code === 200){
+          this.dictTypeSelectData = res.data
+        }else{
+          this.$message.warning(e.message)
+        }
+      });
+    },
+    handleShowItem (record) {
+      if (!this.itemModalInited) {
+        this.itemModalInited = true
+      }
+      this.$nextTick(function () {
+        this.$refs.dictItemModal.show(record)
+      })
+    }
+  }
 }
 </script>

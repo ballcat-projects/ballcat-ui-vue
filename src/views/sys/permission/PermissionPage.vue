@@ -9,6 +9,7 @@
         </a-button-group>
 
         <a-tree
+          :blockNode="true"
           :treeData="treeData"
           :expandedKeys="expandedKeys"
           :showLine="true"
