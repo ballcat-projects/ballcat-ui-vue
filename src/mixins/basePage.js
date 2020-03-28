@@ -150,10 +150,10 @@ export default {
       this.delObj(record[this.rowKey]).then(res => {
         if (res.code === 200) {
           this.$message.success(res.msg)
+          this.reloadTable()
         } else {
           this.$message.error(res.msg)
         }
-        this.reloadTable()
       })
     },
     // 保存成功
