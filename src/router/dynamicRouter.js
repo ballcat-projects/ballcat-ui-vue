@@ -8,7 +8,7 @@ const notFoundRouter = {
 
 // 根路由
 const homeRouter = {
-  path: '/', name: 'index.js', redirect: '/sys', hidden: true,
+  path: '/', name: 'index.js', hidden: true,
   children: [],
   component: () => import(`@/layouts/BasicLayout`),
   meta: {
@@ -31,6 +31,9 @@ export const generatorDynamicRouter = () => {
 
       const menuRouters = generator(menuNav)
       homeRouter.children = menuRouters
+
+      // 默认根路径跳转地址
+      homeRouter.redirect = menuRouters[0].name
 
       const routers = [];
       routers.push(homeRouter)

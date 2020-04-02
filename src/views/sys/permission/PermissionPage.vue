@@ -195,8 +195,8 @@ export default {
         },
         id: {
           rules: [
-            { required: true, message: 'ID必须为6位数字' },
-            { len: 6, message: '长度只能为6位数字' }
+            { required: true, message: '必须填写6位ID' },
+            { pattern: /^\d{6}$/, message: '长度只能为6位数字' }
           ]
         }
       },

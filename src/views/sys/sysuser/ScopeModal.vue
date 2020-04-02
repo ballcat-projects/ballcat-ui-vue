@@ -69,6 +69,7 @@ export default {
   methods: {
     show (record) {
       this.visible = true
+      this.confirmLoading = true
 
       this.userId = record.userId
       this.username = record.username
@@ -95,6 +96,9 @@ export default {
           this.$message.warning(res.msg)
         }
       })
+        .finally(() => {
+          this.confirmLoading = false
+        })
     },
     handleClose (e) {
       this.visible = false
