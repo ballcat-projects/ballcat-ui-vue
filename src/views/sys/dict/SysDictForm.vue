@@ -64,14 +64,14 @@
 </template>
 
 <script>
-import { FormMixin } from '@/mixins'
+import { FormPageMixin } from '@/mixins'
 import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { addObj, putObj } from '@/api/sys/sysdict'
 
 export default {
   name: 'SysDictFormPage',
   components: { AFormItem },
-  mixins: [FormMixin],
+  mixins: [FormPageMixin],
   props: ['dictTypeSelectData'],
   data () {
     return {

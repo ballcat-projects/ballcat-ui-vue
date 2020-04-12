@@ -93,7 +93,7 @@
 import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { addObj, putObj } from '@/api/sys/sysuser'
 import ScopeModal from './ScopeModal'
-import { FormMixin } from '@/mixins'
+import { FormPageMixin } from '@/mixins'
 import { encryption } from '@/utils/password'
 
 const defaultValue = {
@@ -103,7 +103,7 @@ const defaultValue = {
 
 export default {
   name: 'FormPage',
-  mixins: [FormMixin],
+  mixins: [FormPageMixin],
   components: { ScopeModal, AFormItem },
   data () {
     return {

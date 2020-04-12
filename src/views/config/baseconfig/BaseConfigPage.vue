@@ -73,11 +73,11 @@
 <script>
 import { getPage, delObj } from '@/api/config/baseconfig'
 import FormPage from './BaseConfigForm'
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'BaseConfigPage',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   components: { FormPage },
   data () {
     return {

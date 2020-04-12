@@ -1,7 +1,11 @@
-import PageMixin from './basePage'
-import FormMixin from './baseForm'
+import TablePageMixin from './tablePageMixin'
+import FormMixin from './formMixin'
+import FormPageMixin from './formPageMixin'
+import FormModalMixin from './formModalMixin'
 
 export {
-  PageMixin,
-  FormMixin
+  TablePageMixin,
+  FormMixin,
+  FormPageMixin,
+  FormModalMixin
 }

@@ -45,12 +45,24 @@ export default {
       selectedRowKeys: [],
       // 延迟加载，created时不主动加载数据
       lazyLoad: false,
+
+      // 需要加载的 dictSlot数据
+      dictCodes: []
     }
   },
   created() {
     !this.lazyLoad && this.loadData();
+    this.DictPool.initDictList(this.dictCodes)
+    this.onCreated()
   },
   methods:{
+    /**
+     * 扩展创建事件
+     */
+    onCreated(){
+
+    },
+
     /**
      * 表格重新加载方法
      * 如果参数为 true, 则强制刷新到第一页
@@ -90,10 +102,10 @@ export default {
             this.$message.warning(e.message)
           }
         }).catch((e) => {
-           this.$message.error(e.message)
-        }).finally(() => {
-          this.loading = false;
-        })
+        this.$message.error(e.message)
+      }).finally(() => {
+        this.loading = false;
+      })
     },
     /**
      * 分页、排序、筛选变化时进行数据更新
@@ -127,7 +139,7 @@ export default {
     // 返回表格
     backToPage (needRefresh) {
       this.switchPage()
-      needRefresh && this.reloadTable(needRefresh)
+      needRefresh && this.reloadTable(false)
     },
     // 新增
     handleAdd (argument) {
@@ -155,10 +167,6 @@ export default {
           this.$message.error(res.msg)
         }
       })
-    },
-    // 保存成功
-    handleOk () {
-      this.$refs.table.refresh()
     },
     // 选择
     onSelectChange (selectedRowKeys, selectedRows) {

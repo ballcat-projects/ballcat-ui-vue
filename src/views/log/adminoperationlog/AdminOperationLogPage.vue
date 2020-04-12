@@ -56,11 +56,11 @@
 
 <script>
 import { getPage } from '@/api/log/adminoperationlog'
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'AdminOperationLogPage',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   data() {
     return {
       getPage: getPage,

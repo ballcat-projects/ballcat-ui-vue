@@ -92,7 +92,7 @@
 <script>
 import { getPage, delObj, getDictSelectData } from '@/api/sys/sysdict'
 import FormPage from './SysDictForm'
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 import DictItemModal from './SysDictItemModal'
 
 const typeMap = {
@@ -108,7 +108,7 @@ const typeMap = {
 
 export default {
   name: 'SysDictPage',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   components: { DictItemModal, FormPage },
   data () {
     return {

@@ -80,11 +80,11 @@
 import { getPage, delObj } from '@/api/sys/role'
 import FormPage from './RoleForm'
 import RoleGrantDrawer from './RoleGrantDrawer'
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'RolePage',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   components: {
     FormPage,
     RoleGrantDrawer

@@ -23,45 +23,49 @@ export default {
     }
   },
   methods: {
-    add (argument) {
-      this.formAction = this.FORM_ACTION.ADD
+
+    // ============ 添加 ======================
+    buildCreatedForm (argument) {
       this.form.resetFields()
+      this.formAction = this.FORM_ACTION.CREATE
       // 钩子函数 处理某些页面定制需求
-      this.beforeStartAdd(argument)
+      this.createdFormCallback(argument)
     },
-    beforeStartAdd (argument) {
+    createdFormCallback (argument) {
       // 组件复写此方法 完成添加之前的事件
     },
-    update (record) {
-      this.formAction = this.FORM_ACTION.UPDATE
-      // 钩子函数 处理某些页面打开update页面时的定制需求
-      this.beforeStartUpdate(record)
-      // 延迟加载 必面隐藏展示元素时出现的bug
+
+    // ============ 修改 ======================
+    buildUpdatedForm (record, argument) {
+      let that = this;
+      that.formAction = that.FORM_ACTION.UPDATE
+      record = that.echoDataProcess(record);
+      // 延迟加载 避免隐藏展示元素时出现的bug
       setTimeout(() => {
         // 获取仅展示元素
-        this.displayData = pick(record, Object.keys(this.displayData))
+        that.displayData = pick(record, Object.keys(that.displayData))
         // 移除所有不用的元素，否则会抛出异常
-        const fromData = pick(record, Object.keys(this.form.getFieldsValue()))
+        const fromData = pick(record, Object.keys(that.form.getFieldsValue()))
         this.$nextTick(function () {
-          this.form.resetFields()
-          this.form.setFieldsValue(fromData)
+          that.form.resetFields()
+          that.form.setFieldsValue(fromData)
         })
       }, 0)
+      this.updatedFormCallback(argument);
     },
-    beforeStartUpdate (record) {
-      // 组件复写此方法 完成修改之前的事件
-    },
-    beforeStartSubmit (record) {
-      // 组件复写此方法 提交之前处理的事件
-    },
-    submitDataProcess (data) {
-      // 在此处理表单提交的数据
+    echoDataProcess (data) {
+      // 对准备回显的数据做预处理
       return data
     },
+    updatedFormCallback (argument) {
+      // 组件复写此方法 完成修改之后的事件
+    },
+
+    // ============ 提交 ======================
     handleSubmit (e) {
       // 钩子函数 处理提交之前处理的事件
       this.beforeStartSubmit()
-      const req = this.formAction === this.FORM_ACTION.ADD ? this.addObj : this.putObj
+      const req = this.formAction === this.FORM_ACTION.CREATE ? this.addObj : this.putObj
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {
@@ -69,7 +73,7 @@ export default {
           req(this.submitDataProcess(values)).then(res => {
             if (res.code === 200) {
               this.$message.success(res.msg)
-              this.backToPage(true)
+              this.submitSuccess(res)
             } else {
               this.$message.error(res.msg)
             }
@@ -80,8 +84,18 @@ export default {
         }
       })
     },
-    backToPage (needRefresh) {
-      this.$emit('backToPage', needRefresh)
+    beforeStartSubmit (record) {
+      // 组件复写此方法 提交之前处理的事件
+    },
+    submitDataProcess (data) {
+      // 在此处理表单提交的数据
+      return data
+    },
+    submitSuccess (res){
+      // 提交表单成功的回调函数
+    },
+    submitError (res){
+      // 提交表单失败的回调函数
     }
   }
 }

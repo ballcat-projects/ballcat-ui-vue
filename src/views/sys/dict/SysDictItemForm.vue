@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { FormMixin } from '@/mixins'
+import { FormPageMixin } from '@/mixins'
 import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { addObj, putObj } from '@/api/sys/sysdictitem'
 import { getDictSelectData } from '../../../api/sys/sysdict'
@@ -82,7 +82,7 @@ import { getDictSelectData } from '../../../api/sys/sysdict'
 export default {
   name: 'SysDictItemFormPage',
   components: { AFormItem },
-  mixins: [FormMixin],
+  mixins: [FormPageMixin],
   data () {
     return {
       addObj: addObj,

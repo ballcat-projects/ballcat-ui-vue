@@ -55,11 +55,11 @@
 <script>
 import { getPage, delObj } from '@/api/sys/sysdictitem'
 import FormPage from './SysDictItemForm'
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'DictItemModal',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   components: { FormPage },
   data () {
     return {

@@ -58,11 +58,11 @@
 
 <script>
 import { getPage } from '@/api/log/adminaccesslog'
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'AdminAccessLogPage',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   data() {
     return {
       getPage: getPage,

@@ -156,7 +156,7 @@
 </template>
 
 <script>
-import { PageMixin } from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 import { getPage, delObj, updateStatus } from '@/api/sys/sysuser'
 import FormPage from './SysUserForm'
 import ScopeModal from './ScopeModal'
@@ -177,7 +177,7 @@ const statusMap = {
 
 export default {
   name: 'SysUserPage',
-  mixins: [PageMixin],
+  mixins: [TablePageMixin],
   components: {
     CropperModal,
     FormPage,
