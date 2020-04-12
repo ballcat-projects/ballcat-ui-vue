@@ -67,7 +67,7 @@ export default {
 
       columns: [
         {
-          title: '编号',
+          title: '#',
           dataIndex: 'id',
         },
         {

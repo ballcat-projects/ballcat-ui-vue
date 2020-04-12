@@ -76,7 +76,7 @@ export default {
 
       columns: [
         {
-          title: 'ID',
+          title: '#',
           dataIndex: 'id',
           width: '45px',
         },

@@ -86,7 +86,7 @@ export default {
 
       columns: [
         {
-          title: 'ID',
+          title: '#',
           dataIndex: 'id',
         },
         {
