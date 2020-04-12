@@ -7,7 +7,7 @@
     :confirmLoading="confirmLoading"
     :maskClosable="false"
     :footer="null"
-    :bodyStyle="{padding:'12px 24px'}"
+    :bodyStyle="{padding:'12px 18px'}"
     width="75%"
     :centered="true"
   >
@@ -21,7 +21,7 @@
       <div class="table-wrapper">
         <a-table
           ref="table"
-          size="middle"
+          size="small"
           :rowKey="rowKey"
           :columns="columns"
           :dataSource="dataSource"
@@ -85,8 +85,8 @@ export default {
           dataIndex: 'dictCode'
         },
         {
-          title: '标签',
-          dataIndex: 'label'
+          title: '文本值',
+          dataIndex: 'name'
         },
         {
           title: '数据值',
@@ -113,7 +113,7 @@ export default {
         {
           title: '操作',
           dataIndex: 'action',
-          width: '120px',
+          width: '100px',
           scopedSlots: { customRender: 'action-slot' }
         }
       ]
@@ -122,7 +122,7 @@ export default {
   methods: {
     show (record) {
       this.visible = true
-      this.dictName = record.name
+      this.dictName = record.title
       this.dictCode = record.code
       this.queryParam = {
         "dictCode": this.dictCode

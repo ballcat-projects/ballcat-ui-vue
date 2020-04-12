@@ -30,6 +30,11 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
 };
 
 
+// 字典注册
+import DictPlugin  from '@/components/dict/dictPlugin'
+Vue.use(DictPlugin)
+
+
 new Vue({
   router,
   store,

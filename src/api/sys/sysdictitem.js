@@ -16,12 +16,6 @@ export function addObj(obj) {
   })
 }
 
-export function getObj(id) {
-  return axios({
-    url: '/sys/dict/item/' + id,
-    method: 'get'
-  })
-}
 
 export function delObj(id) {
   return axios({

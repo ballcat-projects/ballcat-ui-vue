@@ -1,11 +1,20 @@
 import { axios } from '@/utils/request'
 
-export function getDictSelectData (dictCode) {
+export function getDictDataAndHash (dictCode) {
   return axios({
-    url: '/sys/dict/select/' + dictCode,
+    url: '/sys/dict/data-hash/' + dictCode,
     method: 'get'
   })
 }
+
+export function invalidDictHash(map) {
+  return axios({
+    url: '/sys/dict/invalid-hash',
+    method: 'post',
+    data: map
+  })
+}
+
 
 export function getPage(query) {
   return axios({

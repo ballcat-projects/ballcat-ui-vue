@@ -13,11 +13,11 @@
                v-decorator="['dictCode']"/>
     </a-form-item>
 
-    <a-form-item label="标签"
+    <a-form-item label="文本值"
                  :labelCol=labelCol
                  :wrapperCol=wrapperCol>
-      <a-input placeholder="标签"
-               v-decorator="['label']"/>
+      <a-input placeholder="文本值"
+               v-decorator="['name']"/>
     </a-form-item>
 
     <a-form-item label="数据值"
@@ -77,7 +77,6 @@
 import { FormPageMixin } from '@/mixins'
 import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { addObj, putObj } from '@/api/sys/sysdictitem'
-import { getDictSelectData } from '../../../api/sys/sysdict'
 
 export default {
   name: 'SysDictItemFormPage',
@@ -93,7 +92,7 @@ export default {
     }
   },
   methods: {
-    beforeStartAdd (argument) {
+    createdFormCallback (argument) {
         this.form.setFieldsValue({dictCode: argument})
     }
   }

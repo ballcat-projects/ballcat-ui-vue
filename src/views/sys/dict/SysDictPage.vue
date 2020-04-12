@@ -11,13 +11,11 @@
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
-              <a-form-item lable="字典类型">
-                <a-select placeholder="字典类型">
-                  <a-select-option v-for="item in dictTypeSelectData"
-                                   :key="item.value">
-                    {{item.name}}
-                  </a-select-option>
-                </a-select>
+              <a-form-item lable="字典属性">
+                <dict-select dict-code="dict_property"
+                             placeholder="字典属性"
+                             v-model="queryParam.editable">
+                </dict-select>
               </a-form-item>
             </a-col>
             <!-- <template v-if="advanced">
@@ -77,7 +75,7 @@
 
     <!--表单页面-->
     <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page ref="formPage" :dictTypeSelectData='dictTypeSelectData' @backToPage="backToPage"></form-page>
+      <form-page ref="formPage" @backToPage="backToPage"></form-page>
     </a-card>
 
 
@@ -90,101 +88,88 @@
 </template>
 
 <script>
-import { getPage, delObj, getDictSelectData } from '@/api/sys/sysdict'
-import FormPage from './SysDictForm'
-import { TablePageMixin } from '@/mixins'
-import DictItemModal from './SysDictItemModal'
+  import { getPage, delObj } from '@/api/sys/sysdict'
+  import FormPage from './SysDictForm'
+  import { TablePageMixin } from '@/mixins'
+  import DictItemModal from './SysDictItemModal'
 
-const typeMap = {
-  1: {
-    color: 'orange',
-    text: '系统类'
-  },
-  2: {
-    color: 'green',
-    text: '业务类'
+
+  const typeMap = {
+    0: {
+      color: 'orange',
+      text: '只读'
+    },
+    1: {
+      color: 'green',
+      text: '可写'
+    }
   }
-}
 
-export default {
-  name: 'SysDictPage',
-  mixins: [TablePageMixin],
-  components: { DictItemModal, FormPage },
-  data () {
-    return {
-      getPage: getPage,
-      delObj: delObj,
+  export default {
+    name: 'SysDictPage',
+    mixins: [TablePageMixin],
+    components: { DictItemModal, FormPage },
+    data() {
+      return {
+        getPage: getPage,
+        delObj: delObj,
 
-      columns: [
-        {
-          title: '编号',
-          dataIndex: 'id'
-        },
-        {
-          title: '标识',
-          dataIndex: 'code'
-        },
-        {
-          title: '名称',
-          dataIndex: 'name'
-        },
-        {
-          title: '字典类型',
-          dataIndex: 'type',
-          scopedSlots: { customRender: 'type-slot' }
-        },
-        {
-          title: '备注',
-          dataIndex: 'remarks'
-        },
-        {
-          title: '创建时间',
-          dataIndex: 'createTime',
-          width: '150px',
-          sorter: true
-        },
-        {
-          title: '操作',
-          dataIndex: 'action',
-          width: '150px',
-          scopedSlots: { customRender: 'action-slot' }
-        }
-      ],
+        columns: [
+          {
+            title: '#',
+            dataIndex: 'id'
+          },
+          {
+            title: '标识',
+            dataIndex: 'code'
+          },
+          {
+            title: '名称',
+            dataIndex: 'title'
+          },
+          {
+            title: '属性',
+            dataIndex: 'editable',
+            scopedSlots: { customRender: 'type-slot' }
+          },
+          {
+            title: '备注',
+            dataIndex: 'remarks'
+          },
+          {
+            title: '创建时间',
+            dataIndex: 'createTime',
+            width: '150px',
+            sorter: true
+          },
+          {
+            title: '操作',
+            dataIndex: 'action',
+            width: '150px',
+            scopedSlots: { customRender: 'action-slot' }
+          }
+        ],
 
-      itemModalInited: false,
-      dictTypeSelectData: []
-    }
-  },
-  filters: {
-    typeTextFilter (type) {
-      return typeMap[type].text
-    },
-    typeColorFilter (type) {
-      return typeMap[type].color
-    }
-  },
-  created () {
-    this.loadData()
-    this.initDictTypeSelectData()
-  },
-  methods: {
-    initDictTypeSelectData () {
-      getDictSelectData('dict_type').then(res => {
-        if (res.code === 200) {
-          this.dictTypeSelectData = res.data
-        } else {
-          this.$message.warning(e.message)
-        }
-      })
-    },
-    handleShowItem (record) {
-      if (!this.itemModalInited) {
-        this.itemModalInited = true
+        itemModalInited: false
       }
-      this.$nextTick(function () {
-        this.$refs.dictItemModal.show(record)
-      })
+    },
+    filters: {
+      typeTextFilter(type) {
+        return typeMap[type].text
+      },
+      typeColorFilter(type) {
+        return typeMap[type].color
+      }
+    },
+    methods: {
+      handleShowItem(record) {
+        if (!this.itemModalInited) {
+          this.itemModalInited = true
+        }
+        this.$nextTick(function() {
+          this.$refs.dictItemModal.show(record)
+        })
+      }
     }
   }
-}
 </script>
