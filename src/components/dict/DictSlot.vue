@@ -1,5 +1,5 @@
 <template>
-  <a-tag>{{dictObj[value]? dictObj[value]: 'unknown'}}</a-tag>
+  <a-tag>{{dictObj[value]? dictObj[value]: value}}</a-tag>
 </template>
 <script>
   export default {

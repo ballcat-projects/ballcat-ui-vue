@@ -5,7 +5,7 @@
          :disabled="disabled"
          :value="selectedValue"
          @change="handleChange">
-        <a-select-option v-if="needHint" value="">请选择</a-select-option>
+        <a-select-option v-if="placeholderOption" value="">{{placeholder}}</a-select-option>
         <a-select-option v-for="dict in dictList" :key="Number(dict.value)">
             {{ dict.name }}
         </a-select-option>
@@ -19,7 +19,7 @@
     mixins: [DictMixin],
     props: {
       placeholder: String,
-      needHint: {
+      placeholderOption: {
         type: Boolean,
         default: false
       }
