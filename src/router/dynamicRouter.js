@@ -8,7 +8,7 @@ const notFoundRouter = {
 
 // 根路由
 const homeRouter = {
-  path: '/', name: 'index.js', hidden: true,
+  path: '/', name: '/', hidden: true,
   children: [],
   component: () => import(`@/layouts/BasicLayout`),
   meta: {
@@ -27,15 +27,16 @@ export const generatorDynamicRouter = () => {
       const { data } = res
 
       // 后端数据, 根级树数组,  根级 PID
-      const menuNav = listToTree(data, 0, {key: 'routerName'});
+      const menuNav = listToTree(data, 0, { key: 'routerName' })
 
       const menuRouters = generator(menuNav)
       homeRouter.children = menuRouters
 
       // 默认根路径跳转地址
-      homeRouter.redirect = menuRouters[0].name
+      let defaultMenu = menuRouters.find(r => !r.hidden)
+      homeRouter.redirect = defaultMenu.name
 
-      const routers = [];
+      const routers = []
       routers.push(homeRouter)
       routers.push(notFoundRouter)
 
@@ -61,7 +62,7 @@ export const generator = (routerMap, parent) => {
       // 路由名称，建议唯一
       name: item.name || item.key || '',
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
-      meta: { title: item.title, icon: item.icon || undefined, target: item.target}
+      meta: { title: item.title, icon: item.icon || undefined, target: item.target }
     }
     // 该路由对应页面的 组件 :方案1
     // component: constantRouterComponents[item.component || item.key],
