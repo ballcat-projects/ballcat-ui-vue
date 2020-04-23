@@ -51,13 +51,10 @@
           dictCodes: []
       },
       created () {
-          !this.lazyLoad && this.loadData()
           this.DictPool.initDictList(this.dictCodes)
-          this.onCreated()
+          !this.lazyLoad && this.loadData()
       },
       methods: {
-          /** 扩展创建事件 */
-          onCreated () {},
       }
   ```
 
