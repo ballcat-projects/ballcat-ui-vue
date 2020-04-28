@@ -12,10 +12,10 @@
                v-decorator="['name']"/>
     </a-form-item>
 
-    <a-form-item label="配置在缓存中的key名"
+    <a-form-item label="配置键"
                  :labelCol=labelCol
                  :wrapperCol=wrapperCol>
-      <a-input placeholder="配置在缓存中的key名"
+      <a-input placeholder="配置键"
                v-decorator="['confKey']"/>
     </a-form-item>
 
@@ -26,11 +26,11 @@
                v-decorator="['confValue']"/>
     </a-form-item>
 
-    <a-form-item label="组"
+    <a-form-item label="分类"
                  :labelCol=labelCol
                  :wrapperCol=wrapperCol>
-      <a-input placeholder="组"
-               v-decorator="['groups']"/>
+      <a-input placeholder="分类"
+               v-decorator="['category']"/>
     </a-form-item>
 
     <a-form-item label="备注"

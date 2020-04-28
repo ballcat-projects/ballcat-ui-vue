@@ -102,8 +102,8 @@ export default {
           dataIndex: 'confValue',
         },
         {
-          title: '组',
-          dataIndex: 'groups',
+          title: '分类',
+          dataIndex: 'category',
         },
         {
           title: '备注',
