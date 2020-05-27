@@ -71,6 +71,10 @@ export default {
           dataIndex: 'id',
         },
         {
+          title: '追踪ID',
+          dataIndex: 'traceId',
+        },
+        {
           title: '日志消息',
           dataIndex: 'msg',
         },
@@ -83,8 +87,12 @@ export default {
           dataIndex: 'uri',
         },
         {
-          title: '操作方式',
+          title: '请求方式',
           dataIndex: 'method',
+        },
+        {
+          title: '操作类型',
+          dataIndex: 'type',
         },
         {
           title: '操作状态',
@@ -101,7 +109,7 @@ export default {
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '180px',
+          width: '150px',
           sorter: true
         }
       ]

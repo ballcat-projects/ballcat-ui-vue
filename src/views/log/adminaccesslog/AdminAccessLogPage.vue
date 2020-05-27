@@ -73,6 +73,10 @@ export default {
           dataIndex: 'id',
         },
         {
+          title: '追踪ID',
+          dataIndex: 'traceId',
+        },
+        {
           title: '用户ID',
           dataIndex: 'userId',
         },
@@ -81,7 +85,7 @@ export default {
           dataIndex: 'username',
         },
         {
-          title: '访问IP地址',
+          title: 'IP',
           dataIndex: 'ip',
         },
 
@@ -90,7 +94,7 @@ export default {
           dataIndex: 'uri',
         },
         {
-          title: '操作方式',
+          title: '请求方法',
           dataIndex: 'method',
         },
 
@@ -109,7 +113,7 @@ export default {
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '180px',
+          width: '150px',
           sorter: true
         }
       ]
