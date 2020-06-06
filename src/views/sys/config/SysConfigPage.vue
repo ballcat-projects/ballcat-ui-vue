@@ -30,7 +30,7 @@
 
       <!-- 操作按钮区域 -->
       <div class="table-operator">
-        <a-button  v-has="'config:baseconfig:edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+        <a-button  v-has="'sys:config:edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
         <a-button  type="primary" icon="download" @click="handleAdd()">导出</a-button>
         <a-button  type="primary" icon="import" @click="handleAdd()">导入</a-button>
       </div>
@@ -49,9 +49,9 @@
         >
           <span slot="action-slot" slot-scope="text, record">
             <template>
-              <a v-has="'config:baseconfig:edit'" @click="handleEdit(record)">编辑</a>
+              <a v-has="'sys:config:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
-              <a-popconfirm v-has="'config:baseconfig:del'"
+              <a-popconfirm v-has="'sys:config:del'"
                 title="确认要删除吗？"
                 @confirm="() => handleDel(record)">
                 <a href="javascript:;">删除</a>
@@ -71,12 +71,12 @@
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/config/baseconfig'
-import FormPage from './BaseConfigForm'
+import { getPage, delObj } from '@/api/sys/sysconfig'
+import FormPage from './SysConfigForm'
 import { TablePageMixin } from '@/mixins'
 
 export default {
-  name: 'BaseConfigPage',
+  name: 'SysConfigPage',
   mixins: [TablePageMixin],
   components: { FormPage },
   data () {

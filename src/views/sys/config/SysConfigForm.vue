@@ -67,10 +67,10 @@
 <script>
 import { FormPageMixin } from '@/mixins'
 import AFormItem from 'ant-design-vue/es/form/FormItem'
-import { addObj, putObj } from '@/api/config/baseconfig'
+import { addObj, putObj } from '@/api/sys/sysconfig'
 
 export default {
-  name: 'BaseConfigFormPage',
+  name: 'SysConfigFormPage',
   components: { AFormItem },
   mixins: [FormPageMixin],
   data () {

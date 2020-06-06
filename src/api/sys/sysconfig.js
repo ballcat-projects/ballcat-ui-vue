@@ -2,7 +2,7 @@ import { axios } from '@/utils/request'
 
 export function getPage(query) {
   return axios({
-    url: '/config/baseconfig/page',
+    url: '/sys/config/page',
     method: 'get',
     params: query
   })
@@ -10,7 +10,7 @@ export function getPage(query) {
 
 export function addObj(obj) {
   return axios({
-    url: '/config/baseconfig',
+    url: '/sys/config',
     method: 'post',
     data: obj
   })
@@ -18,21 +18,21 @@ export function addObj(obj) {
 
 export function getObj(id) {
   return axios({
-    url: '/config/baseconfig/' + id,
+    url: '/sys/config/' + id,
     method: 'get'
   })
 }
 
 export function delObj(id) {
   return axios({
-    url: '/config/baseconfig/' + id,
+    url: '/sys/config/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
   return axios({
-    url: '/config/baseconfig',
+    url: '/sys/config',
     method: 'put',
     data: obj
   })
