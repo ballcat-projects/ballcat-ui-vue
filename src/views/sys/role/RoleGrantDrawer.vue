@@ -111,7 +111,7 @@ export default {
       if (this.visible) {
         getList().then((res) => {
           // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
-          let treeData = listToTree(res.data, 0, {key: "id"});
+          let treeData = listToTree(res.data, 0);
           getPermissionIds(this.roleId).then((res) => {
             this.treeData = treeData
             // 由于 AntDesign 的默认父子关联，直接选中所有权限，会导致半选节点变为全选

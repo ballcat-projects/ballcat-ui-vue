@@ -23,9 +23,8 @@
                     placeholder="无角色"
                     :allowClear="true"
                     v-model="roleIds">
-            <a-select-option v-for="(selectData, index) in roleSelectData"
-                             :key="index"
-                             :value="selectData.value">
+            <a-select-option v-for="selectData in roleSelectData"
+                             :key="selectData.value">
               {{ selectData.name }}
             </a-select-option>
           </a-select>

@@ -12,10 +12,13 @@
           :blockNode="true"
           :treeData="treeData"
           :expandedKeys="expandedKeys"
-          :showLine="true"
+          :showIcon="true"
           @select="onSelect"
           @expand="onExpand"
         >
+          <template slot="custom" slot-scope="{ icon }">
+            <a-icon v-if="icon" :type="icon" />
+          </template>
         </a-tree>
       </a-card>
     </a-col>
@@ -218,7 +221,10 @@ export default {
         this.permission = {}
         this.formAction = this.FORM_ACTION.NONE
         this.readOnly = true
-        this.treeData = listToTree(res.data, 0)
+        this.treeData = listToTree(res.data, 0, (treeNode, item) => {
+          treeNode.permission = item
+          treeNode.scopedSlots = { icon: "custom" }
+        })
         this.expandedKeys = [0]
       })
     },
@@ -228,7 +234,7 @@ export default {
     onSelect (selectedKeys, e) {
       // console.log(e)
       if (e.selected) {
-        this.permission = e.selectedNodes[0].data.props
+        this.permission = e.selectedNodes[0].data.props.permission
         this.readOnly ? this.redisplay() : this.handleUpdate()
       } else {
         this.formAction = this.FORM_ACTION.NONE
