@@ -12,7 +12,7 @@
         <a-input v-decorator="['userId']"/>
       </a-form-item>
       <a-form-item
-        v-if="formAction === this.FORM_ACTION.ADD"
+        v-if="formAction === this.FORM_ACTION.CREATE"
         label="密码"
         :labelCol=labelCol
         :wrapperCol=wrapperCol

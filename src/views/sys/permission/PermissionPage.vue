@@ -54,7 +54,7 @@
             <a-input placeholder="节点"
                      v-decorator="['id', decoratorOptions.id]"
                      type="number"
-                     :disabled="formAction !== this.FORM_ACTION.ADD"/>
+                     :disabled="formAction !== this.FORM_ACTION.CREATE"/>
           </a-form-item>
 
 
@@ -159,7 +159,7 @@
           <a-form-item v-show="formAction !== FORM_ACTION.NONE"
                        :wrapperCol="{offset: 4 }"
           >
-            <a-button htmlType="submit" type="primary">{{this.formAction === this.FORM_ACTION.ADD ? '提交': '修改' }}
+            <a-button htmlType="submit" type="primary">{{this.formAction === this.FORM_ACTION.CREATE ? '提交': '修改' }}
             </a-button>
             <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
           </a-form-item>
@@ -258,7 +258,7 @@ export default {
       }, 0)
     },
     handleAdd () {
-      this.formAction = this.FORM_ACTION.ADD
+      this.formAction = this.FORM_ACTION.CREATE
       this.readOnly = false
       this.form.resetFields()
       const defaultValue = {
@@ -292,7 +292,7 @@ export default {
       })
     },
     handleSubmit (e) {
-      const req = this.formAction === this.FORM_ACTION.ADD ? addObj : putObj
+      const req = this.formAction === this.FORM_ACTION.CREATE ? addObj : putObj
       e.preventDefault()
       this.form.validateFields((err, values) => {
         if (!err) {

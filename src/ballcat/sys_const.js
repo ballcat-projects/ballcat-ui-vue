@@ -1,6 +1,6 @@
 const FORM_ACTION = {
   NONE: '',
-  ADD: 'add',
+  CREATE: 'create',
   UPDATE: 'update'
 }
 
