@@ -107,8 +107,10 @@ export default {
   components: { ScopeModal, AFormItem },
   data () {
     return {
-      addObj: addObj,
-      putObj: putObj,
+      reqFunctions: {
+        create: addObj,
+        update: putObj
+      },
 
       decoratorOptions: {
         username: {

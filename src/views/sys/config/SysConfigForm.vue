@@ -75,8 +75,10 @@ export default {
   mixins: [FormPageMixin],
   data () {
     return {
-      addObj: addObj,
-      putObj: putObj,
+      reqFunctions: {
+        create: addObj,
+        update: putObj
+      },
 
       // 校验配置
       decoratorOptions: {}
