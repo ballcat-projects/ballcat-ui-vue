@@ -27,6 +27,20 @@
           placeholder="权限标识"/>
       </a-form-item>
       <a-form-item
+        label="系统角色"
+        :labelCol=labelCol
+        :wrapperCol=wrapperCol
+        >
+        <a-radio-group v-decorator="['system']" :disabled="formAction === this.FORM_ACTION.UPDATE">
+          <a-radio-button value="1">
+            是
+          </a-radio-button>
+          <a-radio-button value="0">
+            否
+          </a-radio-button>
+        </a-radio-group>
+      </a-form-item>
+      <a-form-item
         label="备注"
         :labelCol=labelCol
         :wrapperCol=wrapperCol>
@@ -80,6 +94,9 @@ export default {
           rules: [{ required: true, message: '请输入角色标识!' }
             ,{ validator: this.validateCode }
           ]
+        },
+        system:{
+          initinitialValue: 0
         }
       },
     }
