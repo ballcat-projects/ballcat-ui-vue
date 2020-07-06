@@ -27,16 +27,16 @@
           placeholder="权限标识"/>
       </a-form-item>
       <a-form-item
-        label="系统角色"
+        label="角色类似"
         :labelCol=labelCol
         :wrapperCol=wrapperCol
         >
-        <a-radio-group v-decorator="['system']" :disabled="formAction === this.FORM_ACTION.UPDATE">
-          <a-radio-button value="1">
-            是
+        <a-radio-group v-decorator="['type']" :disabled="formAction === this.FORM_ACTION.UPDATE">
+          <a-radio-button :value="1">
+            系统角色
           </a-radio-button>
-          <a-radio-button value="0">
-            否
+          <a-radio-button :value="2">
+            业务角色
           </a-radio-button>
         </a-radio-group>
       </a-form-item>
@@ -45,7 +45,7 @@
         :labelCol=labelCol
         :wrapperCol=wrapperCol>
         <a-textarea
-          :autosize="{ minRows: 4, maxRows: 8 }"
+          :autoSize="{ minRows: 4, maxRows: 8 }"
           v-decorator="['note']"
           placeholder="备注信息"/>
       </a-form-item>
