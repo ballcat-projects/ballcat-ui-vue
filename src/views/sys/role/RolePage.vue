@@ -49,6 +49,9 @@
           :loading ="loading"
           @change="handleTableChange"
         >
+           <span slot="type-slot" slot-scope="text">
+            <dict-slot dict-code="role_type"  :colors="{1:'orange', 2: 'green'}" :value="text"/>
+          </span>
           <span slot="action-slot" slot-scope="text, record">
             <template>
               <a v-has="'sys:sysrole:edit'" @click="handleEdit(record)">编辑</a>
@@ -108,6 +111,11 @@ export default {
           dataIndex: 'code',
         },
         {
+          title: '角色类型',
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type-slot' }
+        },
+        {
           title: '备注',
           dataIndex: 'note',
         },
@@ -130,6 +138,7 @@ export default {
           scopedSlots: { customRender: 'action-slot' }
         }
       ],
+      dictCodes: ['role_type']
     }
   },
   methods: {

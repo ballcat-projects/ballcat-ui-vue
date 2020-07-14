@@ -47,12 +47,9 @@
         label="性别"
         :labelCol=labelCol
         :wrapperCol=wrapperCol>
-        <a-select
-          v-decorator="['sex', decoratorOptions.sex]">
-          <a-select-option :value="0">请选择</a-select-option>
-          <a-select-option :value="1">男</a-select-option>
-          <a-select-option :value="2">女</a-select-option>
-        </a-select>
+        <dict-select v-decorator="['sex', decoratorOptions.sex]"
+                     dict-code="gender">
+        </dict-select>
       </a-form-item>
       <a-form-item
         label="状态"

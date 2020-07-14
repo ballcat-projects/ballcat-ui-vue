@@ -42,6 +42,15 @@
           :loading="loading"
           @change="handleTableChange"
         >
+          <span slot="type-slot" slot-scope="text">
+            <dict-slot dict-code="operation_type" :value="text">
+            </dict-slot>
+          </span>
+          <span slot="status-slot" slot-scope="text">
+            <dict-slot dict-code="log_status" :value="text"
+                       :colors="{1: 'green', 0: 'red'}">
+            </dict-slot>
+          </span>
           <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
             <p>params:</p>
             <pre><div class="wordwrap" v-html="record.params"></div></pre>
@@ -79,6 +88,11 @@ export default {
           dataIndex: 'msg',
         },
         {
+          title: '操作类型',
+          dataIndex: 'type',
+          scopedSlots: { customRender: 'type-slot' }
+        },
+        {
           title: '访问IP地址',
           dataIndex: 'ip',
         },
@@ -91,12 +105,9 @@ export default {
           dataIndex: 'method',
         },
         {
-          title: '操作类型',
-          dataIndex: 'type',
-        },
-        {
           title: '操作状态',
           dataIndex: 'status',
+          scopedSlots: { customRender: 'status-slot' }
         },
         {
           title: '执行时长',
@@ -112,7 +123,9 @@ export default {
           width: '150px',
           sorter: true
         }
-      ]
+      ],
+
+      dictCodes: ['log_status', 'operation_type']
     }
   },
   methods: {}

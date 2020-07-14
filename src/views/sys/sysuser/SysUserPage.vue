@@ -99,6 +99,9 @@
           <span slot="status-slot" slot-scope="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
           </span>
+          <span slot="gender-slot" slot-scope="text">
+            <dict-text dict-code="gender" :value="text"></dict-text>
+          </span>
           <span slot="avatar-slot" slot-scope="text, record">
             <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
                       @click="updateAvatar(record.userId)"/>
@@ -211,7 +214,8 @@ export default {
         {
           title: '性别',
           dataIndex: 'sex',
-          align: 'center'
+          align: 'center',
+          scopedSlots: { customRender: 'gender-slot' }
         },
         {
           title: '邮箱',
@@ -252,6 +256,8 @@ export default {
       passInited: false,
       // 正在修改头像的用户Id
       avatarUserId: null,
+
+      dictCodes: ['gender']
     }
   },
   computed: {

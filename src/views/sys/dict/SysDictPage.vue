@@ -53,7 +53,7 @@
           @change="handleTableChange"
         >
           <span slot="type-slot" slot-scope="text">
-            <a-tag :color="text|typeColorFilter">{{text|typeTextFilter}}</a-tag>
+            <dict-slot dict-code="dict_property"  :colors="{0: 'orange', 1:'green'}" :value="text"/>
           </span>
 
           <span slot="action-slot" slot-scope="text, record">
@@ -92,18 +92,6 @@
   import FormPage from './SysDictForm'
   import { TablePageMixin } from '@/mixins'
   import DictItemModal from './SysDictItemModal'
-
-
-  const typeMap = {
-    0: {
-      color: 'orange',
-      text: '只读'
-    },
-    1: {
-      color: 'green',
-      text: '可写'
-    }
-  }
 
   export default {
     name: 'SysDictPage',
@@ -150,15 +138,8 @@
           }
         ],
 
-        itemModalInited: false
-      }
-    },
-    filters: {
-      typeTextFilter(type) {
-        return typeMap[type].text
-      },
-      typeColorFilter(type) {
-        return typeMap[type].color
+        itemModalInited: false,
+        dictCodes: ['dict_property']
       }
     },
     methods: {
