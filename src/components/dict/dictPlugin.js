@@ -5,6 +5,7 @@ import DictPool from '@/components/dict/dictPool'
 import DictSlot from '@/components/dict/DictSlot'
 import DictRadioGroup from '@/components/dict/DictRadioGroup'
 import DictSelect from '@/components/dict/DictSelect'
+import DictText from '@/components/dict/DictText'
 
 export default {
   install: function(Vue) {
@@ -14,5 +15,6 @@ export default {
     Vue.component('DictRadioGroup', DictRadioGroup)
     Vue.component('DictSelect', DictSelect)
     Vue.component('DictSlot', DictSlot)
+    Vue.component('DictText', DictText)
   }
 }

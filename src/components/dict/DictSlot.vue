@@ -1,5 +1,5 @@
 <template>
-  <a-tag>{{dictObj[value]? dictObj[value]: value}}</a-tag>
+  <a-tag :color="colors[value] || uniformColor">{{dictObj[value]? dictObj[value]: value}}</a-tag>
 </template>
 <script>
   export default {
@@ -7,12 +7,17 @@
     props: {
       value: [Number, String],
       dictCode: String,
-      color: String
+      colors: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
+      uniformColor: String
     },
     data() {
       return {
         dictObj: {},
-        dictList: {}
       }
     },
     mounted() {
