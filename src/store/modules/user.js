@@ -55,20 +55,31 @@ const user = {
       })
     },
     // 登出
-    Logout ({ commit, state }) {
+    Logout ({ dispatch, commit, state }) {
       return new Promise((resolve) => {
         logout().then(() => {
           resolve()
         }).catch(() => {
           resolve()
         }).finally(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          Vue.ls.remove(ACCESS_TOKEN)
-          Vue.ls.remove(USER_INFO)
-          Vue.ls.remove(PERMISSIONS)
-          Vue.ls.remove(ROLES)
+          dispatch('CLEAN_USER_INFO').then(() => {
+            setTimeout(() => {
+              window.location.reload()
+            }, 10)
+          })
         })
+      })
+    },
+
+    CLEAN_USER_INFO ({ commit, state }) {
+      return new Promise((resolve) => {
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        Vue.ls.remove(ACCESS_TOKEN)
+        Vue.ls.remove(USER_INFO)
+        Vue.ls.remove(PERMISSIONS)
+        Vue.ls.remove(ROLES)
+        resolve()
       })
     }
 

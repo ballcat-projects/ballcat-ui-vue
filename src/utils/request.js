@@ -14,23 +14,23 @@ const service = axios.create({
 const err = (error) => {
   if (error.response) {
     const data = error.response.data
-    const token = Vue.ls.get(ACCESS_TOKEN)
     if (error.response.status === 403) {
       notification.error({
         message: 'Forbidden',
         description: data.message
       })
     }
-    if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
+    if (error.response.status === 401) {
       notification.error({
         message: 'Unauthorized',
         description: 'Authorization verification failed'
       })
+      const token = Vue.ls.get(ACCESS_TOKEN)
       if (token) {
-        store.dispatch('Logout').then(() => {
+        store.dispatch('CLEAN_USER_INFO').then(() => {
           setTimeout(() => {
             window.location.reload()
-          }, 1500)
+          }, 10)
         })
       }
     }
