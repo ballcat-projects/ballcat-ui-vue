@@ -114,7 +114,7 @@ export default {
           dataIndex: 'time',
         },
         {
-          title: '创建者',
+          title: '操作人',
           dataIndex: 'operator',
         },
         {

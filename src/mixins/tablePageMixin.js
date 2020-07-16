@@ -94,10 +94,10 @@ export default {
             this.dataSource = page.records
             this.pagination.total = page.total
           } else {
-            this.$message.warning(res.message)
+            this.$message.warning(res.message || 'error request')
           }
         }).catch((e) => {
-        this.$message.error(e.message)
+        this.$message.error(e.message || 'error request')
       }).finally(() => {
         this.loading = false
       })
