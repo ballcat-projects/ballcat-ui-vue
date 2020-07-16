@@ -47,6 +47,8 @@
             <pre><div class="wordwrap" v-html="record.reqParams"></div></pre>
             <p>reqBody:</p>
             <pre><div class="wordwrap" v-html="record.reqBody"></div></pre>
+            <p>result:</p>
+            <pre><div class="wordwrap" v-html="record.result"></div></pre>
             <p>userAgent:</p>
             {{record.userAgent}}}
           </span>
@@ -97,7 +99,6 @@ export default {
           title: '请求方法',
           dataIndex: 'method',
         },
-
         {
           title: '响应状态码',
           dataIndex: 'httpStatus',
