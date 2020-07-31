@@ -1,5 +1,5 @@
 <template>
-  <a-tag :color="colors[value] || uniformColor">{{dictObj[value]? dictObj[value]: value}}</a-tag>
+  <a-tag :color="colors[value] || uniformColor">{{dictItem? dictItem.name: value}}</a-tag>
 </template>
 <script>
   export default {
@@ -17,27 +17,15 @@
     },
     data() {
       return {
-        dictObj: {},
+        dictItem: null,
       }
     },
-    mounted() {
-      let dictList = this.DictPool.dictDataCache[this.dictCode]
-      dictList && (this.dictObj = this.DictPool.listToObj(dictList))
+    created() {
+      let dictData = this.DictPool.dictDataCache[this.dictCode]
+      if(dictData){
+        this.dictItem = dictData.find(dictItem => dictItem.value === this.value.toString())
+      }
     },
     methods: {}
-    // watch: {
-    //   'DictPool.dictDataCache': {
-    //     handler(dictDataCache) {
-    //       // 当有属性，且不是当前所需的属性被改变时，才进行改变
-    //       let dictList = dictDataCache[this.dictCode]
-    //       if (dictList && dictList !== this.dictList) {
-    //         this.dictList = dictList
-    //         this.dictObj = this.DictPool.listToObj(dictList)
-    //       }
-    //     },
-    //     immediate: true,
-    //     deep: true
-    //   }
-    // },
   }
 </script>

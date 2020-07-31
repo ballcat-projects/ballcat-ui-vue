@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { getDictDataAndHash, invalidDictHash } from '@/api/sys/sysdict'
+import { getDictData, invalidDictHash } from '@/api/sys/sysdict'
 
 // 字典项hash列表的Key
 const DICT_HASH_KEY = 'dict-hashes'
@@ -15,30 +15,21 @@ function DictPool () {
    * 初始化字典
    * @param dictCodes Array
    */
-  this.initDictData = (dictCodes) => {
+  this.initDict = (dictCodes) => {
     // 不在缓存中且不在ls中才需要从服务端更新
-    const needInitDictCodes = dictCodes.filter(
-      dictCode => !this.dictDataCache[dictCode] && !this.getDictDataFromLS(dictCode)
+    dictCodes = dictCodes.filter(
+      dictCode => !this.dictDataCache[dictCode] && !this.getDictItemsFromLS(dictCode)
     )
-    return needInitDictCodes.length > 0 ? this.getDictDataMapFromServer(needInitDictCodes): Promise.resolve()
+    return dictCodes.length > 0 ? this.getDictItemsMapFromServer(dictCodes): Promise.resolve()
   }
 
   // 获取list
-  this.getDictData = (dictCode) => {
+  this.getDictItems = (dictCode) => {
     if (!dictCode) {
       return Promise.resolve()
     }
-    let dictList = this.dictDataCache[dictCode] || this.getDictDataFromLS(dictCode)
-    return dictList ? Promise.resolve(dictList) : this.getDictDataFromServer(dictCode)
-  }
-
-
-  this.listToObj = (dictData) => {
-    let dictObj = {}
-    for (let dict of dictData) {
-      dictObj[dict.value] = dict.name
-    }
-    return dictObj
+    let dictList = this.dictDataCache[dictCode] || this.getDictItemsFromLS(dictCode)
+    return dictList ? Promise.resolve(dictList) : this.getDictItemsFromServer(dictCode)
   }
 
   /**
@@ -46,7 +37,7 @@ function DictPool () {
    * @param dictCode
    * @returns {*}
    */
-  this.getDictDataFromLS = (dictCode) => {
+  this.getDictItemsFromLS = (dictCode) => {
     let dictList = Vue.ls.get(DICT_DATA_KEY_PREFIX + dictCode)
     if (dictList) {
       this.dictDataCache[dictCode] = dictList
@@ -59,9 +50,9 @@ function DictPool () {
    * @param dictCode 字典标识
    * @returns {Promise<AxiosResponse<any>>}
    */
-  this.getDictDataFromServer = (dictCode) => {
-    return this.getDictDataMapFromServer([dictCode]).then(dictDataMap => {
-      return dictDataMap[dictCode]
+  this.getDictItemsFromServer = (dictCode) => {
+    return this.getDictItemsMapFromServer([dictCode]).then(dictItemsMap => {
+      return dictItemsMap[dictCode]
     })
   }
 
@@ -70,16 +61,17 @@ function DictPool () {
    * @param dictCodes Array 字典标识集合
    * @returns {Promise<AxiosResponse<any>>}
    */
-  this.getDictDataMapFromServer = (dictCodes) => {
-    return getDictDataAndHash(dictCodes).then(res => {
+  this.getDictItemsMapFromServer = (dictCodes) => {
+    return getDictData(dictCodes).then(res => {
       if (res.code === 200 && res.data) {
-        const dictDataAndHashes = res.data
-        let result = {}
-        dictDataAndHashes.forEach(item => {
-          this.cacheDictData(item.dictCode, item.hashCode, item.dictList)
-          result[item.dictCode] = item.dictList
+        let dictItemsMap = {}
+        res.data.forEach(dict => {
+          let dictCode = dict.dictCode
+          let dictItems = dict.dictItems
+          this.cacheDictData(dictCode, dict.hashCode, dictItems)
+          dictItemsMap[dictCode] = dictItems
         })
-        return result
+        return dictItemsMap
       }
     })
   }

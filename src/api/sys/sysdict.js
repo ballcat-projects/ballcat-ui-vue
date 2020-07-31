@@ -1,8 +1,8 @@
 import { axios } from '@/utils/request'
 
-export function getDictDataAndHash (dictCodes) {
+export function getDictData (dictCodes) {
   return axios({
-    url: '/sys/dict/data-hash?dictCodes=' + dictCodes.join(','),
+    url: '/sys/dict/data?dictCodes=' + dictCodes.join(','),
     method: 'get'
   })
 }

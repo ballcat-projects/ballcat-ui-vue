@@ -7,7 +7,7 @@ export default {
   },
   data() {
     return {
-      dictList: {},
+      dictItems: {},
       selectedValue: this.value
     }
   },
@@ -17,8 +17,8 @@ export default {
     }
   },
   created() {
-    this.DictPool.getDictData(this.dictCode).then(dictList => {
-      this.dictList = dictList
+    this.DictPool.getDictItems(this.dictCode).then(dictItems => {
+      this.dictItems = dictItems
     })
   },
   methods: {

@@ -54,7 +54,7 @@ export default {
   },
   created () {
     this.loading = true
-    this.DictPool.initDictData(this.dictCodes).then(() => {
+    this.DictPool.initDict(this.dictCodes).then(() => {
       !this.lazyLoad && this.loadData()
     }).finally(() => {
       this.loading = false

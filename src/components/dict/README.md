@@ -30,7 +30,7 @@
 
   ```javascript
   // 详细可以参考 dictMixin
-  this.DictPool.getDictData(this.dictCode).then(dictList => {
+  this.DictPool.getDictItems(this.dictCode).then(dictList => {
     this.dictList = dictList
   })
   ```
@@ -51,7 +51,7 @@
           dictCodes: []
       },
       created () {
-          this.DictPool.initDictData(this.dictCodes)
+          this.DictPool.initDict(this.dictCodes)
           !this.lazyLoad && this.loadData()
       },
       methods: {

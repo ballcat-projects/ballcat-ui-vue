@@ -1,5 +1,5 @@
 <template>
-  <span>{{dictObj[value]? dictObj[value]: value}}</span>
+  <span>{{dictItem? dictItem.name: value}}</span>
 </template>
 <script>
   export default {
@@ -11,12 +11,14 @@
     },
     data() {
       return {
-        dictObj: {}
+        dictItem: null,
       }
     },
     mounted() {
-      let dictList = this.DictPool.dictDataCache[this.dictCode]
-      dictList && (this.dictObj = this.DictPool.listToObj(dictList))
+      let dictData = this.DictPool.dictDataCache[this.dictCode]
+      if(dictData){
+        this.dictItem = dictData.find(dictItem => dictItem.value === this.value.toString())
+      }
     },
     methods: {}
   }

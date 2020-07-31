@@ -3,7 +3,7 @@
     :disabled="disabled"
     :value="selectedValue"
     @change="handleChange">
-    <a-radio v-for="dict in dictList" :value="Number(dict.value)">
+    <a-radio v-for="dict in dictItems" :value="Number(dict.value)">
       {{ dict.name }}
     </a-radio>
   </a-radio-group>

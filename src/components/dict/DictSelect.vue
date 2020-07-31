@@ -6,7 +6,7 @@
          :value="selectedValue"
          @change="handleChange">
         <a-select-option v-if="placeholderOption" value="">{{placeholder}}</a-select-option>
-        <a-select-option v-for="dict in dictList" :key="Number(dict.value)">
+        <a-select-option v-for="dict in dictItems" :key="Number(dict.value)">
             {{ dict.name }}
         </a-select-option>
       </a-select>
