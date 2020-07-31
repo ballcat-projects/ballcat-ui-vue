@@ -17,7 +17,7 @@ export default {
     }
   },
   created() {
-    this.DictPool.getDictList(this.dictCode).then(dictList => {
+    this.DictPool.getDictData(this.dictCode).then(dictList => {
       this.dictList = dictList
     })
   },

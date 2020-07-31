@@ -3,12 +3,11 @@ import { getDictDataAndHash, invalidDictHash } from '@/api/sys/sysdict'
 
 // 字典项hash列表的Key
 const DICT_HASH_KEY = 'dict-hashes'
-const DICT_DATA_KEY_PREFIX = 'dict-list-'
+const DICT_DATA_KEY_PREFIX = 'dict-data-'
 // 失效时间
 const DICT_TTL = 7 * 24 * 60 * 60 * 1000
 
-
-function DictPool() {
+function DictPool () {
   // 字典数据缓存
   this.dictDataCache = {}
 
@@ -16,16 +15,16 @@ function DictPool() {
    * 初始化字典
    * @param dictCodes Array
    */
-  this.initDictList = (dictCodes) => {
-    dictCodes.forEach(dictCode => {
-      if (!this.dictDataCache[dictCode] && !this.getDictDataFromLS(dictCode)){
-        this.getDictDataFromServer(dictCode).finally()
-      }
-    })
+  this.initDictData = (dictCodes) => {
+    // 不在缓存中且不在ls中才需要从服务端更新
+    const needInitDictCodes = dictCodes.filter(
+      dictCode => !this.dictDataCache[dictCode] && !this.getDictDataFromLS(dictCode)
+    )
+    return needInitDictCodes.length > 0 ? this.getDictDataMapFromServer(needInitDictCodes): Promise.resolve()
   }
 
   // 获取list
-  this.getDictList = (dictCode) => {
+  this.getDictData = (dictCode) => {
     if (!dictCode) {
       return Promise.resolve()
     }
@@ -33,22 +32,76 @@ function DictPool() {
     return dictList ? Promise.resolve(dictList) : this.getDictDataFromServer(dictCode)
   }
 
-  // 获取一个对象
-  this.getDictObj = (dictCode) => {
-    return this.getDictList(dictCode).then(dictList => {
-      if (dictList) {
-        return this.listToObj(dictList)
-      }
-    })
-  }
 
-  this.listToObj = (dictList) => {
+  this.listToObj = (dictData) => {
     let dictObj = {}
-    for (let dict of dictList) {
+    for (let dict of dictData) {
       dictObj[dict.value] = dict.name
     }
     return dictObj
   }
+
+  /**
+   * 从LocalStroge里面获取数据
+   * @param dictCode
+   * @returns {*}
+   */
+  this.getDictDataFromLS = (dictCode) => {
+    let dictList = Vue.ls.get(DICT_DATA_KEY_PREFIX + dictCode)
+    if (dictList) {
+      this.dictDataCache[dictCode] = dictList
+      return dictList
+    }
+  }
+
+  /**
+   * 从服务端获取指定字典数据缓存
+   * @param dictCode 字典标识
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+  this.getDictDataFromServer = (dictCode) => {
+    return this.getDictDataMapFromServer([dictCode]).then(dictDataMap => {
+      return dictDataMap[dictCode]
+    })
+  }
+
+  /**
+   * 从服务端获取字典数据
+   * @param dictCodes Array 字典标识集合
+   * @returns {Promise<AxiosResponse<any>>}
+   */
+  this.getDictDataMapFromServer = (dictCodes) => {
+    return getDictDataAndHash(dictCodes).then(res => {
+      if (res.code === 200 && res.data) {
+        const dictDataAndHashes = res.data
+        let result = {}
+        dictDataAndHashes.forEach(item => {
+          this.cacheDictData(item.dictCode, item.hashCode, item.dictList)
+          result[item.dictCode] = item.dictList
+        })
+        return result
+      }
+    })
+  }
+
+
+  /**
+   * 缓存字典数据
+   * @param dictCode 字典标识
+   * @param dictList 字典列表
+   * @param hashCode 哈希值
+   */
+  this.cacheDictData =  (dictCode, hashCode, dictList) => {
+    // 存储字典数据
+    this.dictDataCache[dictCode] = dictList
+    Vue.ls.set(DICT_DATA_KEY_PREFIX + dictCode, dictList, DICT_TTL)
+    // 存储字典项Hash
+    let hashes = Vue.ls.get(DICT_HASH_KEY)
+    let map = hashes ? JSON.parse(hashes) : {}
+    map[dictCode] = hashCode
+    Vue.ls.set(DICT_HASH_KEY, JSON.stringify(map))
+  }
+
 
   // 删除失效数据
   this.delInvalidDictData = () => {
@@ -72,42 +125,6 @@ function DictPool() {
     }
   }
 
-  /**
-   * 从LocalStroge里面获取数据
-   * @param dictCode
-   * @returns {*}
-   */
-  this.getDictDataFromLS = (dictCode) => {
-    let dictList = Vue.ls.get(DICT_DATA_KEY_PREFIX + dictCode)
-    if (dictList){
-      this.dictDataCache[dictCode] = dictList
-      return dictList
-    }
-  }
-
-  /**
-   * 从服务端获取字典数据缓存
-   * @param dictCode
-   * @returns {Promise<AxiosResponse<any>>}
-   */
-  this.getDictDataFromServer = (dictCode) => {
-    return getDictDataAndHash(dictCode).then(res => {
-      if (res.code === 200 && res.data) {
-        let dictDataAndHash = res.data
-        let hashCode = dictDataAndHash.hashCode
-        let dictList = dictDataAndHash.dictList
-        // 存储字典数据
-        this.dictDataCache[dictCode] = dictList
-        Vue.ls.set(DICT_DATA_KEY_PREFIX + dictCode, dictList, DICT_TTL)
-        // 存储字典项Hash
-        let hashes = Vue.ls.get(DICT_HASH_KEY)
-        let map = hashes ? JSON.parse(hashes) : {}
-        map[dictCode] = hashCode
-        Vue.ls.set(DICT_HASH_KEY, JSON.stringify(map))
-        return dictList
-      }
-    })
-  }
 
 }
 

@@ -53,11 +53,14 @@ export default {
     }
   },
   created () {
-    this.DictPool.initDictList(this.dictCodes)
-    !this.lazyLoad && this.loadData()
+    this.loading = true
+    this.DictPool.initDictData(this.dictCodes).then(() => {
+      !this.lazyLoad && this.loadData()
+    }).finally(() => {
+      this.loading = false
+    })
   },
   methods: {
-
     /**
      * 表格重新加载方法
      * 如果参数为 true, 则强制刷新到第一页
