@@ -23,11 +23,15 @@ export default {
   },
   methods: {
     handleChange(val) {
-      this.selectedValue = val
+      if (val.target) {
+        this.selectedValue = val.target.value
+      } else {
+        this.selectedValue = val
+      }
       // v-decorator 方式的表单值联动
-      this.$emit('change', val)
+      this.$emit('change', this.selectedValue)
       // v-model 方式的表单值联动
-      this.$emit('input', val)
+      this.$emit('input', this.selectedValue)
     }
   }
 }
