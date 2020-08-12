@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     handleChange (val) {
-      if (val.target) {
+      if (val && val.target) {
         this.selectedValue = val.target.value
       } else {
         this.selectedValue = val
