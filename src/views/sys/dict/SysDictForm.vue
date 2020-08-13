@@ -27,7 +27,7 @@
     <a-form-item label="数据类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
       <dict-radio-group
         placeholder="数据类型"
-        v-decorator="['type',decoratorOptions.type]"
+        v-decorator="['valueType',decoratorOptions.valueType]"
         dict-code="dict_type"
       />
     </a-form-item>
@@ -77,7 +77,7 @@ export default {
         editable: {
           initialValue: 1
         },
-        type: {
+        valueType: {
           initialValue: 1
         }
       }

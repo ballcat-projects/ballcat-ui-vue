@@ -35,14 +35,14 @@ export default {
     },
     getValByItem (dict) {
       let res = Number(dict.value)
-      if (dict.type) {
-        if (dict.type === 1) {
+      if (dict.valueType) {
+        if (dict.valueType === 1) {
           // 数字
           res = Number(dict.value)
-        } else if (dict.type === 2) {
+        } else if (dict.valueType === 2) {
           // 字符串
           res = String(dict.value)
-        } else if (dict.type === 3) {
+        } else if (dict.valueType === 3) {
           // 布尔
           res = Boolean(dict.value)
         }

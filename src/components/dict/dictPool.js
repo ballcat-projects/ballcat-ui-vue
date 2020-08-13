@@ -70,7 +70,7 @@ function DictPool () {
           let dictItems = []
           dict.dictItems.forEach(item => {
             // 存储数据类型
-            dictItems.push({ ...item, type: dict.type })
+            dictItems.push({ ...item, valueType: dict.valueType })
           })
           this.cacheDictData(dictCode, dict.hashCode, dictItems)
           dictItemsMap[dictCode] = dictItems
