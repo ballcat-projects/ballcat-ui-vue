@@ -20,7 +20,7 @@ function DictPool () {
     dictCodes = dictCodes.filter(
       dictCode => !this.dictDataCache[dictCode] && !this.getDictItemsFromLS(dictCode)
     )
-    return dictCodes.length > 0 ? this.getDictItemsMapFromServer(dictCodes): Promise.resolve()
+    return dictCodes.length > 0 ? this.getDictItemsMapFromServer(dictCodes) : Promise.resolve()
   }
 
   // 获取list
@@ -67,7 +67,11 @@ function DictPool () {
         let dictItemsMap = {}
         res.data.forEach(dict => {
           let dictCode = dict.dictCode
-          let dictItems = dict.dictItems
+          let dictItems = []
+          dict.dictItems.forEach(item => {
+            // 存储数据类型
+            dictItems.push({ ...item, valueType: dict.valueType })
+          })
           this.cacheDictData(dictCode, dict.hashCode, dictItems)
           dictItemsMap[dictCode] = dictItems
         })
@@ -76,14 +80,13 @@ function DictPool () {
     })
   }
 
-
   /**
    * 缓存字典数据
    * @param dictCode 字典标识
    * @param dictList 字典列表
    * @param hashCode 哈希值
    */
-  this.cacheDictData =  (dictCode, hashCode, dictList) => {
+  this.cacheDictData = (dictCode, hashCode, dictList) => {
     // 存储字典数据
     this.dictDataCache[dictCode] = dictList
     Vue.ls.set(DICT_DATA_KEY_PREFIX + dictCode, dictList, DICT_TTL)
@@ -93,7 +96,6 @@ function DictPool () {
     map[dictCode] = hashCode
     Vue.ls.set(DICT_HASH_KEY, JSON.stringify(map))
   }
-
 
   // 删除失效数据
   this.delInvalidDictData = () => {
@@ -117,21 +119,7 @@ function DictPool () {
     }
   }
 
-
 }
 
 export default new DictPool()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
