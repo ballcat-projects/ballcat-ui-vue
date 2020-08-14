@@ -28,7 +28,7 @@
       <dict-radio-group
         placeholder="数据类型"
         v-decorator="['valueType',decoratorOptions.valueType]"
-        dict-code="dict_type"
+        dict-code="dict_value_type"
       />
     </a-form-item>
 
@@ -66,7 +66,7 @@ export default {
   mixins: [FormPageMixin],
   data () {
     return {
-      dictCodes: ['dict_type'],
+      dictCodes: ['dict_value_type'],
       reqFunctions: {
         create: addObj,
         update: putObj
