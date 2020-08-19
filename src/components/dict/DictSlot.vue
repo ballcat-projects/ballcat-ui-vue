@@ -20,13 +20,21 @@ export default {
       dictItem: null
     }
   },
-  created () {
-    let dictData = this.DictPool.dictDataCache[this.dictCode]
-    if (dictData) {
-      this.dictItem = dictData.find(dictItem => this.getValByItem(dictItem) === this.value)
+  watch: {
+    value (val) {
+      this.changeShow(val)
     }
   },
+  created () {
+    this.changeShow(this.value)
+  },
   methods: {
+    changeShow (val) {
+      let dictData = this.DictPool.dictDataCache[this.dictCode]
+      if (dictData) {
+        this.dictItem = dictData.find(dictItem => this.getValByItem(dictItem) === val)
+      }
+    },
     getValByItem (dict) {
       let res = String(dict.value)
       if (dict.valueType) {

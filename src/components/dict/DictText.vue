@@ -5,7 +5,7 @@
 export default {
   name: 'DictText',
   props: {
-    value: [Number, String, Boolean],
+    value: [Number, String],
     dictCode: String,
     color: String
   },
@@ -14,13 +14,21 @@ export default {
       dictItem: null
     }
   },
-  mounted () {
-    let dictData = this.DictPool.dictDataCache[this.dictCode]
-    if (dictData) {
-      this.dictItem = dictData.find(dictItem => this.getValByItem(dictItem) === this.value)
+  watch: {
+    value (val) {
+      this.changeShow(val)
     }
   },
+  created () {
+    this.changeShow(this.value)
+  },
   methods: {
+    changeShow(val){
+      let dictData = this.DictPool.dictDataCache[this.dictCode]
+      if (dictData) {
+        this.dictItem = dictData.find(dictItem => this.getValByItem(dictItem) === val)
+      }
+    },
     getValByItem (dict) {
       let res = String(dict.value)
       if (dict.valueType) {
