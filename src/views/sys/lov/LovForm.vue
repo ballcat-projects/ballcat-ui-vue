@@ -14,7 +14,7 @@
         <a-button @click="backToPage(false)">取消</a-button>
       </div>
 
-      <a-divider v-if="current===2">单击预览按钮后，下方会生成预览的lov组件,修改配置后需要重新单击预览更新数据</a-divider>
+      <a-divider>单击预览按钮后，下方会生成预览的lov组件,修改配置后需要重新单击预览更新数据</a-divider>
       <lov :lazy="true" style="margin-bottom: 56px;" ref="lov_pre" keyword="lov_pre" v-model="lovVal"/>
     </a-form>
   </a-spin>
