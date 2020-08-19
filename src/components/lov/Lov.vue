@@ -1,17 +1,18 @@
 <template>
   <div>
     <a-input-group compact>
-      <a-input style="width: 70px" type="button" value="选择" @click="visible=true;reloadTable(true)">
-        <a-tooltip slot="prefix" title="手动修改的值300毫秒后才会生效">
-          <a-icon type="info-circle" style="color: rgba(0,0,0,.45)"/>
-        </a-tooltip>
-      </a-input>
-      <a-input style="width: 50px" type="button" value="清空" @click="cleanAll"/>
-      <a-input style="width: calc(100% - 120px);" class="lov-data" v-if="!multiple && retFieldDataType===1" v-model="selectValue"
+      <a-button :disabled="disabled" title="单击以选择数据" @click="visible=true;reloadTable()">
+        <a-icon type="select"/>
+      </a-button>
+      <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
+        <a-icon style="color: red;" type="close-circle"/>
+      </a-button>
+
+      <a-input :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===1" v-model="selectValue"
                @change="changeValue"/>
-      <a-input-number style="width: calc(100% - 120px);" class="lov-data" v-if="!multiple && retFieldDataType===2" v-model="selectValue"
+      <a-input-number :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===2" v-model="selectValue"
                       @change="changeValue"/>
-      <a-select style="width: calc(100% - 120px);" class="lov-data" mode="tags" v-if="multiple" v-model="selectValue" @deselect="deselect"
+      <a-select :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple" v-model="selectValue" @deselect="deselect"
                 @change="changeValue"/>
     </a-input-group>
     <a-modal class="lov-model" width="800px" @cancel="visible=false" @ok="selectData" :visible="visible" :confirmLoading="loading"
@@ -77,6 +78,12 @@ export default {
       default: function () {
         return false
       }
+    },
+    disabled: {
+      type: Boolean,
+      default:function (){
+        return false
+      }
     }
   },
   watch: {
@@ -115,7 +122,7 @@ export default {
         this.emitting = true
         setTimeout(() => {
           this.emit(this.selectValue)
-          this.emitting=false
+          this.emitting = false
           // 300 毫秒后更新
         }, 300)
       }
@@ -193,15 +200,18 @@ export default {
         if (this.dictCodes.length > 0) {
           this.DictPool.initDict(this.dictCodes).then(() => {
           }).finally(() => {
-            this.reloadTable()
+            // this.reloadTable()
           })
         } else {
-          this.reloadTable()
+          // this.reloadTable()
         }
       })
     },
     getCacheKey () {
-      return `lov_${this.keyword}`
+      return this.getCacheKeyByKeyword(this.keyword)
+    },
+    getCacheKeyByKeyword (keyword) {
+      return `lov_${keyword}`
     },
     onSelectAll (selected, selectedRows, changeRows) {
       changeRows.forEach(row => {

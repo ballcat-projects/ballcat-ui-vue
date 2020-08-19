@@ -1,28 +1,21 @@
 <template>
   <a-spin :spinning="submitLoading" size="large">
     <a-form @submit="handleSubmit" :form="form" class="form">
-
-      <a-steps class="steps" :current="current">
-        <a-step title="配置基本信息"/>
-        <a-step title="配置表格信息"/>
-        <a-step title="配置搜索信息"/>
-      </a-steps>
-
-      <step1 v-show="current===0" :formAction="formAction" :get-form="()=>form"/>
-      <step2 v-show="current===1" :formAction="formAction" :get-form="()=>form" v-model="bodyList"/>
-      <step3 v-show="current===2" :formAction="formAction" :get-form="()=>form" v-model="searchList"/>
+      <step1 :formAction="formAction" :get-form="()=>form"/>
+      <a-divider>表格列配置</a-divider>
+      <step2 :formAction="formAction" :get-form="()=>form" v-model="bodyList"/>
+      <a-divider>搜索组件配置</a-divider>
+      <step3 :formAction="formAction" :get-form="()=>form" v-model="searchList"/>
 
       <div class="table-operator" style="text-align: center;">
-        <a-button :loading="submitLoading" v-show="current>0" @click="previous">上一步</a-button>
-        <a-button :loading="submitLoading" v-show="current<2" @click="next">下一步</a-button>
-        <a-button :loading="submitLoading" v-show="current===2" @click="preview">预览</a-button>
+        <a-button :loading="submitLoading" @click="preview">预览</a-button>
         <a-divider type="vertical"/>
-        <a-button style="margin-left: 8px" v-show="current===2" htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
+        <a-button style="margin-left: 8px" htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
         <a-button @click="backToPage(false)">取消</a-button>
       </div>
 
       <a-divider v-if="current===2">单击预览按钮后，下方会生成预览的lov组件,修改配置后需要重新单击预览更新数据</a-divider>
-      <lov v-if="current===2" :lazy="true" style="margin-bottom: 56px;" ref="lov_pre" keyword="lov_pre" v-model="lovVal"/>
+      <lov :lazy="true" style="margin-bottom: 56px;" ref="lov_pre" keyword="lov_pre" v-model="lovVal"/>
     </a-form>
   </a-spin>
 </template>
@@ -47,7 +40,6 @@ export default {
         create: create,
         update: update
       },
-      current: 0,
       // 校验配置
       decoratorOptions: {},
       bodyList: [],
@@ -67,22 +59,15 @@ export default {
           pre.load()
         } else {
           this.$message.error(`您有${Object.keys(err).length}个内容未通过校验!请检查并修改后重新预览!`)
-          this.current = 0
         }
         this.submitLoading = false
       })
     },
-    previous () {
-      this.current -= 1
-    },
-    next () {
-      this.current += 1
-    },
     echoDataProcess (data) {
       this.submitLoading = true
       getData(data.keyword).then(res => {
-        this.bodyList =res.data.bodyList;
-        this.searchList =res.data.searchList;
+        this.bodyList = res.data.bodyList
+        this.searchList = res.data.searchList
         this.submitLoading = false
       })
     },
@@ -93,6 +78,12 @@ export default {
       data.bodyList = this.bodyList
       data.searchList = this.searchList
       return data
+    },
+    // 提交成功
+    submitSuccess (res) {
+      // 更新成功、删除缓存
+      Vue.ls.remove(this.$refs.lov_pre.getCacheKeyByKeyword(this.form.getFieldValue('keyword')))
+      this.backToPage(true)
     }
   }
 }
