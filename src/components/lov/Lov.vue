@@ -10,9 +10,11 @@
 
       <a-input :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===1" v-model="selectValue"
                @change="changeValue"/>
-      <a-input-number :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===2" v-model="selectValue"
+      <a-input-number :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===2"
+                      v-model="selectValue"
                       @change="changeValue"/>
-      <a-select :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple" v-model="selectValue" @deselect="deselect"
+      <a-select :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple" v-model="selectValue"
+                @deselect="deselect"
                 @change="changeValue"/>
     </a-input-group>
     <a-modal class="lov-model" width="800px" @cancel="visible=false" @ok="selectData" :visible="visible" :confirmLoading="loading"
@@ -51,9 +53,9 @@
         :pagination="pagination"
         :loading="loading"
         :rowSelection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
+        :customRow="customRow"
         @change="handleTableChange"
-      >
-      </a-table>
+      />
     </a-modal>
   </div>
 </template>
@@ -81,7 +83,7 @@ export default {
     },
     disabled: {
       type: Boolean,
-      default:function (){
+      default: function () {
         return false
       }
     }
@@ -93,6 +95,42 @@ export default {
   },
   data () {
     return {
+      customRow: (record) => {
+        return {
+          on: {
+            click: (event) => {
+              console.log(this.selectedRowKeys)
+              // 是否已选中
+              const index = this.selectedRowKeys.indexOf(record[this.rowKey])
+              if (index === -1) {
+                // 单击未选中的列, 插入数据
+                if (this.multiple){
+                  // 多选
+                  this.selectedRowKeys.push(record[this.rowKey])
+                  this.selectedRows.push(record)
+                  this.selectValue.push(record[this.retField])
+                }else {
+                  // 单选
+                  this.selectedRowKeys = [].concat(record[this.rowKey])
+                  this.selectedRows = [].concat(record)
+                  this.selectValue = record[this.retField]
+                }
+              } else {
+                // 单击已选中的列, 删除选中数据
+                this.selectedRowKeys.splice(index, 1)
+                this.selectedRows.splice(index, 1)
+                if (this.multiple) {
+                  // 多选
+                  this.selectValue.splice(this.selectValue.indexOf(record[this.retField]), 1)
+                }else {
+                  // 单选
+                  this.selectValue = undefined
+                }
+              }
+            }
+          }
+        }
+      },
       lazyLoad: true,
       visible: false,
       columns: [],
