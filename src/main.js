@@ -33,7 +33,9 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
 // 字典注册
 import DictPlugin  from '@/components/dict/dictPlugin'
 Vue.use(DictPlugin)
-
+// lov注册
+import LovPlugin from '@/components/lov/lovPlugin'
+Vue.use(LovPlugin)
 
 new Vue({
   router,

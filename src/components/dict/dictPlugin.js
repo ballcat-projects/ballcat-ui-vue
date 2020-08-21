@@ -8,7 +8,7 @@ import DictSelect from '@/components/dict/DictSelect'
 import DictText from '@/components/dict/DictText'
 
 export default {
-  install: function(Vue) {
+  install: function (Vue) {
     // 字典池挂载到Vue原型，方便全局公用，当作二级缓存
     Vue.prototype.DictPool = DictPool
     // 字典组件
