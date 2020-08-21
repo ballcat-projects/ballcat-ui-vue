@@ -108,24 +108,15 @@ export default {
                   // 多选
                   this.selectedRowKeys.push(record[this.rowKey])
                   this.selectedRows.push(record)
-                  this.selectValue.push(record[this.retField])
                 }else {
                   // 单选
                   this.selectedRowKeys = [].concat(record[this.rowKey])
                   this.selectedRows = [].concat(record)
-                  this.selectValue = record[this.retField]
                 }
               } else {
                 // 单击已选中的列, 删除选中数据
                 this.selectedRowKeys.splice(index, 1)
                 this.selectedRows.splice(index, 1)
-                if (this.multiple) {
-                  // 多选
-                  this.selectValue.splice(this.selectValue.indexOf(record[this.retField]), 1)
-                }else {
-                  // 单选
-                  this.selectValue = undefined
-                }
               }
             }
           }
