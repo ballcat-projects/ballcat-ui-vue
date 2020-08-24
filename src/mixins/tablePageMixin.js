@@ -52,7 +52,7 @@ export default {
       dictCodes: []
     }
   },
-  created () {
+  mounted () {
     this.loading = true
     this.DictPool.initDict(this.dictCodes).then(() => {
       !this.lazyLoad && this.loadData()
