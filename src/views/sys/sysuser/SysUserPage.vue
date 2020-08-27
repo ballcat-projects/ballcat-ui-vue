@@ -55,17 +55,19 @@
       <div class="table-operator">
         <a-button v-has="'sys:sysuser:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
         <a-dropdown v-has="'sys:sysuser:edit'" v-if="selectedRowKeys.length > 0">
-          <a-menu slot="overlay" @click="handleUpdateStatus">
-            <a-menu-item key="1">
-              <a-icon type="delete"/>
-              开启
-            </a-menu-item>
-            <!-- lock | unlock -->
-            <a-menu-item key="0">
-              <a-icon type="lock"/>
-              锁定
-            </a-menu-item>
-          </a-menu>
+          <template #overlay>
+            <a-menu @click="handleUpdateStatus">
+              <a-menu-item key="1">
+                <a-icon type="delete"/>
+                开启
+              </a-menu-item>
+              <!-- lock | unlock -->
+              <a-menu-item key="0">
+                <a-icon type="lock"/>
+                锁定
+              </a-menu-item>
+            </a-menu>
+          </template>
           <a-button style="margin-left: 8px">
             批量操作
             <a-icon type="down"/>
@@ -76,7 +78,7 @@
 
       <div class="table-wrapper">
         <a-alert :showIcon="true" style="margin-bottom: 16px">
-          <template slot="message">
+          <template #message>
             <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{{selectedRows.length}}</a></span>
             <a style="margin-left: 24px" v-show='selectedRows.length > 0' @click="onClearSelected">清空</a>
           </template>
@@ -96,19 +98,18 @@
           :rowSelection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
         >
           <!--数据表格-->
-          <span slot="status-slot" slot-scope="text">
+          <template #status-slot="text">
             <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
-          </span>
-          <span slot="gender-slot" slot-scope="text">
+          </template>
+          <template #gender-slot="text">
             <dict-text dict-code="gender" :value="text"></dict-text>
-          </span>
-          <span slot="avatar-slot" slot-scope="text, record">
+          </template>
+          <template #avatar-slot="text, record">
             <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
                       @click="updateAvatar(record.userId)"/>
-          </span>
+          </template>
 
-          <span slot="action-slot" slot-scope="text, record">
-            <template>
+          <template #action-slot="text, record">
               <a v-has="'sys:sysuser:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
               <a v-has="'sys:sysuser:grant'" @click="handleGrant(record)">授权</a>
@@ -117,21 +118,22 @@
                 <a class="ant-dropdown-link" href="#">
                   操作
                 </a>
-                <a-menu slot="overlay">
-                  <a-menu-item v-has="'sys:sysuser:pass'">
+                <template #overlay>
+                  <a-menu>
+                    <a-menu-item v-has="'sys:sysuser:pass'">
                       <a @click="changePass(record)">改密</a>
-                  </a-menu-item>
-                  <a-menu-item v-has="'sys:sysuser:del'">
-                    <a-popconfirm
-                      title="确认要删除吗？"
-                      @confirm="() => handleDel(record)">
-                      <a href="javascript:;">删除</a>
-                    </a-popconfirm>
-                  </a-menu-item>
-                </a-menu>
+                    </a-menu-item>
+                    <a-menu-item v-has="'sys:sysuser:del'">
+                      <a-popconfirm
+                        title="确认要删除吗？"
+                        @confirm="() => handleDel(record)">
+                        <a href="javascript:;">删除</a>
+                      </a-popconfirm>
+                    </a-menu-item>
+                  </a-menu>
+                </template>
               </a-dropdown>
-            </template>
-          </span>
+          </template>
         </a-table>
       </div>
     </a-card>

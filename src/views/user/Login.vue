@@ -24,7 +24,9 @@
                 {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
             >
-              <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <template #prefix>
+                <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              </template>
             </a-input>
           </a-form-item>
 
@@ -39,14 +41,16 @@
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
               ]"
             >
-              <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <template #prefix>
+                <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              </template>
             </a-input>
           </a-form-item>
         </a-tab-pane>
         <a-tab-pane key="tab2" tab="手机号登录">
           <a-form-item>
             <a-input size="large" type="text" placeholder="手机号" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
-              <a-icon slot="prefix" type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <template #prefix><a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/></template>
             </a-input>
           </a-form-item>
 
@@ -54,7 +58,7 @@
             <a-col class="gutter-row" :span="16">
               <a-form-item>
                 <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
-                  <a-icon slot="prefix" type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                  <template #prefix><a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/></template>
                 </a-input>
               </a-form-item>
             </a-col>

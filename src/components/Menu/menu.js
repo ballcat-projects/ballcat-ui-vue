@@ -129,10 +129,12 @@ export default {
       }
       return (
         <SubMenu {...{ key: menu.path }}>
-          <span slot="title">
-            {this.renderIcon(menu.meta.icon)}
-            <span>{menu.meta.title}</span>
-          </span>
+          <template slot="title">
+            <span>
+              {this.renderIcon(menu.meta.icon)}
+              <span>{menu.meta.title}</span>
+            </span>
+          </template>
           {itemArr}
         </SubMenu>
       )

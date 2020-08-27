@@ -42,21 +42,21 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <span slot="type-slot" slot-scope="text">
+          <template #type-slot="text">
             <dict-slot dict-code="operation_type" :value="text">
             </dict-slot>
-          </span>
-          <span slot="status-slot" slot-scope="text">
+          </template>
+          <template #status-slot="text">
             <dict-slot dict-code="log_status" :value="text"
                        :colors="{1: 'green', 0: 'red'}">
             </dict-slot>
-          </span>
-          <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
-            <p>params:</p>
-            <pre><div class="wordwrap" v-html="record.params"></div></pre>
-            <p>userAgent:</p>
-            {{record.userAgent}}}
-          </span>
+          </template>
+          <template #expandedRowRender="record">
+              <p>params:</p>
+              <pre><div class="wordwrap" v-html="record.params"></div></pre>
+              <p>userAgent:</p>
+              {{record.userAgent}}}
+          </template>
         </a-table>
       </div>
     </a-card>

@@ -40,13 +40,13 @@
           :loading ="loading"
           @change="handleTableChange"
         >
-          <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
-            <p>reqParams:</p>
-            <pre><div class="wordwrap" v-html="record.reqParams"></div></pre>
-            <p>reqBody:</p>
-            <pre><div class="wordwrap" v-html="record.reqBody"></div></pre>
-            <p>userAgent:</p>{{record.userAgent}}}
-          </span>
+          <template #expandedRowRender="record">
+              <p>reqParams:</p>
+              <pre><div class="wordwrap" v-html="record.reqParams"></div></pre>
+              <p>reqBody:</p>
+              <pre><div class="wordwrap" v-html="record.reqBody"></div></pre>
+              <p>userAgent:</p>{{record.userAgent}}}
+          </template>
         </a-table>
       </div>
     </a-card>

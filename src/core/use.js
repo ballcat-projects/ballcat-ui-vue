@@ -14,7 +14,7 @@ import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 
 // 权限控制
-import {has, role, plugin} from '../utils/authorize'
+import {has, role, plugin} from '@/utils/authorize'
 Vue.use(has)
 Vue.use(role)
 Vue.use(plugin)

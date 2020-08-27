@@ -44,7 +44,7 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="action-slot" slot-scope="text, record">
+          <template #action-slot="text, record">
             <a v-has="'sys:lov:edit'" @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical"/>
             <a-popconfirm v-has="'sys:lov:del'"

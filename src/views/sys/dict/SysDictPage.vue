@@ -52,12 +52,11 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <span slot="type-slot" slot-scope="text">
+          <template #type-slot="text">
             <dict-slot dict-code="dict_property"  :colors="{0: 'orange', 1:'green'}" :value="text"/>
-          </span>
+          </template>
 
-          <span slot="action-slot" slot-scope="text, record">
-            <template>
+          <template #action-slot="text, record">
               <a v-has="'sys:dict:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
               <a-popconfirm v-has="'sys:dict:del'"
@@ -67,8 +66,7 @@
               </a-popconfirm>
               <a-divider type="vertical"/>
               <a @click="handleShowItem(record)">字典项</a>
-            </template>
-          </span>
+          </template>
         </a-table>
       </div>
     </a-card>

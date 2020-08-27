@@ -15,8 +15,8 @@
                 <a-input v-model="queryParam.code" placeholder=""/>
               </a-form-item>
             </a-col>
-           <!-- <template v-if="advanced">
-            </template>-->
+            <!-- <template v-if="advanced">
+             </template>-->
             <a-col :md="!advanced && 8 || 24" :sm="24">
               <span class="table-page-search-submitButtons"
                     :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
@@ -46,35 +46,33 @@
           :columns="columns"
           :dataSource="dataSource"
           :pagination="pagination"
-          :loading ="loading"
+          :loading="loading"
           @change="handleTableChange"
         >
-           <span slot="type-slot" slot-scope="text">
-            <dict-slot dict-code="role_type"  :colors="{1:'orange', 2: 'green'}" :value="text"/>
-          </span>
-          <span slot="action-slot" slot-scope="text, record">
-            <template>
+          <template #type-slot="text">
+            <dict-slot dict-code="role_type" :colors="{1:'orange', 2: 'green'}" :value="text"/>
+          </template>
+          <template #action-slot="text, record">
               <a v-has="'sys:sysrole:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
               <a v-has="'sys:sysrole:grant'" @click="handleGrant(record)">授权</a>
               <a-divider type="vertical"/>
               <a-popconfirm v-has="'sys:sysrole:del'"
-                title="确认要删除吗？"
-                @confirm="() => handleDel(record)">
+                            title="确认要删除吗？"
+                            @confirm="() => handleDel(record)">
                 <a href="javascript:;">删除</a>
               </a-popconfirm>
-            </template>
-          </span>
+          </template>
         </a-table>
       </div>
     </a-card>
 
     <!--表单页面-->
     <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page  ref="formPage" @backToPage="backToPage"></form-page>
+      <form-page ref="formPage" @backToPage="backToPage"></form-page>
     </a-card>
 
-    <role-grant-drawer ref="roleGrantDrawer" ></role-grant-drawer>
+    <role-grant-drawer ref="roleGrantDrawer"></role-grant-drawer>
 
   </div>
 </template>
@@ -100,15 +98,15 @@ export default {
       columns: [
         {
           title: '#',
-          dataIndex: 'id',
+          dataIndex: 'id'
         },
         {
           title: '角色',
-          dataIndex: 'name',
+          dataIndex: 'name'
         },
         {
           title: '标识',
-          dataIndex: 'code',
+          dataIndex: 'code'
         },
         {
           title: '角色类型',
@@ -117,7 +115,7 @@ export default {
         },
         {
           title: '备注',
-          dataIndex: 'note',
+          dataIndex: 'note'
         },
         {
           title: '创建时间',

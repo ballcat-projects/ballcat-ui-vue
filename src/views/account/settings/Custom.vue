@@ -47,8 +47,8 @@ export default {
       <AList itemLayout="horizontal">
         <AListItem>
           <Meta>
-            <a slot="title">风格配色</a>
-            <span slot="description">
+            <template v-slot:title><a>风格配色</a></template>
+            <span v-slot:description>
                 整体风格配色设置
             </span>
           </Meta>
@@ -58,8 +58,8 @@ export default {
         </AListItem>
         <AListItem>
           <Meta>
-            <a slot="title">主题色</a>
-            <span slot="description">
+            <a v-slot:title>主题色</a>
+            <span v-slot:description>
                 页面风格配色： <a domPropsInnerHTML={ this.colorFilter(this.primaryColor) }/>
             </span>
           </Meta>

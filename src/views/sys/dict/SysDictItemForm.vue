@@ -29,12 +29,14 @@
 
     <a-form-item :labelCol=labelCol
                  :wrapperCol=wrapperCol>
-       <span slot="label">
+      <template #label>
+        <span >
         排序
         <a-tooltip title="升序，数值越小优先级越高">
           <a-icon type="exclamation-circle"/>
         </a-tooltip>
       </span>
+      </template>
       <a-input-number placeholder="排序（升序）"
                       v-decorator="['sort', {initialValue: 1}]"
                       :min=0

@@ -128,11 +128,11 @@
               label="菜单图标">
               <a-input placeholder="点击右侧按钮选择图标" v-decorator="['icon']"
                        :disabled="readOnly">
-                <a-icon slot="addonAfter" type="setting" @click="selectIcons"/>
+                <template #addonAfter>
+                  <a-icon type="setting" @click="selectIcons"/>
+                </template>
               </a-input>
             </a-form-item>
-
-
           </div>
 
           <a-form-item
