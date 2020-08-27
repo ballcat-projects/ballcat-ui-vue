@@ -6,7 +6,7 @@ export default {
       // 数据数组
       dataSource: [],
       // 数据加载动画
-      loading: false,
+      loading: true,
       // 分页器设置
       pagination: {
         total: 0,
@@ -53,11 +53,12 @@ export default {
     }
   },
   created () {
-    this.loading = true
     this.DictPool.initDict(this.dictCodes).then(() => {
       !this.lazyLoad && this.loadData()
     }).finally(() => {
-      this.loading = false
+      if(this.lazyLoad){
+        this.loading = false
+      }
     })
   },
   methods: {
