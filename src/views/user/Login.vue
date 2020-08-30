@@ -142,7 +142,7 @@ export default {
   created () {
   },
   methods: {
-    ...mapActions(['Login', 'Logout']),
+    ...mapActions(['Login', 'Logout', 'checkDictStatus']),
     // handler
     handleUsernameOrEmail (rule, value, callback) {
       const { state } = this
@@ -205,7 +205,8 @@ export default {
     },
     loginSuccess (res) {
       // 校验并删除过期字典数据
-      this.DictPool.delInvalidDictData()
+      this.checkDictStatus()
+      // this.DictPool.delInvalidDictData()
       this.$router.push({ name: '/' }, () => {
         this.$notification.success({
           message: '欢迎',

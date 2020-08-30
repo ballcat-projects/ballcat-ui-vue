@@ -1,9 +1,12 @@
 <template>
-  <a-tag :color="colors[value] || uniformColor">{{ dictItem ? dictItem.name : value }}</a-tag>
+  <a-tag :color="colors[value] || uniformColor">{{ showText }}</a-tag>
 </template>
 <script>
+import dictItemMixin from '@/components/dict/dictItemMixin'
+
 export default {
   name: 'DictSlot',
+  mixins: [dictItemMixin],
   props: {
     value: [Number, String, Boolean],
     dictCode: String,
@@ -16,42 +19,19 @@ export default {
     uniformColor: String
   },
   data () {
-    return {
-      dictItem: null
-    }
+    return {}
   },
-  watch: {
-    value (val) {
-      this.changeShow(val)
-    }
-  },
-  created () {
-    this.changeShow(this.value)
-  },
-  methods: {
-    changeShow (val) {
-      let dictData = this.DictPool.dictDataCache[this.dictCode]
-      if (dictData) {
-        this.dictItem = dictData.find(dictItem => this.getValByItem(dictItem) === val)
+  watch: {},
+  computed: {
+    showText() {
+      if (this.dictItems.length === 0) {
+        return this.value;
       }
-    },
-    getValByItem (dict) {
-      let res = String(dict.value)
-      if (dict.valueType) {
-        if (dict.valueType === 1) {
-          // 数字
-          res = Number(dict.value)
-        } else if (dict.valueType === 2) {
-          // 字符串
-          res = String(dict.value)
-        } else if (dict.valueType === 3) {
-          // 布尔
-          res = Boolean(dict.value)
-        }
-      }
-      // 如果没有type， 按 String 处理
-      return res
+      const item = this.dictItems.find(dictItem => this.getValByItem(dictItem) === this.value);
+      return (item && item.name) || this.value;
     }
-  }
+  },
+  created () {},
+  methods: {}
 }
 </script>

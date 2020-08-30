@@ -7,7 +7,6 @@ export default {
   },
   data () {
     return {
-      dictItems: {},
       selectedValue: this.value
     }
   },
@@ -16,11 +15,7 @@ export default {
       this.selectedValue = this.value
     }
   },
-  created () {
-    this.DictPool.getDictItems(this.dictCode).then(dictItems => {
-      this.dictItems = dictItems
-    })
-  },
+  created () {},
   methods: {
     handleChange (val) {
       if (val && val.target) {
@@ -32,23 +27,6 @@ export default {
       this.$emit('change', this.selectedValue)
       // v-model 方式的表单值联动
       this.$emit('input', this.selectedValue)
-    },
-    getValByItem (dict) {
-      let res = Number(dict.value)
-      if (dict.valueType) {
-        if (dict.valueType === 1) {
-          // 数字
-          res = Number(dict.value)
-        } else if (dict.valueType === 2) {
-          // 字符串
-          res = String(dict.value)
-        } else if (dict.valueType === 3) {
-          // 布尔
-          res = Boolean(dict.value)
-        }
-      }
-      // 如果没有type， 按number 处理
-      return res
     }
   }
 }

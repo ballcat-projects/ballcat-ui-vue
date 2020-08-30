@@ -14,10 +14,11 @@
 </template>
 <script>
 import DictMixin from '@/components/dict/dictMixin'
+import dictItemMixin from '@/components/dict/dictItemMixin'
 
 export default {
   name: 'DictSelect',
-  mixins: [DictMixin],
+  mixins: [DictMixin, dictItemMixin],
   props: {
     placeholder: String,
     placeholderOption: {

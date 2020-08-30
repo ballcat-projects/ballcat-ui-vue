@@ -1,7 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
-const url = 'http://ballcat-admin:8080'
+const url = 'http://preview.ballcat.cn'
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -96,14 +96,22 @@ const vueConfig = {
     port: 8000,
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
+      '^/api/sys1': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          '^/api/sys1': '/api',
+        }
+      },
       '^/api': {
         target: url,
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          '^/api': '/'
+          '^/api': '/api',
         }
-      }
+      },
     }
   },
 
