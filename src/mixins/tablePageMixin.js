@@ -1,11 +1,4 @@
-import { mapState, mapActions } from 'vuex';
-
 export default {
-  computed: {
-    ...mapState({
-      dictDataCache: state => state.dict.dictDataCache
-    })
-  },
   data () {
     return {
       // 主键 默认id
@@ -60,11 +53,6 @@ export default {
     }
   },
   created () {
-    // if (!this.dictDataCache[this.dictCode]) {
-    //   console.log(12323, `21321312321312`);
-    //   this.getDictData([this.dictCode]);
-    // }
-    // !this.dictDataCache[this.dictCode] || this.getDictData([this.dictCode]);
     this.loadData();
     // this.DictPool.initDict(this.dictCodes).then(() => {
     //   !this.lazyLoad && this.loadData()
@@ -75,7 +63,6 @@ export default {
     // })
   },
   methods: {
-    ...mapActions(['getDictData']),
     /**
      * 表格重新加载方法
      * 如果参数为 true, 则强制刷新到第一页
