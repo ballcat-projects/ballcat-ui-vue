@@ -6,7 +6,7 @@ export default {
       // 数据数组
       dataSource: [],
       // 数据加载动画
-      loading: true,
+      loading: false,
       // 分页器设置
       pagination: {
         total: 0,
@@ -53,14 +53,7 @@ export default {
     }
   },
   created () {
-    this.loadData();
-    // this.DictPool.initDict(this.dictCodes).then(() => {
-    //   !this.lazyLoad && this.loadData()
-    // }).finally(() => {
-    //   if(this.lazyLoad){
-    //     this.loading = false
-    //   }
-    // })
+    !this.lazyLoad && this.loadData()
   },
   methods: {
     /**
@@ -139,7 +132,6 @@ export default {
       this.selectedRows = []
     },
 
-
     // 删除
     handleDel (record) {
       this.delObj(record[this.rowKey]).then(res => {
@@ -182,7 +174,7 @@ export default {
       this.$nextTick(function () {
         this.$refs.formPage.update(record)
       })
-    },
+    }
   }
 
 }
