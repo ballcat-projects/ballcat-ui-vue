@@ -123,9 +123,7 @@ export default {
           width: '150px',
           sorter: true
         }
-      ],
-
-      dictCodes: ['log_status', 'operation_type']
+      ]
     }
   },
   methods: {}

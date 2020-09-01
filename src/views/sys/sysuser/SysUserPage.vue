@@ -257,9 +257,7 @@ export default {
       //密码模态框 初始化标识
       passInited: false,
       // 正在修改头像的用户Id
-      avatarUserId: null,
-
-      dictCodes: ['gender']
+      avatarUserId: null
     }
   },
   computed: {

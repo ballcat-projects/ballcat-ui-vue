@@ -225,15 +225,6 @@ export default {
 
         // 复制传入参数
         this.copyValue()
-        // 加载dict数据
-        if (this.dictCodes.length > 0) {
-          this.DictPool.initDict(this.dictCodes).then(() => {
-          }).finally(() => {
-            // this.reloadTable()
-          })
-        } else {
-          // this.reloadTable()
-        }
       })
     },
     getCacheKey () {

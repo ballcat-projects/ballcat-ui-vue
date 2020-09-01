@@ -66,7 +66,6 @@ export default {
   mixins: [FormPageMixin],
   data () {
     return {
-      dictCodes: ['dict_value_type'],
       reqFunctions: {
         create: addObj,
         update: putObj

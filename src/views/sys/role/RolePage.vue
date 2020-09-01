@@ -135,8 +135,7 @@ export default {
           width: '150px',
           scopedSlots: { customRender: 'action-slot' }
         }
-      ],
-      dictCodes: ['role_type']
+      ]
     }
   },
   methods: {

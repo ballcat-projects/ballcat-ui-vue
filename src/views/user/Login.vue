@@ -206,7 +206,6 @@ export default {
     loginSuccess (res) {
       // 校验并删除过期字典数据
       this.checkDictStatus()
-      // this.DictPool.delInvalidDictData()
       this.$router.push({ name: '/' }, () => {
         this.$notification.success({
           message: '欢迎',

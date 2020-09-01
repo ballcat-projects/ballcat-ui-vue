@@ -46,10 +46,7 @@ export default {
       // 已选中的数据主键集合
       selectedRowKeys: [],
       // 延迟加载，created时不主动加载数据
-      lazyLoad: false,
-
-      // 需要加载的 dictSlot数据
-      dictCodes: []
+      lazyLoad: false
     }
   },
   created () {
