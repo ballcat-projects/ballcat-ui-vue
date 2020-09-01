@@ -14,7 +14,11 @@ export default {
       return this.dictDataCache[this.dictCode];
     }
   },
-  created () {},
+  created () {
+    if (!this.dictDataCache[this.dictCode]) {
+      this.requestData();
+    }
+  },
   methods: {
     requestData() {
       this.getDictData([this.dictCode]);
