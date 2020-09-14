@@ -15,14 +15,11 @@ const user = {
   },
 
   mutations: {
-    [SET_DICT_CODE](state, dictCodeInfo) {
-      const { dictCode, dictList } = dictCodeInfo;
-      state.dictDataCache = { ...state.dictDataCache, [dictCode]: dictList };
+    [SET_DICT_CODE](state, { dictCode, dictList }) {
+      Vue.set(state.dictDataCache, dictCode, dictList)
     },
     [DELETE_INVALID_DICT](state, dictCode) {
-      const obj = state.dictDataCache;
-      delete obj[dictCode];
-      state.dictDataCache = { ...obj };
+      Vue.delete(state.dictDataCache, dictCode)
     },
     [SET_DICT_REQUEST_CACHE](state, dictCode) {
       state.dictRequestCache[dictCode] = true;
