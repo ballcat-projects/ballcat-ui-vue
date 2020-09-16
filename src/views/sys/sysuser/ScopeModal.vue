@@ -7,17 +7,11 @@
     :confirmLoading="confirmLoading"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-        <a-form-item
-          label="用户名"
-          :labelCol="labelCol" :wrapperCol="wrapperCol">
-          <a-input
-            v-model="username"
-            disabled
-            placeholder="用户名"/>
+      <a-form :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <a-form-item label="用户名">
+          <a-input v-model="username" disabled placeholder="用户名"/>
         </a-form-item>
-        <a-form-item label="角色"
-                     :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <a-form-item label="角色">
           <a-select mode="multiple"
                     style="width: 100%"
                     placeholder="无角色"

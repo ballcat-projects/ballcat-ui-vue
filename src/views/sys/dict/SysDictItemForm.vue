@@ -59,7 +59,7 @@
         <span>{{ displayData.updateTime }}</span>
       </a-form-item>
     </div>
-    <a-form-item :wrapperCol="{offset: 4 }">
+    <a-form-item :wrapperCol="{offset: 7 }">
       <a-button htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
       <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
     </a-form-item>
@@ -89,9 +89,6 @@ export default {
 
       // 校验配置
       decoratorOptions: {},
-
-      labelCol: { lg: { span: 4 }, sm: { span: 3 } },
-      wrapperCol: { lg: { span: 12 }, sm: { span: 19 } },
 
       cmOptions: {
         // codemirror options

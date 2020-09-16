@@ -4,8 +4,15 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      labelCol: { lg: { span: 3 }, sm: { span: 3 } },
-      wrapperCol: { lg: { span: 8 }, sm: { span: 19 } },
+      // 标签和数值框布局
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 10 }
+      },
     }
   },
   methods: {

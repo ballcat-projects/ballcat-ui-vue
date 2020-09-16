@@ -1,20 +1,14 @@
 <template>
-  <a-form @submit="handleSubmit" :form="form">
+  <a-form @submit="handleSubmit" :form="form" :labelCol=labelCol :wrapperCol=wrapperCol>
     <a-form-item v-if="formAction === this.FORM_ACTION.UPDATE" style="display: none">
       <a-input v-decorator="['id']"/>
     </a-form-item>
-    <a-form-item
-      label="角色名"
-      :labelCol=labelCol
-      :wrapperCol=wrapperCol>
+    <a-form-item label="角色名">
       <a-input
         v-decorator="['name', decoratorOptions.name]"
         placeholder="角色名"/>
     </a-form-item>
-    <a-form-item
-      :labelCol=labelCol
-      :wrapperCol=wrapperCol
-    >
+    <a-form-item>
       <template #label>
         <span>
            角色标识
@@ -28,11 +22,7 @@
         v-decorator="['code', decoratorOptions.code]"
         placeholder="权限标识"/>
     </a-form-item>
-    <a-form-item
-      label="角色类似"
-      :labelCol=labelCol
-      :wrapperCol=wrapperCol
-    >
+    <a-form-item label="角色类似">
       <a-radio-group v-decorator="['type']" :disabled="formAction === this.FORM_ACTION.UPDATE">
         <a-radio-button :value="1">
           系统角色
@@ -42,32 +32,21 @@
         </a-radio-button>
       </a-radio-group>
     </a-form-item>
-    <a-form-item
-      label="备注"
-      :labelCol=labelCol
-      :wrapperCol=wrapperCol>
+    <a-form-item label="备注">
       <a-textarea
         :autoSize="{ minRows: 4, maxRows: 8 }"
         v-decorator="['note']"
         placeholder="备注信息"/>
     </a-form-item>
     <div v-show="formAction === this.FORM_ACTION.UPDATE">
-      <a-form-item
-        label="创建时间"
-        :labelCol=labelCol
-        :wrapperCol=wrapperCol>
+      <a-form-item label="创建时间">
         <span>{{ displayData.createTime }}</span>
       </a-form-item>
-      <a-form-item
-        label="修改时间"
-        :labelCol=labelCol
-        :wrapperCol=wrapperCol>
+      <a-form-item label="修改时间">
         <span>{{ displayData.updateTime }}</span>
       </a-form-item>
     </div>
-    <a-form-item
-      :wrapperCol="{offset: 3 }"
-    >
+    <a-form-item :wrapperCol="{offset: 7 }">
       <a-button htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
       <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
     </a-form-item>
