@@ -102,10 +102,12 @@ export default {
     handleSubmit(e) {
       // 阻止 submit 事件的默认行为
       e.preventDefault()
-      // 表单提交前事件
-      this.beforeStartSubmit()
       // 根据表单行为，获取对应的请求方法
       const reqFunction = this.reqFunctions[this.formAction]
+      // 表单提交前事件，返回 false 时停止提交
+      if(this.beforeStartSubmit() === false){
+        return
+      }
       // 表单校验，成功则进行提交
       this.form.validateFields((err, values) => {
         if (!err) {
