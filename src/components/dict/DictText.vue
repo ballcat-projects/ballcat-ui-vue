@@ -1,5 +1,5 @@
 <template>
-  <span>{{ showText }}</span>
+  <span :style="{color: color}">{{ showText }}</span>
 </template>
 <script>
 import dictItemMixin from '@/components/dict/dictItemMixin'
@@ -10,21 +10,30 @@ export default {
   props: {
     value: [Number, String],
     dictCode: String,
-    color: String
+    colors: {
+      type: Object,
+      default: function () {
+        return {}
+      }
+    }
   },
   data () {
-    return {
-      dictItem: null
-    }
+    return {}
   },
   watch: {},
   computed: {
-    showText() {
-      if (this.dictItems.length === 0) {
-        return this.value;
+    color() {
+      let color
+      if(this.dictItem.attributes){
+        color = this.dictItem.attributes['textColor']
       }
-      const item = this.dictItems.find(dictItem => this.getValByItem(dictItem) === this.value);
-      return (item && item.name) || this.value;
+      return this.colors[this.value] || color || this.uniformColor
+    },
+    dictItem() {
+      return  this.dictItems.find(dictItem => this.getValByItem(dictItem) === this.value) || {};
+    },
+    showText() {
+      return (this.dictItem && this.dictItem.name) || this.value;
     }
   },
   created () {},

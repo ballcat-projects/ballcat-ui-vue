@@ -1,5 +1,5 @@
 <template>
-  <a-tag :color="colors[value] || uniformColor">{{ showText }}</a-tag>
+  <a-tag :color="color">{{ showText }}</a-tag>
 </template>
 <script>
 import dictItemMixin from '@/components/dict/dictItemMixin'
@@ -23,12 +23,18 @@ export default {
   },
   watch: {},
   computed: {
-    showText() {
-      if (this.dictItems.length === 0) {
-        return this.value;
+    color() {
+      let color
+      if(this.dictItem.attributes){
+        color = this.dictItem.attributes['tagColor']
       }
-      const item = this.dictItems.find(dictItem => this.getValByItem(dictItem) === this.value);
-      return (item && item.name) || this.value;
+      return this.colors[this.value] || color || this.uniformColor
+    },
+    dictItem() {
+      return  this.dictItems.find(dictItem => this.getValByItem(dictItem) === this.value) || {};
+    },
+    showText() {
+      return (this.dictItem && this.dictItem.name) || this.value;
     }
   },
   created () {},

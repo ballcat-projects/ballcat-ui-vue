@@ -47,9 +47,8 @@
             </dict-slot>
           </template>
           <template #status-slot="text">
-            <dict-slot dict-code="log_status" :value="text"
-                       :colors="{1: 'green', 0: 'red'}">
-            </dict-slot>
+            <dict-text dict-code="log_status" :value="text">
+            </dict-text>
           </template>
           <template #expandedRowRender="record">
               <p>params:</p>
@@ -107,6 +106,7 @@ export default {
         {
           title: '操作状态',
           dataIndex: 'status',
+          width: '50px',
           scopedSlots: { customRender: 'status-slot' }
         },
         {
