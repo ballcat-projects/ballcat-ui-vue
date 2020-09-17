@@ -17,7 +17,7 @@ const err = (error) => {
     if (error.response.status === 403) {
       notification.error({
         message: 'Forbidden',
-        description: data.message
+        description: data.msg
       })
     }
     if (error.response.status === 401) {
