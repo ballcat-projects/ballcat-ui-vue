@@ -51,10 +51,10 @@
             </dict-text>
           </template>
           <template #expandedRowRender="record">
-              <p>params:</p>
-              <pre><div class="wordwrap" v-html="record.params"></div></pre>
-              <p>userAgent:</p>
-              {{record.userAgent}}}
+            <p>params:</p>
+            <pre><div class="wordwrap" v-html="record.params"></div></pre>
+            <p>userAgent:</p>
+            {{ record.userAgent }}}
           </template>
         </a-table>
       </div>
@@ -69,22 +69,22 @@ import { TablePageMixin } from '@/mixins'
 export default {
   name: 'AdminOperationLogPage',
   mixins: [TablePageMixin],
-  data() {
+  data () {
     return {
       getPage: getPage,
 
       columns: [
         {
           title: '#',
-          dataIndex: 'id',
+          dataIndex: 'id'
         },
         {
           title: '追踪ID',
-          dataIndex: 'traceId',
+          dataIndex: 'traceId'
         },
         {
           title: '日志消息',
-          dataIndex: 'msg',
+          dataIndex: 'msg'
         },
         {
           title: '操作类型',
@@ -92,30 +92,34 @@ export default {
           scopedSlots: { customRender: 'type-slot' }
         },
         {
-          title: '访问IP地址',
+          title: '请求IP',
           dataIndex: 'ip',
+          width: '105px'
         },
         {
           title: '请求URI',
-          dataIndex: 'uri',
+          dataIndex: 'uri'
         },
         {
           title: '请求方式',
-          dataIndex: 'method',
+          dataIndex: 'method'
+        },
+        {
+          title: '执行时长',
+          dataIndex: 'time',
+          customRender: function (text) {
+            return text + ' ms'
+          }
+        },
+        {
+          title: '操作人',
+          dataIndex: 'operator'
         },
         {
           title: '操作状态',
           dataIndex: 'status',
           width: '50px',
           scopedSlots: { customRender: 'status-slot' }
-        },
-        {
-          title: '执行时长',
-          dataIndex: 'time',
-        },
-        {
-          title: '操作人',
-          dataIndex: 'operator',
         },
         {
           title: '创建时间',
@@ -126,7 +130,12 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    onTimeChange (dates, dateStrings) {
+      this.queryParam.startTime = dateStrings[0]
+      this.queryParam.endTime = dateStrings[1]
+    }
+  }
 }
 </script>
 

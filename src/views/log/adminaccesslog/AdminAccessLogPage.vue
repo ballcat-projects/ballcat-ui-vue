@@ -79,10 +79,6 @@ export default {
           dataIndex: 'traceId',
         },
         {
-          title: '用户ID',
-          dataIndex: 'userId',
-        },
-        {
           title: '用户名',
           dataIndex: 'username',
         },
@@ -110,6 +106,9 @@ export default {
         {
           title: '执行时长',
           dataIndex: 'time',
+          customRender: function (text){
+            return text + ' ms'
+          }
         },
         {
           title: '创建时间',
@@ -120,6 +119,11 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    onTimeChange (dates, dateStrings) {
+      this.queryParam.startTime = dateStrings[0]
+      this.queryParam.endTime = dateStrings[1]
+    }
+  }
 }
 </script>
