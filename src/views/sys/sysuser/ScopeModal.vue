@@ -83,10 +83,10 @@ export default {
       }
       putUserScope(this.userId, userScope).then(res => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.handleClose()
         } else {
-          this.$message.warning(res.msg)
+          this.$message.warning(res.message)
         }
       })
         .finally(() => {

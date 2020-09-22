@@ -89,7 +89,7 @@ export default {
             this.dataSource = page.records
             this.pagination.total = page.total
           } else {
-            this.$message.warning(res.msg || 'error request')
+            this.$message.warning(res.message || 'error request')
           }
         }).catch((e) => {
         this.$message.error(e.message || 'error request')
@@ -133,10 +133,10 @@ export default {
     handleDel (record) {
       this.delObj(record[this.rowKey]).then(res => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.reloadTable()
         } else {
-          this.$message.error(res.msg)
+          this.$message.error(res.message)
         }
       })
     },

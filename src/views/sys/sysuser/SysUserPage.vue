@@ -293,10 +293,10 @@ export default {
     handleUpdateStatus (e) {
       updateStatus(this.selectedRowKeys, e.key).then(res => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.reloadTable()
         } else {
-          this.$message.warning(res.msg)
+          this.$message.warning(res.message)
         }
       })
     },

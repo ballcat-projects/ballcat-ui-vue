@@ -250,10 +250,10 @@ export default {
       }
       delObj(this.permission.id).then(res => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.pageLoad()
         } else {
-          this.$message.error(res.msg)
+          this.$message.error(res.message)
         }
       })
     },
@@ -264,10 +264,10 @@ export default {
         if (!err) {
           req(values).then(res => {
             if (res.code === 200) {
-              this.$message.success(res.msg)
+              this.$message.success(res.message)
               this.pageLoad()
             } else {
-              this.$message.error(res.msg)
+              this.$message.error(res.message)
             }
           })
         }

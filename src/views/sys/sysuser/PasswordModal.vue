@@ -91,7 +91,7 @@ export default {
           values.confirm = encryption(values.confirm)
 
           changePassword(this.userId, values).then(res => {
-            res.code === 200 ? this.$message.success(res.msg): this.$message.warning(res.msg)
+            res.code === 200 ? this.$message.success(res.message): this.$message.warning(res.message)
           }).catch((e) => {
             this.$message.error(e.message)
           }).finally(() => {

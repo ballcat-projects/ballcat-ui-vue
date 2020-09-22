@@ -72,7 +72,7 @@ export default {
 
       this.submitLoading = true
       putPermissionIds(this.roleId, permissionIds).then((res) => {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.closeDrawer()
       })
       .finally(() => {
