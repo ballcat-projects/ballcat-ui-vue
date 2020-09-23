@@ -31,7 +31,7 @@ const user = {
       return new Promise((resolve, reject) => {
         login(loginParam).then(res => {
           // TODO token刷新机制
-          const ttl = 7 * 24 * 60 * 60 * 1000
+          const ttl = res.expires_in * 1000
           const accessToken = res.access_token
           const refreshToken = res.refresh_token
 
