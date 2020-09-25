@@ -19,20 +19,19 @@ const err = (error) => {
         message: 'Forbidden',
         description: data.message
       })
+      error.resolved = true
     }
     if (error.response.status === 401) {
       notification.error({
         message: 'Unauthorized',
         description: 'Authorization verification failed'
       })
-      const token = Vue.ls.get(ACCESS_TOKEN)
-      if (token) {
-        store.dispatch('CLEAN_USER_INFO').then(() => {
-          setTimeout(() => {
-            window.location.reload()
-          }, 10)
-        })
-      }
+      error.resolved = true
+      store.dispatch('CLEAN_USER_INFO').then(() => {
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000)
+      })
     }
   }
   return Promise.reject(error)

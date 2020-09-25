@@ -92,7 +92,8 @@ export default {
             this.$message.warning(res.message || 'error request')
           }
         }).catch((e) => {
-        this.$message.error(e.message || 'error request')
+          // 未被 axios拦截器处理过，则在这里继续处理
+          !e.resolved && this.$message.error(e.message || 'error request')
       }).finally(() => {
         this.loading = false
       })
