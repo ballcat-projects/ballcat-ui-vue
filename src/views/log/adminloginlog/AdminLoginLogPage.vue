@@ -1,64 +1,62 @@
 <template>
-  <div>
-    <a-card v-show="tableShow" :bordered="false">
-      <!-- 查询条件 -->
-      <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
+  <div class="ant-pro-page-container-children-content">
+    <!-- 查询条件 -->
+    <div class="ant-pro-table-search">
+      <a-form v-bind="searchFormLayout">
+        <a-row :gutter="16">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="用户名">
+              <a-input v-model="queryParam.username" placeholder="用户名"/>
+            </a-form-item>
+          </a-col>
+          <template v-if="advanced">
             <a-col :md="8" :sm="24">
-              <a-form-item label="用户名">
-                <a-input v-model="queryParam.username" placeholder="用户名"/>
+              <a-form-item label="事件类型">
+                <dict-select dict-code="login_event_type" v-model="queryParam.eventType"></dict-select>
               </a-form-item>
             </a-col>
-            <template v-if="advanced">
-              <a-col :md="8" :sm="24">
-                <a-form-item label="事件类型">
-                  <dict-select dict-code="login_event_type" v-model="queryParam.eventType"></dict-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="事件状态">
-                  <dict-select dict-code="log_status" v-model="queryParam.status"></dict-select>
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-form-item label="登陆IP">
-                  <a-input v-model="queryParam.ip" placeholder="登陆IP"/>
-                </a-form-item>
-              </a-col>
-            </template>
-
-            <a-col :md="10" :sm="24">
-              <a-form-item label="登陆时间">
-                <a-range-picker
-                  show-time
-                  :placeholder="['Start Time', 'End Time']"
-                  format="YYYY-MM-DD HH:mm:ss"
-                  @change="onTimeChange"
-                />
+            <a-col :md="8" :sm="24">
+              <a-form-item label="事件状态">
+                <dict-select dict-code="log_status" v-model="queryParam.status"></dict-select>
               </a-form-item>
             </a-col>
-
-            <a-col :md="!advanced && 3 || 24" :sm="24">
-              <span class="table-page-search-submitButtons"
-                    :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-                <a-button type="primary" @click="reloadTable">查询</a-button>
-                <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                <a @click="toggleAdvanced" style="margin-left: 8px">
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'"/>
-                </a>
-              </span>
+            <a-col :md="8" :sm="24">
+              <a-form-item label="登陆IP">
+                <a-input v-model="queryParam.ip" placeholder="登陆IP"/>
+              </a-form-item>
             </a-col>
-          </a-row>
-        </a-form>
-      </div>
+          </template>
 
+          <a-col :md="8" :sm="24">
+            <a-form-item label="登陆时间">
+              <a-range-picker
+                show-time
+                :placeholder="['Start Time', 'End Time']"
+                format="YYYY-MM-DD HH:mm:ss"
+                @change="onTimeChange"
+              />
+            </a-form-item>
+          </a-col>
+
+          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+            <div class="table-page-search-submitButtons">
+              <a-button type="primary" @click="reloadTable">查询</a-button>
+              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+              <a @click="toggleAdvanced" style="margin-left: 8px">
+                {{ advanced ? '收起' : '展开' }}
+                <a-icon :type="advanced ? 'up' : 'down'"/>
+              </a>
+            </div>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+
+    <a-card :bordered="false" :bodyStyle="{padding: 0}">
       <!-- 操作按钮区域 -->
-      <div class="table-operator">
-        <a-button v-has="'log:loginlog:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+      <div class="ant-pro-table-toolbar">
+        <div class="ant-pro-table-toolbar-title">登陆日志</div>
       </div>
-
       <!--数据表格区域-->
       <div class="table-wrapper">
         <a-table
@@ -156,7 +154,7 @@ export default {
     }
   },
   methods: {
-    onTimeChange(dates, dateStrings) {
+    onTimeChange (dates, dateStrings) {
       console.log(dates)
       this.queryParam.startTime = dateStrings[0]
       this.queryParam.endTime = dateStrings[1]

@@ -1,35 +1,36 @@
 <template>
-  <div>
-    <a-card v-show="tableShow" :bordered="false">
-      <!-- 查询条件 -->
-      <div class="table-page-search-wrapper">
-        <a-form layout="inline">
-          <a-row :gutter="48">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="ID">
-                <a-input v-model="queryParam.id" placeholder />
-              </a-form-item>
-            </a-col>
+  <div class="ant-pro-page-container-children-content">
+    <!-- 查询条件 -->
+    <div class="ant-pro-table-search">
+      <a-form v-bind="searchFormLayout">
+        <a-row :gutter="16">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="ID">
+              <a-input v-model="queryParam.id" placeholder/>
+            </a-form-item>
+          </a-col>
 
-            <!-- <template v-if="advanced">
-            </template>-->
-            <a-col :md="!advanced && 8 || 24" :sm="24">
-              <span
-                class="table-page-search-submitButtons"
-                :style="advanced && { float: 'right', overflow: 'hidden' } || {} "
-              >
-                <a-button type="primary" @click="reloadTable">查询</a-button>
-                <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                <!--<a @click="toggleAdvanced" style="margin-left: 8px">
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'"/>
-                </a>-->
-              </span>
-            </a-col>
-          </a-row>
-        </a-form>
+          <!-- <template v-if="advanced">
+          </template>-->
+          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+            <div class="table-page-search-submitButtons">
+              <a-button type="primary" @click="reloadTable">查询</a-button>
+              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+<!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
+<!--                {{ advanced ? '收起' : '展开' }}-->
+<!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+<!--              </a>-->
+            </div>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+
+    <a-card :bordered="false" :bodyStyle="{padding: 0}">
+      <!-- 操作按钮区域 -->
+      <div class="ant-pro-table-toolbar">
+        <div class="ant-pro-table-toolbar-title">操作日志</div>
       </div>
-
       <div class="table-wrapper">
         <!--数据表格-->
         <a-table

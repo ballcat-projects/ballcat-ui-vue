@@ -2,41 +2,28 @@
   <div class="ant-pro-page-container-children-content">
     <!-- 查询条件 -->
     <div class="ant-pro-table-search">
-      <a-form :labelCol=labelCol :wrapperCol=wrapperCol>
+      <a-form v-bind="searchFormLayout">
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="角色">
               <a-input v-model="queryParam.name" placeholder=""/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="角色">
-              <a-input v-model="queryParam.name" placeholder=""/>
-            </a-form-item>
-          </a-col>
-          <template v-if="advanced">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="角色">
-                <a-input v-model="queryParam.name" placeholder=""/>
-              </a-form-item>
-            </a-col>
-          </template>
-          <a-col :md="!advanced && 8 || 24" :sm="24" style="padding-left: 8px; padding-right: 8px; text-align: right;">
-            <div class="ant-space ant-space-horizontal ant-space-align-center"
-                 style="padding-top: 0; margin-bottom: 24px;">
+          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+            <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-              <a @click="toggleAdvanced" style="margin-left: 8px">
-                {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
-              </a>
+<!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
+<!--                {{ advanced ? '收起' : '展开' }}-->
+<!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+<!--              </a>-->
             </div>
           </a-col>
         </a-row>
       </a-form>
     </div>
 
-    <a-card v-show="tableShow" :bordered="false" :bodyStyle="{padding: 0}">
+    <a-card :bordered="false" :bodyStyle="{padding: 0}">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">组织架构</div>
@@ -90,13 +77,6 @@ export default {
   components: { FormModal },
   data () {
     return {
-      labelCol: {
-        md: { span: 8 }
-      },
-      wrapperCol: {
-        md: { span: 16 }
-      },
-
       delObj: delObj,
 
       columns: [

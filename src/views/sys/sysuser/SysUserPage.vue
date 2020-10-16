@@ -57,9 +57,8 @@
                     </a-form-item>
                   </a-col>
                 </template>
-                <a-col :md="8" :sm="24" style="padding-left: 8px; padding-right: 8px; text-align: right;">
-                  <div class="ant-space ant-space-horizontal ant-space-align-center"
-                       style="padding-top: 0; margin-bottom: 24px;">
+                <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+                  <div class="table-page-search-submitButtons">
                     <a-button type="primary" @click="reloadTable">查询</a-button>
                     <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                     <a @click="toggleAdvanced" style="margin-left: 8px">

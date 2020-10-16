@@ -46,7 +46,17 @@ export default {
       // 已选中的数据主键集合
       selectedRowKeys: [],
       // 延迟加载，created时不主动加载数据
-      lazyLoad: false
+      lazyLoad: false,
+
+      // 搜索表单的布局
+      searchFormLayout: {
+        labelCol: {
+          md: { span: 8 }
+        },
+        wrapperCol: {
+          md: { span: 16 }
+        },
+      }
     }
   },
   created () {
