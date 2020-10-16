@@ -40,7 +40,7 @@
 </template>
 <script>
 import { getList } from '@/api/sys/permission'
-import { putPermissionIds, getPermissionIds } from '@/api/sys/role'
+import { getPermissionCode, putPermissionIds } from '@/api/sys/role'
 import { listToTree } from '@/utils/treeUtil'
 
 export default {
@@ -48,7 +48,7 @@ export default {
   data () {
     return {
       visible: false,
-      roleId: '',
+      roleCode: '',
       treeData: [],
       checkedKeys: [],
       halfCheckedKeys: [],
@@ -59,7 +59,7 @@ export default {
   methods: {
     showDrawer (record) {
       this.visible = true
-      this.roleId = record.id
+      this.roleCode = record.code
     },
     closeDrawer () {
       this.visible = false
@@ -68,18 +68,18 @@ export default {
       // 权限ID 求并集
       let checkedKeySet = new Set(this.checkedKeys)
       let halfCheckedKeySet = new Set(this.halfCheckedKeys)
-      let permissionIds = [...new Set([...checkedKeySet,...halfCheckedKeySet])]
+      let permissionIds = [...new Set([...checkedKeySet, ...halfCheckedKeySet])]
 
       this.submitLoading = true
-      putPermissionIds(this.roleId, permissionIds).then((res) => {
-          this.$message.success(res.message)
-          this.closeDrawer()
+      putPermissionIds(this.roleCode, permissionIds).then((res) => {
+        this.$message.success(res.message)
+        this.closeDrawer()
       })
-      .finally(() => {
-        this.submitLoading = false
-      });
+        .finally(() => {
+          this.submitLoading = false
+        })
     },
-    onCheck(checkedKeys, e) {
+    onCheck (checkedKeys, e) {
       this.checkedKeys = checkedKeys
       this.halfCheckedKeys = e.halfCheckedKeys
     },
@@ -93,13 +93,13 @@ export default {
      * @param resArr 临时存放节点id的数组
      * @return 太监节点id数组
      */
-    resolveAllEunuchNodeId(treeData, keyArr, resArr) {
+    resolveAllEunuchNodeId (treeData, keyArr, resArr) {
       for (let i = 0; i < treeData.length; i++) {
         const item = treeData[i]
         // 存在子节点，递归遍历;不存在子节点，将json的id添加到临时数组中
         if (item.children && item.children.length !== 0) {
           this.resolveAllEunuchNodeId(item.children, keyArr, resArr)
-        } else if (keyArr.indexOf(item.key) !== -1){
+        } else if (keyArr.indexOf(item.key) !== -1) {
           resArr.push(item.key)
         }
       }
@@ -111,8 +111,8 @@ export default {
       if (this.visible) {
         getList().then((res) => {
           // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
-          let treeData = listToTree(res.data, 0);
-          getPermissionIds(this.roleId).then((res) => {
+          let treeData = listToTree(res.data, 0)
+          getPermissionCode(this.roleCode).then((res) => {
             this.treeData = treeData
             // 由于 AntDesign 的默认父子关联，直接选中所有权限，会导致半选节点变为全选
             // 所以这里筛选出所有太监节点，进行勾选

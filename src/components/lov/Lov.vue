@@ -99,7 +99,6 @@ export default {
         return {
           on: {
             click: (event) => {
-              console.log(this.selectedRowKeys)
               // 是否已选中
               const index = this.selectedRowKeys.indexOf(record[this.rowKey])
               if (index === -1) {

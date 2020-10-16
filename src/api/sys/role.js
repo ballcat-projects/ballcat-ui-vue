@@ -1,6 +1,6 @@
 import { axios } from '@/utils/request'
 
-export function getPage(query) {
+export function getPage (query) {
   return axios({
     url: '/sysrole/page',
     method: 'get',
@@ -8,14 +8,14 @@ export function getPage(query) {
   })
 }
 
-export function getObj(id) {
+export function getObj (id) {
   return axios({
     url: '/sysrole/' + id,
     method: 'get'
   })
 }
 
-export function addObj(obj) {
+export function addObj (obj) {
   return axios({
     url: '/sysrole',
     method: 'post',
@@ -23,7 +23,7 @@ export function addObj(obj) {
   })
 }
 
-export function putObj(obj) {
+export function putObj (obj) {
   return axios({
     url: '/sysrole',
     method: 'put',
@@ -31,31 +31,30 @@ export function putObj(obj) {
   })
 }
 
-export function delObj(id) {
+export function delObj (id) {
   return axios({
     url: '/sysrole/' + id,
     method: 'delete'
   })
 }
 
-
-export function getSelectData() {
+export function getSelectData () {
   return axios({
     url: '/sysrole/select',
     method: 'get'
   })
 }
 
-export function getPermissionIds (roleId) {
+export function getPermissionCode (roleCode) {
   return axios({
-    url: '/sysrole/permission/ids/' + roleId,
+    url: '/sysrole/permission/code/' + roleCode,
     method: 'get'
   })
 }
 
-export function putPermissionIds (roleId, data) {
+export function putPermissionIds (roleCode, data) {
   return axios({
-    url: '/sysrole/permission/ids/' + roleId,
+    url: '/sysrole/permission/code/' + roleCode,
     method: 'put',
     data: data
   })
