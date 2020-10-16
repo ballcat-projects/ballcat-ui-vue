@@ -22,7 +22,7 @@
                     style="width: 100%"
                     placeholder="无角色"
                     :allowClear="true"
-                    v-model="roleIds">
+                    v-model="roleCodes">
             <a-select-option v-for="selectData in roleSelectData"
                              :key="selectData.value">
               {{ selectData.name }}
@@ -55,8 +55,7 @@ export default {
 
       userId: '',
       username: '',
-      roleIds: [],
-
+      roleCodes: [],
       roleSelectData: []
     }
   },
@@ -72,12 +71,12 @@ export default {
 
       this.userId = record.userId
       this.username = record.username
-      this.roleIds = []
+      this.roleCodes = []
 
       getUserScope(record.userId)
         .then(res => {
-          if (res.data.roleIds) {
-            this.roleIds = res.data.roleIds.map(String)
+          if (res.data.roleCodes) {
+            this.roleCodes = res.data.roleCodes.map(String)
             this.confirmLoading = false
           }
         })
@@ -85,7 +84,7 @@ export default {
     handleOk (e) {
       this.confirmLoading = true
       const userScope = {
-        roleIds: this.roleIds
+        roleCodes: this.roleCodes
       }
       putUserScope(this.userId, userScope).then(res => {
         if (res.code === 200) {
