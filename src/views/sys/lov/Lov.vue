@@ -13,18 +13,19 @@
 
             <!-- <template v-if="advanced">
              </template>-->
+            <a-col :md="!advanced && 8 || 24" :sm="24">
+              <span class="table-page-search-submitButtons"
+                    :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
+                <a-button type="primary" @click="reloadTable">查询</a-button>
+                <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+                <!--<a @click="toggleAdvanced" style="margin-left: 8px">
+                  {{ advanced ? '收起' : '展开' }}
+                  <a-icon :type="advanced ? 'up' : 'down'"/>
+                </a>-->
+              </span>
+            </a-col>
           </a-row>
         </a-form>
-      </div>
-
-      <!-- 搜索控制按钮 -->
-      <div class="table-operator">
-        <a-button @click="reloadTable" type="primary">查询</a-button>
-        <a-button @click="resetSearchForm" style="margin-left: 8px">重置</a-button>
-        <!--        <a @click="toggleAdvanced" style="margin-left: 8px">-->
-        <!--          {{ advanced ? '收起' : '展开' }}-->
-        <!--          <a-icon :type="advanced ? 'up' : 'down'"/>-->
-        <!--        </a>-->
       </div>
 
       <!-- 操作按钮区域 -->
@@ -44,7 +45,7 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <template slot="action-slot" slot-scope="text, record">
+          <template #action-slot="text, record">
             <a v-has="'sys:lov:edit'" @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical"/>
             <a-popconfirm v-has="'sys:lov:del'"

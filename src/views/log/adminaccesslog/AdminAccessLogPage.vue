@@ -42,7 +42,7 @@
           :loading="loading"
           @change="handleTableChange"
         >
-          <span slot="expandedRowRender" slot-scope="record" style="margin: 0">
+          <template #expandedRowRender="record">
             <p>reqParams:</p>
             <pre><div class="wordwrap" v-html="record.reqParams"></div></pre>
             <p>reqBody:</p>
@@ -51,7 +51,7 @@
             <pre><div class="wordwrap" v-html="record.result"></div></pre>
             <p>userAgent:</p>
             {{record.userAgent}}}
-          </span>
+          </template>
         </a-table>
       </div>
     </a-card>
@@ -77,10 +77,6 @@ export default {
         {
           title: '追踪ID',
           dataIndex: 'traceId',
-        },
-        {
-          title: '用户ID',
-          dataIndex: 'userId',
         },
         {
           title: '用户名',
@@ -110,6 +106,9 @@ export default {
         {
           title: '执行时长',
           dataIndex: 'time',
+          customRender: function (text){
+            return text + ' ms'
+          }
         },
         {
           title: '创建时间',
@@ -120,6 +119,11 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    onTimeChange (dates, dateStrings) {
+      this.queryParam.startTime = dateStrings[0]
+      this.queryParam.endTime = dateStrings[1]
+    }
+  }
 }
 </script>

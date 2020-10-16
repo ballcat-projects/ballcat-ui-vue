@@ -65,15 +65,17 @@ export default {
 
       return (
         <ItemGroup key={item.key}>
-          <template slot="title">
+          <template v-slot:title>
             <span>{ item.title }</span>
             <a-dropdown>
               <a class="btn"><a-icon type="ellipsis" /></a>
-              <a-menu slot="overlay">
-                <a-menu-item key="1">新增</a-menu-item>
-                <a-menu-item key="2">合并</a-menu-item>
-                <a-menu-item key="3">移除</a-menu-item>
-              </a-menu>
+              <template v-slot:overlay>
+                <a-menu>
+                  <a-menu-item key="1">新增</a-menu-item>
+                  <a-menu-item key="2">合并</a-menu-item>
+                  <a-menu-item key="3">移除</a-menu-item>
+                </a-menu>
+              </template>
             </a-dropdown>
           </template>
           { childrenItems }
@@ -86,10 +88,12 @@ export default {
       })
 
       const title = (
-        <span slot="title">
-          { this.renderIcon(item.icon) }
-          <span>{ item.title }</span>
-        </span>
+        <template v-slot:title>
+            <span>
+               { this.renderIcon(item.icon) }
+              <span>{ item.title }</span>
+           </span>
+        </template>
       )
 
       if (item.group) {

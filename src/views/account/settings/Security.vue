@@ -3,20 +3,25 @@
     itemLayout="horizontal"
     :dataSource="data"
   >
-    <a-list-item slot="renderItem" slot-scope="item, index1" :key="index1">
-      <a-list-item-meta>
-        <a slot="title">{{ item.title }}</a>
-        <span slot="description">
-          <span class="security-list-description">{{ item.description }}</span>
-          <span v-if="item.value"> : </span>
-          <span class="security-list-value">{{ item.value }}</span>
-        </span>
-      </a-list-item-meta>
-      <template v-if="item.actions">
-        <a slot="actions" @click="item.actions.callback">{{ item.actions.title }}</a>
-      </template>
-
-    </a-list-item>
+    <template #renderItem="item, index1">
+      <a-list-item :key="index1">
+        <a-list-item-meta>
+          <template #title>
+            <a>{{ item.title }}</a>
+          </template>
+          <template #description>
+            <span>
+              <span class="security-list-description">{{ item.description }}</span>
+              <span v-if="item.value"> : </span>
+              <span class="security-list-value">{{ item.value }}</span>
+            </span>
+          </template>
+        </a-list-item-meta>
+        <template v-if="item.actions" #actions>
+          <a @click="item.actions.callback">{{ item.actions.title }}</a>
+        </template>
+      </a-list-item>
+    </template>
   </a-list>
 </template>
 

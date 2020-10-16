@@ -8,26 +8,22 @@
     :maskClosable="false"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form">
-
-        <a-form-item
-          label="用户名"
-          :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <a-form-item label="用户名">
           <a-input
             v-decorator="['username']"
             disabled
             placeholder="用户名"/>
         </a-form-item>
 
-        <a-form-item label="新密码" :labelCol="labelCol" :wrapperCol="wrapperCol" hasFeedback>
+        <a-form-item label="新密码" hasFeedback>
           <a-input type="password" @blur="validateConfirmOnBlur" placeholder="新密码" v-decorator="[ 'pass', decoratorOptions.pass]"/>
         </a-form-item>
 
-        <a-form-item label="确认密码" :labelCol="labelCol" :wrapperCol="wrapperCol" hasFeedback>
+        <a-form-item label="确认密码" hasFeedback>
           <a-input type="password" placeholder="确认密码"
                    v-decorator="['confirm', decoratorOptions.confirm]"/>
         </a-form-item>
-
       </a-form>
     </a-spin>
   </a-modal>
@@ -95,7 +91,7 @@ export default {
           values.confirm = encryption(values.confirm)
 
           changePassword(this.userId, values).then(res => {
-            res.code === 200 ? this.$message.success(res.msg): this.$message.warning(res.msg)
+            res.code === 200 ? this.$message.success(res.message): this.$message.warning(res.message)
           }).catch((e) => {
             this.$message.error(e.message)
           }).finally(() => {

@@ -45,7 +45,7 @@ export default {
     getTooltip (fullStr, fullLength) {
       return (
         <Tooltip>
-          <template slot="title">{ fullStr }</template>
+          <template v-slot:title>{ fullStr }</template>
           { this.getStrDom(fullStr, fullLength) }
         </Tooltip>
       )

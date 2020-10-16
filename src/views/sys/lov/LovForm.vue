@@ -88,7 +88,7 @@ export default {
   }
 }
 </script>
-<style lang="less">
+<style lang="less" scoped>
 .ant-form-item {
   margin-bottom: 0;
 }

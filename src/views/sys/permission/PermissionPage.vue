@@ -17,18 +17,17 @@
           @expand="onExpand"
         >
           <template slot="custom" slot-scope="{ icon }">
-            <a-icon v-if="icon" :type="icon" />
+            <a-icon v-if="icon" :type="icon"/>
           </template>
         </a-tree>
       </a-card>
     </a-col>
 
-
     <a-col :span="15">
       <a-card :bordered="false">
-        <a-form :form="form" @submit="handleSubmit">
+        <a-form :form="form" @submit="handleSubmit" :labelCol="labelCol" :wrapperCol="wrapperCol">
 
-          <a-form-item label="类型" :labelCol="labelCol" :wrapperCol="wrapperCol">
+          <a-form-item label="类型">
             <a-radio-group v-decorator="['type']"
                            @change="onTypeChange"
                            :disabled="readOnly">
@@ -38,118 +37,78 @@
             </a-radio-group>
           </a-form-item>
 
-
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="父级节点">
+          <a-form-item label="父级节点">
             <a-input placeholder="父级节点" v-decorator="['parentId']"
                      :disabled="true"/>
           </a-form-item>
 
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="节点">
+          <a-form-item label="节点">
             <a-input placeholder="节点"
                      v-decorator="['id', decoratorOptions.id]"
                      type="number"
                      :disabled="formAction !== this.FORM_ACTION.CREATE"/>
           </a-form-item>
 
-
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="标题">
+          <a-form-item label="标题">
             <a-input placeholder="请输入标题"
                      v-decorator="['title', decoratorOptions.title]"
                      :disabled="readOnly"/>
           </a-form-item>
 
-
           <div v-show="permissionType === 0">
-            <a-form-item
-              :labelCol="labelCol"
-              :wrapperCol="wrapperCol"
-              label="重定向">
+            <a-form-item label="重定向">
               <a-input placeholder="路由重定向地址(redirect)"
                        :disabled="readOnly"
                        v-decorator="['redirect', decoratorOptions.redirect]"/>
             </a-form-item>
           </div>
 
-
           <div v-show="permissionType === 1">
-            <a-form-item
-              :labelCol="labelCol"
-              :wrapperCol="wrapperCol"
-              label="菜单路径">
+            <a-form-item label="菜单路径">
               <a-input placeholder="请输入菜单路径"
                        :disabled="readOnly"
                        v-decorator="['path', decoratorOptions.path]"/>
             </a-form-item>
           </div>
 
-
           <div v-show="permissionType === 2">
-            <a-form-item
-              :labelCol="labelCol"
-              :wrapperCol="wrapperCol"
-              label="授权标识">
+            <a-form-item label="授权标识">
               <a-input placeholder="授权标识"
                        :disabled="readOnly"
                        v-decorator="['code']"/>
             </a-form-item>
           </div>
 
-
           <div v-show="permissionType === 0 || permissionType === 1">
-            <a-form-item
-              :labelCol="labelCol"
-              :wrapperCol="wrapperCol"
-              label="路由名称">
+            <a-form-item label="路由名称">
               <a-input placeholder="请输入前端路由名称"
                        v-decorator="['routerName', decoratorOptions.routerName]"
                        :disabled="readOnly"/>
             </a-form-item>
 
-            <a-form-item
-              :labelCol="labelCol"
-              :wrapperCol="wrapperCol"
-              label="前端组件">
+            <a-form-item label="前端组件">
               <a-input placeholder="请输入前端组件" v-decorator="['component', decoratorOptions.component]"
                        :disabled="readOnly"/>
             </a-form-item>
 
-            <a-form-item
-              :labelCol="labelCol"
-              :wrapperCol="wrapperCol"
-              label="菜单图标">
+            <a-form-item label="菜单图标">
               <a-input placeholder="点击右侧按钮选择图标" v-decorator="['icon']"
                        :disabled="readOnly">
-                <a-icon slot="addonAfter" type="setting" @click="selectIcons"/>
+                <template #addonAfter>
+                  <a-icon type="setting" @click="selectIcons"/>
+                </template>
               </a-input>
             </a-form-item>
-
-
           </div>
 
-          <a-form-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="排序">
+          <a-form-item label="排序">
             <a-input-number placeholder="请输入排序号"
                             :disabled="readOnly"
                             style="width: 250px" v-decorator="['sort']"/>
           </a-form-item>
 
-
-          <a-form-item
-            v-show="permissionType === 0 || permissionType === 1"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
-            label="隐藏路由">
+          <a-form-item label="隐藏路由"
+                       v-show="permissionType === 0 || permissionType === 1">
             <a-radio-group v-decorator="['hidden']" :disabled="readOnly">
               <a-radio :value=1>是</a-radio>
               <a-radio :value=0>否</a-radio>
@@ -157,9 +116,9 @@
           </a-form-item>
 
           <a-form-item v-show="formAction !== FORM_ACTION.NONE"
-                       :wrapperCol="{offset: 4 }"
+                       :wrapperCol="{offset: 7 }"
           >
-            <a-button htmlType="submit" type="primary">{{this.formAction === this.FORM_ACTION.CREATE ? '提交': '修改' }}
+            <a-button htmlType="submit" type="primary">{{ this.formAction === this.FORM_ACTION.CREATE ? '提交' : '修改' }}
             </a-button>
             <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
           </a-form-item>
@@ -188,10 +147,17 @@ export default {
       treeData: [],
       expandedKeys: [],
       permission: {},
+      // 标签和数值框布局
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 10 }
+      },
 
       formAction: this.FORM_ACTION.NONE,
-      labelCol: { lg: { span: 4 }, sm: { span: 4 } },
-      wrapperCol: { lg: { span: 12 }, sm: { span: 22 } },
       decoratorOptions: {
         title: {
           rules: [{ required: true, message: '请输入菜单名!' }]
@@ -223,7 +189,7 @@ export default {
         this.readOnly = true
         this.treeData = listToTree(res.data, 0, (treeNode, item) => {
           treeNode.permission = item
-          treeNode.scopedSlots = { icon: "custom" }
+          treeNode.scopedSlots = { icon: 'custom' }
         })
         this.expandedKeys = [0]
       })
@@ -284,10 +250,10 @@ export default {
       }
       delObj(this.permission.id).then(res => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.pageLoad()
         } else {
-          this.$message.error(res.msg)
+          this.$message.error(res.message)
         }
       })
     },
@@ -298,10 +264,10 @@ export default {
         if (!err) {
           req(values).then(res => {
             if (res.code === 200) {
-              this.$message.success(res.msg)
+              this.$message.success(res.message)
               this.pageLoad()
             } else {
-              this.$message.error(res.msg)
+              this.$message.error(res.message)
             }
           })
         }

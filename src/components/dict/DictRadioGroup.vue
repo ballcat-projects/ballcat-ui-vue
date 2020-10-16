@@ -10,8 +10,10 @@
 </template>
 <script>
 import DictMixin from '@/components/dict/dictMixin'
+import dictItemMixin from '@/components/dict/dictItemMixin'
+
 export default {
   name: 'DictOption',
-  mixins: [DictMixin]
+  mixins: [DictMixin, dictItemMixin]
 }
 </script>

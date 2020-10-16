@@ -9,24 +9,30 @@
     :arrowPointAtCenter="true"
     :overlayStyle="{ width: '300px', top: '50px' }"
   >
-    <template slot="content">
+    <template #content>
       <a-spin :spinning="loadding">
         <a-tabs>
           <a-tab-pane tab="通知" key="1">
             <a-list>
               <a-list-item>
                 <a-list-item-meta title="你收到了 14 份新周报" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
+                  <template #avatar>
+                    <a-avatar style="background-color: white" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
+                  </template>
                 </a-list-item-meta>
               </a-list-item>
               <a-list-item>
                 <a-list-item-meta title="你推荐的 曲妮妮 已通过第三轮面试" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"/>
+                  <template #avatar>
+                    <a-avatar style="background-color: white" src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"/>
+                  </template>
                 </a-list-item-meta>
               </a-list-item>
               <a-list-item>
                 <a-list-item-meta title="这种模板可以区分多种通知类型" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"/>
+                  <template #avatar>
+                    <a-avatar style="background-color: white" src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"/>
+                  </template>
                 </a-list-item-meta>
               </a-list-item>
             </a-list>

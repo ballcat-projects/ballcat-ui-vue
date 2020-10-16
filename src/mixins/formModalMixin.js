@@ -6,14 +6,12 @@ export default {
     return {
       visible: false,
       labelCol: {
-        xs: { span: 8 },
-        sm: { span: 24 },
-        lg: { span: 5}
+        xs: { span: 24 },
+        sm: { span: 5 }
       },
       wrapperCol: {
-        xs: { span: 16 },
-        sm: { span: 24 },
-        lg: { span: 17 }
+        xs: { span: 24 },
+        sm: { span: 16 }
       },
     }
   },

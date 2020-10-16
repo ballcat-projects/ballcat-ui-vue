@@ -47,8 +47,7 @@
           :loading ="loading"
           @change="handleTableChange"
         >
-          <span slot="action-slot" slot-scope="text, record">
-            <template>
+          <template #action-slot="text, record">
               <a v-has="'sys:config:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical"/>
               <a-popconfirm v-has="'sys:config:del'"
@@ -56,8 +55,7 @@
                 @confirm="() => handleDel(record)">
                 <a href="javascript:;">删除</a>
               </a-popconfirm>
-            </template>
-          </span>
+          </template>
         </a-table>
       </div>
     </a-card>

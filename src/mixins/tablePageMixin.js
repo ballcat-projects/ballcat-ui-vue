@@ -46,19 +46,11 @@ export default {
       // 已选中的数据主键集合
       selectedRowKeys: [],
       // 延迟加载，created时不主动加载数据
-      lazyLoad: false,
-
-      // 需要加载的 dictSlot数据
-      dictCodes: []
+      lazyLoad: false
     }
   },
-  mounted () {
-    this.loading = true
-    this.DictPool.initDict(this.dictCodes).then(() => {
-      !this.lazyLoad && this.loadData()
-    }).finally(() => {
-      this.loading = false
-    })
+  created () {
+    !this.lazyLoad && this.loadData()
   },
   methods: {
     /**
@@ -100,7 +92,8 @@ export default {
             this.$message.warning(res.message || 'error request')
           }
         }).catch((e) => {
-        this.$message.error(e.message || 'error request')
+          // 未被 axios拦截器处理过，则在这里继续处理
+          !e.resolved && this.$message.error(e.message || 'error request')
       }).finally(() => {
         this.loading = false
       })
@@ -137,15 +130,14 @@ export default {
       this.selectedRows = []
     },
 
-
     // 删除
     handleDel (record) {
       this.delObj(record[this.rowKey]).then(res => {
         if (res.code === 200) {
-          this.$message.success(res.msg)
+          this.$message.success(res.message)
           this.reloadTable()
         } else {
-          this.$message.error(res.msg)
+          this.$message.error(res.message)
         }
       })
     },
@@ -180,7 +172,7 @@ export default {
       this.$nextTick(function () {
         this.$refs.formPage.update(record)
       })
-    },
+    }
   }
 
 }

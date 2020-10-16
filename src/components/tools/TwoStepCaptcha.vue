@@ -6,8 +6,10 @@
     @cancel="handleCancel"
     :maskClosable="false"
   >
-    <div slot="title" :style="{ textAlign: 'center' }">两步验证</div>
-    <template slot="footer">
+    <template #title>
+      <div :style="{ textAlign: 'center' }">两步验证</div>
+    </template>
+    <template #footer>
       <div :style="{ textAlign: 'center' }">
         <a-button key="back" @click="handleCancel">返回</a-button>
         <a-button key="submit" type="primary" :loading="stepLoading" @click="handleStepOk">
