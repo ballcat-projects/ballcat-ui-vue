@@ -3,8 +3,8 @@
 
     <div v-show="tableShow">
       <a-row :gutter="14">
-        <a-col :md="5">
-          <a-card :bodyStyle="{padding: 12, height: '100%'}">
+        <a-col :md="5" :style="{height: organizationColHeight}">
+          <a-card :bodyStyle="{padding: '24px 18px'}" :bordered="false" style="height: 100%">
             <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization"/>
             <a-tree
               :blockNode="true"
@@ -13,18 +13,27 @@
               :selectedKeys="organizationSelectedKeys"
               @select="selectOrganization"
               @expand="expandOrganization"
+              :multiple="true"
               :replaceFields="{
                 title: 'name',
                 key: 'id',
                 value: 'id'
               }"
             >
+              <template v-slot:title="{ name }">
+                <span v-if="name.indexOf(searchValue) > -1">
+                  {{ name.substr(0, name.indexOf(searchValue)) }}
+                  <span style="color: #f50">{{ searchValue }}</span>
+                  {{ name.substr(name.indexOf(searchValue) + searchValue.length) }}
+                </span>
+                <span v-else>{{ name }}</span>
+              </template>
             </a-tree>
           </a-card>
         </a-col>
-        <a-col :md="19">
+        <a-col :md="19" ref="sysUserCol">
           <div class="ant-pro-table-search">
-            <a-form v-bind="searchFormItemLayout">
+            <a-form v-bind="searchFormLayout">
               <a-row :gutter="16">
                 <a-col :md="8" :sm="24">
                   <a-form-item label="用户名">
@@ -165,7 +174,6 @@
       </a-row>
     </div>
 
-
     <!--表单页面-->
     <a-card v-if="formInited" v-show="!tableShow" :bordered="false" :title="cardTitle">
       <form-page ref="formPage" @backToPage="backToPage" :organizationTree="organizationTree"></form-page>
@@ -224,18 +232,11 @@ export default {
       delObj: delObj,
       rowKey: 'userId',
 
+      searchValue: '',
       organizationTree: [],
       organizationExpandedKeys: [],
       organizationSelectedKeys: [],
-
-      searchFormItemLayout: {
-        labelCol: {
-          md: { span: 7 }
-        },
-        wrapperCol: {
-          md: { span: 17 }
-        }
-      },
+      organizationColHeight: '100%',
 
       // 表头
       columns: [
@@ -315,12 +316,25 @@ export default {
   },
   created () {
     getTree().then(res => {
+      this.addTitleSlot(res.data)
       this.organizationTree = res.data
       // 默认展开一级组织
       this.organizationExpandedKeys = res.data.map(x => x.id)
     })
   },
+  mounted () {
+    const elt = this.$refs.sysUserCol.$el
+    this.organizationColHeight = elt.clientHeight + 20 + 'px'
+  },
   methods: {
+    addTitleSlot (treeList) {
+      if (treeList) {
+        treeList.forEach(node => {
+          node.scopedSlots = { title: 'title' }
+          this.addTitleSlot(node.children)
+        })
+      }
+    },
     handleGrant (record) {
       if (!this.scopeInited) {
         this.scopeInited = true
@@ -375,16 +389,43 @@ export default {
         this.userInfo.avatar = avatar
       }
     },
-    searchOrganization () {
-      console.log('树查询')
+    searchOrganization (e) {
+      const value = e.target.value
+      let expandedKeys = []
+      if(value){
+        this.matchParentKey(0, this.organizationTree, expandedKeys)
+      }else{
+        expandedKeys = this.organizationTree.map(x => x.id)
+      }
+      Object.assign(this, {
+        organizationExpandedKeys: expandedKeys,
+        searchValue: value,
+        autoExpandParent: true,
+      });
     },
+    matchParentKey (pId, treeList, result) {
+      if (treeList) {
+        let matched = false
+        treeList.forEach(node => {
+          if(node.children && node.children.length > 0){
+            this.matchParentKey(node.id, node.children, result)
+          }
+          if(!matched && node.name.indexOf(this.searchValue) > -1){
+            matched = true
+            result.push(pId)
+          }
+        })
+      }
+    },
+
+
     /**
      * 选择组织机构
      * 被选择时，立刻进行查询操作
      */
     selectOrganization (selectedKeys, e) {
       this.organizationSelectedKeys = selectedKeys
-      this.queryParam.organizationId = selectedKeys[0]
+      this.queryParam.organizationId = selectedKeys.join(",")
       this.loadData()
     },
     /**

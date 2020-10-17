@@ -51,10 +51,10 @@ export default {
       // 搜索表单的布局
       searchFormLayout: {
         labelCol: {
-          md: { span: 8 }
+          md: { span: 6 }
         },
         wrapperCol: {
-          md: { span: 16 }
+          md: { span: 18 }
         },
       }
     }

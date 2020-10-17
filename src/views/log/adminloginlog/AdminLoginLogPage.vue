@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/log/adminloginlog'
+import { getPage } from '@/api/log/adminloginlog'
 import { TablePageMixin } from '@/mixins'
 
 export default {
@@ -101,7 +101,6 @@ export default {
   data () {
     return {
       getPage: getPage,
-      delObj: delObj,
 
       columns: [
         {
