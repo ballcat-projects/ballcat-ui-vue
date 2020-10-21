@@ -107,7 +107,7 @@
               </div>
             </div>
 
-            <div class="table-wrapper">
+            <div class="ant-pro-table-wrapper">
               <a-alert :showIcon="true" style="margin-bottom: 16px">
                 <template #message>
                   <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>

@@ -37,7 +37,7 @@
         </div>
 
         <!--数据表格区域-->
-        <div class="table-wrapper">
+        <div class="ant-pro-table-wrapper">
           <a-table
             ref="table"
             size="middle"

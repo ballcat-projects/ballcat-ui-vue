@@ -18,28 +18,26 @@
       </div>
 
       <!--数据表格区域-->
-      <div class="table-wrapper">
-        <a-table
-          ref="table"
-          size="small"
-          :rowKey="rowKey"
-          :columns="columns"
-          :dataSource="dataSource"
-          :pagination="pagination"
-          :loading="loading"
-          @change="handleTableChange"
-        >
-          <template #action-slot="text, record">
-              <a v-has="'sys:dict:edit'" @click="handleEdit(record)">编辑</a>
-              <a-divider type="vertical"/>
-              <a-popconfirm v-has="'sys:dict:del'"
-                            title="确认要删除吗？"
-                            @confirm="() => handleDel(record)">
-                <a href="javascript:;">删除</a>
-              </a-popconfirm>
-          </template>
-        </a-table>
-      </div>
+      <a-table
+        ref="table"
+        size="small"
+        :rowKey="rowKey"
+        :columns="columns"
+        :dataSource="dataSource"
+        :pagination="pagination"
+        :loading="loading"
+        @change="handleTableChange"
+      >
+        <template #action-slot="text, record">
+          <a v-has="'sys:dict:edit'" @click="handleEdit(record)">编辑</a>
+          <a-divider type="vertical"/>
+          <a-popconfirm v-has="'sys:dict:del'"
+                        title="确认要删除吗？"
+                        @confirm="() => handleDel(record)">
+            <a href="javascript:;">删除</a>
+          </a-popconfirm>
+        </template>
+      </a-table>
     </div>
 
     <!--表单页面-->
@@ -76,7 +74,7 @@ export default {
         {
           title: '#',
           dataIndex: 'id',
-          width: '45px',
+          width: '45px'
         },
         {
           title: '字典标识',
@@ -123,7 +121,7 @@ export default {
       this.dictName = record.title
       this.dictCode = record.code
       this.queryParam = {
-        "dictCode": this.dictCode
+        'dictCode': this.dictCode
       }
       this.loadData()
     },

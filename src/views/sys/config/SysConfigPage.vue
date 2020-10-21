@@ -36,7 +36,7 @@
             <a-button v-has="'sys:config:edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
           </div>
         </div>
-        <div class="table-wrapper">
+        <div class="ant-pro-table-wrapper">
           <!--数据表格-->
           <a-table
             ref="table"

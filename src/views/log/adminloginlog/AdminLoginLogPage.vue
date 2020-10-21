@@ -58,7 +58,7 @@
         <div class="ant-pro-table-toolbar-title">登陆日志</div>
       </div>
       <!--数据表格区域-->
-      <div class="table-wrapper">
+      <div class="ant-pro-table-wrapper">
         <a-table
           ref="table"
           size="middle"

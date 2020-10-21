@@ -45,7 +45,7 @@
         </div>
 
         <!--数据表格区域-->
-        <div class="table-wrapper">
+        <div class="ant-pro-table-wrapper">
           <a-table
             ref="table"
             size="middle"
@@ -136,7 +136,7 @@ export default {
         {
           title: '操作',
           dataIndex: 'action',
-          width: '150px',
+          width: '165px',
           scopedSlots: { customRender: 'action-slot' }
         }
       ],

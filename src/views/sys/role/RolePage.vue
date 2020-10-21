@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <div class="table-wrapper">
+        <div class="ant-pro-table-wrapper">
           <!--数据表格-->
           <a-table
             ref="table"

@@ -31,7 +31,7 @@
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">操作日志</div>
       </div>
-      <div class="table-wrapper">
+      <div class="ant-pro-table-wrapper">
         <!--数据表格-->
         <a-table
           ref="table"
