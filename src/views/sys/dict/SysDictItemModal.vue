@@ -117,6 +117,7 @@ export default {
   },
   methods: {
     show (record) {
+      this.tableShow = true
       this.visible = true
       this.dictName = record.title
       this.dictCode = record.code

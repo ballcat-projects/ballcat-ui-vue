@@ -6,19 +6,15 @@
     </a-form-item>
 
     <a-form-item label="字典标识">
-      <a-input placeholder="字典标识"
-               :disabled=true
-               v-decorator="['dictCode']"/>
+      <a-input placeholder="字典标识" v-decorator="['dictCode']" :disabled="true"/>
     </a-form-item>
 
     <a-form-item label="文本值">
-      <a-input placeholder="文本值"
-               v-decorator="['name']"/>
+      <a-input placeholder="文本值" v-decorator="['name']"/>
     </a-form-item>
 
     <a-form-item label="数据值">
-      <a-input placeholder="数据值"
-               v-decorator="['value']"/>
+      <a-input placeholder="数据值" v-decorator="['value']"/>
     </a-form-item>
 
     <a-form-item>
@@ -30,10 +26,8 @@
         </a-tooltip>
       </span>
       </template>
-      <a-input-number placeholder="排序（升序）"
-                      v-decorator="['sort', {initialValue: 1}]"
-                      :min=0
-                      style="width: 70%"/>
+      <a-input-number placeholder="排序（升序）" v-decorator="['sort', {initialValue: 1}]"
+                      :min=0 style="width: 70%"/>
     </a-form-item>
 
     <a-form-item label="附加属性">
@@ -45,8 +39,7 @@
     </a-form-item>
 
     <a-form-item label="备注">
-      <a-textarea placeholder="备注"
-                  v-decorator="['remarks']"
+      <a-textarea placeholder="备注"  v-decorator="['remarks']"
                   :autoSize="{ minRows: 3, maxRows: 5 }"/>
     </a-form-item>
 
@@ -121,7 +114,7 @@ export default {
      * 提交前校验数据
      */
     beforeStartSubmit () {
-      if(this.itemAttributes && !this.checkItemAttributes()){
+      if (this.itemAttributes && !this.checkItemAttributes()) {
         this.$message.error('附加属性必须为一个正确的json字符串对象或者为空')
         return false
       }
@@ -134,7 +127,7 @@ export default {
      * 格式化 attributes
      */
     itemAttributesFormat () {
-      if(this.itemAttributes && this.checkItemAttributes()){
+      if (this.itemAttributes && this.checkItemAttributes()) {
         this.itemAttributes = JSON.stringify(JSON.parse(this.itemAttributes), null, 2)
       }
     },
@@ -146,7 +139,8 @@ export default {
       let jsonStr
       try {
         jsonStr = JSON.parse(this.itemAttributes)
-      } catch (e) {}
+      } catch (e) {
+      }
       return jsonStr && typeof jsonStr == 'object'
     }
   }
