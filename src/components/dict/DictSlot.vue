@@ -41,3 +41,8 @@ export default {
   methods: {}
 }
 </script>
+<style scoped>
+.ant-tag {
+  margin-right: 0;
+}
+</style>

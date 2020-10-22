@@ -76,37 +76,38 @@ export default {
 
       columns: [
         {
-          title: '#',
-          dataIndex: 'id'
-        },
-        {
           title: '追踪ID',
-          dataIndex: 'traceId'
+          dataIndex: 'traceId',
+          width: '205px',
         },
         {
           title: '日志消息',
-          dataIndex: 'msg'
+          dataIndex: 'msg',
+          ellipsis: true,
+          width: '120px',
         },
         {
-          title: '操作类型',
+          title: '类型',
           dataIndex: 'type',
+          align: 'center',
           scopedSlots: { customRender: 'type-slot' }
         },
         {
           title: '请求IP',
           dataIndex: 'ip',
-          width: '105px'
+          width: '120px'
         },
         {
           title: '请求URI',
-          dataIndex: 'uri'
+          dataIndex: 'uri',
+          ellipsis: true
         },
         {
-          title: '请求方式',
+          title: '方法',
           dataIndex: 'method'
         },
         {
-          title: '执行时长',
+          title: '耗时',
           dataIndex: 'time',
           customRender: function (text) {
             return text + ' ms'
@@ -117,9 +118,8 @@ export default {
           dataIndex: 'operator'
         },
         {
-          title: '操作状态',
+          title: '状态',
           dataIndex: 'status',
-          width: '50px',
           scopedSlots: { customRender: 'status-slot' }
         },
         {

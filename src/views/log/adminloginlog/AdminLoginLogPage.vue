@@ -104,26 +104,24 @@ export default {
 
       columns: [
         {
-          title: '#',
-          dataIndex: 'id'
-        },
-        {
           title: '追踪ID',
-          dataIndex: 'traceId'
+          dataIndex: 'traceId',
+          width: '220px',
         },
         {
           title: '用户名',
           dataIndex: 'username'
         },
         {
-          title: '事件类型',
+          title: '事件',
           dataIndex: 'eventType',
+          align: 'center',
           scopedSlots: { customRender: 'event-type-slot' },
-          width: '80px'
         },
         {
           title: '登陆IP',
-          dataIndex: 'ip'
+          dataIndex: 'ip',
+          width: '120px'
         },
         {
           title: '浏览器',
@@ -140,7 +138,6 @@ export default {
         {
           title: '状态',
           dataIndex: 'status',
-          width: '50px',
           scopedSlots: { customRender: 'status-slot' }
         },
         {

@@ -72,44 +72,43 @@ export default {
 
       columns: [
         {
-          title: '#',
-          dataIndex: 'id'
-        },
-        {
           title: '追踪ID',
-          dataIndex: 'traceId'
+          dataIndex: 'traceId',
+          width: '205px'
         },
         {
           title: '用户名',
           dataIndex: 'username'
         },
         {
-          title: 'IP',
-          dataIndex: 'ip'
+          title: '请求IP',
+          dataIndex: 'ip',
+          width: '120px'
         },
-
         {
           title: '请求URI',
-          dataIndex: 'uri'
+          dataIndex: 'uri',
+          ellipsis: true
         },
         {
-          title: '请求方法',
+          title: '方法',
           dataIndex: 'method'
         },
         {
-          title: '响应状态码',
-          dataIndex: 'httpStatus'
-        },
-        {
-          title: '错误消息',
-          dataIndex: 'errorMsg'
-        },
-        {
-          title: '执行时长',
+          title: '耗时',
           dataIndex: 'time',
           customRender: function (text) {
             return text + ' ms'
           }
+        },
+        {
+          title: '状态码',
+          dataIndex: 'httpStatus'
+        },
+        {
+          title: '错误消息',
+          dataIndex: 'errorMsg',
+          ellipsis: true
         },
         {
           title: '创建时间',
