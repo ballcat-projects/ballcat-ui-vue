@@ -6,16 +6,13 @@
         <a-form v-bind="searchFormLayout">
           <a-row :gutter="16">
             <a-col :md="8" :sm="24">
-              <a-form-item label="ID">
-                <a-input v-model="queryParam.id" placeholder=""/>
+              <a-form-item label="字典标识">
+                <a-input v-model="queryParam.code" placeholder="字典标识"/>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
-              <a-form-item label="字典属性">
-                <dict-select dict-code="dict_property"
-                             placeholder="字典属性"
-                             v-model="queryParam.editable">
-                </dict-select>
+              <a-form-item label="字典标题">
+                <a-input v-model="queryParam.title" placeholder="字典标题"/>
               </a-form-item>
             </a-col>
             <!-- <template v-if="advanced">
@@ -115,7 +112,7 @@ export default {
           dataIndex: 'code'
         },
         {
-          title: '名称',
+          title: '标题',
           dataIndex: 'title'
         },
         {

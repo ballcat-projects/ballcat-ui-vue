@@ -6,16 +6,18 @@
     :visible="visible"
     width="600"
   >
-    <a-tree
-      checkable
-      :treeData="treeData"
-      :checkedKeys="checkedKeys"
-      :expandedKeys="expandedKeys"
-      :halfCheckedKeys="halfCheckedKeys"
-      @check="onCheck"
-      @expand="onExpand"
-    >
-    </a-tree>
+    <div style="margin-bottom: 60px">
+      <a-tree
+        checkable
+        :treeData="treeData"
+        :checkedKeys="checkedKeys"
+        :expandedKeys="expandedKeys"
+        :halfCheckedKeys="halfCheckedKeys"
+        @check="onCheck"
+        @expand="onExpand"
+      >
+      </a-tree>
+    </div>
 
     <div
       :style="{
