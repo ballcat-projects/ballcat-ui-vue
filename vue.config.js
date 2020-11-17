@@ -84,7 +84,7 @@ const vueConfig = {
             // less vars，customize ant design theme
             // 'primary-color': '#F5222D',
             // 'link-color': '#F5222D',
-            // 'border-radius-base': '4px'
+            'border-radius-base': '2px'
           },
           javascriptEnabled: true
         }
