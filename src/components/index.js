@@ -6,8 +6,6 @@ import Trend from '@/components/Trend'
 import MultiTab from '@/components/MultiTab'
 import Result from '@/components/Result'
 import IconSelector from '@/components/IconSelector'
-import ExceptionPage from '@/components/Exception'
-
 
 
 export {
@@ -17,8 +15,5 @@ export {
   Tree,
   MultiTab,
   Result,
-  ExceptionPage,
   IconSelector,
-
-
 }

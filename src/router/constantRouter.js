@@ -31,15 +31,18 @@ export const constantRouters = [
 
   {
     path: '/403',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/403')
+    name: '403',
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception')
   },
   {
     path: '/404',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')
+    name: '404',
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception')
   },
   {
     path: '/500',
-    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/500')
+    name: '500',
+    component: () => import(/* webpackChunkName: "fail" */ '@/views/exception')
   }
 
 ]
