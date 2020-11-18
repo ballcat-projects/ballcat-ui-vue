@@ -125,7 +125,6 @@ export default {
       // 输出
       this.$refs.cropper.getCropBlob((data) => {
         _this.uploadProcessor({ data: data, name: this.fileName }).then((data) => {
-          debugger
           _this.confirmLoading = false
           _this.$message.success('上传图片成功')
           _this.$emit('ok', data)

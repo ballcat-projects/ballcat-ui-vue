@@ -6,7 +6,7 @@ import {
   DEFAULT_COLOR,
   DEFAULT_COLOR_WEAK,
   DEFAULT_FIXED_HEADER,
-  DEFAULT_FIXED_SIDEMENU,
+  DEFAULT_FIXED_SIDE_MENU,
   DEFAULT_FIXED_HEADER_HIDDEN,
   DEFAULT_CONTENT_WIDTH_TYPE,
   DEFAULT_MULTI_TAB
@@ -52,7 +52,7 @@ const app = {
       state.fixedHeader = fixed
     },
     TOGGLE_FIXED_SIDERBAR: (state, fixed) => {
-      Vue.ls.set(DEFAULT_FIXED_SIDEMENU, fixed)
+      Vue.ls.set(DEFAULT_FIXED_SIDE_MENU, fixed)
       state.fixSiderbar = fixed
     },
     TOGGLE_FIXED_HEADER_HIDDEN: (state, show) => {

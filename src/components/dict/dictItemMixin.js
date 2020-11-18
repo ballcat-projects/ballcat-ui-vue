@@ -8,22 +8,18 @@ export default {
     }),
     dictItems () {
       if (!this.dictDataCache[this.dictCode]) {
-        this.requestData()
-        return []
+        this.fillDictCache([this.dictCode]).finally()
       }
-      return this.dictDataCache[this.dictCode]
+      return this.dictDataCache[this.dictCode] || []
     }
   },
   created () {
     if (!this.dictDataCache[this.dictCode]) {
-      this.requestData()
+      this.fillDictCache([this.dictCode]).finally()
     }
   },
   methods: {
-    requestData () {
-      this.getDictData([this.dictCode])
-    },
-    ...mapActions(['getDictData']),
+    ...mapActions(['fillDictCache']),
     getValByItem (dict) {
       let res = dict.value
       // 如果没有type， 按number 处理

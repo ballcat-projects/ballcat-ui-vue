@@ -2,19 +2,19 @@
 
 
 // 框架显示配置
-export const SIDEBAR_TYPE = 'SIDEBAR_TYPE'
-export const DEFAULT_THEME = 'DEFAULT_THEME'
-export const DEFAULT_LAYOUT_MODE = 'DEFAULT_LAYOUT_MODE'
-export const DEFAULT_COLOR = 'DEFAULT_COLOR'
-export const DEFAULT_COLOR_WEAK = 'DEFAULT_COLOR_WEAK'
-export const DEFAULT_FIXED_HEADER = 'DEFAULT_FIXED_HEADER'
-export const DEFAULT_FIXED_SIDEMENU = 'DEFAULT_FIXED_SIDEMENU'
-export const DEFAULT_FIXED_HEADER_HIDDEN = 'DEFAULT_FIXED_HEADER_HIDDEN'
-export const DEFAULT_CONTENT_WIDTH_TYPE = 'DEFAULT_CONTENT_WIDTH_TYPE'
-export const DEFAULT_MULTI_TAB = 'DEFAULT_MULTI_TAB'
+export const SIDEBAR_TYPE = 'sidebar_type'
+export const DEFAULT_THEME = 'default_theme'
+export const DEFAULT_LAYOUT_MODE = 'default_layout_mode'
+export const DEFAULT_COLOR = 'default_color'
+export const DEFAULT_COLOR_WEAK = 'default_color_weak'
+export const DEFAULT_FIXED_HEADER = 'default_fixed_header'
+export const DEFAULT_FIXED_SIDE_MENU = 'default_fixed_side_menu'
+export const DEFAULT_FIXED_HEADER_HIDDEN = 'default_fixed_header_hidden'
+export const DEFAULT_CONTENT_WIDTH_TYPE = 'default_content_width_type'
+export const DEFAULT_MULTI_TAB = 'default_multi_tab'
 
 // 用户信息
-export const ACCESS_TOKEN = 'Access-Token'
-export const USER_INFO = 'USER_INFO'
-export const PERMISSIONS = 'PERMISSIONS'
-export const ROLES = 'ROLES'
+export const ACCESS_TOKEN = 'access-token'
+export const USER_INFO = 'user_info'
+export const PERMISSIONS = 'permissions'
+export const ROLES = 'roles'
