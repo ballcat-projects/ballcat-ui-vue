@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { SET_DICT_CODE, DELETE_INVALID_DICT, SET_DICT_REQUEST_CACHE, RESET_DICT_REQUEST_CACHE_ITEM } from '@/store/mutation-types'
+import { DICT } from '@/store/mutation-types'
 import { getDictData, invalidDictHash } from '@/api/sys/sysdict'
 
 // 字典项hash列表的Key
@@ -15,16 +15,16 @@ const user = {
   },
 
   mutations: {
-    [SET_DICT_CODE](state, { dictCode, dictList }) {
+    [DICT.SET_DICT_CODE](state, { dictCode, dictList }) {
       Vue.set(state.dictDataCache, dictCode, dictList)
     },
-    [DELETE_INVALID_DICT](state, dictCode) {
+    [DICT.DELETE_INVALID_DICT](state, dictCode) {
       Vue.delete(state.dictDataCache, dictCode)
     },
-    [SET_DICT_REQUEST_CACHE](state, dictCode) {
+    [DICT.SET_DICT_REQUEST_CACHE](state, dictCode) {
       state.dictRequestCache[dictCode] = true;
     },
-    [RESET_DICT_REQUEST_CACHE_ITEM](state, dictCode) {
+    [DICT.RESET_DICT_REQUEST_CACHE_ITEM](state, dictCode) {
       state.dictRequestCache[dictCode] = false;
     },
   },
@@ -50,7 +50,7 @@ const user = {
         if (noDataList.length === 0 || state.dictRequestCache[noDataList.join(',')]) {
           return;
         }
-        commit(SET_DICT_REQUEST_CACHE, noDataList.join(','));
+        commit(DICT.SET_DICT_REQUEST_CACHE, noDataList.join(','));
         const res = await getDictData(noDataList);
         if (res.code === 200 && res.data) {
           res.data.forEach(dict => {
@@ -61,7 +61,7 @@ const user = {
               // 存储数据类型
               dictList.push({ ...item, valueType: dict.valueType });
             })
-            commit(SET_DICT_CODE, {
+            commit(DICT.SET_DICT_CODE, {
               dictCode,
               dictList
             });
@@ -73,7 +73,7 @@ const user = {
             Vue.ls.set(DICT_HASH_KEY, JSON.stringify(map));
           })
         }
-        commit(RESET_DICT_REQUEST_CACHE_ITEM, noDataList.join(','));
+        commit(DICT.RESET_DICT_REQUEST_CACHE_ITEM, noDataList.join(','));
       } catch (e) {
         console.log(e);
       }
@@ -91,7 +91,7 @@ const user = {
             Vue.ls.remove(DICT_DATA_KEY_PREFIX + dictCode);
             delete map[dictCode];
             // delete this.dictDataCache[dictCode]
-            commit(DELETE_INVALID_DICT, dictCode);
+            commit(DICT.DELETE_INVALID_DICT, dictCode);
           }
           // 更新删除数据后的Hash表
           Vue.ls.set(DICT_HASH_KEY, JSON.stringify(map));

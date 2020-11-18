@@ -10,7 +10,7 @@ import {
   DEFAULT_FIXED_HEADER_HIDDEN,
   DEFAULT_CONTENT_WIDTH_TYPE,
   DEFAULT_MULTI_TAB
-} from '@/store/mutation-types'
+} from '@/store/storage-types'
 
 const app = {
   state: {

@@ -15,7 +15,7 @@ import {
   USER_INFO,
   ROLES,
   PERMISSIONS
-} from '@/store/mutation-types'
+} from '@/store/storage-types'
 import config from '@/config/defaultSettings'
 
 export default function Initializer () {

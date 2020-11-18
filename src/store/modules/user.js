@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { login, logout } from '@/api/auth'
-import { ACCESS_TOKEN, USER_INFO, PERMISSIONS, ROLES } from '@/store/mutation-types'
+import { ACCESS_TOKEN, USER_INFO, PERMISSIONS, ROLES } from '@/store/storage-types'
 
 const user = {
   state: {
