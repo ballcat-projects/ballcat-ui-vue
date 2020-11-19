@@ -2,9 +2,7 @@ module.exports = {
   root: true,
   parser: "vue-eslint-parser",
   parserOptions: {
-    parser: "babel-eslint",
-    sourceType: 'module',
-    ecmaVersion: 2015
+    parser: "babel-eslint"
   },
   extends: [
     // add more generic rulesets here, such as:
