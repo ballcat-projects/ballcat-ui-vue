@@ -1,6 +1,6 @@
 <template>
   <a-select
-    :allowClear="true"
+    :allowClear="allowClear"
     :placeholder="placeholder"
     :disabled="disabled"
     :value="selectedValue"
@@ -20,6 +20,7 @@ export default {
   name: 'DictSelect',
   mixins: [DictMixin, dictItemMixin],
   props: {
+    allowClear: true,
     placeholder: String,
     placeholderOption: {
       type: Boolean,
