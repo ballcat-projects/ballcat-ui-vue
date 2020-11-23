@@ -84,6 +84,10 @@ export default {
       delObj: delObj,
       columns: [
         {
+          title: '标题',
+          dataIndex: 'title'
+        },
+        {
           title: '关键字',
           dataIndex: 'keyword'
         },

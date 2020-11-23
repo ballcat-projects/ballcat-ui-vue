@@ -1,34 +1,35 @@
 <template>
   <div>
     <a-input-group compact>
+      <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
+               v-if="!multiple" v-model="selectValue"/>
+      <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
+                v-model="selectValue"
+                @deselect="deselect" :open="false"/>
+
       <a-button :disabled="disabled" title="单击以选择数据" @click="visible=true;reloadTable()">
         <a-icon type="select"/>
       </a-button>
       <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
         <a-icon style="color: red;" type="close-circle"/>
       </a-button>
-
-      <a-input :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===1" v-model="selectValue"
-               @change="changeValue"/>
-      <a-input-number :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" v-if="!multiple && retFieldDataType===2"
-                      v-model="selectValue"
-                      @change="changeValue"/>
-      <a-select :disabled="disabled" style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple" v-model="selectValue"
-                @deselect="deselect"
-                @change="changeValue"/>
     </a-input-group>
-    <a-modal class="lov-model" width="800px" @cancel="visible=false" @ok="selectData" :visible="visible" :confirmLoading="loading"
-             :footer="ret?undefined:null" :bodyStyle="{paddingBottom:'0'}">
-      <div v-if="search" class="table-page-search-wrapper">
+
+    <a-modal class="lov-model" width="800px" @cancel="visible=false" @ok="selectData" :visible="visible"
+             :confirmLoading="loading"
+             :footer="ret?undefined:null" :bodyStyle="{paddingBottom:'0'}" :closable="title.length>0" :title="title">
+      <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
         <a-form layout="inline">
           <a-row :gutter="12">
-            <a-col :md="8" :sm="24" v-for="item in searchList" :key="item.id">
+            <a-col :span="6" v-for="item in searchList" :key="item.id">
               <a-form-item :label="item.label">
-                <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]" :placeholder="item.placeholder"/>
+                <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]"
+                         :placeholder="item.placeholder"/>
                 <a-input-number style="width: 100%" v-if="item.tag==='INPUT_NUMBER'" v-model="queryParam[item.field]"
                                 :placeholder="item.placeholder"
                                 :min="item.min" :max="item.max"/>
-                <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]" :placeholder="item.placeholder"
+                <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]"
+                          :placeholder="item.placeholder"
                           :options="item.options"/>
                 <dict-select v-if="item.tag==='DICT_SELECT'" :placeholder="item.placeholder" :dict-code="item.dictCode"
                              v-model="queryParam[item.field]"/>
@@ -61,10 +62,10 @@
 </template>
 
 <script>
-import { TablePageMixin } from '@/mixins'
+import {TablePageMixin} from '@/mixins'
 import Vue from 'vue'
-import { axios } from '@/utils/request'
-import { getData } from '@/api/sys/lov'
+import {axios} from '@/utils/request'
+import {getData} from '@/api/sys/lov'
 
 export default {
   name: 'Lov',
@@ -89,11 +90,11 @@ export default {
     }
   },
   watch: {
-    value () {
+    value() {
       this.copyValue()
     }
   },
-  data () {
+  data() {
     return {
       customRow: (record) => {
         return {
@@ -103,11 +104,11 @@ export default {
               const index = this.selectedRowKeys.indexOf(record[this.rowKey])
               if (index === -1) {
                 // 单击未选中的列, 插入数据
-                if (this.multiple){
+                if (this.multiple) {
                   // 多选
                   this.selectedRowKeys.push(record[this.rowKey])
                   this.selectedRows.push(record)
-                }else {
+                } else {
                   // 单选
                   this.selectedRowKeys = [].concat(record[this.rowKey])
                   this.selectedRows = [].concat(record)
@@ -129,63 +130,47 @@ export default {
       multiple: false,
       search: false,
       ret: false,
+      title: '',
       searchShowList: [],
       searchList: [],
       retField: '',
-      retFieldDataType: undefined,
       // 已选中数据
-      selectValue: [],
+      selectValue: undefined,
       emitting: false
     }
   },
-  created () {
+  created() {
     if (!this.lazy) {
       this.load()
     }
   },
   methods: {
-    changeValue (e) {
-      // input 标签手动修改了值
-      if (!this.emitting) {
-        this.emitting = true
-        setTimeout(() => {
-          this.emit(this.selectValue)
-          this.emitting = false
-          // 300 毫秒后更新
-        }, 300)
-      }
-    },
-    load () {
+    load() {
       this.loading = true
 
       // 获取到 keyword
       let cache_key = this.getCacheKey()
 
       this.initByKeyword(cache_key, this.keyword).then(json => {
+        if (json.title && json.title.trim().length > 0) {
+          this.title = json.title
+        } else {
+          this.title = ''
+        }
         // 存储位置
         this.position = json.position.toLowerCase()
         // 主键
         this.rowKey = json.key
         // 返回字段
         this.retField = json.retField
-        // 返回字段数据类型
-        this.retFieldDataType = json.retFieldDataType
         // 固定请求参数
         if (json.fixedParams) {
           this.fixedParams = JSON.parse(json.fixedParams)
         }
         // 是否需要多选
-        if (Boolean(json.multiple)) {
-          this.multiple = true
-        }
-        // 是否需要搜索框
-        if (Boolean(json.search)) {
-          this.search = true
-        }
+        this.multiple = Boolean(json.multiple)
         // 是否需要返回数据
-        if (Boolean(json.ret)) {
-          this.ret = true
-        }
+        this.ret = Boolean(json.ret)
 
         // 设置获取数据方法
         this.getPage = (query) => {
@@ -193,7 +178,7 @@ export default {
             url: json.url,
             method: json.method
           }
-          req[this.position] = { ...this.fixedParams, ...query }
+          req[this.position] = {...this.fixedParams, ...query}
           return axios(req)
         }
 
@@ -221,23 +206,24 @@ export default {
           }
         })
         this.searchList = json.searchList
+        this.search = json.searchList.length > 0
 
         // 复制传入参数
         this.copyValue()
       })
     },
-    getCacheKey () {
+    getCacheKey() {
       return this.getCacheKeyByKeyword(this.keyword)
     },
-    getCacheKeyByKeyword (keyword) {
+    getCacheKeyByKeyword(keyword) {
       return `lov_${keyword}`
     },
-    onSelectAll (selected, selectedRows, changeRows) {
+    onSelectAll(selected, selectedRows, changeRows) {
       changeRows.forEach(row => {
         this.onSelect(row, selected, selectedRows)
       })
     },
-    onSelect (record, selected, selectedRows, nativeEvent) {
+    onSelect(record, selected, selectedRows, nativeEvent) {
       // 选中处理
       if (selected) {
         if (!this.multiple) {
@@ -255,7 +241,7 @@ export default {
       }
       this.selectedRows = selectedRows
     },
-    initByKeyword (cache_key, keyword) {
+    initByKeyword(cache_key, keyword) {
       const cache_data = Vue.ls.get(cache_key)
       if (!cache_data) {
         return getData(keyword).then((res => {
@@ -266,7 +252,7 @@ export default {
         return Promise.resolve(JSON.parse(cache_data))
       }
     },
-    selectData () {
+    selectData() {
       // 所有已选中值
       let val = this.selectValue
       if (this.multiple) {
@@ -286,58 +272,28 @@ export default {
       this.emit(val)
       this.visible = false
     },
-    emit (val) {
+    emit(val) {
       // v-decorator 方式的表单值联动
       this.$emit('change', val)
       // v-model 方式的表单值联动
       this.$emit('input', val)
     },
-    getDataByType (row) {
+    getDataByType(row) {
       if (!row) {
         return null
       }
-      let data = row[this.retField]
-      if (this.retFieldDataType === 1) {
-        data = String(data)
-      } else if (this.retFieldDataType === 2) {
-        data = Number(data)
-      }
-      return data
+      return row[this.retField]
     },
-    copyValue () {
+    copyValue() {
       if (this.multiple) {
         this.selectValue = this.value ? [].concat(this.value) : []
       } else {
         // 单选处理
-        if (this.retFieldDataType === 1) {
-          this.selectValue = this.value ? `${this.value}` : null
-        } else if (this.retFieldDataType === 2) {
-          this.selectValue = this.value ? Number(this.value) : null
-        }
+        this.selectValue = this.value
       }
-    },
-    // 接收数据处理
-    handlerData (rows) {
-      for (let i = 0; i < rows.length; i++) {
-        let row = rows[i]
-        if (this.multiple) {
-          // 多选时，加载了一个被选中的数据
-          if (this.selectValue.indexOf(row[this.retField]) !== -1 && this.selectedRowKeys.indexOf(row[this.rowKey]) === -1) {
-            this.selectedRows = this.selectedRows.concat(row)
-            this.selectedRowKeys = this.selectedRowKeys.concat(row[this.rowKey])
-          }
-        } else {
-          // 单选
-          if (this.selectValue === row[this.retField]) {
-            this.selectedRows = [].concat(row)
-            this.selectedRowKeys = [].concat(row[this.rowKey])
-          }
-        }
-      }
-      return rows
     },
     // select 取消选中时
-    deselect (value, option) {
+    deselect(value, option) {
       for (let i = 0; i < this.selectedRows.length; i++) {
         let item = this.selectedRows[i]
         if (item[this.retField] === value) {
@@ -346,12 +302,8 @@ export default {
         }
       }
     },
-    cleanAll () {
-      if (this.multiple) {
-        this.emit([])
-      } else {
-        this.emit(null)
-      }
+    cleanAll() {
+      this.emit(undefined)
       this.selectedRows = []
       this.selectedRowKeys = []
     }
