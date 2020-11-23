@@ -58,7 +58,7 @@ const user = {
 
             // 存储数据类型 TODO 后端返回
             dictItems.forEach(item => {
-              dictItems.valueType = dict.valueType
+              item.valueType = dict.valueType
             })
 
             // ls中存储字典
