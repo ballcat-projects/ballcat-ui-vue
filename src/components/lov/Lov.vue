@@ -2,16 +2,17 @@
   <div>
     <a-input-group compact>
       <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
-               v-if="!multiple" v-model="selectValue"/>
+               v-if="!multiple" :value="selectValue" />
       <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
-                v-model="selectValue"
-                @deselect="deselect" :open="false"/>
+                :value="selectValue"
+                @deselect="deselect" :open="false" />
 
-      <a-button :disabled="disabled" title="单击以选择数据" @click="visible=true;reloadTable()">
-        <a-icon type="select"/>
+      <a-button :disabled="disabled" title="单击以选择数据"
+                @click="visible=true;reloadTable();multiple?backVal=[...value]:backVal=value">
+        <a-icon type="select" />
       </a-button>
       <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
-        <a-icon style="color: red;" type="close-circle"/>
+        <a-icon style="color: red;" type="close-circle" />
       </a-button>
     </a-input-group>
 
@@ -24,15 +25,15 @@
             <a-col :span="6" v-for="item in searchList" :key="item.id">
               <a-form-item :label="item.label">
                 <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]"
-                         :placeholder="item.placeholder"/>
+                         :placeholder="item.placeholder" />
                 <a-input-number style="width: 100%" v-if="item.tag==='INPUT_NUMBER'" v-model="queryParam[item.field]"
                                 :placeholder="item.placeholder"
-                                :min="item.min" :max="item.max"/>
+                                :min="item.min" :max="item.max" />
                 <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]"
                           :placeholder="item.placeholder"
-                          :options="item.options"/>
+                          :options="item.options" />
                 <dict-select v-if="item.tag==='DICT_SELECT'" :placeholder="item.placeholder" :dict-code="item.dictCode"
-                             v-model="queryParam[item.field]"/>
+                             v-model="queryParam[item.field]" />
               </a-form-item>
             </a-col>
           </a-row>
@@ -62,10 +63,10 @@
 </template>
 
 <script>
-import {TablePageMixin} from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 import Vue from 'vue'
-import {axios} from '@/utils/request'
-import {getData} from '@/api/sys/lov'
+import { axios } from '@/utils/request'
+import { getData } from '@/api/sys/lov'
 
 export default {
   name: 'Lov',
@@ -78,14 +79,86 @@ export default {
     },
     lazy: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return false
       }
     },
     disabled: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return false
+      }
+    },
+    /**
+     * 选中表格行处理
+     */
+    selectRow: {
+      type: Function,
+      default: function(record, selectedRows, nativeEvent) {
+        if (!this.multiple) {
+          // 单选处理
+          this.selectedRowKeys = [].concat(record[this.rowKey])
+          this.backVal = this.selectRowShowHandler(record)
+        } else {
+          this.selectedRowKeys = this.selectedRowKeys.concat(record[this.rowKey])
+          this.backVal = this.backVal.concat(this.selectRowShowHandler(record))
+        }
+        this.selectedRows = selectedRows
+      }
+    },
+    /**
+     * backVal中是否包含指定列数据
+     */
+    backValIndexOfRow: {
+      type: Function,
+      default: function(row) {
+        return this.backVal.indexOf(`${this.selectRowRetHandler(row)}`)
+      }
+    },
+    /**
+     * 取消选中行
+     */
+    unselectRow: {
+      type: Function,
+      default: function(record, selectedRows, nativeEvent) {
+        // 移除key
+        this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(record[this.rowKey]), 1)
+        // 移除行数据
+        this.selectedRows = selectedRows
+        // 多选
+        if (this.multiple) {
+          const index = this.backValIndexOfRow(record)
+          if (index !== -1) {
+            this.backVal.splice(index, 1)
+          }
+        }
+      }
+    },
+    /**
+     * 选中数据展示处理, 返回展示内容
+     */
+    selectRowShowHandler: {
+      type: Function,
+      default: function(row) {
+        return `${row[this.retField]}`
+      }
+    },
+    /**
+     * 传入数据展示处理, 返回展示内容
+     */
+    putValueShowHandler: {
+      type: Function,
+      default: function(data) {
+        return `${data}`
+      }
+    },
+    /**
+     * 选中数据返回处理
+     */
+    selectRowRetHandler: {
+      type: Function,
+      default: function(row) {
+        return `${row[this.retField]}`
       }
     }
   },
@@ -101,22 +174,30 @@ export default {
           on: {
             click: (event) => {
               // 是否已选中
-              const index = this.selectedRowKeys.indexOf(record[this.rowKey])
+              let index = this.selectedRowKeys.indexOf(record[this.rowKey])
               if (index === -1) {
                 // 单击未选中的列, 插入数据
                 if (this.multiple) {
                   // 多选
                   this.selectedRowKeys.push(record[this.rowKey])
                   this.selectedRows.push(record)
+                  this.backVal.push(this.selectRowShowHandler(record))
                 } else {
                   // 单选
                   this.selectedRowKeys = [].concat(record[this.rowKey])
                   this.selectedRows = [].concat(record)
+                  this.backVal = this.selectRowShowHandler(record)
                 }
               } else {
                 // 单击已选中的列, 删除选中数据
                 this.selectedRowKeys.splice(index, 1)
                 this.selectedRows.splice(index, 1)
+
+                // 移除 backVal 中的数据
+                index = this.backValIndexOfRow(record)
+                if (index !== -1) {
+                  this.backVal.splice(index, 1)
+                }
               }
             }
           }
@@ -136,7 +217,9 @@ export default {
       retField: '',
       // 已选中数据
       selectValue: undefined,
-      emitting: false
+      emitting: false,
+      // 备份值， 所有操作对该值修改，emit该值，选择时重置该值
+      backVal: undefined
     }
   },
   created() {
@@ -168,7 +251,14 @@ export default {
           this.fixedParams = JSON.parse(json.fixedParams)
         }
         // 是否需要多选
-        this.multiple = Boolean(json.multiple)
+        let multiple = Boolean(json.multiple)
+        if (multiple) {
+          // 多选
+          this.selectValue = []
+        } else {
+          this.selectValue = ''
+        }
+        this.multiple = multiple
         // 是否需要返回数据
         this.ret = Boolean(json.ret)
 
@@ -178,7 +268,7 @@ export default {
             url: json.url,
             method: json.method
           }
-          req[this.position] = {...this.fixedParams, ...query}
+          req[this.position] = { ...this.fixedParams, ...query }
           return axios(req)
         }
 
@@ -226,20 +316,10 @@ export default {
     onSelect(record, selected, selectedRows, nativeEvent) {
       // 选中处理
       if (selected) {
-        if (!this.multiple) {
-          // 单选处理
-          this.selectedRowKeys = [].concat(record[this.rowKey])
-        } else {
-          this.selectedRowKeys = this.selectedRowKeys.concat(record[this.rowKey])
-        }
+        this.selectRow(record, selectedRows, nativeEvent)
       } else {
-        this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(record[this.rowKey]), 1)
-        const index = this.selectValue.indexOf(this.getDataByType(record))
-        if (index !== -1) {
-          this.selectValue.splice(index, 1)
-        }
+        this.unselectRow(record, selectedRows, nativeEvent)
       }
-      this.selectedRows = selectedRows
     },
     initByKeyword(cache_key, keyword) {
       const cache_data = Vue.ls.get(cache_key)
@@ -253,24 +333,62 @@ export default {
       }
     },
     selectData() {
-      // 所有已选中值
-      let val = this.selectValue
-      if (this.multiple) {
-        this.selectedRows.forEach(row => {
-          let data = this.getDataByType(row)
-
-          // 如果值是未选中的
-          if (val.indexOf(data) === -1) {
-            val.push(data)
-          }
-        })
-      } else {
-        // 单选处理
-        val = this.getDataByType(this.selectedRows[0])
-      }
-
-      this.emit(val)
+      this.emit(this.backVal)
       this.visible = false
+    },
+    loadData() {
+      // 合并查询参数，分页参数，排序参数，过滤参数
+      const params = Object.assign(this.queryParam, {
+        current: this.pagination.current,
+        size: this.pagination.pageSize
+      }, {
+        sortField: this.sortField,
+        sortAsc: this.sortAsc
+      }, { ...this.filters })
+
+      this.loading = true
+      this.getPage(params)
+        .then(res => {
+          if (res.code === 200) {
+            const page = res.data
+            // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
+            if (page.records.length === 0 && this.pagination.current > 1) {
+              this.pagination.current--
+              this.loadData()
+              return
+            }
+            this.dataSource = page.records
+            this.handlerData(page.records)
+            this.pagination.total = page.total
+          } else {
+            this.$message.warning(res.message || 'error request')
+          }
+        }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      }).finally(() => {
+        this.loading = false
+      })
+    },
+    // 接收数据处理
+    handlerData(rows) {
+      for (let i = 0; i < rows.length; i++) {
+        let row = rows[i]
+        if (this.multiple) {
+          // 多选时，加载了一个被选中的数据
+          if (this.backValIndexOfRow(row) !== -1 && this.selectedRowKeys.indexOf(row[this.rowKey]) === -1) {
+            this.selectedRows = this.selectedRows.concat(row)
+            this.selectedRowKeys = this.selectedRowKeys.concat(row[this.rowKey])
+          }
+        } else {
+          // 单选
+          if (this.selectValue === this.selectRowRetHandler(row)) {
+            this.selectedRows = [].concat(row)
+            this.selectedRowKeys = [].concat(row[this.rowKey])
+          }
+        }
+      }
+      return rows
     },
     emit(val) {
       // v-decorator 方式的表单值联动
@@ -278,32 +396,29 @@ export default {
       // v-model 方式的表单值联动
       this.$emit('input', val)
     },
-    getDataByType(row) {
-      if (!row) {
-        return null
-      }
-      return row[this.retField]
-    },
     copyValue() {
       if (this.multiple) {
         this.selectValue = this.value ? [].concat(this.value) : []
+        this.backVal = this.value ? [].concat(this.value) : []
       } else {
         // 单选处理
         this.selectValue = this.value
+        this.backVal = this.value
       }
     },
     // select 取消选中时
     deselect(value, option) {
       for (let i = 0; i < this.selectedRows.length; i++) {
         let item = this.selectedRows[i]
-        if (item[this.retField] === value) {
+        if (this.selectRowRetHandler(item) === value) {
           this.selectedRows.splice(i, 1)
           this.selectedRowKeys.splice(i, 1)
+          this.backVal.splice(i, 1)
         }
       }
     },
     cleanAll() {
-      this.emit(undefined)
+      this.emit(this.multiple ? [] : '')
       this.selectedRows = []
       this.selectedRowKeys = []
     }
