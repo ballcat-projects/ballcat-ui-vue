@@ -98,10 +98,10 @@ export default {
         if (!this.multiple) {
           // 单选处理
           this.selectedRowKeys = [].concat(record[this.rowKey])
-          this.backVal = this.selectRowShowHandler(record)
+          this.backVal = this.retHandlerBySelectRow(record)
         } else {
           this.selectedRowKeys = this.selectedRowKeys.concat(record[this.rowKey])
-          this.backVal = this.backVal.concat(this.selectRowShowHandler(record))
+          this.backVal = this.backVal.concat(this.retHandlerBySelectRow(record))
         }
         this.selectedRows = selectedRows
       }
@@ -112,7 +112,7 @@ export default {
     backValIndexOfRow: {
       type: Function,
       default: function(row) {
-        return this.backVal.indexOf(`${this.selectRowRetHandler(row)}`)
+        return this.backVal.indexOf(`${this.retHandlerBySelectRow(row)}`)
       }
     },
     /**
@@ -137,7 +137,7 @@ export default {
     /**
      * 选中数据展示处理, 返回展示内容
      */
-    selectRowShowHandler: {
+    showHandlerBySelectRow: {
       type: Function,
       default: function(row) {
         return `${row[this.retField]}`
@@ -155,7 +155,7 @@ export default {
     /**
      * 选中数据返回处理
      */
-    selectRowRetHandler: {
+    retHandlerBySelectRow: {
       type: Function,
       default: function(row) {
         return `${row[this.retField]}`
@@ -181,12 +181,12 @@ export default {
                   // 多选
                   this.selectedRowKeys.push(record[this.rowKey])
                   this.selectedRows.push(record)
-                  this.backVal.push(this.selectRowShowHandler(record))
+                  this.backVal.push(this.retHandlerBySelectRow(record))
                 } else {
                   // 单选
                   this.selectedRowKeys = [].concat(record[this.rowKey])
                   this.selectedRows = [].concat(record)
-                  this.backVal = this.selectRowShowHandler(record)
+                  this.backVal = this.retHandlerBySelectRow(record)
                 }
               } else {
                 // 单击已选中的列, 删除选中数据
@@ -219,7 +219,7 @@ export default {
       selectValue: undefined,
       emitting: false,
       // 备份值， 所有操作对该值修改，emit该值，选择时重置该值
-      backVal: undefined
+      backVal: null
     }
   },
   created() {
@@ -382,7 +382,7 @@ export default {
           }
         } else {
           // 单选
-          if (this.selectValue === this.selectRowRetHandler(row)) {
+          if (this.selectValue === this.retHandlerBySelectRow(row)) {
             this.selectedRows = [].concat(row)
             this.selectedRowKeys = [].concat(row[this.rowKey])
           }
@@ -398,7 +398,13 @@ export default {
     },
     copyValue() {
       if (this.multiple) {
-        this.selectValue = this.value ? [].concat(this.value) : []
+        let selectValue = []
+        if (this.value){
+          this.value.forEach(value => {
+            selectValue.push(this.putValueShowHandler(value))
+          })
+        }
+        this.selectValue = [].concat(selectValue)
         this.backVal = this.value ? [].concat(this.value) : []
       } else {
         // 单选处理
@@ -410,7 +416,7 @@ export default {
     deselect(value, option) {
       for (let i = 0; i < this.selectedRows.length; i++) {
         let item = this.selectedRows[i]
-        if (this.selectRowRetHandler(item) === value) {
+        if (this.retHandlerBySelectRow(item) === value) {
           this.selectedRows.splice(i, 1)
           this.selectedRowKeys.splice(i, 1)
           this.backVal.splice(i, 1)
@@ -421,7 +427,7 @@ export default {
       this.emit(this.multiple ? [] : '')
       this.selectedRows = []
       this.selectedRowKeys = []
-    }
+    },
   }
 }
 </script>
