@@ -2,17 +2,17 @@
   <div>
     <a-input-group compact>
       <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
-               v-if="!multiple" :value="selectValue" />
+               v-if="!multiple" :value="selectValue"/>
       <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
                 :value="selectValue"
-                @deselect="deselect" :open="false" />
+                @deselect="deselect" :open="false"/>
 
       <a-button :disabled="disabled" title="单击以选择数据"
                 @click="visible=true;reloadTable();multiple?backVal=[...value]:backVal=value">
-        <a-icon type="select" />
+        <a-icon type="select"/>
       </a-button>
       <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
-        <a-icon style="color: red;" type="close-circle" />
+        <a-icon style="color: red;" type="close-circle"/>
       </a-button>
     </a-input-group>
 
@@ -25,15 +25,15 @@
             <a-col :span="6" v-for="item in searchList" :key="item.id">
               <a-form-item :label="item.label">
                 <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]"
-                         :placeholder="item.placeholder" />
+                         :placeholder="item.placeholder"/>
                 <a-input-number style="width: 100%" v-if="item.tag==='INPUT_NUMBER'" v-model="queryParam[item.field]"
                                 :placeholder="item.placeholder"
-                                :min="item.min" :max="item.max" />
+                                :min="item.min" :max="item.max"/>
                 <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]"
                           :placeholder="item.placeholder"
-                          :options="item.options" />
+                          :options="item.options"/>
                 <dict-select v-if="item.tag==='DICT_SELECT'" :placeholder="item.placeholder" :dict-code="item.dictCode"
-                             v-model="queryParam[item.field]" />
+                             v-model="queryParam[item.field]"/>
               </a-form-item>
             </a-col>
           </a-row>
@@ -63,10 +63,10 @@
 </template>
 
 <script>
-import { TablePageMixin } from '@/mixins'
+import {TablePageMixin} from '@/mixins'
 import Vue from 'vue'
-import { axios } from '@/utils/request'
-import { getData } from '@/api/sys/lov'
+import {axios} from '@/utils/request'
+import {getData} from '@/api/sys/lov'
 
 export default {
   name: 'Lov',
@@ -79,13 +79,13 @@ export default {
     },
     lazy: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false
       }
     },
     disabled: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false
       }
     },
@@ -94,7 +94,7 @@ export default {
      */
     selectRow: {
       type: Function,
-      default: function(record, selectedRows, nativeEvent) {
+      default: function (record, selectedRows, nativeEvent) {
         if (!this.multiple) {
           // 单选处理
           this.selectedRowKeys = [].concat(record[this.rowKey])
@@ -111,7 +111,7 @@ export default {
      */
     backValIndexOfRow: {
       type: Function,
-      default: function(value,row) {
+      default: function (value, row) {
         return value.indexOf(this.retHandlerBySelectRow(row))
       }
     },
@@ -120,14 +120,14 @@ export default {
      */
     unselectRow: {
       type: Function,
-      default: function(record, selectedRows, nativeEvent) {
+      default: function (record, selectedRows, nativeEvent) {
         // 移除key
         this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(record[this.rowKey]), 1)
         // 移除行数据
         this.selectedRows = selectedRows
         // 多选
         if (this.multiple) {
-          const index = this.backValIndexOfRow(record)
+          const index = this.backValIndexOfRow(this.backVal, record)
           if (index !== -1) {
             this.backVal.splice(index, 1)
           }
@@ -139,7 +139,7 @@ export default {
      */
     showHandlerBySelectRow: {
       type: Function,
-      default: function(row) {
+      default: function (row) {
         return `${row[this.retField]}`
       }
     },
@@ -148,7 +148,7 @@ export default {
      */
     putValueShowHandler: {
       type: Function,
-      default: function(data) {
+      default: function (data) {
         return `${data}`
       }
     },
@@ -157,7 +157,7 @@ export default {
      */
     retHandlerBySelectRow: {
       type: Function,
-      default: function(row) {
+      default: function (row) {
         return row[this.retField]
       }
     }
@@ -194,7 +194,7 @@ export default {
                 this.selectedRows.splice(index, 1)
 
                 // 移除 backVal 中的数据
-                index = this.backValIndexOfRow(record)
+                index = this.backValIndexOfRow(this.backVal, record)
                 if (index !== -1) {
                   this.backVal.splice(index, 1)
                 }
@@ -268,7 +268,7 @@ export default {
             url: json.url,
             method: json.method
           }
-          req[this.position] = { ...this.fixedParams, ...query }
+          req[this.position] = {...this.fixedParams, ...query}
           return axios(req)
         }
 
@@ -344,7 +344,7 @@ export default {
       }, {
         sortField: this.sortField,
         sortAsc: this.sortAsc
-      }, { ...this.filters })
+      }, {...this.filters})
 
       this.loading = true
       this.getPage(params)
@@ -376,7 +376,7 @@ export default {
         let row = rows[i]
         if (this.multiple) {
           // 多选时，加载了一个被选中的数据
-          if (this.backValIndexOfRow(row) !== -1 && this.selectedRowKeys.indexOf(row[this.rowKey]) === -1) {
+          if (this.backValIndexOfRow(this.backVal, row) !== -1 && this.selectedRowKeys.indexOf(row[this.rowKey]) === -1) {
             this.selectedRows = this.selectedRows.concat(row)
             this.selectedRowKeys = this.selectedRowKeys.concat(row[this.rowKey])
           }
@@ -399,7 +399,7 @@ export default {
     copyValue() {
       if (this.multiple) {
         let selectValue = []
-        if (this.value){
+        if (this.value) {
           this.value.forEach(value => {
             selectValue.push(this.putValueShowHandler(value))
           })
