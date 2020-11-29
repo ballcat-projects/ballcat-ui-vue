@@ -111,8 +111,8 @@ export default {
      */
     backValIndexOfRow: {
       type: Function,
-      default: function(row) {
-        return this.backVal.indexOf(`${this.retHandlerBySelectRow(row)}`)
+      default: function(value,row) {
+        return value.indexOf(this.retHandlerBySelectRow(row))
       }
     },
     /**
@@ -158,7 +158,7 @@ export default {
     retHandlerBySelectRow: {
       type: Function,
       default: function(row) {
-        return `${row[this.retField]}`
+        return row[this.retField]
       }
     }
   },
