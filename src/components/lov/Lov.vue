@@ -4,11 +4,10 @@
       <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
                v-if="!multiple" :value="selectValue"/>
       <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
-                :value="selectValue"
-                @deselect="deselect" :open="false"/>
+                 :value="selectValue" :open="false" @deselect="multipleDeselect"/>
 
       <a-button :disabled="disabled" title="单击以选择数据"
-                @click="visible=true;reloadTable();multiple?backVal=[...value]:backVal=value">
+                @click="showModal">
         <a-icon type="select"/>
       </a-button>
       <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
@@ -16,7 +15,7 @@
       </a-button>
     </a-input-group>
 
-    <a-modal class="lov-model" width="800px" @cancel="visible=false" @ok="selectData" :visible="visible"
+    <a-modal class="lov-model" width="800px" @cancel="cancel" @ok="selectData" :visible="visible"
              :confirmLoading="loading"
              :footer="ret?undefined:null" :bodyStyle="{paddingBottom:'0'}" :closable="title.length>0" :title="title">
       <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
@@ -44,6 +43,17 @@
       <div v-if="search" class="table-operator">
         <a-button @click="reloadTable" type="primary">查询</a-button>
         <a-button @click="resetSearchForm" style="margin-left: 8px">重置</a-button>
+      </div>
+
+      <div v-if="showSelectAll">
+        <a-form>
+          <a-form-item read-only label="已选中数据 ">
+            <a-select v-if="multiple" :value="selectValue" @deselect="multipleDeselect" :open="false" read-only
+                      mode="tags"/>
+            <a-select v-if="!multiple" :value="selectValue?[selectValue]:[]" @deselect="singleDeselect" :open="false"
+                      read-only mode="tags"/>
+          </a-form-item>
+        </a-form>
       </div>
 
       <a-table
@@ -74,6 +84,12 @@ export default {
   props: {
     // lov 的 keyword
     keyword: String,
+    showSelectAll: {
+      type: Boolean,
+      default: function () {
+        return true
+      }
+    },
     value: {
       type: [String, Number, Array]
     },
@@ -99,9 +115,11 @@ export default {
           // 单选处理
           this.selectedRowKeys = [].concat(record[this.rowKey])
           this.backVal = this.retHandlerBySelectRow(record)
+          this.selectValue = this.showHandlerBySelectRow(record)
         } else {
-          this.selectedRowKeys = this.selectedRowKeys.concat(record[this.rowKey])
-          this.backVal = this.backVal.concat(this.retHandlerBySelectRow(record))
+          this.selectedRowKeys.push(record[this.rowKey])
+          this.backVal.push(this.retHandlerBySelectRow(record))
+          this.selectValue.push(this.showHandlerBySelectRow(record))
         }
         this.selectedRows = selectedRows
       }
@@ -130,6 +148,7 @@ export default {
           const index = this.backValIndexOfRow(this.backVal, record)
           if (index !== -1) {
             this.backVal.splice(index, 1)
+            this.selectValue.splice(index, 1)
           }
         }
       }
@@ -177,27 +196,12 @@ export default {
               let index = this.selectedRowKeys.indexOf(record[this.rowKey])
               if (index === -1) {
                 // 单击未选中的列, 插入数据
-                if (this.multiple) {
-                  // 多选
-                  this.selectedRowKeys.push(record[this.rowKey])
-                  this.selectedRows.push(record)
-                  this.backVal.push(this.retHandlerBySelectRow(record))
-                } else {
-                  // 单选
-                  this.selectedRowKeys = [].concat(record[this.rowKey])
-                  this.selectedRows = [].concat(record)
-                  this.backVal = this.retHandlerBySelectRow(record)
-                }
+                this.multiple ? this.selectedRows.push(record) : this.selectedRows = [].concat(record)
+                this.selectRow(record, this.selectedRows)
               } else {
                 // 单击已选中的列, 删除选中数据
-                this.selectedRowKeys.splice(index, 1)
                 this.selectedRows.splice(index, 1)
-
-                // 移除 backVal 中的数据
-                index = this.backValIndexOfRow(this.backVal, record)
-                if (index !== -1) {
-                  this.backVal.splice(index, 1)
-                }
+                this.unselectRow(record, this.selectedRows)
               }
             }
           }
@@ -228,6 +232,13 @@ export default {
     }
   },
   methods: {
+    showModal() {
+      this.multiple ? this.backVal = [...this.value] : this.backVal = this.value
+      this.selectedRows = []
+      this.selectedRowKeys = []
+      this.reloadTable()
+      this.visible = true
+    },
     load() {
       this.loading = true
 
@@ -336,6 +347,10 @@ export default {
       this.emit(this.backVal)
       this.visible = false
     },
+    cancel() {
+      this.copyValue()
+      this.visible = false
+    },
     loadData() {
       // 合并查询参数，分页参数，排序参数，过滤参数
       const params = Object.assign(this.queryParam, {
@@ -399,13 +414,15 @@ export default {
     copyValue() {
       if (this.multiple) {
         let selectValue = []
+        let backVal = []
         if (this.value) {
           this.value.forEach(value => {
             selectValue.push(this.putValueShowHandler(value))
+            backVal.push(value)
           })
         }
-        this.selectValue = [].concat(selectValue)
-        this.backVal = this.value ? [].concat(this.value) : []
+        this.selectValue = [...selectValue]
+        this.backVal = [...backVal]
       } else {
         // 单选处理
         this.selectValue = this.value
@@ -413,21 +430,47 @@ export default {
       }
     },
     // select 取消选中时
-    deselect(value, option) {
+    multipleDeselect(value, option) {
+      // 查询移除值在选中数据的位置
+      const index = this.selectValue.indexOf(value)
+      // 移除数据
+      this.selectValue.splice(index, 1)
+      // 获取被移除的返回值
+      const bv = this.backVal[index]
+      // 记录被移除的返回值所属数据在 selectedRows 中位置
+      let si = -1
+      // 记录被移除返回值的行数据
+      let row
+      // 遍历选中数据， 从中移除当前被删除数据
       for (let i = 0; i < this.selectedRows.length; i++) {
-        let item = this.selectedRows[i]
-        if (this.retHandlerBySelectRow(item) === value) {
-          this.selectedRows.splice(i, 1)
-          this.selectedRowKeys.splice(i, 1)
-          this.backVal.splice(i, 1)
+        row = this.selectedRows[i]
+        // 寻找当前被删除数据所属行
+        if (bv === this.retHandlerBySelectRow(row)) {
+          // 找到被移除的返回值
+          si = i
+          break
         }
       }
+
+      // 移除返回值
+      this.backVal.splice(index, 1)
+      // 移除数据
+      if (si !== -1) {
+        this.selectedRows.splice(si, 1)
+        this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(row[this.rowKey]), 1)
+      }
+    },
+    singleDeselect() {
+      this.selectedRows = []
+      this.selectedRowKeys = []
+      this.selectValue = undefined
+      this.backVal = undefined
     },
     cleanAll() {
       this.emit(this.multiple ? [] : '')
       this.selectedRows = []
       this.selectedRowKeys = []
-    },
+    }
   }
 }
 </script>
@@ -435,5 +478,11 @@ export default {
 <style scoped lang="less">
 .lov-data {
   width: 100%;
+}
+
+.ant-select-search__field__wrap {
+  .ant-select-search__field input {
+
+  }
 }
 </style>
