@@ -1,82 +1,88 @@
 <template>
   <div>
     <a-input-group compact>
-      <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
-               v-if="!multiple" :value="selectValue"/>
-      <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
-                 :value="selectValue" :open="false" @deselect="multipleDeselect"/>
+      <a-spin :spinning="loading" size="small">
+        <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
+                 v-if="!multiple" :value="selectValue" />
+        <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
+                  :value="selectValue" :open="false" @deselect="multipleDeselect" />
 
-      <a-button :disabled="disabled" title="单击以选择数据"
-                @click="showModal">
-        <a-icon type="select"/>
-      </a-button>
-      <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
-        <a-icon style="color: red;" type="close-circle"/>
-      </a-button>
+        <a-button :disabled="disabled" title="单击以选择数据"
+                  @click="showModal">
+          <a-icon type="select" />
+        </a-button>
+        <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
+          <a-icon style="color: red;" type="close-circle" />
+        </a-button>
+      </a-spin>
     </a-input-group>
 
     <a-modal class="lov-model" width="800px" @cancel="cancel" @ok="selectData" :visible="visible"
              :confirmLoading="loading"
              :footer="ret?undefined:null" :bodyStyle="{paddingBottom:'0'}" :closable="title.length>0" :title="title">
-      <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
-        <a-form layout="inline">
-          <a-row :gutter="12">
-            <a-col :span="6" v-for="item in searchList" :key="item.id">
-              <a-form-item :label="item.label">
-                <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]"
-                         :placeholder="item.placeholder"/>
-                <a-input-number style="width: 100%" v-if="item.tag==='INPUT_NUMBER'" v-model="queryParam[item.field]"
-                                :placeholder="item.placeholder"
-                                :min="item.min" :max="item.max"/>
-                <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]"
-                          :placeholder="item.placeholder"
-                          :options="item.options"/>
-                <dict-select v-if="item.tag==='DICT_SELECT'" :placeholder="item.placeholder" :dict-code="item.dictCode"
-                             v-model="queryParam[item.field]"/>
-              </a-form-item>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
 
-      <!-- 搜索控制按钮 -->
-      <div v-if="search" class="table-operator">
-        <a-button @click="reloadTable" type="primary">查询</a-button>
-        <a-button @click="resetSearchForm" style="margin-left: 8px">重置</a-button>
-      </div>
+      <a-spin :spinning="loading">
+        <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
+          <a-form layout="inline">
+            <a-row :gutter="12">
+              <a-col :span="6" v-for="item in searchList" :key="item.id">
+                <a-form-item :label="item.label">
+                  <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]"
+                           :placeholder="item.placeholder" />
+                  <a-input-number style="width: 100%" v-if="item.tag==='INPUT_NUMBER'" v-model="queryParam[item.field]"
+                                  :placeholder="item.placeholder"
+                                  :min="item.min" :max="item.max" />
+                  <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]"
+                            :placeholder="item.placeholder"
+                            :options="item.options" />
+                  <dict-select v-if="item.tag==='DICT_SELECT'" :placeholder="item.placeholder"
+                               :dict-code="item.dictCode"
+                               v-model="queryParam[item.field]" />
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-form>
+        </div>
 
-      <div v-if="showSelectAll">
-        <a-form>
-          <a-form-item read-only label="已选中数据 ">
-            <a-select v-if="multiple" :value="selectValue" @deselect="multipleDeselect" :open="false" read-only
-                      mode="tags"/>
-            <a-select v-if="!multiple" :value="selectValue?[selectValue]:[]" @deselect="singleDeselect" :open="false"
-                      read-only mode="tags"/>
-          </a-form-item>
-        </a-form>
-      </div>
+        <!-- 搜索控制按钮 -->
+        <div v-if="search" class="table-operator">
+          <a-button @click="reloadTable" type="primary">查询</a-button>
+          <a-button @click="resetSearchForm" style="margin-left: 8px">重置</a-button>
+        </div>
 
-      <a-table
-        ref="table"
-        size="middle"
-        :rowKey="rowKey"
-        :columns="columns"
-        :dataSource="dataSource"
-        :pagination="pagination"
-        :loading="loading"
-        :rowSelection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
-        :customRow="customRow"
-        @change="handleTableChange"
-      />
+        <div v-if="showSelectAll">
+          <a-form>
+            <a-form-item read-only label="已选中数据 ">
+              <a-select v-if="multiple" :value="selectValue" @deselect="multipleDeselect" :open="false" read-only
+                        mode="tags" />
+              <a-select v-if="!multiple" :value="selectValue?[selectValue]:[]" @deselect="singleDeselect" :open="false"
+                        read-only mode="tags" />
+            </a-form-item>
+          </a-form>
+        </div>
+
+        <a-table
+          ref="table"
+          size="middle"
+          :rowKey="rowKey"
+          :columns="columns"
+          :dataSource="dataSource"
+          :pagination="pagination"
+          :loading="loading"
+          :rowSelection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
+          :customRow="customRow"
+          @change="handleTableChange"
+        />
+      </a-spin>
     </a-modal>
   </div>
 </template>
 
 <script>
-import {TablePageMixin} from '@/mixins'
+import { TablePageMixin } from '@/mixins'
 import Vue from 'vue'
-import {axios} from '@/utils/request'
-import {getData} from '@/api/sys/lov'
+import { axios } from '@/utils/request'
+import { getData } from '@/api/sys/lov'
 
 export default {
   name: 'Lov',
@@ -86,7 +92,7 @@ export default {
     keyword: String,
     showSelectAll: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return true
       }
     },
@@ -95,13 +101,13 @@ export default {
     },
     lazy: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return false
       }
     },
     disabled: {
       type: Boolean,
-      default: function () {
+      default: function() {
         return false
       }
     },
@@ -110,7 +116,7 @@ export default {
      */
     selectRow: {
       type: Function,
-      default: function (record, selectedRows, nativeEvent) {
+      default: function(record, selectedRows, nativeEvent) {
         if (!this.multiple) {
           // 单选处理
           this.selectedRowKeys = [].concat(record[this.rowKey])
@@ -129,7 +135,7 @@ export default {
      */
     backValIndexOfRow: {
       type: Function,
-      default: function (value, row) {
+      default: function(value, row) {
         return value.indexOf(this.retHandlerBySelectRow(row))
       }
     },
@@ -138,7 +144,7 @@ export default {
      */
     unselectRow: {
       type: Function,
-      default: function (record, selectedRows, nativeEvent) {
+      default: function(record, selectedRows, nativeEvent) {
         // 移除key
         this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(record[this.rowKey]), 1)
         // 移除行数据
@@ -158,7 +164,7 @@ export default {
      */
     showHandlerBySelectRow: {
       type: Function,
-      default: function (row) {
+      default: function(row) {
         return `${row[this.retField]}`
       }
     },
@@ -167,7 +173,7 @@ export default {
      */
     putValueShowHandler: {
       type: Function,
-      default: function (data) {
+      default: function(data) {
         return `${data}`
       }
     },
@@ -176,7 +182,7 @@ export default {
      */
     retHandlerBySelectRow: {
       type: Function,
-      default: function (row) {
+      default: function(row) {
         return row[this.retField]
       }
     }
@@ -279,7 +285,7 @@ export default {
             url: json.url,
             method: json.method
           }
-          req[this.position] = {...this.fixedParams, ...query}
+          req[this.position] = { ...this.fixedParams, ...query }
           return axios(req)
         }
 
@@ -311,6 +317,7 @@ export default {
 
         // 复制传入参数
         this.copyValue()
+        this.loading = false
       })
     },
     getCacheKey() {
@@ -359,7 +366,7 @@ export default {
       }, {
         sortField: this.sortField,
         sortAsc: this.sortAsc
-      }, {...this.filters})
+      }, { ...this.filters })
 
       this.loading = true
       this.getPage(params)
@@ -412,6 +419,7 @@ export default {
       this.$emit('input', val)
     },
     copyValue() {
+      this.loading = true
       if (this.multiple) {
         let selectValue = []
         let backVal = []
@@ -428,9 +436,11 @@ export default {
         this.selectValue = this.value
         this.backVal = this.value
       }
+      this.loading = false
     },
     // select 取消选中时
     multipleDeselect(value, option) {
+      this.loading = true
       // 查询移除值在选中数据的位置
       const index = this.selectValue.indexOf(value)
       // 移除数据
@@ -445,8 +455,8 @@ export default {
       for (let i = 0; i < this.selectedRows.length; i++) {
         row = this.selectedRows[i]
         // 寻找当前被删除数据所属行
-        if (bv === this.retHandlerBySelectRow(row)) {
-          // 找到被移除的返回值
+        if (this.backValIndexOfRow(this.backVal, row) === index) {
+          // 如果当前行在 backVal 中的索引值等于index 则找到被移除的返回值
           si = i
           break
         }
@@ -459,12 +469,15 @@ export default {
         this.selectedRows.splice(si, 1)
         this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(row[this.rowKey]), 1)
       }
+      this.loading = false
     },
     singleDeselect() {
+      this.loading = true
       this.selectedRows = []
       this.selectedRowKeys = []
       this.selectValue = undefined
       this.backVal = undefined
+      this.loading = false
     },
     cleanAll() {
       this.emit(this.multiple ? [] : '')
