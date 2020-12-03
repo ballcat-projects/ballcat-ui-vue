@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-input-group compact>
-      <a-spin :spinning="loading" size="small">
+      <a-spin :spinning="loading" size="small" style="width: 100%">
         <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
                  v-if="!multiple" :value="selectValue" />
         <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
