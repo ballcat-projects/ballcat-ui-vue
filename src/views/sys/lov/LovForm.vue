@@ -1,11 +1,9 @@
 <template>
   <a-spin :spinning="submitLoading" size="large">
     <a-form @submit="handleSubmit" :form="form" class="form">
-      <step1 :formAction="formAction" :get-form="()=>form"/>
-      <a-divider>表格列配置</a-divider>
-      <step2 :formAction="formAction" :get-form="()=>form" v-model="bodyList"/>
-      <a-divider>搜索组件配置</a-divider>
-      <step3 :formAction="formAction" :get-form="()=>form" v-model="searchList"/>
+      <formBasic :form="form" :formAction="formAction" />
+      <formBody v-model="bodyList" :form="form" :formAction="formAction" />
+      <formSearch v-model="searchList" :form="form" :formAction="formAction" />
 
       <div class="table-operator" style="text-align: center;">
         <a-button :loading="submitLoading" @click="preview">预览</a-button>
@@ -24,16 +22,16 @@
 import { FormPageMixin } from '@/mixins'
 import { create, getData, update } from '@/api/sys/lov'
 import { mixin, mixinDevice } from '@/utils/mixin'
-import step1 from '@/views/sys/lov/step1'
-import step2 from '@/views/sys/lov/step2'
-import step3 from '@/views/sys/lov/step3'
+import formBasic from '@/views/sys/lov/formBasic'
+import formBody from '@/views/sys/lov/formBody'
+import formSearch from '@/views/sys/lov/formSearch'
 import Vue from 'vue'
 
 export default {
   name: 'SysLovFormPage',
   mixins: [mixin, mixinDevice, FormPageMixin],
-  components: { step1, step2, step3 },
-  data () {
+  components: { formBasic, formBody, formSearch },
+  data() {
     return {
       dictCodes: ['lov_http_method', 'tf', 'lov_http_params_position', 'lov_ret_data_type', 'lov_search_tag'],
       reqFunctions: {

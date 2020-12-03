@@ -4,8 +4,6 @@ export default {
     value: [String, Number, Boolean],
     dictCode: String,
     disabled: Boolean,
-    // 默认值类型
-    valueType: 1
   },
   data() {
     return {
