@@ -2,7 +2,6 @@ import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
-import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/storage-types'
 
 // 创建 axios 实例
@@ -11,7 +10,8 @@ const service = axios.create({
   timeout: 600000 // 请求超时时间
 })
 
-const err = (error) => {
+// 请求失败处理函数
+const onRejected = (error) => {
   if (error.response) {
     const data = error.response.data
     if (error.response.status === 403) {
@@ -44,21 +44,12 @@ service.interceptors.request.use(config => {
     config.headers['Authorization'] = 'Bearer '+ token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
   return config
-}, err)
+}, onRejected)
 
 // response interceptor
 service.interceptors.response.use((response) => {
   return response.data
-}, err)
+}, onRejected)
 
-const installer = {
-  vm: {},
-  install (Vue) {
-    Vue.use(VueAxios, service)
-  }
-}
 
-export {
-  installer as VueAxios,
-  service as axios
-}
+export default service

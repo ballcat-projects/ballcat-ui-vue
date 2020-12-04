@@ -1,11 +1,11 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 export function getData(keyword){
- return  axios.get(`/lov/data/${keyword}`)
+ return  request.get(`/lov/data/${keyword}`)
 }
 
 export function getPage(query) {
-  return axios({
+  return request({
     url: '/lov/page',
     method: 'get',
     params: query
@@ -13,7 +13,7 @@ export function getPage(query) {
 }
 
 export function update(obj) {
-  return axios({
+  return request({
     url: '/lov',
     method: 'post',
     data: obj
@@ -21,14 +21,14 @@ export function update(obj) {
 }
 
 export function delObj(id) {
-  return axios({
+  return request({
     url: '/lov/' + id,
     method: 'delete'
   })
 }
 
 export function create(obj) {
-  return axios({
+  return request({
     url: '/lov',
     method: 'put',
     data: obj

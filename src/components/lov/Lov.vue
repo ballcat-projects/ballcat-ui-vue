@@ -81,7 +81,7 @@
 <script>
 import { TablePageMixin } from '@/mixins'
 import Vue from 'vue'
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 import { getData } from '@/api/sys/lov'
 
 export default {
@@ -286,7 +286,7 @@ export default {
             method: json.method
           }
           req[this.position] = { ...this.fixedParams, ...query }
-          return axios(req)
+          return request(req)
         }
 
         // 表格数据处理

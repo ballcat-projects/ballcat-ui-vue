@@ -1,7 +1,7 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 export function getPage(query) {
-  return axios({
+  return request({
     url: '/sys/dict/item/page',
     method: 'get',
     params: query
@@ -9,7 +9,7 @@ export function getPage(query) {
 }
 
 export function addObj(obj) {
-  return axios({
+  return request({
     url: '/sys/dict/item',
     method: 'post',
     data: obj
@@ -18,14 +18,14 @@ export function addObj(obj) {
 
 
 export function delObj(id) {
-  return axios({
+  return request({
     url: '/sys/dict/item/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
-  return axios({
+  return request({
     url: '/sys/dict/item',
     method: 'put',
     data: obj

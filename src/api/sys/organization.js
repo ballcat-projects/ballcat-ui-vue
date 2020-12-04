@@ -1,7 +1,7 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 export function getTree(query) {
-  return axios({
+  return request({
     url: '/sys/organization/tree',
     method: 'get',
     params: query
@@ -9,7 +9,7 @@ export function getTree(query) {
 }
 
 export function addObj(obj) {
-  return axios({
+  return request({
     url: '/sys/organization',
     method: 'post',
     data: obj
@@ -17,14 +17,14 @@ export function addObj(obj) {
 }
 
 export function delObj(id) {
-  return axios({
+  return request({
     url: '/sys/organization/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
-  return axios({
+  return request({
     url: '/sys/organization',
     method: 'put',
     data: obj

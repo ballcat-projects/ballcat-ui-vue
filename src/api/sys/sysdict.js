@@ -1,14 +1,14 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 export function getDictData (dictCodes) {
-  return axios({
+  return request({
     url: '/sys/dict/data?dictCodes=' + dictCodes.join(','),
     method: 'get'
   })
 }
 
 export function invalidDictHash(map) {
-  return axios({
+  return request({
     url: '/sys/dict/invalid-hash',
     method: 'post',
     data: map
@@ -17,7 +17,7 @@ export function invalidDictHash(map) {
 
 
 export function getPage(query) {
-  return axios({
+  return request({
     url: '/sys/dict/page',
     method: 'get',
     params: query
@@ -25,7 +25,7 @@ export function getPage(query) {
 }
 
 export function addObj(obj) {
-  return axios({
+  return request({
     url: '/sys/dict',
     method: 'post',
     data: obj
@@ -33,21 +33,21 @@ export function addObj(obj) {
 }
 
 export function getObj(id) {
-  return axios({
+  return request({
     url: '/sys/dict/' + id,
     method: 'get'
   })
 }
 
 export function delObj(id) {
-  return axios({
+  return request({
     url: '/sys/dict/' + id,
     method: 'delete'
   })
 }
 
 export function putObj(obj) {
-  return axios({
+  return request({
     url: '/sys/dict',
     method: 'put',
     data: obj

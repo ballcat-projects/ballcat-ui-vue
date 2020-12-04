@@ -8,7 +8,7 @@ import VueI18n from 'vue-i18n'
 // default language
 import enUS from './lang/en-US'
 // change default accept-language
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 Vue.use(VueI18n)
 
@@ -37,7 +37,7 @@ const loadedLanguages = [defaultLang]
 
 function setI18nLanguage (lang) {
   i18n.locale = lang
-  axios.defaults.headers.common['Accept-Language'] = lang
+  request.defaults.headers.common['Accept-Language'] = lang
   document.querySelector('html').setAttribute('lang', lang)
   return lang
 }

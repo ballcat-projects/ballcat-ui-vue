@@ -1,8 +1,7 @@
-import { axios } from '@/utils/request'
-
+import request  from '@/utils/request'
 
 export function login (parameter) {
-  return axios({
+  return request({
     headers: {
       'Authorization': 'Basic dWk6dWk='
     },
@@ -12,9 +11,8 @@ export function login (parameter) {
   })
 }
 
-
 export function logout () {
-  return axios({
+  return request({
     url: '/oauth/logout',
     method: 'delete'
   })
@@ -25,7 +23,7 @@ export function logout () {
  * @param parameter {*}
  */
 export function get2step (parameter) {
-  return axios({
+  return request({
     url: api.twoStepCode,
     method: 'post',
     data: parameter

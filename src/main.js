@@ -2,8 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store/'
-import { VueAxios } from './utils/request'
-
 // mock
 // import './mock'
 
@@ -12,12 +10,6 @@ import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
 import i18n from './locales'
-
-Vue.config.productionTip = false
-
-// mount axios Vue.$http and this.$http
-Vue.use(VueAxios)
-
 
 // ballcat 引入常量
 import sysConst  from './ballcat/sys_const'
@@ -29,13 +21,14 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
   }
 };
 
-
 // 字典注册
 import DictPlugin  from '@/components/dict/dictPlugin'
 Vue.use(DictPlugin)
 // lov注册
 import LovPlugin from '@/components/lov/lovPlugin'
 Vue.use(LovPlugin)
+
+Vue.config.productionTip = false
 
 new Vue({
   router,

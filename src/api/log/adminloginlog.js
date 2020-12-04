@@ -1,7 +1,7 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 
 export function getPage(query) {
-  return axios({
+  return request({
     url: '/log/adminloginlog/page',
     method: 'get',
     params: query

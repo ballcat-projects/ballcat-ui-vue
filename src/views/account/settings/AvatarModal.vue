@@ -56,6 +56,7 @@
 </template>
 <script>
 import { VueCropper } from 'vue-cropper'
+import request from '@/utils/request'
 
 export default {
   components: {
@@ -128,7 +129,7 @@ export default {
           this.model = true
           this.modelSrc = img
           formData.append('file', data, this.fileName)
-          this.$http.post('https://www.mocky.io/v2/5cc8019d300000980a055e76', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+          request.post('https://www.mocky.io/v2/5cc8019d300000980a055e76', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then((response) => {
               console.log('upload response:', response)
               // var res = response.data

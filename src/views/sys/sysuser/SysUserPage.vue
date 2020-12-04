@@ -137,7 +137,7 @@
                 </template>
                 <template #avatar-slot="text, record">
                   <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
-                            @click="updateAvatar(record.userId)"/>
+                            @click="beforeUpdateAvatar(record.userId)"/>
                 </template>
 
                 <template #action-slot="text, record">
@@ -198,13 +198,14 @@
 
 <script>
 import { TablePageMixin } from '@/mixins'
-import { getPage, delObj, updateStatus } from '@/api/sys/sysuser'
+import { getPage, delObj, updateStatus, updateAvatar } from '@/api/sys/sysuser'
 import { getTree } from '@/api/sys/organization'
 import FormPage from './SysUserForm'
 import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
 import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
+import request from '@/utils/request'
 
 const statusMap = {
   0: {
@@ -219,13 +220,13 @@ const statusMap = {
 
 export default {
   name: 'SysUserPage',
-  mixins: [TablePageMixin],
   components: {
     CropperModal,
     FormPage,
     ScopeModal,
     PasswordModal
   },
+  mixins: [TablePageMixin],
   data () {
     return {
       getPage: getPage,
@@ -361,18 +362,14 @@ export default {
         }
       })
     },
-    updateAvatar (userId) {
+    beforeUpdateAvatar (userId) {
       const _this = this
       _this.avatarUserId = userId
       _this.$refs.avatarModal.edit((fileObj) => {
-        const formData = new FormData()
-        formData.append('file', fileObj.data, fileObj.name)
-        formData.append('userId', userId)
-        return _this.$http.post('/sysuser/avatar', formData, { contentType: false, processData: false })
-          .then((response) => {
-            _this.handleUpdateAvatar(response.data)
-            return response
-          })
+        return updateAvatar(userId, fileObj).then(res => {
+          _this.handleUpdateAvatar(res.data)
+          return res
+        })
       })
     },
     handleUpdateAvatar (avatar) {
@@ -417,8 +414,6 @@ export default {
         })
       }
     },
-
-
     /**
      * 选择组织机构
      * 被选择时，立刻进行查询操作

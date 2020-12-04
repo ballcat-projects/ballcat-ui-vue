@@ -1,23 +1,16 @@
-import { axios } from '@/utils/request'
+import request from '@/utils/request'
 import qs from 'qs'
 
 export function getPage (query) {
-  return axios({
+  return request({
     url: '/sysuser/page',
     method: 'get',
     params: query
   })
 }
 
-export function getObj (id) {
-  return axios({
-    url: '/sysuser/' + id,
-    method: 'get'
-  })
-}
-
 export function addObj (obj) {
-  return axios({
+  return request({
     url: '/sysuser',
     method: 'post',
     data: obj
@@ -25,7 +18,7 @@ export function addObj (obj) {
 }
 
 export function putObj (obj) {
-  return axios({
+  return request({
     url: '/sysuser',
     method: 'put',
     data: obj
@@ -33,21 +26,21 @@ export function putObj (obj) {
 }
 
 export function delObj (id) {
-  return axios({
+  return request({
     url: '/sysuser/' + id,
     method: 'delete'
   })
 }
 
 export function getUserScope (userId) {
-  return axios({
+  return request({
     url: '/sysuser/scope/' + userId,
     method: 'get'
   })
 }
 
 export function putUserScope (userId, userScope) {
-  return axios({
+  return request({
     url: '/sysuser/scope/' + userId,
     method: 'put',
     data: userScope
@@ -55,7 +48,7 @@ export function putUserScope (userId, userScope) {
 }
 
 export function changePassword (userId, params) {
-  return axios({
+  return request({
     url: '/sysuser/pass/' + userId,
     method: 'put',
     params: params
@@ -63,7 +56,7 @@ export function changePassword (userId, params) {
 }
 
 export function updateStatus (userIds, status) {
-  return axios({
+  return request({
     url: '/sysuser/status/',
     method: 'put',
     params: { 'status': status },
@@ -71,8 +64,15 @@ export function updateStatus (userIds, status) {
   })
 }
 
+export function updateAvatar (userId, fileObj) {
+  const formData = new FormData()
+  formData.append('file', fileObj.data, fileObj.name)
+  formData.append('userId', userId)
+  return request.post('/sysuser/avatar', formData, { contentType: false, processData: false })
+}
+
 export function getSelectData (userTypesArr) {
-  return axios({
+  return request({
     url: '/sysuser/select',
     params: { userTypes: userTypesArr },
     paramsSerializer: function (params) {
