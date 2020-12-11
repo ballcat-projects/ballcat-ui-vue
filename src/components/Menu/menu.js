@@ -156,7 +156,8 @@ export default {
     const props = {
       mode: mode,
       theme: theme,
-      openKeys: this.openKeys
+      openKeys: this.openKeys,
+      inlineIndent: 16
     }
     const on = {
       select: obj => {

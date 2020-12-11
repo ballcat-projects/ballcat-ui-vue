@@ -4,8 +4,14 @@
     width="208px"
     :collapsible="collapsible"
     v-model="collapsed"
+    :style="style"
     :trigger="null">
-    <logo />
+    <div class="logo">
+      <router-link :to="{name:'/'}">
+        <img src="@/assets/logo.svg" alt="logo"/>
+        <h1 v-if="isMobile() || !collapsed">Ball Cat</h1>
+      </router-link>
+    </div>
     <s-menu
       :collapsed="collapsed"
       :menu="menus"
@@ -17,13 +23,12 @@
 </template>
 
 <script>
-import Logo from '@/components/tools/Logo'
 import SMenu from './index'
 import { mixin, mixinDevice } from '@/utils/mixin'
 
 export default {
   name: 'SideMenu',
-  components: { Logo, SMenu },
+  components: { SMenu },
   mixins: [mixin, mixinDevice],
   props: {
     mode: {
@@ -49,6 +54,18 @@ export default {
     menus: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    style(){
+      const width = this.collapsed ? '48px': '208px'
+      return {
+        overflow: 'hidden',
+        flex: '0 0 ' + width,
+        maxWidth: width,
+        minWidth: width,
+        width: width
+      }
     }
   },
   methods: {

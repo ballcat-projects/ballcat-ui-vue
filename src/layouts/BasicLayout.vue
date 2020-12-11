@@ -8,13 +8,13 @@
       :closable="false"
       :visible="collapsed"
       @close="drawerClose"
+      width="208px"
     >
       <side-menu
         mode="inline"
         :menus="menus"
         :theme="navTheme"
-        :collapsed="false"
-        :collapsible="true"
+        :collapsible="false"
         @menuSelect="menuSelect"
       ></side-menu>
     </a-drawer>
@@ -97,20 +97,11 @@ export default {
       if (!this.fixSidebar || this.isMobile()) {
         return '0'
       }
-      if (this.sidebarOpened) {
-        return '256px'
-      }
-      return '80px'
-    }
-  },
-  watch: {
-    sidebarOpened (val) {
-      this.collapsed = !val
+      return this.collapsed? '48px': '208px'
     }
   },
   created () {
     this.menus = this.mainMenu.find(item => item.path === '/').children
-    this.collapsed = !this.sidebarOpened
   },
   mounted () {
     const userAgent = navigator.userAgent
@@ -132,10 +123,10 @@ export default {
     },
     paddingCalc () {
       let left = ''
-      if (this.sidebarOpened) {
-        left = this.isDesktop() ? '256px' : '80px'
+      if (this.collapsed) {
+        left = (this.isMobile() && '0') || ((this.fixSidebar && '48px') || '0')
       } else {
-        left = (this.isMobile() && '0') || ((this.fixSidebar && '80px') || '0')
+        left = this.isDesktop() ? '208px' : '48px'
       }
       return left
     },

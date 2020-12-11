@@ -1,13 +1,13 @@
 <template>
   <div class="user-wrapper">
-    <div class="content-box">
-      <a href="http://www.ballcat.cn" target="_blank">
+    <div class="antd-pro-components-global-header-index-right">
+      <a href="http://www.ballcat.cn" target="_blank" style="display: flex;">
         <span class="action">
           <a-icon type="question-circle-o"></a-icon>
         </span>
       </a>
-      <notice-icon class="action"/>
-      <a-dropdown>
+      <notice-icon class="action" style="display: flex;"/>
+      <a-dropdown style="display: flex;">
         <span class="action ant-dropdown-link user-dropdown-menu">
           <a-avatar class="avatar" size="small" :src="fileAbsoluteUrl(userInfo.avatar)"/>
           <span>{{ userInfo.nickname }}</span>
@@ -78,3 +78,12 @@ export default {
   }
 }
 </script>
+<style>
+.antd-pro-components-global-header-index-right {
+  display: flex;
+  float: right;
+  height: 48px;
+  margin-left: auto;
+  overflow: hidden;
+}
+</style>
