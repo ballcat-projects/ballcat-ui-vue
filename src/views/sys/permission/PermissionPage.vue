@@ -179,6 +179,7 @@ export default {
     }
   },
   created () {
+    this.expandedKeys = [0]
     this.pageLoad()
   },
   methods: {
@@ -191,7 +192,6 @@ export default {
           treeNode.permission = item
           treeNode.scopedSlots = { icon: 'custom' }
         })
-        this.expandedKeys = [0]
       })
     },
     onExpand (expandedKeys) {

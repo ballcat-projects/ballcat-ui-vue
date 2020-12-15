@@ -205,7 +205,6 @@ import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
 import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
-import request from '@/utils/request'
 
 const statusMap = {
   0: {

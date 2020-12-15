@@ -100,7 +100,7 @@ export default {
         }
         // more codemirror options, 更多 codemirror 的高级配置...
       },
-      itemAttributes: ''
+      itemAttributes: '{}'
     }
   },
   methods: {
