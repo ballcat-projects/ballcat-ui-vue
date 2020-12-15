@@ -3,22 +3,22 @@ export default {
   props: {
     value: [String, Number, Boolean],
     dictCode: String,
-    disabled: Boolean,
+    disabled: Boolean
   },
-  data() {
+  data () {
     return {
       selectedValue: this.getValByType(this.value)
     }
   },
   watch: {
-    value() {
+    value () {
       this.selectedValue = this.getValByType(this.value)
     }
   },
-  created() {
+  created () {
   },
   methods: {
-    handleChange(val) {
+    handleChange (val) {
       if (val && val.target) {
         this.selectedValue = val.target.value
       } else {
@@ -29,11 +29,14 @@ export default {
       // v-model 方式的表单值联动
       this.$emit('input', this.selectedValue)
     },
-    getValByType(val) {
+    getValByType (val) {
       // 获取字典项
-      if (this.dictItems && this.dictItems.length>0){
+      if (this.dictItems && this.dictItems.length > 0) {
         // 默认数值类型
         const valueType = this.dictItems[0].valueType
+        if (!val) {
+          return
+        }
         if (valueType === 1) {
           // 数字
           return Number(val)
@@ -45,7 +48,7 @@ export default {
           return Boolean(val)
         }
       }
-      return  val;
+      return val
     }
   }
 }
