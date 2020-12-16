@@ -28,11 +28,10 @@
     "vue-cropper": "0.5.5",
     "vue-i18n": "^8.22.1",
     "vue-ls": "^3.2.1",
-    "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.4.9",
     "vue-svg-component-runtime": "^1.0.1",
     "vuex": "^3.5.1",
-    "wangeditor": "^4.4.0"
+    "wangeditor": "^4.5.3"
   },
   "devDependencies": {
     "@ant-design/colors": "^5.0.0",
