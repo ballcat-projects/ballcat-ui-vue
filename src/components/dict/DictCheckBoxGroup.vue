@@ -1,19 +1,20 @@
 <template>
-  <a-radio-group
+  <a-checkbox-group
+    :name="dictCode"
     :disabled="disabled"
     :value="selectedValue"
     @change="handleChange">
-    <a-radio v-for="dict in dictItems" :value="getValByItem(dict)" :key="dict.id">
-      {{ dict.name }}
-    </a-radio>
-  </a-radio-group>
+    <a-checkbox v-for="dict in dictItems" :key="dict.id" :value="getValByItem(dict)">
+      {{dict.name}}
+    </a-checkbox>
+  </a-checkbox-group>
 </template>
 <script>
 import DictMixin from '@/components/dict/dictMixin'
 import dictItemMixin from '@/components/dict/dictItemMixin'
 
 export default {
-  name: 'DictRadioGroup',
+  name: 'DictCheckBoxGroup',
   mixins: [DictMixin, dictItemMixin]
 }
 </script>

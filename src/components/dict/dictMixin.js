@@ -1,7 +1,7 @@
 export default {
   name: 'DictMixin',
   props: {
-    value: [String, Number, Boolean],
+    value: [String, Number, Boolean, Array],
     dictCode: String,
     disabled: Boolean
   },
@@ -30,6 +30,9 @@ export default {
       this.$emit('input', this.selectedValue)
     },
     getValByType (val) {
+      if(val instanceof Array){
+        return val
+      }
       // 获取字典项
       if (this.dictItems && this.dictItems.length > 0) {
         // 默认数值类型

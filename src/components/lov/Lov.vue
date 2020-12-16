@@ -89,7 +89,9 @@ export default {
   mixins: [TablePageMixin],
   props: {
     // lov 的 keyword
-    keyword: String,
+    keyword: {
+      type: String
+    },
     showSelectAll: {
       type: Boolean,
       default: function() {
