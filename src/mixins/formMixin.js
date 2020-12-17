@@ -101,7 +101,7 @@ export default {
      */
     handleSubmit (e) {
       // 阻止 submit 事件的默认行为
-      e.preventDefault()
+      e && e.preventDefault()
       // 根据表单行为，获取对应的请求方法
       const reqFunction = this.reqFunctions[this.formAction]
       // 表单提交前事件，返回 false 时停止提交

@@ -30,3 +30,19 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+
+export function publish(id) {
+  return request({
+    url: '/notify/announcement/publish/' + id,
+    method: 'patch'
+  })
+}
+
+
+export function close(id) {
+  return request({
+    url: '/notify/announcement/close/' + id,
+    method: 'patch'
+  })
+}

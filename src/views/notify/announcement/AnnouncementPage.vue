@@ -56,6 +56,10 @@
             :loading="loading"
             @change="handleTableChange"
           >
+            <template #status-slot="status">
+              <a-badge :status="status | statusTypeFilter" :text="status | statusFilter"/>
+            </template>
+
             <template #content-slot="content, record">
               <a href="javascript:;" @click="previewAnnouncement(record)">预览</a>
             </template>
@@ -75,8 +79,20 @@
             </template>
 
             <template #action-slot="text, record">
-              <a v-has="'notify:announcement:edit'" @click="handleEdit(record)">编辑</a>
-              <a-divider type="vertical"/>
+              <template v-has="'notify:announcement:edit'">
+                <a :disabled="record.status !== 2" @click="handleEdit(record)">编辑</a>
+                <a-divider type="vertical"/>
+                <a-popconfirm title="确认要发布吗？"
+                              @confirm="() => handlePublish(record)">
+                  <a href="javascript:" :disabled="record.status !== 2">发布</a>
+                </a-popconfirm>
+                <a-divider type="vertical"/>
+                <a-popconfirm title="确认要关闭吗？"
+                              @confirm="() => handleClose(record)">
+                  <a href="javascript:" :disabled="record.status === 0">关闭</a>
+                </a-popconfirm>
+              </template>
+              <a-divider type="vertical" v-if="$has('notify:announcement:edit') || $has('notify:announcement:del')"/>
               <a-popconfirm v-has="'notify:announcement:del'"
                             title="确认要删除吗？"
                             @confirm="() => handleDel(record)">
@@ -98,14 +114,40 @@
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/notify/announcement'
+import { getPage, delObj, publish, close } from '@/api/notify/announcement'
 import FormPage from './AnnouncementForm'
 import { TablePageMixin } from '@/mixins'
 import AnnouncementModal from '@/components/notify/AnnouncementModal'
 
+const statusFilterArr = [
+  {
+    state: 'default',
+    text: '已关闭',
+    value: 0
+  },
+  {
+    state: 'processing',
+    text: '发布中',
+    value: 1
+  },
+  {
+    state: 'warning',
+    text: '待发布',
+    value: 2
+  }
+]
+
 export default {
   name: 'AnnouncementPage',
   components: { FormPage, AnnouncementModal },
+  filters: {
+    statusFilter (status) {
+      return statusFilterArr[status].text
+    },
+    statusTypeFilter (status) {
+      return statusFilterArr[status].state
+    }
+  },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -137,6 +179,19 @@ export default {
           scopedSlots: { customRender: 'receive-mode-slot' }
         },
         {
+          title: '状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status-slot' },
+          filters: statusFilterArr
+        },
+        {
+          title: '失效时间',
+          dataIndex: 'deadline',
+          customRender: function (text) {
+            return text ? text : '永久有效'
+          }
+        },
+        {
           title: '创建人',
           dataIndex: 'createUsername'
         },
@@ -149,10 +204,10 @@ export default {
         {
           title: '操作',
           dataIndex: 'action',
-          width: '150px',
+          width: '185px',
           scopedSlots: { customRender: 'action-slot' }
         }
-      ],
+      ]
     }
   },
   methods: {
@@ -161,6 +216,26 @@ export default {
      */
     previewAnnouncement (record) {
       this.$refs.announcementModal.show(record)
+    },
+    handlePublish (record) {
+      publish(record.id).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.reloadTable()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
+    },
+    handleClose (record) {
+      close(record.id).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.reloadTable()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     }
   }
 }
