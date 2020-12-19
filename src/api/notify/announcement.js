@@ -46,3 +46,11 @@ export function close(id) {
     method: 'patch'
   })
 }
+
+export function uploadImage (resultFiles) {
+  const formData = new FormData()
+  resultFiles.forEach(file  => {
+    formData.append('files', file);
+  });
+  return request.post('/notify/announcement/image', formData, { contentType: false, processData: false })
+}

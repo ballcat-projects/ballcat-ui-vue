@@ -9,7 +9,10 @@
     </a-form-item>
 
     <a-form-item label="内容">
-      <wang-editor v-decorator="['content', decoratorOptions.content]"></wang-editor>
+      <wang-editor
+        v-decorator="['content', decoratorOptions.content]"
+        :upload-img-req="reqFunctions.uploadImage"
+      ></wang-editor>
     </a-form-item>
 
     <a-form-item label="选择接收人">
@@ -97,7 +100,7 @@
 
 <script>
 import { FormPageMixin } from '@/mixins'
-import { addObj, putObj } from '@/api/notify/announcement'
+import { addObj, putObj, uploadImage } from '@/api/notify/announcement'
 import { getSelectData } from '@/api/sys/role'
 import { getTree } from '@/api/sys/organization'
 import WangEditor from '@/components/Editor/WangEditor'
@@ -111,7 +114,8 @@ export default {
     return {
       reqFunctions: {
         create: addObj,
-        update: putObj
+        update: putObj,
+        uploadImage: uploadImage
       },
 
       // 校验配置

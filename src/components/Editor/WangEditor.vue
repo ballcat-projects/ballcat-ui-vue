@@ -11,6 +11,10 @@ export default {
     // eslint-disable-next-line
     value: {
       type: String
+    },
+    // 图片上传的服务端接口
+    uploadImgReq: {
+      type: Function
     }
   },
   data () {
@@ -46,7 +50,24 @@ export default {
         // v-model 方式的表单值联动
         this.$emit('input', this.editorData)
       }
-      editor.config.zIndex = 500
+      editor.config.zIndex = 100
+      // 图片配置
+      const uploadImgReq = this.uploadImgReq
+      if(uploadImgReq){
+        const that = this
+        editor.config.customUploadImg = function (resultFiles, insertImgFn) {
+          // resultFiles 是 input 中选中的文件列表
+          // insertImgFn 是获取图片 url 后，插入到编辑器的方法
+          uploadImgReq(resultFiles).then(res => {
+            // 上传图片，返回结果，将图片插入到编辑器中
+            // TODO 图片大小控制
+            for (let objectName of res.data) {
+              const imgUrl = that.fileAbsoluteUrl(objectName)
+              insertImgFn(imgUrl)
+            }
+          })
+        }
+      }
       // 创建编辑器
       editor.create()
       this.editor = editor
