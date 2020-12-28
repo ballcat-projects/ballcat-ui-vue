@@ -76,14 +76,23 @@
       </dict-check-box-group>
     </a-form-item>
 
-    <a-form-item label="失效时间">
-      <a-date-picker
-        v-decorator="['deadline']"
-        placeholder="不选则永久有效"
-        format="YYYY-MM-DD HH:mm:ss"
-        value-format="YYYY-MM-DD HH:mm:ss"
-        :show-time="true"
-      />
+    <a-form-item label="永久有效">
+      <a-row>
+        <a-col :xs="5" :md="2">
+          <a-switch v-model="isImmortal"></a-switch>
+        </a-col>
+        <a-col :xs="16" :md="16">
+          <a-form-item label="">
+            <a-date-picker
+              v-if="!isImmortal"
+              v-decorator="['deadline']"
+              format="YYYY-MM-DD HH:mm:ss"
+              value-format="YYYY-MM-DD HH:mm:ss"
+              :show-time="true"
+            />
+          </a-form-item>
+        </a-col>
+      </a-row>
     </a-form-item>
 
     <a-form-item :wrapperCol="{offset: 7 }">
@@ -137,6 +146,8 @@ export default {
         sm: { span: 16 }
       },
 
+      // 是否永久有效
+      isImmortal: true,
       // 接收人筛选类型
       recipientFilterType: null,
       // 创建公告的默认状态
@@ -157,6 +168,7 @@ export default {
   },
   methods: {
     echoDataProcess (data) {
+      this.isImmortal = data.immortal === 1
       this.recipientFilterType = data.recipientFilterType
     },
     recipientFilterTypeChange (val) {
@@ -172,6 +184,7 @@ export default {
       this.$refs.announcementModal.show(data)
     },
     submitDataProcess (formData) {
+      formData.immortal = this.isImmortal ? 1 : 0
       formData.status = this.newAnnouncementStatus
       return formData
     },

@@ -5,7 +5,7 @@
 import { Modal } from 'ant-design-vue'
 
 export default {
-  name: 'AnnouncementPage',
+  name: 'AnnouncementModal',
   methods: {
     show(announcement){
       Modal.info({

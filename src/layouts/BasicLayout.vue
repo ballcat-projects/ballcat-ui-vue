@@ -39,6 +39,8 @@
         @toggle="toggle"
       />
 
+      <announcement-ribbon/>
+
       <!-- layout content -->
       <a-layout-content :style="{ height: '100%', margin: '18px 18px 0', paddingTop: fixedHeader ? '64px' : '0' }">
         <multi-tab v-if="multiTab"></multi-tab>
@@ -70,11 +72,13 @@ import SideMenu from '@/components/Menu/SideMenu'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import SettingDrawer from '@/components/SettingDrawer'
+import AnnouncementRibbon from '@/components/notify/AnnouncementRibbon'
 
 export default {
   name: 'BasicLayout',
   mixins: [mixin, mixinDevice],
   components: {
+    AnnouncementRibbon,
     RouteView,
     SideMenu,
     GlobalHeader,

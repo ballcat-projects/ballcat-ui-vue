@@ -127,7 +127,7 @@ const statusFilterArr = [
   },
   {
     state: 'processing',
-    text: '发布中',
+    text: '已发布',
     value: 1
   },
   {
@@ -187,8 +187,8 @@ export default {
         {
           title: '失效时间',
           dataIndex: 'deadline',
-          customRender: function (text) {
-            return text ? text : '永久有效'
+          customRender: function (text, record) {
+            return record.immortal ? '永久有效' : text
           }
         },
         {

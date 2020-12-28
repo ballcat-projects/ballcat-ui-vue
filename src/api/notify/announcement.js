@@ -54,3 +54,19 @@ export function uploadImage (resultFiles) {
   });
   return request.post('/notify/announcement/image', formData, { contentType: false, processData: false })
 }
+
+
+export function getUserAnnouncements() {
+  return request({
+    url: '/notify/announcement/user',
+    method: 'get'
+  })
+}
+
+
+export function readAnnouncement(announcementId) {
+  return request({
+    url: '/notify/announcement/user/read/' + announcementId,
+    method: 'patch'
+  })
+}
