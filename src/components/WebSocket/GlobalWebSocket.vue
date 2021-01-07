@@ -37,7 +37,9 @@ export default {
     initWebSocket () {
       // ws地址
       const token = Vue.ls.get(ACCESS_TOKEN)
-      const wsUri = 'ws://127.0.0.1:8080/ws?access_token=' + token
+      let url = process.env.VUE_APP_API_BASE_URL;
+      let host = window.location.host;
+      let wsUri = `ws://${host}${url}/ws?access_token=${token}`
       // 建立连接
       this.webSocket = new WebSocket(wsUri)
       // 连接成功
@@ -88,7 +90,7 @@ export default {
           // 心跳发送后，如果服务器超时未响应则断开，如果响应了会被重置心跳定时器
           heartbeat.pongTimeoutObj = setTimeout(() => {
             webSocket.close()
-          }, this.timeout)
+          }, heartbeat.timeout)
         } else {
           // 否则重连
           this.reconnect()
@@ -110,7 +112,7 @@ export default {
      */
     onError (e) {
       //错误
-      console.log('WebSocket connection error (' + e.reason + ')')
+      console.log(`WebSocket connection error：${e.code} ${e.reason} ${e.wasClean}`)
       //重连
       this.reconnect()
     },
@@ -120,7 +122,7 @@ export default {
      */
     onClose (e) {
       //关闭
-      console.log('WebSocket connection closed (' + e.reason + ')')
+      console.log(`WebSocket connection closed：${e.code} ${e.reason} ${e.wasClean}`)
       //重连
       this.reconnect()
     },
