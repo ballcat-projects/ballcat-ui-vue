@@ -31,6 +31,10 @@ Vue.use(LovPlugin)
 Vue.config.productionTip = false
 
 new Vue({
+  beforeCreate(){
+    // 全局事件总线
+    Vue.prototype.$bus = this
+  },
   router,
   store,
   i18n,

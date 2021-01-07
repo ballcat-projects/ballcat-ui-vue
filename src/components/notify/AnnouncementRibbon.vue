@@ -13,11 +13,10 @@
 <script>
 import AnnouncementModal from '@/components/notify/AnnouncementModal'
 import { getUserAnnouncements, readAnnouncement } from '@/api/notify/announcement'
-import { mapGetters } from 'vuex'
 
 export default {
   name: 'AnnouncementRibbon',
-  components: {AnnouncementModal},
+  components: { AnnouncementModal },
   data () {
     return {
       activeIndex: 0, // 当前索引
@@ -27,7 +26,7 @@ export default {
     }
   },
   computed: {
-    announcementNum() {
+    announcementNum () {
       return this.announcements.length
     },
     announcement () {
@@ -47,18 +46,34 @@ export default {
         this.activeIndex = 0
       }
     }, this.playTime)
+    // 注册监听事件
+    this.$bus.$on('announcement-push', this.onAnnouncementPush)
+    this.$bus.$on('announcement-close', this.onAnnouncementClose)
 
   },
   destroyed () {
     // 清除定时器
     clearInterval(this.intervalId)
+    // 删除事件监听
+    this.$bus.$off('announcement-push', this.onAnnouncementPush)
+    this.$bus.$off('announcement-close', this.onAnnouncementClose)
   },
   methods: {
-    readAnnouncement(){
+    readAnnouncement () {
       // 展示公告
       this.$refs.announcementModal.show(this.announcement)
-      // 已读上报
-      readAnnouncement(this.announcement.id).resolve();
+    },
+    onAnnouncementPush: function (data) {
+      // 添加公告
+      let announcement = {
+        id: data.id,
+        title: data.title,
+        content: data.content
+      }
+      this.announcements.push(announcement)
+    },
+    onAnnouncementClose: function (data){
+      this.announcements.splice( this.announcements.findIndex(item => item.id === data.id), 1)
     }
   }
 }

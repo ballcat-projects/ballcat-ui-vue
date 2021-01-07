@@ -57,6 +57,9 @@
       <!-- Setting Drawer (show in development mode) -->
       <setting-drawer v-if="!production"></setting-drawer>
     </a-layout>
+
+    <!-- websocket -->
+    <GlobalWebSocket/>
   </a-layout>
 
 </template>
@@ -73,18 +76,20 @@ import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import SettingDrawer from '@/components/SettingDrawer'
 import AnnouncementRibbon from '@/components/notify/AnnouncementRibbon'
+import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
 
 export default {
   name: 'BasicLayout',
-  mixins: [mixin, mixinDevice],
   components: {
     AnnouncementRibbon,
     RouteView,
     SideMenu,
     GlobalHeader,
     GlobalFooter,
-    SettingDrawer
+    SettingDrawer,
+    GlobalWebSocket
   },
+  mixins: [mixin, mixinDevice],
   data () {
     return {
       production: config.production,

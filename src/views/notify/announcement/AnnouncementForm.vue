@@ -181,7 +181,7 @@ export default {
     },
     preview () {
       let data = this.form.getFieldsValue()
-      this.$refs.announcementModal.show(data)
+      this.$refs.announcementModal.show(data, true)
     },
     submitDataProcess (formData) {
       formData.immortal = this.isImmortal ? 1 : 0
