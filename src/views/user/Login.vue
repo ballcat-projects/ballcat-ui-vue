@@ -5,7 +5,6 @@
       class="user-layout-login"
       ref="formLogin"
       :form="form"
-      @submit="handleSubmit"
     >
       <a-tabs
         :activeKey="customActiveKey"
@@ -13,7 +12,8 @@
         @change="handleTabClick"
       >
         <a-tab-pane key="tab1" tab="账号密码登录">
-          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误（admin/ant.design )" />
+          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;"
+                   message="账户或密码错误（admin/ant.design )"/>
           <a-form-item>
             <a-input
               size="large"
@@ -49,16 +49,22 @@
         </a-tab-pane>
         <a-tab-pane key="tab2" tab="手机号登录">
           <a-form-item>
-            <a-input size="large" type="text" placeholder="手机号" v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
-              <template #prefix><a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/></template>
+            <a-input size="large" type="text" placeholder="手机号"
+                     v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
+              <template #prefix>
+                <a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              </template>
             </a-input>
           </a-form-item>
 
           <a-row :gutter="16">
             <a-col class="gutter-row" :span="16">
               <a-form-item>
-                <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
-                  <template #prefix><a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/></template>
+                <a-input size="large" type="text" placeholder="验证码"
+                         v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
+                  <template #prefix>
+                    <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                  </template>
                 </a-input>
               </a-form-item>
             </a-col>
@@ -81,19 +87,29 @@
           :to="{ name: 'recover', params: { user: 'aaa'} }"
           class="forge-password"
           style="float: right;"
-        >忘记密码</router-link>
+        >忘记密码
+        </router-link>
       </a-form-item>
 
       <a-form-item style="margin-top:24px">
         <a-button
           size="large"
           type="primary"
-          htmlType="submit"
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-        >确定</a-button>
+          @click.prevent="showCaptchaBox"
+        >确定
+        </a-button>
       </a-form-item>
+
+      <Verify
+        @success="captchaVerifySuccess"
+        :mode="'pop'"
+        :captchaType="'blockPuzzle'"
+        :imgSize="{ width: '330px', height: '155px' }"
+        ref="verify"
+      ></Verify>
 
       <div class="user-login-other">
         <span>其他登录方式</span>
@@ -116,10 +132,11 @@
 <script>
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
-import { encryption } from '@/utils/password'
+import { passEncrypt } from '@/utils/password'
+import Verify from '@/components/verifition/Verify'
 
 export default {
-
+  components: { Verify },
   data () {
     return {
       customActiveKey: 'tab1',
@@ -158,8 +175,22 @@ export default {
       this.customActiveKey = key
       // this.form.resetFields()
     },
-    handleSubmit (e) {
-      e.preventDefault()
+    showCaptchaBox(){
+      const {
+        form: { validateFields },
+        customActiveKey,
+      } = this
+      const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
+      validateFields(validateFieldsKey, { force: true }, (err, values) => {
+          if(!err){
+            this.$refs.verify.show();
+          }
+      })
+    },
+    captchaVerifySuccess(verifyParams){
+      this.handleSubmit(verifyParams)
+    },
+    handleSubmit (verifyParams) {
       const {
         form: { validateFields },
         state,
@@ -176,8 +207,8 @@ export default {
           const loginParams = { ...values }
           delete loginParams.username
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
-          loginParams.password = encryption(loginParams.password)
-          Login(loginParams)
+          loginParams.password = passEncrypt(loginParams.password)
+          Login(Object.assign(loginParams, verifyParams))
             .then((res) => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
             .finally(() => {

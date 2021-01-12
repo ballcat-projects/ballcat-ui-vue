@@ -88,7 +88,7 @@ import AFormItem from 'ant-design-vue/es/form/FormItem'
 import { addObj, putObj } from '@/api/sys/sysuser'
 import ScopeModal from './ScopeModal'
 import { FormPageMixin } from '@/mixins'
-import { encryption } from '@/utils/password'
+import { passEncrypt } from '@/utils/password'
 
 const defaultValue = {
   sex: 1,
@@ -136,7 +136,7 @@ export default {
   methods: {
     // 密码加密提交
     submitDataProcess (data) {
-      data.pass = encryption(data.pass)
+      data.pass = passEncrypt(data.pass)
       return data
     }
   }

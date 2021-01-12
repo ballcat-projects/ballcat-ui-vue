@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { encryption } from '@/utils/password'
+import { passEncrypt } from '@/utils/password'
 import { changePassword } from '@/api/sys/sysuser'
 
 export default {
@@ -87,8 +87,8 @@ export default {
           this.confirmLoading = true
           delete values.username
 
-          values.pass = encryption(values.pass)
-          values.confirm = encryption(values.confirm)
+          values.pass = passEncrypt(values.pass)
+          values.confirm = passEncrypt(values.confirm)
 
           changePassword(this.userId, values).then(res => {
             res.code === 200 ? this.$message.success(res.message): this.$message.warning(res.message)
