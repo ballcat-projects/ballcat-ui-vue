@@ -360,42 +360,8 @@ export default {
       this.copyValue()
       this.visible = false
     },
-    loadData() {
-      // 合并查询参数，分页参数，排序参数，过滤参数
-      const params = Object.assign(this.queryParam, {
-        current: this.pagination.current,
-        size: this.pagination.pageSize
-      }, {
-        sortField: this.sortField,
-        sortAsc: this.sortAsc
-      }, { ...this.filters })
-
-      this.loading = true
-      this.getPage(params)
-        .then(res => {
-          if (res.code === 200) {
-            const page = res.data
-            // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
-            if (page.records.length === 0 && this.pagination.current > 1) {
-              this.pagination.current--
-              this.loadData()
-              return
-            }
-            this.dataSource = page.records
-            this.handlerData(page.records)
-            this.pagination.total = page.total
-          } else {
-            this.$message.warning(res.message || 'error request')
-          }
-        }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
-      }).finally(() => {
-        this.loading = false
-      })
-    },
     // 接收数据处理
-    handlerData(rows) {
+    onPageLoadSuccess({records: rows}) {
       for (let i = 0; i < rows.length; i++) {
         let row = rows[i]
         if (this.multiple) {

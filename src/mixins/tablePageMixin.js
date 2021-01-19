@@ -22,9 +22,9 @@ export default {
       // 筛选参数字段
       filters: {},
       // 默认排序字段
-      sortField: 'createTime',
-      // 升序/降序
-      sortAsc: false,
+      sortField: null,
+      // 升序 asc/降序 desc
+      sortOrder: null,
       // 表格展示
       tableShow: true,
       // 高级搜索 展开/关闭
@@ -60,9 +60,18 @@ export default {
     }
   },
   created () {
+    this.initDefaultSort()
     !this.lazyLoad && this.loadData()
   },
   methods: {
+
+    /**
+     * 默认排序规则
+     */
+    initDefaultSort(){
+      this.sortField = 'id'
+      this.sortOrder = 'desc'
+    },
     /**
      * 表格重新加载方法
      * 如果参数为 true, 则强制刷新到第一页
@@ -73,17 +82,24 @@ export default {
       this.loadData()
     },
     /**
-     * 表格数据加载方法
+     * 合并查询参数，分页参数，排序参数，过滤参数
+     * @returns {{current: number, size: number} & {sortOrders: null, sortFields: null}}
      */
-    loadData () {
-      // 合并查询参数，分页参数，排序参数，过滤参数
-      const params = Object.assign(this.queryParam, {
+    pageParams: function () {
+      return Object.assign(this.queryParam, {
         current: this.pagination.current,
         size: this.pagination.pageSize
       }, {
-        sortField: this.sortField,
-        sortAsc: this.sortAsc
+        // TODO 多列排序支持
+        sortFields: this.sortField,
+        sortOrders: this.sortOrder
       }, { ...this.filters })
+    },
+    /**
+     * 表格数据加载方法
+     */
+    loadData () {
+      const params = this.pageParams()
 
       this.loading = true
       this.getPage(params)
@@ -98,6 +114,7 @@ export default {
             }
             this.dataSource = page.records
             this.pagination.total = page.total
+            this.onPageLoadSuccess(page)
           } else {
             this.$message.warning(res.message || 'error request')
           }
@@ -109,6 +126,13 @@ export default {
       })
     },
     /**
+     * 分页查询成功回调
+     * @param page
+     */
+    onPageLoadSuccess(page){
+
+    },
+    /**
      * 分页、排序、筛选变化时进行数据更新
      * @param pagination
      * @param filters
@@ -116,8 +140,15 @@ export default {
      */
     handleTableChange (pagination, filters, sorter) {
       this.filters = filters
-      sorter && sorter.field && (this.sortField = sorter.field)
-      sorter && sorter.order && (this.sortAsc = sorter.order === 'ascend')
+      debugger
+      if(sorter && sorter.field){
+        if(sorter.order){
+          this.sortField = sorter.field
+          this.sortOrder = sorter.order === 'ascend' ? 'asc': 'desc'
+        }else{
+          this.initDefaultSort()
+        }
+      }
       this.pagination = pagination
       this.loadData()
     },
