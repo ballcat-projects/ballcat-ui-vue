@@ -140,7 +140,6 @@ export default {
      */
     handleTableChange (pagination, filters, sorter) {
       this.filters = filters
-      debugger
       if(sorter && sorter.field){
         if(sorter.order){
           this.sortField = sorter.field

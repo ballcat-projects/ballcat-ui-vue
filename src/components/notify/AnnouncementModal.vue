@@ -22,7 +22,8 @@ export default {
           <div domPropsInnerHTML={announcement.content}/>
         ),
         onOk: function () {
-          if (!isPreview) {
+          // 不是预览且状态是未读
+          if (!isPreview && announcement.state === 0) {
             return readAnnouncement(announcement.id)
           }
         }

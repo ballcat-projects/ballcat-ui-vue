@@ -66,7 +66,7 @@ export function getUserAnnouncements() {
 
 export function readAnnouncement(announcementId) {
   return request({
-    url: '/notify/announcement/user/read/' + announcementId,
+    url: '/notify/user-announcement/read/' + announcementId,
     method: 'patch'
   })
 }
