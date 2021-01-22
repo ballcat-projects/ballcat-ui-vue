@@ -47,11 +47,11 @@ export function putUserScope (userId, userScope) {
   })
 }
 
-export function changePassword (userId, params) {
+export function changePassword (userId, data) {
   return request({
     url: '/sysuser/pass/' + userId,
     method: 'put',
-    params: params
+    data: data
   })
 }
 

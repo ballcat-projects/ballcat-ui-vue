@@ -22,7 +22,7 @@
 
         <a-form-item label="确认密码" hasFeedback>
           <a-input type="password" placeholder="确认密码"
-                   v-decorator="['confirm', decoratorOptions.confirm]"/>
+                   v-decorator="['confirmPass', decoratorOptions.confirmPass]"/>
         </a-form-item>
       </a-form>
     </a-spin>
@@ -59,7 +59,7 @@ export default {
             message: '密码必须包含数字和字母组合(可使用特殊符号)，长度为6-12位！'
           }]
         },
-        confirm: {
+        confirmPass: {
           rules: [{
             required: true, message: '请确认登陆密码!'
           }, {
@@ -88,7 +88,7 @@ export default {
           delete values.username
 
           values.pass = passEncrypt(values.pass)
-          values.confirm = passEncrypt(values.confirm)
+          values.confirmPass = passEncrypt(values.confirmPass)
 
           changePassword(this.userId, values).then(res => {
             res.code === 200 ? this.$message.success(res.message): this.$message.warning(res.message)
