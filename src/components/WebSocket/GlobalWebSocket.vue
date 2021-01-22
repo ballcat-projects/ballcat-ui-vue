@@ -12,7 +12,7 @@ export default {
     return {
       webSocket: null, // webSocket实例
       lockReconnect: false, // 重连锁，避免多次重连
-      maxReconnect: -1,  // 最大重连次数， -1 标识无限重连
+      maxReconnect: 6,  // 最大重连次数， -1 标识无限重连
       reconnectTime: 0, // 重连尝试次数
       heartbeat: {
         interval: 30 * 1000, // 心跳间隔时间
@@ -30,16 +30,20 @@ export default {
     this.webSocket.close()
     this.clearTimeoutObj(this.heartbeat)
   },
+  computed: {
+    token() {
+      return Vue.ls.get(ACCESS_TOKEN)
+    }
+  },
   methods: {
     /**
      * 初始化 weoSocket
      */
     initWebSocket () {
       // ws地址
-      const token = Vue.ls.get(ACCESS_TOKEN)
       let url = process.env.VUE_APP_API_BASE_URL;
       let host = window.location.host;
-      let wsUri = `ws://${host}${url}/ws?access_token=${token}`
+      let wsUri = `ws://${host}${url}/ws?access_token=${this.token}`
       // 建立连接
       this.webSocket = new WebSocket(wsUri)
       // 连接成功
@@ -55,6 +59,9 @@ export default {
      * 重新连接
      */
     reconnect () {
+      if(!this.token){
+        return
+      }
       if (this.lockReconnect || (this.maxReconnect !== -1 && this.reconnectTime > this.maxReconnect)) {
         return
       }
