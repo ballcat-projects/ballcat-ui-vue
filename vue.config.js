@@ -12,7 +12,7 @@ function resolve (dir) {
  * @returns {boolean}
  */
 function isProd () {
-  return process.env.NODE_ENV === 'production' || process.env.VUE_APP_PREVIEW === 'true'
+  return process.env.NODE_ENV === 'production'
 }
 
 const assetsCDN = {
