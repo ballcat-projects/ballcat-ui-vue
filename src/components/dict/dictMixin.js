@@ -37,7 +37,7 @@ export default {
       if (this.dictItems && this.dictItems.length > 0) {
         // 默认数值类型
         const valueType = this.dictItems[0].valueType
-        if (!val) {
+        if (val == null) {
           return
         }
         if (valueType === 1) {
