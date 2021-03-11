@@ -3,8 +3,8 @@
   <a-modal
     title="图片上传"
     :visible="visible"
-    :maskClosable="false"
-    :confirmLoading="confirmLoading"
+    :mask-closable="false"
+    :confirm-loading="confirmLoading"
     :width="800"
     :footer="null"
     @cancel="cancelHandel">

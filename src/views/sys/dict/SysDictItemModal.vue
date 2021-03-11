@@ -1,15 +1,15 @@
 <template>
   <a-modal
-    :title="dictName+'-数据字典项'"
+    :title="dictName+'（字典项）'"
     :visible="visible"
-    @ok="handleOk"
-    @cancel="handleClose"
-    :confirmLoading="confirmLoading"
-    :maskClosable="false"
+    :mask-closable="false"
+    :body-style="{padding:'12px 18px'}"
+    :confirm-loading="confirmLoading"
     :footer="null"
-    :bodyStyle="{padding:'12px 18px'}"
     width="75%"
     :centered="true"
+    @ok="handleOk"
+    @cancel="handleClose"
   >
     <div v-show="tableShow">
       <!-- 操作按钮区域 -->
@@ -20,10 +20,10 @@
       <!--数据表格区域-->
       <a-table
         ref="table"
-        size="small"
-        :rowKey="rowKey"
+        size="middle"
+        :row-key="rowKey"
         :columns="columns"
-        :dataSource="dataSource"
+        :data-source="dataSource"
         :pagination="pagination"
         :loading="loading"
         @change="handleTableChange"
@@ -34,17 +34,18 @@
           <a-popconfirm v-has="'sys:dict:del'"
                         title="确认要删除吗？"
                         @confirm="() => handleDel(record)">
-            <a href="javascript:;">删除</a>
+            <a href="javascript:" style="color: #ff4d4f">删除</a>
           </a-popconfirm>
         </template>
       </a-table>
     </div>
 
     <!--表单页面-->
-    <div v-if="formInited">
-      <form-page v-show="!tableShow" ref="formPage" @backToPage="backToPage"></form-page>
-    </div>
-
+    <form-page
+      v-show="!tableShow"
+      ref="formPage"
+      @back-to-page="backToPage"
+    />
   </a-modal>
 </template>
 
@@ -55,8 +56,8 @@ import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'DictItemModal',
-  mixins: [TablePageMixin],
   components: { FormPage },
+  mixins: [TablePageMixin],
   data () {
     return {
       confirmLoading: false,
@@ -108,7 +109,7 @@ export default {
         },
         {
           title: '操作',
-          dataIndex: 'action',
+          align: 'center',
           width: '100px',
           scopedSlots: { customRender: 'action-slot' }
         }

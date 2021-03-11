@@ -1,183 +1,184 @@
 <template>
   <div class="ant-pro-page-container-children-content">
 
-    <div v-show="tableShow">
-      <a-row :gutter="14">
-        <a-col :md="5" :style="{height: organizationColHeight}">
-          <a-card :bodyStyle="{padding: '24px 18px'}" :bordered="false" style="height: 100%">
-            <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization"/>
-            <a-tree
-              :blockNode="true"
-              :treeData="organizationTree"
-              :expandedKeys="organizationExpandedKeys"
-              :selectedKeys="organizationSelectedKeys"
-              @select="selectOrganization"
-              @expand="expandOrganization"
-              :multiple="true"
-              :replaceFields="{
+    <a-row :gutter="14">
+      <a-col :md="5">
+        <a-card :body-style="{padding: '24px 18px'}" :bordered="false"
+                style="min-width: 200px; margin-bottom: 16px; min-height: calc(100vh - 122px);">
+          <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization"/>
+          <a-tree
+            :block-node="true"
+            :tree-data="organizationTree"
+            :expanded-keys="organizationExpandedKeys"
+            :selected-keys="organizationSelectedKeys"
+            :multiple="true"
+            :replace-fields="{
                 title: 'name',
                 key: 'id',
                 value: 'id'
               }"
-            >
-              <template v-slot:title="{ name }">
+            @select="selectOrganization"
+            @expand="expandOrganization"
+          >
+            <template #title="{ name }">
                 <span v-if="name.indexOf(searchValue) > -1">
                   {{ name.substr(0, name.indexOf(searchValue)) }}
                   <span style="color: #f50">{{ searchValue }}</span>
                   {{ name.substr(name.indexOf(searchValue) + searchValue.length) }}
                 </span>
-                <span v-else>{{ name }}</span>
+              <span v-else>{{ name }}</span>
+            </template>
+          </a-tree>
+        </a-card>
+      </a-col>
+      <a-col :md="19" ref="sysUserCol">
+        <div class="ant-pro-table-search">
+          <a-form v-bind="searchFormLayout">
+            <a-row :gutter="16">
+              <a-col :md="8" :sm="24">
+                <a-form-item label="用户名">
+                  <a-input v-model="queryParam.username" placeholder=""/>
+                </a-form-item>
+              </a-col>
+              <a-col :md="8" :sm="24">
+                <a-form-item label="状态">
+                  <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
+                    <a-select-option value="">全部</a-select-option>
+                    <a-select-option value="0">关闭</a-select-option>
+                    <a-select-option value="1">运行中</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <template v-if="advanced">
+                <a-col :md="8" :sm="24">
+                  <a-form-item label="昵称">
+                    <a-input v-model="queryParam.nickname" style="width: 100%"/>
+                  </a-form-item>
+                </a-col>
+                <a-col :md="8" :sm="24">
+                  <a-form-item label="邮箱">
+                    <a-input v-model="queryParam.email" style="width: 100%"/>
+                  </a-form-item>
+                </a-col>
+                <a-col :md="8" :sm="24">
+                  <a-form-item label="电话">
+                    <a-input-number v-model="queryParam.phone" style="width: 100%"/>
+                  </a-form-item>
+                </a-col>
               </template>
-            </a-tree>
-          </a-card>
-        </a-col>
-        <a-col :md="19" ref="sysUserCol">
-          <div class="ant-pro-table-search">
-            <a-form v-bind="searchFormLayout">
-              <a-row :gutter="16">
-                <a-col :md="8" :sm="24">
-                  <a-form-item label="用户名">
-                    <a-input v-model="queryParam.username" placeholder=""/>
-                  </a-form-item>
-                </a-col>
-                <a-col :md="8" :sm="24">
-                  <a-form-item label="状态">
-                    <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
-                      <a-select-option value="">全部</a-select-option>
-                      <a-select-option value="0">关闭</a-select-option>
-                      <a-select-option value="1">运行中</a-select-option>
-                    </a-select>
-                  </a-form-item>
-                </a-col>
-                <template v-if="advanced">
-                  <a-col :md="8" :sm="24">
-                    <a-form-item label="昵称">
-                      <a-input v-model="queryParam.nickname" style="width: 100%"/>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :md="8" :sm="24">
-                    <a-form-item label="邮箱">
-                      <a-input v-model="queryParam.email" style="width: 100%"/>
-                    </a-form-item>
-                  </a-col>
-                  <a-col :md="8" :sm="24">
-                    <a-form-item label="电话">
-                      <a-input-number v-model="queryParam.phone" style="width: 100%"/>
-                    </a-form-item>
-                  </a-col>
+              <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+                <div class="table-page-search-submitButtons">
+                  <a-button type="primary" @click="reloadTable">查询</a-button>
+                  <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+                  <a @click="toggleAdvanced" style="margin-left: 8px">
+                    {{ advanced ? '收起' : '展开' }}
+                    <a-icon :type="advanced ? 'up' : 'down'"/>
+                  </a>
+                </div>
+              </a-col>
+            </a-row>
+          </a-form>
+        </div>
+        <a-card :bordered="false" :body-style="{padding: 0}">
+          <!-- 操作按钮区域 -->
+          <div class="ant-pro-table-toolbar">
+            <div class="ant-pro-table-toolbar-title">系统用户</div>
+            <div class="ant-pro-table-toolbar-option">
+              <a-dropdown v-has="'sys:sysuser:edit'" v-if="selectedRowKeys.length > 0">
+                <template #overlay>
+                  <a-menu @click="handleUpdateStatus">
+                    <a-menu-item key="1">
+                      <a-icon type="delete"/>
+                      开启
+                    </a-menu-item>
+                    <!-- lock | unlock -->
+                    <a-menu-item key="0">
+                      <a-icon type="lock"/>
+                      锁定
+                    </a-menu-item>
+                  </a-menu>
                 </template>
-                <a-col :md="8" :sm="24" class="table-page-search-wrapper">
-                  <div class="table-page-search-submitButtons">
-                    <a-button type="primary" @click="reloadTable">查询</a-button>
-                    <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                    <a @click="toggleAdvanced" style="margin-left: 8px">
-                      {{ advanced ? '收起' : '展开' }}
-                      <a-icon :type="advanced ? 'up' : 'down'"/>
-                    </a>
-                  </div>
-                </a-col>
-              </a-row>
-            </a-form>
+                <a-button style="margin-left: 8px">
+                  批量操作
+                  <a-icon type="down"/>
+                </a-button>
+              </a-dropdown>
+              <a-button v-has="'sys:sysuser:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+            </div>
           </div>
-          <a-card :bordered="false" :bodyStyle="{padding: 0}">
-            <!-- 操作按钮区域 -->
-            <div class="ant-pro-table-toolbar">
-              <div class="ant-pro-table-toolbar-title">系统用户</div>
-              <div class="ant-pro-table-toolbar-option">
-                <a-dropdown v-has="'sys:sysuser:edit'" v-if="selectedRowKeys.length > 0">
+
+          <div class="ant-pro-table-wrapper">
+            <a-alert :show-icon="true" style="margin-bottom: 16px">
+              <template #message>
+                <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>
+                <a style="margin-left: 24px" v-show='selectedRows.length > 0' @click="onClearSelected">清空</a>
+              </template>
+            </a-alert>
+
+            <!--数据表格-->
+            <a-table
+              ref="table"
+              size="middle"
+              :row-key="rowKey"
+              :columns="columns"
+              :data-source="dataSource"
+              :pagination="pagination"
+              :loading="loading"
+              :alert="{show: true, clear: true}"
+              :row-selection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
+              @change="handleTableChange"
+            >
+              <!--数据表格-->
+              <template #status-slot="text">
+                <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
+              </template>
+              <template #gender-slot="text">
+                <dict-text dict-code="gender" :value="text"></dict-text>
+              </template>
+              <template #avatar-slot="text, record">
+                <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
+                          @click="beforeUpdateAvatar(record.userId)"/>
+              </template>
+
+              <template #action-slot="text, record">
+                <a-dropdown v-if="$has('sys:sysuser:pass') || $has('sys:sysuser:del')">
+                  <a class="ant-dropdown-link" href="#">
+                    操作
+                  </a>
                   <template #overlay>
-                    <a-menu @click="handleUpdateStatus">
-                      <a-menu-item key="1">
-                        <a-icon type="delete"/>
-                        开启
+                    <a-menu>
+                      <a-menu-item v-has="'sys:sysuser:edit'">
+                        <a @click="handleEdit(record)">编辑</a>
                       </a-menu-item>
-                      <!-- lock | unlock -->
-                      <a-menu-item key="0">
-                        <a-icon type="lock"/>
-                        锁定
+                      <a-menu-item v-has="'sys:sysuser:grant'">
+                        <a @click="handleGrant(record)">授权</a>
+                      </a-menu-item>
+                      <a-menu-item v-has="'sys:sysuser:pass'">
+                        <a @click="changePass(record)">改密</a>
+                      </a-menu-item>
+                      <a-menu-item v-has="'sys:sysuser:del'">
+                        <a-popconfirm
+                          title="确认要删除吗？"
+                          @confirm="() => handleDel(record)">
+                          <a href="javascript:;">删除</a>
+                        </a-popconfirm>
                       </a-menu-item>
                     </a-menu>
                   </template>
-                  <a-button style="margin-left: 8px">
-                    批量操作
-                    <a-icon type="down"/>
-                  </a-button>
                 </a-dropdown>
-                <a-button v-has="'sys:sysuser:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
-              </div>
-            </div>
+              </template>
+            </a-table>
+          </div>
+        </a-card>
+      </a-col>
+    </a-row>
 
-            <div class="ant-pro-table-wrapper">
-              <a-alert :showIcon="true" style="margin-bottom: 16px">
-                <template #message>
-                  <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>
-                  <a style="margin-left: 24px" v-show='selectedRows.length > 0' @click="onClearSelected">清空</a>
-                </template>
-              </a-alert>
-
-              <!--数据表格-->
-              <a-table
-                ref="table"
-                size="middle"
-                :rowKey="rowKey"
-                :columns="columns"
-                :dataSource="dataSource"
-                :pagination="pagination"
-                :loading="loading"
-                @change="handleTableChange"
-                :alert="{show: true, clear: true}"
-                :rowSelection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
-              >
-                <!--数据表格-->
-                <template #status-slot="text">
-                  <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
-                </template>
-                <template #gender-slot="text">
-                  <dict-text dict-code="gender" :value="text"></dict-text>
-                </template>
-                <template #avatar-slot="text, record">
-                  <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
-                            @click="beforeUpdateAvatar(record.userId)"/>
-                </template>
-
-                <template #action-slot="text, record">
-                  <a-dropdown v-if="$has('sys:sysuser:pass') || $has('sys:sysuser:del')">
-                    <a class="ant-dropdown-link" href="#">
-                      操作
-                    </a>
-                    <template #overlay>
-                      <a-menu>
-                        <a-menu-item v-has="'sys:sysuser:edit'">
-                          <a @click="handleEdit(record)">编辑</a>
-                        </a-menu-item>
-                        <a-menu-item v-has="'sys:sysuser:grant'">
-                          <a @click="handleGrant(record)">授权</a>
-                        </a-menu-item>
-                        <a-menu-item v-has="'sys:sysuser:pass'">
-                          <a @click="changePass(record)">改密</a>
-                        </a-menu-item>
-                        <a-menu-item v-has="'sys:sysuser:del'">
-                          <a-popconfirm
-                            title="确认要删除吗？"
-                            @confirm="() => handleDel(record)">
-                            <a href="javascript:;">删除</a>
-                          </a-popconfirm>
-                        </a-menu-item>
-                      </a-menu>
-                    </template>
-                  </a-dropdown>
-                </template>
-              </a-table>
-            </div>
-          </a-card>
-        </a-col>
-      </a-row>
-    </div>
-
-    <!--表单页面-->
-    <a-card v-if="formInited" v-show="!tableShow" :bordered="false" :title="cardTitle">
-      <form-page ref="formPage" @backToPage="backToPage" :organizationTree="organizationTree"></form-page>
-    </a-card>
+    <!-- 用户表单弹窗 -->
+    <sys-user-form-modal
+      ref="formModal"
+      :organization-tree="organizationTree"
+      @reload-page-table="reloadTable"
+    />
 
     <!--头像弹框-->
     <cropper-modal ref="avatarModal"></cropper-modal>
@@ -200,11 +201,11 @@
 import { TablePageMixin } from '@/mixins'
 import { getPage, delObj, updateStatus, updateAvatar } from '@/api/sys/sysuser'
 import { getTree } from '@/api/sys/organization'
-import FormPage from './SysUserForm'
 import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
 import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
+import SysUserFormModal from '@/views/sys/sysuser/SysUserFormModal'
 
 const statusMap = {
   0: {
@@ -221,9 +222,17 @@ export default {
   name: 'SysUserPage',
   components: {
     CropperModal,
-    FormPage,
     ScopeModal,
-    PasswordModal
+    PasswordModal,
+    SysUserFormModal
+  },
+  filters: {
+    statusFilter (type) {
+      return statusMap[type].text
+    },
+    statusTypeFilter (type) {
+      return statusMap[type].status
+    }
   },
   mixins: [TablePageMixin],
   data () {
@@ -288,7 +297,6 @@ export default {
         },
         {
           title: '操作',
-          dataIndex: 'action',
           align: 'center',
           width: '70px',
           scopedSlots: { customRender: 'action-slot' }
@@ -305,14 +313,6 @@ export default {
   },
   computed: {
     ...mapGetters(['userInfo'])
-  },
-  filters: {
-    statusFilter (type) {
-      return statusMap[type].text
-    },
-    statusTypeFilter (type) {
-      return statusMap[type].status
-    }
   },
   created () {
     getTree().then(res => {
@@ -335,6 +335,17 @@ export default {
         })
       }
     },
+    /**
+     * 新建用户
+     */
+    handleAdd () {
+      this.$refs.formModal.add({title: '新建用户'})
+    },
+    // 编辑用户
+    handleEdit (record) {
+      this.$refs.formModal.update(record, {title: '编辑用户'})
+    },
+    // 授权
     handleGrant (record) {
       if (!this.scopeInited) {
         this.scopeInited = true
@@ -343,6 +354,7 @@ export default {
         this.$refs.scopeModal.show(record)
       })
     },
+    // 修改密码
     changePass (record) {
       if (!this.passInited) {
         this.passInited = true
@@ -351,6 +363,7 @@ export default {
         this.$refs.passwordModal.show(record)
       })
     },
+    // 修改状态
     handleUpdateStatus (e) {
       updateStatus(this.selectedRowKeys, e.key).then(res => {
         if (res.code === 200) {
@@ -388,25 +401,25 @@ export default {
     searchOrganization (e) {
       const value = e.target.value
       let expandedKeys = []
-      if(value){
+      if (value) {
         this.matchParentKey(0, this.organizationTree, expandedKeys)
-      }else{
+      } else {
         expandedKeys = this.organizationTree.map(x => x.id)
       }
       Object.assign(this, {
         organizationExpandedKeys: expandedKeys,
         searchValue: value,
-        autoExpandParent: true,
-      });
+        autoExpandParent: true
+      })
     },
     matchParentKey (pId, treeList, result) {
       if (treeList) {
         let matched = false
         treeList.forEach(node => {
-          if(node.children && node.children.length > 0){
+          if (node.children && node.children.length > 0) {
             this.matchParentKey(node.id, node.children, result)
           }
-          if(!matched && node.name.indexOf(this.searchValue) > -1){
+          if (!matched && node.name.indexOf(this.searchValue) > -1) {
             matched = true
             result.push(pId)
           }
@@ -419,7 +432,7 @@ export default {
      */
     selectOrganization (selectedKeys, e) {
       this.organizationSelectedKeys = selectedKeys
-      this.queryParam.organizationId = selectedKeys.join(",")
+      this.queryParam.organizationId = selectedKeys.join(',')
       this.loadData()
     },
     /**

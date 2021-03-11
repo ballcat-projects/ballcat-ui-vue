@@ -62,7 +62,7 @@ import AFormItem from 'ant-design-vue/lib/form/FormItem'
 
 export default {
   name: 'formBody',
-  components: { AFormItem, codemirror },
+  components: {  codemirror },
   props: {
     value: {
       type: Array,

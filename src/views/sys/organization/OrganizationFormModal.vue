@@ -1,17 +1,16 @@
 <template>
   <a-modal
-    :title="formAction === this.FORM_ACTION.UPDATE? '修改组织机构': '新增组织机构'"
+    :title="title"
     :visible="visible"
+    :mask-closable="false"
+    :body-style="{paddingBottom: '8px'}"
+    :confirm-loading="submitLoading"
     @ok="handleSubmit"
     @cancel="handleClose"
-    :confirmLoading="submitLoading"
-    :maskClosable="false"
-    :bodyStyle="{padding:'12px 18px'}"
-    :centered="true"
   >
-    <a-form @submit="handleSubmit" :form="form" :labelCol=labelCol :wrapperCol=wrapperCol>
-      <a-form-item v-if="formAction === this.FORM_ACTION.UPDATE" style="display: none">
-        <a-input v-decorator="['id']"/>
+    <a-form :form="form" :label-col=labelCol :wrapper-col=wrapperCol>
+      <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
+        <a-input v-decorator="['id']" />
       </a-form-item>
 
       <a-form-item label="父级组织">
@@ -23,7 +22,7 @@
           :tree-data="organizationTree"
           tree-default-expand-all
           allow-clear
-          :replaceFields="{
+          :replace-fields="{
             title: 'name',
             key: 'id',
             value: 'id'
@@ -52,7 +51,7 @@ import { FormModalMixin } from '@/mixins'
 import { addObj, putObj } from '@/api/sys/organization'
 
 export default {
-  name: 'OrganizationModal',
+  name: 'OrganizationFormModal',
   mixins: [FormModalMixin],
   props: {
     organizationTree: {
@@ -67,6 +66,15 @@ export default {
       reqFunctions: {
         create: addObj,
         update: putObj
+      },
+
+      labelCol: {
+        sm: { span: 24 },
+        md: { span: 5 }
+      },
+      wrapperCol: {
+        sm: { span: 24 },
+        md: { span: 19 }
       },
 
       // 校验配置

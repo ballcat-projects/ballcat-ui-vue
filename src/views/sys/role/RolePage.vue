@@ -32,7 +32,7 @@
       </div>
 
 
-      <a-card :bordered="false" :bodyStyle="{padding: 0}">
+      <a-card :bordered="false" :body-style="{padding: 0}">
         <!-- 操作按钮区域 -->
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">角色管理</div>
@@ -46,9 +46,9 @@
           <a-table
             ref="table"
             size="middle"
-            :rowKey="rowKey"
+            :row-key="rowKey"
             :columns="columns"
-            :dataSource="dataSource"
+            :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
@@ -64,7 +64,7 @@
               <a-popconfirm v-has="'sys:sysrole:del'"
                             title="确认要删除吗？"
                             @confirm="() => handleDel(record)">
-                <a href="javascript:;">删除</a>
+                <a href="javascript:" style="color: #ff4d4f">删除</a>
               </a-popconfirm>
             </template>
           </a-table>
@@ -72,28 +72,28 @@
       </a-card>
     </div>
 
-    <!--表单页面-->
-    <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page ref="formPage" @backToPage="backToPage"></form-page>
-    </a-card>
+    <role-grant-drawer ref="roleGrantDrawer" />
 
-    <role-grant-drawer ref="roleGrantDrawer"></role-grant-drawer>
+    <role-form-modal
+      ref="formModal"
+      @reload-page-table="reloadTable"
+    />
   </div>
 </template>
 
 <script>
 import { getPage, delObj } from '@/api/sys/role'
-import FormPage from './RoleForm'
+import RoleFormModal from './RoleFormModal'
 import RoleGrantDrawer from './RoleGrantDrawer'
 import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'RolePage',
-  mixins: [TablePageMixin],
   components: {
-    FormPage,
-    RoleGrantDrawer
+    RoleGrantDrawer,
+    RoleFormModal
   },
+  mixins: [TablePageMixin],
   data () {
     return {
       getPage: getPage,
@@ -105,11 +105,11 @@ export default {
           dataIndex: 'id'
         },
         {
-          title: '角色',
+          title: '角色名称',
           dataIndex: 'name'
         },
         {
-          title: '标识',
+          title: '角色标识',
           dataIndex: 'code'
         },
         {
@@ -135,7 +135,7 @@ export default {
         },
         {
           title: '操作',
-          dataIndex: 'action',
+          align: 'center',
           width: '150px',
           scopedSlots: { customRender: 'action-slot' }
         }
@@ -143,10 +143,18 @@ export default {
     }
   },
   methods: {
+    // 新建角色
+    handleAdd () {
+      this.$refs.formModal.add({title: '新建角色'})
+    },
+    // 编辑角色
+    handleEdit (record) {
+      this.$refs.formModal.update(record, {title: '编辑角色'})
+    },
+    // 授权
     handleGrant (record) {
       this.$refs.roleGrantDrawer.showDrawer(record)
     }
-
   }
 }
 </script>

@@ -90,7 +90,7 @@
         <a-button
           size="large"
           type="primary"
-          htmlType="submit"
+          html-type="submit"
           class="register-button"
           :loading="registerBtn"
           @click.stop.prevent="handleSubmit"

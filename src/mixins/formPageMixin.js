@@ -7,11 +7,12 @@ export default {
       // 标签和数值框布局
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 7 }
+        sm: { span: 6 }
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 10 }
+        sm: { span: 15 },
+        md: { span: 10 }
       },
     }
   },
@@ -26,7 +27,7 @@ export default {
       this.backToPage(true);
     },
     backToPage (needRefresh) {
-      this.$emit('backToPage', needRefresh)
+      this.$emit('back-to-page', needRefresh)
     }
   }
 }

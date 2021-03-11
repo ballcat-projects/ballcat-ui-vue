@@ -18,8 +18,8 @@
     </a-input-group>
 
     <a-modal class="lov-model" width="800px" @cancel="cancel" @ok="selectData" :visible="visible"
-             :confirmLoading="loading"
-             :footer="ret?undefined:null" :bodyStyle="{paddingBottom:'0'}" :closable="title.length>0" :title="title">
+             :confirm-loading="loading"
+             :footer="ret?undefined:null" :body-style="{paddingBottom:'0'}" :closable="title.length>0" :title="title">
 
       <a-spin :spinning="loading">
         <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
@@ -64,9 +64,9 @@
         <a-table
           ref="table"
           size="middle"
-          :rowKey="rowKey"
+          :row-key="rowKey"
           :columns="columns"
-          :dataSource="dataSource"
+          :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
           :rowSelection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"

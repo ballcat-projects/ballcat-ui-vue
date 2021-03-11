@@ -13,17 +13,17 @@
             <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-<!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
-<!--                {{ advanced ? '收起' : '展开' }}-->
-<!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
-<!--              </a>-->
+              <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
+              <!--                {{ advanced ? '收起' : '展开' }}-->
+              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+              <!--              </a>-->
             </div>
           </a-col>
         </a-row>
       </a-form>
     </div>
 
-    <a-card :bordered="false" :bodyStyle="{padding: 0}">
+    <a-card :bordered="false" :body-style="{padding: 0}">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">组织架构</div>
@@ -37,9 +37,9 @@
         <a-table
           ref="table"
           size="middle"
-          :rowKey="rowKey"
+          :row-key="rowKey"
           :columns="columns"
-          :dataSource="dataSource"
+          :data-source="dataSource"
           :loading="loading"
           @change="handleTableChange"
           :expandIcon="expandIconRender"
@@ -54,7 +54,7 @@
             <a-popconfirm v-has="'sys:organization:del'"
                           title="确认要删除吗？"
                           @confirm="() => handleDel(record)">
-              <a href="javascript:">删除</a>
+              <a href="javascript:" style="color: #ff4d4f">删除</a>
             </a-popconfirm>
           </template>
         </a-table>
@@ -62,19 +62,23 @@
     </a-card>
 
     <!--表单页面-->
-    <form-modal ref="formModal" @reloadPageTable="reloadTable" :organizationTree="organizationTree"></form-modal>
+    <organization-form-modal
+      ref="formModal"
+      :organization-tree="organizationTree"
+      @reload-page-table="reloadTable"
+    />
   </div>
 </template>
 
 <script>
 import { getTree, delObj } from '@/api/sys/organization'
-import FormModal from './OrganizationModal'
+import OrganizationFormModal from './OrganizationFormModal'
 import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'OrganizationPage',
+  components: { OrganizationFormModal },
   mixins: [TablePageMixin],
-  components: { FormModal },
   data () {
     return {
       delObj: delObj,
@@ -99,7 +103,7 @@ export default {
         },
         {
           title: '操作',
-          dataIndex: 'action',
+          align: 'center',
           width: '150px',
           scopedSlots: { customRender: 'action-slot' }
         }
@@ -151,11 +155,18 @@ export default {
           this.loading = false
         })
     },
-    handleEdit (record) {
-      this.$refs.formModal.update(record)
-    },
+    /**
+     * 新建组织
+     */
     handleAdd () {
-      this.$refs.formModal.add()
+      this.$refs.formModal.add({ title: '新建组织' })
+    },
+    /**
+     * 编辑组织
+     * @param record 当前组织属性
+     */
+    handleEdit (record) {
+      this.$refs.formModal.update(record, { title: '编辑组织' })
     }
   }
 }

@@ -4,7 +4,7 @@
     centered
     v-model="visible"
     @cancel="handleCancel"
-    :maskClosable="false"
+    :mask-closable="false"
   >
     <template #title>
       <div :style="{ textAlign: 'center' }">两步验证</div>

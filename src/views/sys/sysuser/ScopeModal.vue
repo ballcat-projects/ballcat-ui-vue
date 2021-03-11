@@ -4,10 +4,10 @@
     :visible="visible"
     @ok="handleOk"
     @cancel="handleClose"
-    :confirmLoading="confirmLoading"
+    :confirm-loading="confirmLoading"
   >
     <a-spin :spinning="confirmLoading">
-      <a-form :form="form" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="用户名">
           <a-input v-model="username" disabled placeholder="用户名"/>
         </a-form-item>

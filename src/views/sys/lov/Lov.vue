@@ -27,7 +27,7 @@
         </a-form>
       </div>
 
-      <a-card :bordered="false" :bodyStyle="{padding: 0}">
+      <a-card :bordered="false" :body-style="{padding: 0}">
         <!-- 操作按钮区域 -->
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">LOV</div>
@@ -41,9 +41,9 @@
           <a-table
             ref="table"
             size="middle"
-            :rowKey="rowKey"
+            :row-key="rowKey"
             :columns="columns"
-            :dataSource="dataSource"
+            :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
@@ -54,7 +54,7 @@
               <a-popconfirm v-has="'sys:lov:del'"
                             title="确认要删除吗？"
                             @confirm="() => handleDel(record)">
-                <a href="javascript:;">删除</a>
+                <a href="javascript:" style="color: #ff4d4f">删除</a>
               </a-popconfirm>
             </template>
           </a-table>
@@ -64,7 +64,7 @@
 
     <!--表单页面-->
     <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page ref="formPage" @backToPage="backToPage"></form-page>
+      <form-page ref="formPage" @back-to-page="backToPage"></form-page>
     </a-card>
   </div>
 </template>
@@ -134,7 +134,7 @@ export default {
         },
         {
           title: '操作',
-          dataIndex: 'action',
+          align: 'center',
           width: '150px',
           scopedSlots: { customRender: 'action-slot' }
         }

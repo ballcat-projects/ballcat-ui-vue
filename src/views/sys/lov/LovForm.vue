@@ -8,7 +8,7 @@
       <div class="table-operator" style="text-align: center;">
         <a-button :loading="submitLoading" @click="preview">预览</a-button>
         <a-divider type="vertical"/>
-        <a-button style="margin-left: 8px" htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
+        <a-button style="margin-left: 8px" html-type="submit" type="primary" :loading="submitLoading">提交</a-button>
         <a-button @click="backToPage(false)">取消</a-button>
       </div>
 

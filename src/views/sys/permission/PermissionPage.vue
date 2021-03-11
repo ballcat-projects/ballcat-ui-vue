@@ -25,7 +25,7 @@
 
     <a-col :span="15">
       <a-card :bordered="false">
-        <a-form :form="form" @submit="handleSubmit" :labelCol="labelCol" :wrapperCol="wrapperCol">
+        <a-form :form="form" @submit="handleSubmit" :label-col="labelCol" :wrapper-col="wrapperCol">
 
           <a-form-item label="类型">
             <a-radio-group v-decorator="['type']"
@@ -116,9 +116,9 @@
           </a-form-item>
 
           <a-form-item v-show="formAction !== FORM_ACTION.NONE"
-                       :wrapperCol="{offset: 7 }"
+                       :wrapper-col="{offset: 7 }"
           >
-            <a-button htmlType="submit" type="primary">{{ this.formAction === this.FORM_ACTION.CREATE ? '提交' : '修改' }}
+            <a-button html-type="submit" type="primary">{{ this.formAction === this.FORM_ACTION.CREATE ? '提交' : '修改' }}
             </a-button>
             <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
           </a-form-item>
@@ -132,7 +132,7 @@
 
 <script>
 import pick from 'lodash.pick'
-import AFormItem from 'ant-design-vue/es/form/FormItem'
+
 import { getList, addObj, putObj, delObj } from '@/api/sys/permission'
 import { listToTree } from '@/utils/treeUtil'
 import IconSelectModal from './IconSelectModal'
@@ -140,7 +140,7 @@ import IconSelectModal from './IconSelectModal'
 export default {
   name: 'PermissionPage',
   components: {
-    AFormItem, IconSelectModal
+     IconSelectModal
   },
   data () {
     return {

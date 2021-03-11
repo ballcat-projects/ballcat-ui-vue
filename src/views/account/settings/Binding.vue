@@ -1,7 +1,7 @@
 <template>
   <a-list
     itemLayout="horizontal"
-    :dataSource="data"
+    :data-source="data"
   >
 
   </a-list>

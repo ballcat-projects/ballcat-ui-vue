@@ -52,7 +52,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :bodyStyle="{padding: 0}">
+    <a-card :bordered="false" :body-style="{padding: 0}">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">登陆日志</div>
@@ -62,9 +62,9 @@
         <a-table
           ref="table"
           size="middle"
-          :rowKey="rowKey"
+          :row-key="rowKey"
           :columns="columns"
-          :dataSource="dataSource"
+          :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
           @change="handleTableChange"

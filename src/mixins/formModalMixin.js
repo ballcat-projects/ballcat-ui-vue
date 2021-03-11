@@ -4,32 +4,34 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
+      title: null,
       visible: false,
       labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
+        sm: { span: 24 },
+        md: { span: 7 }
       },
       wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
+        sm: { span: 24 },
+        md: { span: 17 }
       },
     }
   },
   methods: {
-    show() {
+    show(modalOption) {
+      this.title = modalOption.title
       this.visible = true
       this.submitLoading = false
     },
-    add() {
+    add(modalOption) {
       this.buildCreatedForm()
-      this.show()
+      this.show(modalOption)
     },
-    update(record) {
+    update(record, modalOption) {
       this.buildUpdatedForm(record)
-      this.show()
+      this.show(modalOption)
     },
     submitSuccess (res){
-      this.$emit('reloadPageTable', false)
+      this.$emit('reload-page-table', false)
       this.handleClose()
     },
     handleClose(e) {

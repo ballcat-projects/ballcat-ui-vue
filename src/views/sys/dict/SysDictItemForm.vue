@@ -1,20 +1,20 @@
 <template>
-  <a-form @submit="handleSubmit" :form="form" :labelCol=labelCol
-          :wrapperCol=wrapperCol>
-    <a-form-item v-if="formAction === this.FORM_ACTION.UPDATE" style="display: none">
+  <a-form @submit="handleSubmit" :form="form" :label-col=labelCol
+          :wrapper-col=wrapperCol>
+    <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
       <a-input v-decorator="['id']"/>
     </a-form-item>
 
     <a-form-item label="字典标识">
-      <a-input placeholder="字典标识" v-decorator="['dictCode']" :disabled="true"/>
+      <a-input v-decorator="['dictCode']" placeholder="字典标识" :disabled="true"/>
     </a-form-item>
 
     <a-form-item label="文本值">
-      <a-input placeholder="文本值" v-decorator="['name']"/>
+      <a-input v-decorator="['name']" placeholder="文本值"/>
     </a-form-item>
 
     <a-form-item label="数据值">
-      <a-input placeholder="数据值" v-decorator="['value']"/>
+      <a-input v-decorator="['value']" placeholder="数据值"/>
     </a-form-item>
 
     <a-form-item>
@@ -39,21 +39,12 @@
     </a-form-item>
 
     <a-form-item label="备注">
-      <a-textarea placeholder="备注"  v-decorator="['remarks']"
-                  :autoSize="{ minRows: 3, maxRows: 5 }"/>
+      <a-textarea placeholder="备注" v-decorator="['remarks']"
+                  :auto-size="{ minRows: 3, maxRows: 5 }"/>
     </a-form-item>
 
-
-    <div v-show="formAction === this.FORM_ACTION.UPDATE">
-      <a-form-item label="创建时间">
-        <span>{{ displayData.createTime }}</span>
-      </a-form-item>
-      <a-form-item label="修改时间">
-        <span>{{ displayData.updateTime }}</span>
-      </a-form-item>
-    </div>
-    <a-form-item :wrapperCol="{offset: 7 }">
-      <a-button htmlType="submit" type="primary" :loading="submitLoading">提交</a-button>
+    <a-form-item :wrapper-col="{offset: 7 }">
+      <a-button html-type="submit" type="primary" :loading="submitLoading">提交</a-button>
       <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
     </a-form-item>
   </a-form>
@@ -61,7 +52,7 @@
 
 <script>
 import { FormPageMixin } from '@/mixins'
-import AFormItem from 'ant-design-vue/es/form/FormItem'
+
 import { addObj, putObj } from '@/api/sys/sysdictitem'
 // codemirror
 import { codemirror } from 'vue-codemirror'
@@ -71,7 +62,7 @@ import 'codemirror/mode/javascript/javascript'
 
 export default {
   name: 'SysDictItemFormPage',
-  components: { AFormItem, codemirror },
+  components: { codemirror },
   mixins: [FormPageMixin],
   data () {
     return {
