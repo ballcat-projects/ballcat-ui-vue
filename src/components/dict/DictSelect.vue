@@ -1,6 +1,6 @@
 <template>
   <a-select
-    :allowClear="allowClear"
+    :allow-clear="allowClear"
     :placeholder="placeholder"
     :disabled="disabled"
     :value="selectedValue"

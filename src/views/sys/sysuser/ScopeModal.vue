@@ -15,7 +15,7 @@
           <a-select mode="multiple"
                     style="width: 100%"
                     placeholder="无角色"
-                    :allowClear="true"
+                    :allow-clear="true"
                     v-model="roleCodes">
             <a-select-option v-for="selectData in roleSelectData"
                              :key="selectData.value">

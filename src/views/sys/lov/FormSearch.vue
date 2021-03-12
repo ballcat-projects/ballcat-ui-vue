@@ -87,7 +87,7 @@
 <script>
 
 export default {
-  name: 'formSearch',
+  name: 'FormSearch',
   props: {
     value: {
       type: Array,

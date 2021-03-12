@@ -1,133 +1,137 @@
 <template>
-  <a-row :gutter="10">
-    <a-col :span="9">
-      <a-card :bordered="false">
-        <a-button-group style="margin-bottom: 16px">
-          <a-button v-has="'sys:syspermission:add'" type="primary" @click="handleAdd()">添加</a-button>
-          <a-button v-has="'sys:syspermission:edit'" type="primary" @click="handleUpdate()">编辑</a-button>
-          <a-button v-has="'sys:syspermission:del'" type="primary" @click="handleDelete()">删除</a-button>
-        </a-button-group>
+  <div class="ant-pro-page-container-children-content">
+    <a-row :gutter="10">
+      <a-col :span="9">
+        <a-card :bordered="false">
+          <a-button-group style="margin-bottom: 16px">
+            <a-button v-has="'sys:syspermission:add'" type="primary" @click="handleAdd()">添加</a-button>
+            <a-button v-has="'sys:syspermission:edit'" type="primary" @click="handleUpdate()">编辑</a-button>
+            <a-button v-has="'sys:syspermission:del'" type="primary" @click="handleDelete()">删除</a-button>
+          </a-button-group>
 
-        <a-tree
-          :blockNode="true"
-          :tree-data="treeData"
-          :expanded-keys="expandedKeys"
-          :showIcon="true"
-          @select="onSelect"
-          @expand="onExpand"
-        >
-          <template slot="custom" slot-scope="{ icon }">
-            <a-icon v-if="icon" :type="icon"/>
-          </template>
-        </a-tree>
-      </a-card>
-    </a-col>
-
-    <a-col :span="15">
-      <a-card :bordered="false">
-        <a-form :form="form" @submit="handleSubmit" :label-col="labelCol" :wrapper-col="wrapperCol">
-
-          <a-form-item label="类型">
-            <a-radio-group v-decorator="['type']"
-                           @change="onTypeChange"
-                           :disabled="readOnly">
-              <a-radio :value=0>目录</a-radio>
-              <a-radio :value=1>菜单</a-radio>
-              <a-radio :value=2>按钮/权限</a-radio>
-            </a-radio-group>
-          </a-form-item>
-
-          <a-form-item label="父级节点">
-            <a-input placeholder="父级节点" v-decorator="['parentId']"
-                     :disabled="true"/>
-          </a-form-item>
-
-          <a-form-item label="节点">
-            <a-input placeholder="节点"
-                     v-decorator="['id', decoratorOptions.id]"
-                     type="number"
-                     :disabled="formAction !== this.FORM_ACTION.CREATE"/>
-          </a-form-item>
-
-          <a-form-item label="标题">
-            <a-input placeholder="请输入标题"
-                     v-decorator="['title', decoratorOptions.title]"
-                     :disabled="readOnly"/>
-          </a-form-item>
-
-          <div v-show="permissionType === 0">
-            <a-form-item label="重定向">
-              <a-input placeholder="路由重定向地址(redirect)"
-                       :disabled="readOnly"
-                       v-decorator="['redirect', decoratorOptions.redirect]"/>
-            </a-form-item>
-          </div>
-
-          <div v-show="permissionType === 1">
-            <a-form-item label="菜单路径">
-              <a-input placeholder="请输入菜单路径"
-                       :disabled="readOnly"
-                       v-decorator="['path', decoratorOptions.path]"/>
-            </a-form-item>
-          </div>
-
-          <div v-show="permissionType === 2">
-            <a-form-item label="授权标识">
-              <a-input placeholder="授权标识"
-                       :disabled="readOnly"
-                       v-decorator="['code']"/>
-            </a-form-item>
-          </div>
-
-          <div v-show="permissionType === 0 || permissionType === 1">
-            <a-form-item label="路由名称">
-              <a-input placeholder="请输入前端路由名称"
-                       v-decorator="['routerName', decoratorOptions.routerName]"
-                       :disabled="readOnly"/>
-            </a-form-item>
-
-            <a-form-item label="前端组件">
-              <a-input placeholder="请输入前端组件" v-decorator="['component', decoratorOptions.component]"
-                       :disabled="readOnly"/>
-            </a-form-item>
-
-            <a-form-item label="菜单图标">
-              <a-input placeholder="点击右侧按钮选择图标" v-decorator="['icon']"
-                       :disabled="readOnly">
-                <template #addonAfter>
-                  <a-icon type="setting" @click="selectIcons"/>
-                </template>
-              </a-input>
-            </a-form-item>
-          </div>
-
-          <a-form-item label="排序">
-            <a-input-number placeholder="请输入排序号"
-                            :disabled="readOnly"
-                            style="width: 250px" v-decorator="['sort']"/>
-          </a-form-item>
-
-          <a-form-item label="隐藏路由"
-                       v-show="permissionType === 0 || permissionType === 1">
-            <a-radio-group v-decorator="['hidden']" :disabled="readOnly">
-              <a-radio :value=1>是</a-radio>
-              <a-radio :value=0>否</a-radio>
-            </a-radio-group>
-          </a-form-item>
-
-          <a-form-item v-show="formAction !== FORM_ACTION.NONE"
-                       :wrapper-col="{offset: 7 }"
+          <a-tree
+            :blockNode="true"
+            :tree-data="treeData"
+            :expanded-keys="expandedKeys"
+            :showIcon="true"
+            @select="onSelect"
+            @expand="onExpand"
           >
-            <a-button html-type="submit" type="primary">{{ this.formAction === this.FORM_ACTION.CREATE ? '提交' : '修改' }}
-            </a-button>
-            <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
-          </a-form-item>
+            <template slot="custom" slot-scope="{ icon }">
+              <a-icon v-if="icon" :type="icon"/>
+            </template>
+          </a-tree>
+        </a-card>
+      </a-col>
 
-          <icon-select-modal ref="iconSelectModal" @choose="chooseIcon"></icon-select-modal>
-        </a-form>
-      </a-card>
-    </a-col>
-  </a-row>
+      <a-col :span="15">
+        <a-card :bordered="false">
+          <a-form :form="form" @submit="handleSubmit" :label-col="labelCol" :wrapper-col="wrapperCol">
+
+            <a-form-item label="类型">
+              <a-radio-group v-decorator="['type']"
+                             @change="onTypeChange"
+                             :disabled="readOnly">
+                <a-radio :value=0>目录</a-radio>
+                <a-radio :value=1>菜单</a-radio>
+                <a-radio :value=2>按钮/权限</a-radio>
+              </a-radio-group>
+            </a-form-item>
+
+            <a-form-item label="父级节点">
+              <a-input placeholder="父级节点" v-decorator="['parentId']"
+                       :disabled="true"/>
+            </a-form-item>
+
+            <a-form-item label="节点">
+              <a-input placeholder="节点"
+                       v-decorator="['id', decoratorOptions.id]"
+                       type="number"
+                       :disabled="formAction !== this.FORM_ACTION.CREATE"/>
+            </a-form-item>
+
+            <a-form-item label="标题">
+              <a-input placeholder="请输入标题"
+                       v-decorator="['title', decoratorOptions.title]"
+                       :disabled="readOnly"/>
+            </a-form-item>
+
+            <div v-show="permissionType === 0">
+              <a-form-item label="重定向">
+                <a-input placeholder="路由重定向地址(redirect)"
+                         :disabled="readOnly"
+                         v-decorator="['redirect', decoratorOptions.redirect]"/>
+              </a-form-item>
+            </div>
+
+            <div v-show="permissionType === 1">
+              <a-form-item label="菜单路径">
+                <a-input placeholder="请输入菜单路径"
+                         :disabled="readOnly"
+                         v-decorator="['path', decoratorOptions.path]"/>
+              </a-form-item>
+            </div>
+
+            <div v-show="permissionType === 2">
+              <a-form-item label="授权标识">
+                <a-input placeholder="授权标识"
+                         :disabled="readOnly"
+                         v-decorator="['code']"/>
+              </a-form-item>
+            </div>
+
+            <div v-show="permissionType === 0 || permissionType === 1">
+              <a-form-item label="路由名称">
+                <a-input placeholder="请输入前端路由名称"
+                         v-decorator="['routerName', decoratorOptions.routerName]"
+                         :disabled="readOnly"/>
+              </a-form-item>
+
+              <a-form-item label="前端组件">
+                <a-input placeholder="请输入前端组件" v-decorator="['component', decoratorOptions.component]"
+                         :disabled="readOnly"/>
+              </a-form-item>
+
+              <a-form-item label="菜单图标">
+                <a-input placeholder="点击右侧按钮选择图标" v-decorator="['icon']"
+                         :disabled="readOnly">
+                  <template #addonAfter>
+                    <a-icon type="setting" @click="selectIcons"/>
+                  </template>
+                </a-input>
+              </a-form-item>
+            </div>
+
+            <a-form-item label="排序">
+              <a-input-number placeholder="请输入排序号"
+                              :disabled="readOnly"
+                              style="width: 250px" v-decorator="['sort']"/>
+            </a-form-item>
+
+            <a-form-item label="隐藏路由"
+                         v-show="permissionType === 0 || permissionType === 1">
+              <a-radio-group v-decorator="['hidden']" :disabled="readOnly">
+                <a-radio :value=1>是</a-radio>
+                <a-radio :value=0>否</a-radio>
+              </a-radio-group>
+            </a-form-item>
+
+            <a-form-item v-show="formAction !== FORM_ACTION.NONE"
+                         :wrapper-col="{offset: 7 }"
+            >
+              <a-button html-type="submit" type="primary">{{
+                  this.formAction === this.FORM_ACTION.CREATE ? '提交' : '修改'
+                }}
+              </a-button>
+              <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
+            </a-form-item>
+
+            <icon-select-modal ref="iconSelectModal" @choose="chooseIcon"></icon-select-modal>
+          </a-form>
+        </a-card>
+      </a-col>
+    </a-row>
+  </div>
 </template>
 
 <script>
@@ -140,7 +144,7 @@ import IconSelectModal from './IconSelectModal'
 export default {
   name: 'PermissionPage',
   components: {
-     IconSelectModal
+    IconSelectModal
   },
   data () {
     return {

@@ -1,5 +1,5 @@
 <template>
-  <a-card style="margin-top: 5px" title="表格列配置">
+  <a-card title="表格列配置" class="antd-pro-pages-form-advanced-form-style-card">
     <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible=true">新增表格列</a-button>
 
     <div v-for="(item,index) in value" :key="item.field" style="margin-bottom: 5px;">
@@ -61,7 +61,7 @@ import 'codemirror/mode/javascript/javascript'
 import AFormItem from 'ant-design-vue/lib/form/FormItem'
 
 export default {
-  name: 'formBody',
+  name: 'FormBody',
   components: {  codemirror },
   props: {
     value: {

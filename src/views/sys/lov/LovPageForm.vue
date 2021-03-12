@@ -1,38 +1,49 @@
 <template>
-  <a-card :bordered="false" :title="title">
-    <a-spin :spinning="submitLoading" size="large">
+  <div>
+    <!-- 页头 -->
+    <a-page-header
+      :ghost="false"
+      title="Lov 配置"
+    >
+      该组件主要用于多条件查询的数据录入
+    </a-page-header>
+
+    <!-- 表单 -->
+    <a-spin :spinning="submitLoading" size="large" class="ant-pro-page-container-children-content">
       <a-form @submit="handleSubmit" :form="form" class="form">
-        <formBasic :form="form" :formAction="formAction"/>
-        <formBody v-model="bodyList" :form="form" :formAction="formAction"/>
-        <formSearch v-model="searchList" :form="form" :formAction="formAction"/>
-
-        <div class="table-operator" style="text-align: center;">
-          <a-button :loading="submitLoading" @click="preview">预览</a-button>
-          <a-divider type="vertical"/>
-          <a-button style="margin-left: 8px" html-type="submit" type="primary" :loading="submitLoading">提交</a-button>
-          <a-button @click="backToPage(false)">取消</a-button>
-        </div>
-
+        <form-basic :form="form" :formAction="formAction"/>
+        <form-body v-model="bodyList" :form="form" :formAction="formAction"/>
+        <form-search v-model="searchList" :form="form" :formAction="formAction"/>
         <a-divider>单击预览按钮后，下方会生成预览的lov组件,修改配置后需要重新单击预览更新数据</a-divider>
         <lov :lazy="true" style="margin-bottom: 56px;" ref="lov_pre" keyword="lov_pre" v-model="lovVal"/>
       </a-form>
     </a-spin>
-  </a-card>
+
+    <!-- fixed footer toolbar -->
+    <footer-tool-bar>
+      <div class="table-operator" style="text-align: center;">
+        <a-button :loading="submitLoading" @click="preview">预览</a-button>
+        <a-button style="margin-left: 8px" html-type="submit" type="primary" :loading="submitLoading">提交</a-button>
+        <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
+      </div>
+    </footer-tool-bar>
+  </div>
 </template>
 
 <script>
 import { PageFormMixin } from '@/mixins'
 import { create, getData, update } from '@/api/sys/lov'
 import { mixin, mixinDevice } from '@/utils/mixin'
-import formBasic from '@/views/sys/lov/formBasic'
-import formBody from '@/views/sys/lov/formBody'
-import formSearch from '@/views/sys/lov/formSearch'
+import FormBasic from '@/views/sys/lov/FormBasic'
+import FormBody from '@/views/sys/lov/FormBody'
+import FormSearch from '@/views/sys/lov/FormSearch'
 import Vue from 'vue'
+import FooterToolBar from '@/components/FooterToolbar'
 
 export default {
   name: 'SysLovFormPage',
+  components: { FormBasic, FormBody, FormSearch, FooterToolBar },
   mixins: [mixin, mixinDevice, PageFormMixin],
-  components: { formBasic, formBody, formSearch },
   data () {
     return {
       dictCodes: ['lov_http_method', 'tf', 'lov_http_params_position', 'lov_ret_data_type', 'lov_search_tag'],

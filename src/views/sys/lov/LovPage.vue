@@ -1,6 +1,7 @@
 <template>
-  <div class="ant-pro-page-container-children-content">
-    <div v-show="tableShow">
+  <div>
+    <!-- 表格页面 -->
+    <div v-show="tableShow" class="ant-pro-page-container-children-content">
       <!-- 查询条件 -->
       <div class="ant-pro-table-search">
         <a-form v-bind="searchFormLayout">
@@ -61,9 +62,8 @@
         </div>
       </a-card>
     </div>
-
     <!--表单页面-->
-    <lov-page-form v-show="!tableShow" ref="pageForm" @back-to-page="backToPage" />
+    <lov-page-form v-show="!tableShow" ref="pageForm" @back-to-page="backToPage"/>
   </div>
 </template>
 
@@ -149,7 +149,7 @@ export default {
     handleEdit (record) {
       this.switchPage()
       this.$refs.pageForm.update(record, { title: '编辑LOV' })
-    },
+    }
   }
 }
 </script>

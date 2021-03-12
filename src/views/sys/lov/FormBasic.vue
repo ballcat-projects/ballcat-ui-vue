@@ -1,7 +1,7 @@
 <template>
   <div :form="form">
-    <a-card title="基础配置">
-      <a-form-item v-if="formAction === this.FORM_ACTION.UPDATE" style="display: none">
+    <a-card title="基础配置" class="antd-pro-pages-form-advanced-form-style-card">
+      <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
         <a-input v-decorator="['id']" />
       </a-form-item>
 
@@ -25,7 +25,7 @@
       </a-row>
     </a-card>
 
-    <a-card style="margin-top: 5px" title="请求配置">
+    <a-card title="请求配置" class="antd-pro-pages-form-advanced-form-style-card">
       <a-row :gutter="4" class="form-row">
         <a-col :span="16">
           <a-form-item extra="获取数据时请求路径" label="请求路径">
@@ -36,7 +36,7 @@
           <a-form-item extra="http请求方式" label="请求方式">
             <dict-select
               v-decorator="['method',decoratorOptions.method]"
-              :allowClear="false"
+              :allow-clear="false"
               dict-code="lov_http_method"
               placeholder="请求方式"
             />
@@ -75,7 +75,7 @@
       </a-modal>
     </a-card>
 
-    <a-card style="margin-top: 5px" title="核心设置">
+    <a-card title="核心设置" class="antd-pro-pages-form-advanced-form-style-card">
       <a-row :gutter="4" class="form-row">
         <a-col :span="4">
           <a-form-item extra="是否多选" label="多选">
