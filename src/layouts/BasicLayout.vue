@@ -4,11 +4,11 @@
     <a-drawer
       v-if="isMobile()"
       placement="left"
-      :wrapClassName="`drawer-sider ${navTheme}`"
+      :wrap-class-name="`drawer-sider ${navTheme}`"
       :closable="false"
       :visible="collapsed"
+      :width="208"
       @close="drawerClose"
-      width="208px"
     >
       <side-menu
         mode="inline"
@@ -16,7 +16,7 @@
         :theme="navTheme"
         :collapsible="false"
         @menuSelect="menuSelect"
-      ></side-menu>
+      />
     </a-drawer>
 
     <side-menu
@@ -28,7 +28,8 @@
       :collapsible="true"
     ></side-menu>
 
-    <a-layout :class="[layoutMode, `content-width-${contentWidth}`]" :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }">
+    <a-layout :class="[layoutMode, `content-width-${contentWidth}`]"
+              :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }">
       <!-- layout header -->
       <global-header
         :mode="layoutMode"
@@ -39,19 +40,20 @@
         @toggle="toggle"
       />
 
-      <announcement-ribbon/>
+      <announcement-ribbon />
 
       <!-- layout content -->
-      <a-layout-content :style="{ height: '100%', margin: '18px 18px 0', paddingTop: fixedHeader ? '64px' : '0' }">
-        <multi-tab v-if="multiTab"></multi-tab>
+      <!--      <a-layout-content :style="{ height: '100%', margin: '18px 18px 0', paddingTop: fixedHeader ? '64px' : '0' }">-->
+      <a-layout-content>
+        <multi-tab v-if="multiTab"/>
         <transition name="page-transition">
-          <route-view />
+          <route-view/>
         </transition>
       </a-layout-content>
 
       <!-- layout footer -->
       <a-layout-footer>
-        <global-footer />
+        <global-footer/>
       </a-layout-footer>
 
       <!-- Setting Drawer (show in development mode) -->
@@ -59,9 +61,8 @@
     </a-layout>
 
     <!-- websocket -->
-    <GlobalWebSocket/>
+    <global-web-socket/>
   </a-layout>
-
 </template>
 
 <script>
@@ -106,7 +107,7 @@ export default {
       if (!this.fixSidebar || this.isMobile()) {
         return '0'
       }
-      return this.collapsed? '48px': '208px'
+      return this.collapsed ? '48px' : '208px'
     }
   },
   created () {
