@@ -72,7 +72,7 @@
     </a-card>
 
     <!--表单弹窗-->
-    <sys-dict-form-modal
+    <sys-dict-modal-form
       ref="formModal"
       @reload-page-table="reloadTable"
     />
@@ -86,11 +86,11 @@
 import { getPage, delObj } from '@/api/sys/sysdict'
 import { TablePageMixin } from '@/mixins'
 import DictItemModal from './SysDictItemModal'
-import SysDictFormModal from '@/views/sys/dict/SysDictFormModal'
+import SysDictModalForm from '@/views/sys/dict/SysDictModalForm'
 
 export default {
   name: 'SysDictPage',
-  components: { SysDictFormModal, DictItemModal },
+  components: { SysDictModalForm, DictItemModal },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -142,14 +142,14 @@ export default {
      * 新建字典
      */
     handleAdd () {
-      this.$refs.formModal.add({ title: '新建组织' })
+      this.$refs.formModal.add({ title: '新建字典' })
     },
     /**
      * 编辑字典
      * @param record 当前组织属性
      */
     handleEdit (record) {
-      this.$refs.formModal.update(record, { title: '编辑组织' })
+      this.$refs.formModal.update(record, { title: '编辑字典' })
     },
     /**
      * 字典项表格弹窗

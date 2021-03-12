@@ -10,8 +10,8 @@
 
         <a-tree
           :blockNode="true"
-          :treeData="treeData"
-          :expandedKeys="expandedKeys"
+          :tree-data="treeData"
+          :expanded-keys="expandedKeys"
           :showIcon="true"
           @select="onSelect"
           @expand="onExpand"

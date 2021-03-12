@@ -61,7 +61,7 @@
     </a-card>
 
     <!--表单弹窗-->
-    <sys-config-form-modal
+    <sys-config-modal-form
       ref="formModal"
       @reload-page-table="reloadTable"
     />
@@ -71,11 +71,11 @@
 <script>
 import { getPage, delObj } from '@/api/sys/sysconfig'
 import { TablePageMixin } from '@/mixins'
-import SysConfigFormModal from '@/views/sys/config/SysConfigFormModal'
+import SysConfigModalForm from '@/views/sys/config/SysConfigModalForm'
 
 export default {
   name: 'SysConfigPage',
-  components: { SysConfigFormModal },
+  components: { SysConfigModalForm },
   mixins: [TablePageMixin],
   data () {
     return {

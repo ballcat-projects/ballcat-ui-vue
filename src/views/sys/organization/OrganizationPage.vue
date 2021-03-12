@@ -62,7 +62,7 @@
     </a-card>
 
     <!--表单页面-->
-    <organization-form-modal
+    <organization-modal-form
       ref="formModal"
       :organization-tree="organizationTree"
       @reload-page-table="reloadTable"
@@ -72,12 +72,12 @@
 
 <script>
 import { getTree, delObj } from '@/api/sys/organization'
-import OrganizationFormModal from './OrganizationFormModal'
+import OrganizationModalForm from './OrganizationModalForm'
 import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'OrganizationPage',
-  components: { OrganizationFormModal },
+  components: { OrganizationModalForm },
   mixins: [TablePageMixin],
   data () {
     return {

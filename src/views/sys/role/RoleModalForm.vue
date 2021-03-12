@@ -69,12 +69,12 @@
 </template>
 
 <script>
-import { FormModalMixin } from '@/mixins'
+import { PopUpFormMixin } from '@/mixins'
 import { addObj, putObj } from '@/api/sys/role'
 
 export default {
-  name: 'RoleFormModal',
-  mixins: [FormModalMixin],
+  name: 'RoleModalForm',
+  mixins: [PopUpFormMixin],
   data () {
     return {
       reqFunctions: {

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { FormPageMixin } from '@/mixins'
+import { PageFormMixin } from '@/mixins'
 
 import { addObj, putObj } from '@/api/sys/sysdictitem'
 // codemirror
@@ -61,14 +61,23 @@ import 'codemirror/theme/dracula.css'
 import 'codemirror/mode/javascript/javascript'
 
 export default {
-  name: 'SysDictItemFormPage',
+  name: 'SysDictItemPageForm',
   components: { codemirror },
-  mixins: [FormPageMixin],
+  mixins: [PageFormMixin],
   data () {
     return {
       reqFunctions: {
         create: addObj,
         update: putObj
+      },
+
+      labelCol: {
+        sm: { span: 24 },
+        md: { span: 3 }
+      },
+      wrapperCol: {
+        sm: { span: 24 },
+        md: { span: 20 }
       },
 
       // 校验配置

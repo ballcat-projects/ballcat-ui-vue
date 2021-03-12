@@ -1,12 +1,12 @@
 <template>
   <a-modal
-    :title="dictName+'（字典项）'"
+    :title="'字典项：'+dictName"
     :visible="visible"
     :mask-closable="false"
     :body-style="{padding:'12px 18px'}"
     :confirm-loading="confirmLoading"
     :footer="null"
-    width="75%"
+    :width="800"
     :centered="true"
     @ok="handleOk"
     @cancel="handleClose"
@@ -41,9 +41,9 @@
     </div>
 
     <!--表单页面-->
-    <form-page
+    <sys-dict-item-page-form
       v-show="!tableShow"
-      ref="formPage"
+      ref="pageForm"
       @back-to-page="backToPage"
     />
   </a-modal>
@@ -51,12 +51,12 @@
 
 <script>
 import { getPage, delObj } from '@/api/sys/sysdictitem'
-import FormPage from './SysDictItemForm'
+import SysDictItemPageForm from './SysDictItemPageForm'
 import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'DictItemModal',
-  components: { FormPage },
+  components: { SysDictItemPageForm },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -98,7 +98,6 @@ export default {
         {
           title: '备注',
           dataIndex: 'remarks',
-          width: '250px',
           ellipsis: true
         },
         {
@@ -133,7 +132,24 @@ export default {
     handleClose (e) {
       this.visible = false
       this.confirmLoading = false
+    },
+    // 新增
+    handleAdd () {
+      this.switchPage()
+      this.$refs.pageForm.add({ title: '新建字典项：'+ this.dictName })
+    },
+    // 编辑
+    handleEdit (record) {
+      this.switchPage()
+      this.$refs.pageForm.update(record, { title: '编辑字典项：'+ this.dictName })
     }
   }
 }
 </script>
+
+<style scoped>
+/** 保证切换时的高度不要相差太多 */
+/deep/ .ant-table-body{
+  height: 400px;
+}
+</style>

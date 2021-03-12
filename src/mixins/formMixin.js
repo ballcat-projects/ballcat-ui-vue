@@ -71,14 +71,14 @@ export default {
     /**
      * 构建 => 修改型表单
      * @param record 回显数据
-     * @param argument 额外参数，用于透传到表单构建完成的回调函数中
+     * @param options 额外参数，用于透传到表单构建完成的回调函数中
      */
-    buildUpdatedForm (record, argument) {
+    buildUpdatedForm (record, options) {
       let that = this
       that.formAction = that.FORM_ACTION.UPDATE
       that.echoDataProcess(record)
       this.fillFormData(record, true)
-      this.updatedFormCallback(argument)
+      this.updatedFormCallback(options)
     },
 
     /**
@@ -91,7 +91,7 @@ export default {
     },
 
     /*eslint-disable*/
-    updatedFormCallback (argument) {
+    updatedFormCallback (options) {
       // 组件复写此方法 完成修改之后的事件
     },
 

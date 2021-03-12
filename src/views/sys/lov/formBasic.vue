@@ -107,7 +107,7 @@
 <script>
 
 export default {
-  name: 'formBasic',
+  name: 'FormBasic',
   props: {
     formAction: String,
     form: Object,

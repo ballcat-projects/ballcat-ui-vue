@@ -2,21 +2,20 @@
   <a-drawer
     title="角色授权"
     placement="right"
-    @close="closeDrawer"
     :visible="visible"
-    width="600"
+    :width="600"
+    @close="closeDrawer"
   >
     <div style="margin-bottom: 60px">
       <a-tree
         checkable
-        :treeData="treeData"
-        :checkedKeys="checkedKeys"
-        :expandedKeys="expandedKeys"
-        :halfCheckedKeys="halfCheckedKeys"
+        :tree-data="treeData"
+        :checked-keys="checkedKeys"
+        :expanded-keys="expandedKeys"
+        :half-checked-keys="halfCheckedKeys"
         @check="onCheck"
         @expand="onExpand"
-      >
-      </a-tree>
+      />
     </div>
 
     <div
@@ -37,7 +36,6 @@
       </a-popconfirm>
       <a-button @click="onSubmit" type="primary" :loading="submitLoading">保存</a-button>
     </div>
-
   </a-drawer>
 </template>
 <script>

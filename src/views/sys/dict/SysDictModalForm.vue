@@ -53,12 +53,12 @@
 </template>
 
 <script>
-import { FormModalMixin } from '@/mixins'
+import { PopUpFormMixin } from '@/mixins'
 import { addObj, putObj } from '@/api/sys/sysdict'
 
 export default {
-  name: 'SysDictFormModal',
-  mixins: [FormModalMixin],
+  name: 'SysDictModalForm',
+  mixins: [PopUpFormMixin],
   data () {
     return {
       reqFunctions: {

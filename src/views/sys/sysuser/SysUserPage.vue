@@ -174,7 +174,7 @@
     </a-row>
 
     <!-- 用户表单弹窗 -->
-    <sys-user-form-modal
+    <sys-user-modal-form
       ref="formModal"
       :organization-tree="organizationTree"
       @reload-page-table="reloadTable"
@@ -205,7 +205,7 @@ import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
 import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
-import SysUserFormModal from '@/views/sys/sysuser/SysUserFormModal'
+import SysUserModalForm from '@/views/sys/sysuser/SysUserModalForm'
 
 const statusMap = {
   0: {
@@ -224,7 +224,7 @@ export default {
     CropperModal,
     ScopeModal,
     PasswordModal,
-    SysUserFormModal
+    SysUserModalForm
   },
   filters: {
     statusFilter (type) {

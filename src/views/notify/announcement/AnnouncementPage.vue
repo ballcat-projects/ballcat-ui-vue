@@ -35,7 +35,7 @@
         </a-form>
       </div>
 
-      <a-card :bordered="false" :bodyStyle="{padding: 0}">
+      <a-card :bordered="false" :body-style="{padding: 0}">
         <!-- 操作按钮区域 -->
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">公告信息</div>
@@ -49,9 +49,9 @@
           <a-table
             ref="table"
             size="middle"
-            :rowKey="rowKey"
+            :row-key="rowKey"
             :columns="columns"
-            :dataSource="dataSource"
+            :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
             @change="handleTableChange"
@@ -96,7 +96,7 @@
               <a-popconfirm v-has="'notify:announcement:del'"
                             title="确认要删除吗？"
                             @confirm="() => handleDel(record)">
-                <a href="javascript:">删除</a>
+                <a href="javascript:" style="color: #ff4d4f">删除</a>
               </a-popconfirm>
             </template>
           </a-table>
@@ -105,17 +105,21 @@
     </div>
 
     <!--表单页面-->
-    <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page ref="formPage" @backToPage="backToPage"></form-page>
-    </a-card>
+    <announcement-page-form
+      v-show="!tableShow"
+      ref="pageForm"
+      @back-to-page="backToPage"
+      @preview-announcement="previewAnnouncement"
+    />
 
-    <AnnouncementModal ref="announcementModal"></AnnouncementModal>
+    <!-- 公共弹窗，预览用 -->
+    <announcement-modal ref="announcementModal" />
   </div>
 </template>
 
 <script>
 import { getPage, delObj, publish, close } from '@/api/notify/announcement'
-import FormPage from './AnnouncementForm'
+import AnnouncementPageForm from './AnnouncementPageForm'
 import { TablePageMixin } from '@/mixins'
 import AnnouncementModal from '@/components/notify/AnnouncementModal'
 
@@ -139,7 +143,7 @@ const statusFilterArr = [
 
 export default {
   name: 'AnnouncementPage',
-  components: { FormPage, AnnouncementModal },
+  components: { AnnouncementPageForm, AnnouncementModal },
   filters: {
     statusFilter (status) {
       return statusFilterArr[status].text
@@ -203,7 +207,7 @@ export default {
         },
         {
           title: '操作',
-          dataIndex: 'action',
+          align: 'center',
           width: '185px',
           scopedSlots: { customRender: 'action-slot' }
         }
@@ -211,12 +215,20 @@ export default {
     }
   },
   methods: {
-    /**
-     * 预览公告
-     */
-    previewAnnouncement (record) {
-      this.$refs.announcementModal.show(record)
+    // 新增
+    handleAdd () {
+      this.switchPage()
+      this.$refs.pageForm.add({ title: '新建公告' })
     },
+    // 编辑
+    handleEdit (record) {
+      this.switchPage()
+      this.$refs.pageForm.update(record, { title: '编辑公告' })
+    },
+    /**
+     * 发布公告
+     * @param record 公告对象
+     */
     handlePublish (record) {
       publish(record.id).then(res => {
         if (res.code === 200) {
@@ -227,6 +239,10 @@ export default {
         }
       })
     },
+    /**
+     * 关闭公告
+     * @param record 公告对象
+     */
     handleClose (record) {
       close(record.id).then(res => {
         if (res.code === 200) {
@@ -236,6 +252,12 @@ export default {
           this.$message.error(res.message)
         }
       })
+    },
+    /**
+     * 预览公告
+     */
+    previewAnnouncement (record) {
+      this.$refs.announcementModal.show(record, true)
     }
   }
 }

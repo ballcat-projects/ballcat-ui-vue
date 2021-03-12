@@ -88,17 +88,12 @@
 
 <script>
 import { addObj, putObj } from '@/api/sys/sysuser'
-import { FormModalMixin } from '@/mixins'
+import { PopUpFormMixin } from '@/mixins'
 import { passEncrypt } from '@/utils/password'
 
-const defaultValue = {
-  sex: 1,
-  status: 1
-}
-
 export default {
-  name: 'SysUserFormModal',
-  mixins: [FormModalMixin],
+  name: 'SysUserModalForm',
+  mixins: [PopUpFormMixin],
   props: {
     organizationTree: {
       type: Array,
@@ -134,10 +129,10 @@ export default {
           rules: [{ required: true, message: '请输入昵称!' }]
         },
         sex: {
-          initialValue: defaultValue.sex
+          initialValue: 1
         },
         status: {
-          initialValue: defaultValue.status
+          initialValue: 1
         }
       }
     }

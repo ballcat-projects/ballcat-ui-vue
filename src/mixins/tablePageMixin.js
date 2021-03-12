@@ -36,11 +36,6 @@ export default {
       delObj: function () {
       },
 
-      // 表单页的title
-      cardTitle: '',
-      //表单初始化标识
-      formInited: false,
-
       // 已选中数据集合
       selectedRows: [],
       // 已选中的数据主键集合
@@ -182,36 +177,16 @@ export default {
       })
     },
 
-    // ========== PageForm交互 ===================
-    // TODO 支持 modal 形式表单
+    // ========== 需要显示隐藏表格页时使用 ===================
     // 切换表格/表单
     switchPage () {
       window.scrollTo(0, 0)
       this.tableShow = !this.tableShow
-      if (!this.formInited) {
-        this.formInited = true
-      }
     },
     // 返回表格
     backToPage (needRefresh) {
       this.switchPage()
       needRefresh && this.reloadTable(false)
-    },
-    // 新增
-    handleAdd (argument) {
-      this.switchPage()
-      this.cardTitle = '新增'
-      this.$nextTick(function () {
-        this.$refs.formPage.add(argument)
-      })
-    },
-    // 编辑
-    handleEdit (record, title) {
-      this.switchPage()
-      this.cardTitle = title || '修改'
-      this.$nextTick(function () {
-        this.$refs.formPage.update(record)
-      })
     }
   }
 

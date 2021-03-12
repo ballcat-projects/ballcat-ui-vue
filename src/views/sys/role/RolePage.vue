@@ -74,7 +74,7 @@
 
     <role-grant-drawer ref="roleGrantDrawer" />
 
-    <role-form-modal
+    <role-modal-form
       ref="formModal"
       @reload-page-table="reloadTable"
     />
@@ -83,7 +83,7 @@
 
 <script>
 import { getPage, delObj } from '@/api/sys/role'
-import RoleFormModal from './RoleFormModal'
+import RoleModalForm from './RoleModalForm'
 import RoleGrantDrawer from './RoleGrantDrawer'
 import { TablePageMixin } from '@/mixins'
 
@@ -91,7 +91,7 @@ export default {
   name: 'RolePage',
   components: {
     RoleGrantDrawer,
-    RoleFormModal
+    RoleModalForm
   },
   mixins: [TablePageMixin],
   data () {

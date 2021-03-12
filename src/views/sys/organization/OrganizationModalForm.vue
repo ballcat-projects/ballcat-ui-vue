@@ -47,12 +47,12 @@
 </template>
 
 <script>
-import { FormModalMixin } from '@/mixins'
+import { PopUpFormMixin } from '@/mixins'
 import { addObj, putObj } from '@/api/sys/organization'
 
 export default {
-  name: 'OrganizationFormModal',
-  mixins: [FormModalMixin],
+  name: 'OrganizationModalForm',
+  mixins: [PopUpFormMixin],
   props: {
     organizationTree: {
       type: Array,

@@ -63,20 +63,18 @@
     </div>
 
     <!--表单页面-->
-    <a-card v-if="formInited" :bordered="false" :title="cardTitle" v-show="!tableShow">
-      <form-page ref="formPage" @back-to-page="backToPage"></form-page>
-    </a-card>
+    <lov-page-form v-show="!tableShow" ref="pageForm" @back-to-page="backToPage" />
   </div>
 </template>
 
 <script>
 import { delObj, getPage } from '@/api/sys/lov'
-import FormPage from './LovForm'
+import LovPageForm from './LovPageForm'
 import { TablePageMixin } from '@/mixins'
 
 export default {
   name: 'SysLovPage',
-  components: { FormPage },
+  components: { LovPageForm },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -141,6 +139,17 @@ export default {
       ]
     }
   },
-  methods: {}
+  methods: {
+    // 新增
+    handleAdd () {
+      this.switchPage()
+      this.$refs.pageForm.add({ title: '新建LOV' })
+    },
+    // 编辑
+    handleEdit (record) {
+      this.switchPage()
+      this.$refs.pageForm.update(record, { title: '编辑LOV' })
+    },
+  }
 }
 </script>
