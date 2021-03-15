@@ -51,7 +51,7 @@
 
 <script>
 import { getPage, delObj } from '@/api/sys/sysdictitem'
-import SysDictItemPageForm from './SysDictItemPageForm'
+import SysDictItemPageForm from '@/views/sys/dict/SysDictItemPageForm'
 import { TablePageMixin } from '@/mixins'
 
 export default {
@@ -136,12 +136,13 @@ export default {
     // 新增
     handleAdd () {
       this.switchPage()
-      this.$refs.pageForm.add({ title: '新建字典项：'+ this.dictName })
+      const attributes = { title: '新建字典项：' + this.dictName, dictCode: this.dictCode }
+      this.$refs.pageForm.add(attributes)
     },
     // 编辑
     handleEdit (record) {
       this.switchPage()
-      this.$refs.pageForm.update(record, { title: '编辑字典项：'+ this.dictName })
+      this.$refs.pageForm.update(record, { title: '编辑字典项：' + this.dictName })
     }
   }
 }
@@ -149,7 +150,7 @@ export default {
 
 <style scoped>
 /** 保证切换时的高度不要相差太多 */
-/deep/ .ant-table-body{
+/deep/ .ant-table-content {
   height: 400px;
 }
 </style>

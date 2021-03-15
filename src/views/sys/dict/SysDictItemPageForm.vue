@@ -20,11 +20,11 @@
     <a-form-item>
       <template #label>
         <span>
-        排序
-        <a-tooltip title="升序，数值越小优先级越高">
-          <a-icon type="exclamation-circle"/>
-        </a-tooltip>
-      </span>
+          排序
+          <a-tooltip title="升序，数值越小优先级越高">
+            <a-icon type="exclamation-circle"/>
+          </a-tooltip>
+        </span>
       </template>
       <a-input-number placeholder="排序（升序）" v-decorator="['sort', {initialValue: 1}]"
                       :min=0 style="width: 70%"/>
@@ -104,8 +104,8 @@ export default {
     }
   },
   methods: {
-    createdFormCallback (argument) {
-      this.form.setFieldsValue({ dictCode: argument })
+    createdFormCallback (attributes) {
+      this.form.setFieldsValue({ dictCode: attributes.dictCode })
     },
     echoDataProcess (data) {
       this.itemAttributes = JSON.stringify(data.attributes, null, 2)
