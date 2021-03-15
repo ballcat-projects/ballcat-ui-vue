@@ -60,3 +60,21 @@ export function putPermissionIds (roleCode, data) {
   })
 }
 
+export function getRoleUserPage (query) {
+  return request({
+    url: '/sysrole/user/page',
+    method: 'get',
+    params: query
+  })
+}
+
+export function unbindRoleUser (userId, roleCode) {
+  return request({
+    url: '/sysrole/user',
+    method: 'delete',
+    params: {
+      userId: userId,
+      roleCode: roleCode
+    }
+  })
+}

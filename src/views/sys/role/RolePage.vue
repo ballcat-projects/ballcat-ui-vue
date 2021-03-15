@@ -61,6 +61,8 @@
               <a-divider type="vertical"/>
               <a v-has="'sys:sysrole:grant'" @click="handleGrant(record)">授权</a>
               <a-divider type="vertical"/>
+              <a v-has="'sys:sysrole:grant'" @click="handleBind(record)">绑定</a>
+              <a-divider type="vertical"/>
               <a-popconfirm v-has="'sys:sysrole:del'"
                             title="确认要删除吗？"
                             @confirm="() => handleDel(record)">
@@ -72,12 +74,17 @@
       </a-card>
     </div>
 
-    <role-grant-drawer ref="roleGrantDrawer" />
-
+    <!-- 表单弹窗 -->
     <role-modal-form
       ref="formModal"
       @reload-page-table="reloadTable"
     />
+
+    <!-- 角色授权弹窗 -->
+    <role-grant-drawer ref="roleGrantDrawer" />
+
+    <!-- 角色用户绑定弹窗 -->
+    <role-user-modal ref="roleUserModal" />
   </div>
 </template>
 
@@ -86,10 +93,12 @@ import { getPage, delObj } from '@/api/sys/role'
 import RoleModalForm from './RoleModalForm'
 import RoleGrantDrawer from './RoleGrantDrawer'
 import { TablePageMixin } from '@/mixins'
+import RoleUserModal from '@/views/sys/role/RoleUserModal'
 
 export default {
   name: 'RolePage',
   components: {
+    RoleUserModal,
     RoleGrantDrawer,
     RoleModalForm
   },
@@ -106,20 +115,24 @@ export default {
         },
         {
           title: '角色名称',
-          dataIndex: 'name'
+          dataIndex: 'name',
+          sorter: true
         },
         {
           title: '角色标识',
-          dataIndex: 'code'
+          dataIndex: 'code',
+          sorter: true
         },
         {
-          title: '角色类型',
+          title: '类型',
           dataIndex: 'type',
+          sorter: true,
           scopedSlots: { customRender: 'type-slot' }
         },
         {
           title: '备注',
-          dataIndex: 'note'
+          dataIndex: 'note',
+          sorter: true
         },
         {
           title: '创建时间',
@@ -136,7 +149,7 @@ export default {
         {
           title: '操作',
           align: 'center',
-          width: '150px',
+          width: '200px',
           scopedSlots: { customRender: 'action-slot' }
         }
       ]
@@ -151,9 +164,13 @@ export default {
     handleEdit (record) {
       this.$refs.formModal.update(record, {title: '编辑角色'})
     },
-    // 授权
+    // 对角色授权
     handleGrant (record) {
       this.$refs.roleGrantDrawer.showDrawer(record)
+    },
+    // 为角色做用户绑定
+    handleBind (record) {
+      this.$refs.roleUserModal.show(record)
     }
   }
 }

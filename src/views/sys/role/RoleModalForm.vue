@@ -27,19 +27,11 @@
         />
       </a-form-item>
 
-      <a-form-item>
-        <template #label>
-          <span>
-            角色标识
-            <a-tooltip title="注意！角色标识必须以ROLE_开头">
-              <a-icon type="question-circle-o" />
-            </a-tooltip>
-          </span>
-        </template>
+      <a-form-item label="角色标识">
         <a-input
           v-decorator="['code', decoratorOptions.code]"
           :disabled="formAction === FORM_ACTION.UPDATE"
-          placeholder="权限标识"
+          placeholder="角色标识必须以ROLE_开头!"
         />
       </a-form-item>
 
