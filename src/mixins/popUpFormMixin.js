@@ -10,18 +10,18 @@ export default {
     }
   },
   methods: {
-    show(options) {
-      this.title = options.title
+    show(attributes) {
+      this.title = attributes.title
       this.visible = true
       this.submitLoading = false
     },
-    add(options) {
+    add(attributes) {
       this.buildCreatedForm()
-      this.show(options)
+      this.show(attributes)
     },
-    update(record, options) {
-      this.buildUpdatedForm(record)
-      this.show(options)
+    update(record, attributes) {
+      this.buildUpdatedForm(attributes)
+      this.show(attributes)
     },
     submitSuccess (res){
       this.$emit('reload-page-table', false)

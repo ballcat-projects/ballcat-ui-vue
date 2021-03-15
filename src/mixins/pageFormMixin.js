@@ -9,13 +9,13 @@ export default {
     }
   },
   methods: {
-    add (options) {
-      this.title = options.title
-      this.buildCreatedForm(options)
+    add (attributes) {
+      this.title = attributes.title
+      this.buildCreatedForm(attributes)
     },
-    update (record, options) {
-      this.title = options.title
-      this.buildUpdatedForm(record, options)
+    update (record, attributes) {
+      this.title = attributes.title
+      this.buildUpdatedForm(record, attributes)
     },
     submitSuccess (res){
       this.backToPage(true);

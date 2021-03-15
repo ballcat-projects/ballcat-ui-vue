@@ -32,13 +32,13 @@ export default {
   methods: {
     /**
      * 构建新建型表单
-     * @param argument 额外参数，用于透传到表单构建完成的回调函数中
+     * @param attributes 额外参数，用于透传到表单构建完成的回调函数中
      */
-    buildCreatedForm (argument) {
+    buildCreatedForm (attributes) {
       this.form.resetFields()
       this.formAction = this.FORM_ACTION.CREATE
       // 钩子函数 处理某些页面定制需求
-      this.createdFormCallback(argument)
+      this.createdFormCallback(attributes)
     },
 
     /**
@@ -46,7 +46,7 @@ export default {
      * 默认无行为，组件可复写此方法 完成添加之前的事件
      */
     /*eslint-disable*/
-    createdFormCallback (argument) {
+    createdFormCallback (attributes) {
     },
 
     /**
