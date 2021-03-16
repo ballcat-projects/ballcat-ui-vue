@@ -17,7 +17,7 @@
         <a-row :gutter="16">
           <a-col :md="6" :sm="24">
             <a-form-item label="用户ID">
-              <a-input v-model="queryParam.userId" placeholder=""/>
+              <a-input-number v-model="queryParam.userId" type="number" placeholder=""/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -27,7 +27,18 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="组织">
-              <a-input v-model="queryParam.organizationId" placeholder=""/>
+              <a-tree-select
+                v-model="queryParam.organizationId"
+                style="width: 100%"
+                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
+                :tree-data="organizationTree"
+                :allow-clear="true"
+                :replace-fields="{
+                  title: 'name',
+                  key: 'id',
+                  value: 'id'
+                }"
+              />
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="24" class="table-page-search-wrapper">
@@ -64,6 +75,8 @@
 <script>
 import { getRoleUserPage, unbindRoleUser } from '@/api/sys/role'
 import { TablePageMixin } from '@/mixins'
+import { getTree } from '@/api/sys/organization'
+
 
 export default {
   name: 'RoleUserModal',
@@ -119,8 +132,17 @@ export default {
       },
 
       // 角色标识
-      roleCode: null
+      roleCode: null,
+      // 组织树
+      organizationTree: [],
     }
+  },
+  created () {
+    getTree().then(res => {
+      this.organizationTree = res.data
+      // 默认展开一级组织
+      this.organizationExpandedKeys = res.data.map(x => x.id)
+    })
   },
   methods: {
     // 由于服务端不支持排序，这里重写此方法，便于取消 Mixin 的初始化排序字段设置

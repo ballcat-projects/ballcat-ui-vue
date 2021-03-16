@@ -7,12 +7,12 @@
           <a-row :gutter="16">
             <a-col :md="8" :sm="24">
               <a-form-item label="角色">
-                <a-input v-model="queryParam.name" placeholder=""/>
+                <a-input v-model="queryParam.name" placeholder="请输入"/>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="标识">
-                <a-input v-model="queryParam.code" placeholder=""/>
+                <a-input v-model="queryParam.code" placeholder="请输入"/>
               </a-form-item>
             </a-col>
             <!-- <template v-if="advanced">
