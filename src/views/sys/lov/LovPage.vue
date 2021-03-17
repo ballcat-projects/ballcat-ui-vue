@@ -55,7 +55,7 @@
               <a-popconfirm v-has="'sys:lov:del'"
                             title="确认要删除吗？"
                             @confirm="() => handleDel(record)">
-                <a href="javascript:" style="color: #ff4d4f">删除</a>
+                <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>
           </a-table>

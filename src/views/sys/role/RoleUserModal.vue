@@ -65,7 +65,7 @@
         <a-popconfirm v-has="'sys:sysuser:grant'"
                       title="确认要解绑吗？"
                       @confirm="() => handleUnbind(record)">
-          <a href="javascript:" style="color: #ff4d4f">解绑</a>
+          <a href="javascript:" class="ballcat-text-danger">解绑</a>
         </a-popconfirm>
       </template>
     </a-table>
