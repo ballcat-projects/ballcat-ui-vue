@@ -3,7 +3,7 @@ import router from './router'
 import store from './store'
 
 import NProgress from 'nprogress' // progress bar
-import '@/components/NProgress/nprogress.less' // progress bar custom style
+import '@/styles/nprogress.less' // progress bar custom style
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/storage-types'
 

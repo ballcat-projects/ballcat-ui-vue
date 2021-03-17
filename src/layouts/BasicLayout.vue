@@ -153,8 +153,8 @@ export default {
 </script>
 
 <style lang="less">
-@import url('../components/global.less');
-@import url('../ballcat/ballcat.less');
+@import url('~@/styles/global.less');
+@import url('~@/styles/ballcat.less');
 
 /*
  * The following styles are auto-applied to elements with

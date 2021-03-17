@@ -3,8 +3,9 @@
     <a-tabs v-model="currentTab" @change="handleTabChange">
       <a-tab-pane v-for="v in icons" :tab="v.title" :key="v.key">
         <ul>
-          <li v-for="(icon, key) in v.icons" :key="`${v.key}-${key}`" :class="{ 'active': selectedIcon==icon }" @click="handleSelectedIcon(icon)" >
-            <a-icon :type="icon" :style="{ fontSize: '36px' }" />
+          <li v-for="(icon, key) in v.icons" :key="`${v.key}-${key}`" :class="{ 'active': selectedIcon==icon }"
+              @click="handleSelectedIcon(icon)">
+            <a-icon :type="icon" :style="{ fontSize: '36px' }"/>
           </li>
         </ul>
       </a-tab-pane>
@@ -61,26 +62,26 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  @import "../index.less";
+@import url('~@/styles/index.less');
 
-  ul{
-    list-style: none;
-    padding: 0;
-    overflow-y: scroll;
-    height: 250px;
+ul {
+  list-style: none;
+  padding: 0;
+  overflow-y: scroll;
+  height: 250px;
 
-    li{
-      display: inline-block;
-      padding: @padding-sm;
-      margin: 3px 0;
-      border-radius: @border-radius-base;
+  li {
+    display: inline-block;
+    padding: @padding-sm;
+    margin: 3px 0;
+    border-radius: @border-radius-base;
 
-      &:hover, &.active{
-        // box-shadow: 0px 0px 5px 2px @primary-color;
-        cursor: pointer;
-        color: @white;
-        background-color: @primary-color;
-      }
+    &:hover, &.active {
+      // box-shadow: 0px 0px 5px 2px @primary-color;
+      cursor: pointer;
+      color: @white;
+      background-color: @primary-color;
     }
   }
+}
 </style>
