@@ -6,6 +6,10 @@ import { UserLayout } from '@/layouts'
  */
 export const constantRouters = [
   {
+    path: '/redirect/:path*',
+    component: () => import(/* webpackChunkName: "user" */ '@/views/redirect/index')
+  },
+  {
     path: '/user',
     component: UserLayout,
     redirect: '/user/login',

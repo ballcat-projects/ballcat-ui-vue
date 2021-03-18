@@ -1,7 +1,7 @@
 <template>
   <div class="user-wrapper">
     <div class="antd-pro-components-global-header-index-right">
-      <a href="http://www.ballcat.cn" target="_blank" style="display: flex;">
+      <a href="http://www.ballcat.cn" target="_blank" style="color: inherit;">
         <span class="action">
           <a-icon type="question-circle-o"></a-icon>
         </span>

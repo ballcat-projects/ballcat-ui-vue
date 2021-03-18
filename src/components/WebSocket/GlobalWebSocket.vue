@@ -23,17 +23,17 @@ export default {
       }
     }
   },
+  computed: {
+    token() {
+      return Vue.ls.get(ACCESS_TOKEN)
+    }
+  },
   created () {
     this.initWebSocket()
   },
   destroyed: function () {
     this.webSocket.close()
     this.clearTimeoutObj(this.heartbeat)
-  },
-  computed: {
-    token() {
-      return Vue.ls.get(ACCESS_TOKEN)
-    }
   },
   methods: {
     /**

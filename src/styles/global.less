@@ -63,9 +63,9 @@ body {
   }
 
   .trigger {
-    font-size: 18px;
+    font-size: 14px;
     line-height: @ballcat-header-height;
-    padding: 0 24px;
+    padding: 0 12px;
     cursor: pointer;
     transition: color 0.3s;
     &:hover {
@@ -137,9 +137,10 @@ body {
 
   .header {
     height: @ballcat-header-height;
-    padding: 0 12px 0 0;
+    padding: 0 12px;
     background: #fff;
-    box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+    box-shadow: 1px 1px 0 #f0f0f0;
+    // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
     position: relative;
   }
 
@@ -156,7 +157,6 @@ body {
         transition: all 0.3s;
         height: 100%;
         align-items: center;
-        color: rgba(0, 0, 0, 0.65);
 
         &:hover {
           background: rgba(0, 0, 0, 0.025);
