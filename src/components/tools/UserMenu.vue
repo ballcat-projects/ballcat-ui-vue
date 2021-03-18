@@ -6,6 +6,7 @@
           <a-icon type="question-circle-o"></a-icon>
         </span>
       </a>
+      <screenfull id="screenfull" class="action"/>
       <notice-icon class="action" style="display: flex;"/>
       <a-dropdown style="display: flex;">
         <span class="action ant-dropdown-link user-dropdown-menu">
@@ -40,6 +41,7 @@
 </template>
 
 <script>
+import Screenfull from '@/components/Screenfull'
 import NoticeIcon from '@/components/NoticeIcon'
 import { mapActions, mapGetters } from 'vuex'
 import LangSelect from '@/components/tools/LangSelect'
@@ -48,7 +50,8 @@ export default {
   name: 'UserMenu',
   components: {
     LangSelect,
-    NoticeIcon
+    NoticeIcon,
+    Screenfull
   },
   computed: {
     ...mapGetters(['userInfo'])
