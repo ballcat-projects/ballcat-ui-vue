@@ -11,6 +11,18 @@ export default {
       newTabIndex: 0
     }
   },
+  watch: {
+    '$route': function (newVal) {
+      this.activeKey = newVal.fullPath
+      if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
+        this.fullPathList.push(newVal.fullPath)
+        this.pages.push(newVal)
+      }
+    },
+    activeKey: function (newPathKey) {
+      this.$router.push({ path: newPathKey })
+    }
+  },
   created () {
     // bind event
     events.$on('open', val => {
@@ -47,16 +59,16 @@ export default {
     },
 
     // content menu
-    closeThat (e) {
+    closeThat (key) {
       // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
       if (this.fullPathList.length > 1) {
-        this.remove(e)
+        this.remove(key)
       } else {
         this.$message.info('这是最后一个标签了, 无法被关闭')
       }
     },
-    closeLeft (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
+    closeLeft (key) {
+      const currentIndex = this.fullPathList.indexOf(key)
       if (currentIndex > 0) {
         this.fullPathList.forEach((item, index) => {
           if (index < currentIndex) {
@@ -67,8 +79,8 @@ export default {
         this.$message.info('左侧没有标签')
       }
     },
-    closeRight (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
+    closeRight (key) {
+      const currentIndex = this.fullPathList.indexOf(key)
       if (currentIndex < (this.fullPathList.length - 1)) {
         this.fullPathList.forEach((item, index) => {
           if (index > currentIndex) {
@@ -79,48 +91,22 @@ export default {
         this.$message.info('右侧没有标签')
       }
     },
-    closeAll (e) {
-      const currentIndex = this.fullPathList.indexOf(e)
+    closeOther (key) {
+      const currentIndex = this.fullPathList.indexOf(key)
       this.fullPathList.forEach((item, index) => {
         if (index !== currentIndex) {
           this.remove(item)
         }
       })
     },
-    closeMenuClick (key, route) {
-      this[key](route)
+    closeAll (key) {
+      const currentIndex = this.fullPathList.indexOf(key)
+      this.fullPathList.forEach((item, index) => {
+          this.remove(item)
+      })
     },
-    renderTabPaneMenu (e) {
-      return (
-        <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, e) } } }}>
-          <a-menu-item key="closeThat">关闭当前标签</a-menu-item>
-          <a-menu-item key="closeRight">关闭右侧</a-menu-item>
-          <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
-          <a-menu-item key="closeAll">关闭全部</a-menu-item>
-        </a-menu>
-      )
-    },
-    // render
-    renderTabPane (title, keyPath) {
-      const menu = this.renderTabPaneMenu(keyPath)
-
-      return (
-        <a-dropdown overlay={menu} trigger={['contextmenu']}>
-          <span style={{ userSelect: 'none' }}>{ title }</span>
-        </a-dropdown>
-      )
-    }
-  },
-  watch: {
-    '$route': function (newVal) {
-      this.activeKey = newVal.fullPath
-      if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
-        this.fullPathList.push(newVal.fullPath)
-        this.pages.push(newVal)
-      }
-    },
-    activeKey: function (newPathKey) {
-      this.$router.push({ path: newPathKey })
+    closeMenuClick (key) {
+      this[key](this.activeKey)
     }
   },
   render () {
@@ -129,26 +115,48 @@ export default {
       return (
         <a-tab-pane
           style={{ height: 0 }}
-          tab={this.renderTabPane(page.meta.title, page.fullPath)}
+          tab={page.meta.title}
           key={page.fullPath} closable={pages.length > 1}
         >
         </a-tab-pane>)
     })
 
     return (
-      <div class="ant-pro-multi-tab">
-        <div class="ant-pro-multi-tab-wrapper">
-          <a-tabs
-            hideAdd
-            type={'editable-card'}
-            v-model={this.activeKey}
-            tabBarStyle={{ background: '#FFF', margin: 0, paddingLeft: '16px', paddingTop: '1px' }}
-            {...{ on: { edit: onEdit } }}>
-            {panes}
-          </a-tabs>
-        </div>
-      </div>
+      <a-tabs
+        class="ant-pro-multi-tab"
+        hideAdd
+        type={'editable-card'}
+        v-model={this.activeKey}
+        tabBarStyle={{ margin: 0}}
+        {...{ on: { edit: onEdit } }}
+      >
+        {panes}
+        <a-dropdown slot="tabBarExtraContent" class="multi-tab-drop">
+          <div><a-icon type="down"/></div>
+          <a-menu slot="overlay" {...{
+            on: {
+              click: ({ key }) => {
+                this.closeMenuClick(key)
+              }
+            }
+          }}>
+            <a-menu-item key="closeLeft">
+              <a-icon type="arrow-left"/>
+              关闭左侧
+            </a-menu-item>
+            <a-menu-item key="closeRight">
+              <a-icon type="arrow-right"/>
+              关闭右侧
+            </a-menu-item>
+            <a-menu-item key="closeOther">
+              <a-icon type="close"/>
+              关闭其他
+            </a-menu-item>
+          </a-menu>
+        </a-dropdown>
+      </a-tabs>
     )
   }
 }
 </script>
+<!-- <a-menu-item key="closeAll"><a-icon type="close-circle"/>关闭全部</a-menu-item> -->

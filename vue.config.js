@@ -84,6 +84,7 @@ const vueConfig = {
             // less vars，customize ant design theme
             // 'primary-color': '#F5222D',
             // 'link-color': '#F5222D',
+            'text-color': 'rgba(0, 0, 0, 0.85)', // 主文本色
             'border-radius-base': '2px',  // 按钮圆角
             'layout-header-height': '48px',  // layout 头高度
             'menu-collapsed-width': '48px',  // inline 菜单收起宽度

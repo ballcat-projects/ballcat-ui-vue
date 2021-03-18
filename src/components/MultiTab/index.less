@@ -3,15 +3,78 @@
 @multi-tab-prefix-cls: ~"@{ant-pro-prefix}-multi-tab";
 @multi-tab-wrapper-prefix-cls: ~"@{ant-pro-prefix}-multi-tab-wrapper";
 
-/*
-.topmenu .@{multi-tab-prefix-cls} {
-  max-width: 1200px;
-  margin: -23px auto 24px auto;
-}
-*/
-.@{multi-tab-prefix-cls} {
-  margin: -23px -24px 24px -24px;
+.@{multi-tab-prefix-cls}.ant-tabs {
   background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  z-index: 99;
+  position: relative;
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar{
+  margin: 0;
+  border-bottom: none;
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab {
+  padding: 0;
+  background: none;
+  height: 40px;
+  line-height: 40px;
+  transition: background .3s cubic-bezier(.645,.045,.355,1),color .3s cubic-bezier(.645,.045,.355,1);
+  border-radius: 0;
+  border: none;
+  margin: 0;
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab-next, .@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab-prev {
+  transition: color .3s cubic-bezier(.645,.045,.355,1),opacity .3s cubic-bezier(.645,.045,.355,1);
+  width: 40px;
+  pointer-events: auto;
+  line-height: 1;
+  opacity: 1;
+
+  .anticon {
+    font-size: 14px;
+  }
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container {
+  padding: 0 40px;
+  height: auto;
+}
+
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab>div {
+  padding: 0 28px 0 16px;
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab-active {
+  background: rgba(24,144,255,.08);
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab>div.ant-tabs-tab-unclosable {
+  padding-right: 16px;
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .ant-tabs-bar .ant-tabs-nav-container .ant-tabs-tab .ant-tabs-close-x {
+  width: auto;
+  height: auto;
+  margin: -6px 0 0 0;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+}
+
+.@{multi-tab-prefix-cls}.ant-tabs .multi-tab-drop {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  cursor: pointer;
+
+  .anticon {
+    font-size: 14px;
+  }
 }
 
 .topmenu .@{multi-tab-wrapper-prefix-cls} {
@@ -23,3 +86,5 @@
   max-width: 100%;
   margin: 0 auto;
 }
+
+

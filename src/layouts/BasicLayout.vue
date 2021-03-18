@@ -40,12 +40,15 @@
         @toggle="toggle"
       />
 
-      <announcement-ribbon />
+
+      <multi-tab v-if="multiTab"/>
+
+      <!-- 公告彩条 -->
+<!--      <announcement-ribbon />-->
 
       <!-- layout content -->
       <!--      <a-layout-content :style="{ height: '100%', margin: '18px 18px 0', paddingTop: fixedHeader ? '64px' : '0' }">-->
       <a-layout-content>
-        <multi-tab v-if="multiTab"/>
         <transition name="page-transition">
           <route-view/>
         </transition>
@@ -57,7 +60,7 @@
       </a-layout-footer>
 
       <!-- Setting Drawer (show in development mode) -->
-      <setting-drawer v-if="!production"></setting-drawer>
+<!--      <setting-drawer v-if="!production"></setting-drawer>-->
     </a-layout>
 
     <!-- websocket -->
