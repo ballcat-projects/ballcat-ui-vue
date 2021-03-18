@@ -6,16 +6,23 @@
         :class="[fixedHeader && 'ant-header-fixedHeader', sidebarOpened ? 'ant-header-side-opened' : 'ant-header-side-closed', ]"
         :style="{ padding: '0'}">
         <div v-if="mode === 'sidemenu'" class="header">
-          <a-icon class="trigger" :type="collapsedButtonIconType" @click="toggle" style="transform: scale(1.15);"/>
-          <a-icon class="trigger" type="reload" @click="refreshContent" />
-          <user-menu></user-menu>
+          <span class="trigger" @click="toggle" >
+            <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);"/>
+          </span>
+          <span class="trigger" @click="refreshContent">
+            <a-icon type="reload" />
+          </span>
+           <breadcrumb v-if="device !== 'mobile'" style="padding-left: 12px"/>
+          <div style="flex: 1 1 0%;"></div>
+          <user-menu/>
         </div>
         <div v-else :class="['top-nav-header-index', theme]">
           <div class="header-index-wide">
             <div class="header-index-left">
               <img class="top-nav-header" src="@/assets/logo.svg" alt="logo"/>
               <s-menu v-if="device !== 'mobile'" mode="horizontal" :menu="menus" :theme="theme"/>
-              <a-icon v-else class="trigger" :type="collapsedButtonIconType" @click="toggle" style="transform: scale(1.15);"/>
+              <a-icon v-else class="trigger" :type="collapsedButtonIconType" @click="toggle"
+                      style="transform: scale(1.15);"/>
             </div>
             <user-menu class="header-index-right"></user-menu>
           </div>
@@ -28,13 +35,15 @@
 <script>
 import UserMenu from '../tools/UserMenu'
 import SMenu from '../Menu/'
+import Breadcrumb from '@/components/Breadcrumb'
 import { mixin } from '@/utils/mixin'
 
 export default {
   name: 'GlobalHeader',
   components: {
     UserMenu,
-    SMenu
+    SMenu,
+    Breadcrumb
   },
   mixins: [mixin],
   props: {
@@ -111,8 +120,8 @@ export default {
     toggle () {
       this.$emit('toggle')
     },
-    refreshContent() {
-      this.$bus.$emit('refresh-content');
+    refreshContent () {
+      this.$bus.$emit('refresh-content')
     }
   }
 }
@@ -137,7 +146,6 @@ export default {
 .showHeader-enter, .showHeader-leave-to {
   opacity: 0;
 }
-
 
 
 </style>

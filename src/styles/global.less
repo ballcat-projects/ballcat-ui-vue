@@ -63,7 +63,6 @@ body {
   }
 
   .trigger {
-    font-size: 14px;
     line-height: @ballcat-header-height;
     padding: 0 12px;
     cursor: pointer;
@@ -141,13 +140,13 @@ body {
     background: #fff;
     box-shadow: 1px 1px 0 #f0f0f0;
     // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
-    position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .header,
   .top-nav-header-index {
     .user-wrapper {
-      float: right;
       height: 100%;
 
       .action {
@@ -326,9 +325,8 @@ body {
 
   // 内容区
   .layout-content {
-    margin: 24px 24px 0px;
+    margin: 24px 24px 0;
     height: 100%;
-    height: @ballcat-header-height;
     padding: 0 12px 0 0;
   }
 
