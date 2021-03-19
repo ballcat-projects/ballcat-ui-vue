@@ -20,7 +20,7 @@ export default {
       this.show(attributes)
     },
     update(record, attributes) {
-      this.buildUpdatedForm(attributes)
+      this.buildUpdatedForm(record, attributes)
       this.show(attributes)
     },
     submitSuccess (res){
