@@ -1,7 +1,10 @@
 <template>
   <div>
     <!-- 页头 -->
-    <a-page-header :ghost="false" title="Lov 配置">
+    <a-page-header
+      :ghost="false"
+      title="Lov 配置"
+    >
       该组件主要用于多条件查询的数据录入
     </a-page-header>
 
@@ -33,7 +36,7 @@
         <a-button :loading="submitLoading" @click="preview">预览</a-button>
         <a-button
           style="margin-left: 8px"
-          html-type="submit"
+          @click="submitClick"
           type="primary"
           :loading="submitLoading"
         >提交</a-button>
@@ -90,6 +93,11 @@ export default {
         }
         this.submitLoading = false
       })
+    },
+    submitClick(){
+      // 提交按钮单击事件
+      console.log(this.$refs.refForm)
+      this.$refs.refForm.onSubmit()
     },
     echoDataProcess (data) {
       this.submitLoading = true
