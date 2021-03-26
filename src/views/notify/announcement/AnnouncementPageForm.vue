@@ -1,8 +1,8 @@
 <template>
   <a-card :bordered="false" :title="title">
-    <a-form :form="form" :label-col=labelCol :wrapper-col=wrapperCol>
+    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
-        <a-input v-decorator="['id']"/>
+        <a-input v-decorator="['id']" />
       </a-form-item>
 
       <a-form-item label="标题">
@@ -26,16 +26,20 @@
 
       <a-form-item
         v-if="recipientFilterType && recipientFilterType !== 1"
-        label="筛选条件">
+        label="筛选条件"
+      >
         <a-select
           v-if="recipientFilterType === 2"
           v-decorator="['recipientFilterCondition', decoratorOptions.recipientFilterType]"
           mode="multiple"
           style="width: 100%"
           placeholder="请选择角色"
-          :allow-clear="true">
-          <a-select-option v-for="selectData in roleSelectData"
-                           :key="selectData.value">
+          :allow-clear="true"
+        >
+          <a-select-option
+            v-for="selectData in roleSelectData"
+            :key="selectData.value"
+          >
             {{ selectData.name }}
           </a-select-option>
         </a-select>
@@ -50,24 +54,24 @@
           allow-clear
           multiple
           :replace-fields="{
-          title: 'name',
-          key: 'id',
-          value: 'id'
-        }"
-        >
-        </a-tree-select>
+            title: 'name',
+            key: 'id',
+            value: 'id'
+          }"
+        />
         <dict-select
           v-if="recipientFilterType === 4"
           v-decorator="['recipientFilterCondition',decoratorOptions.recipientFilterType]"
           dict-code="user_type"
           mode="multiple"
-          placeholder="请选择用户类型"/>
+          placeholder="请选择用户类型"
+        />
         <lov
           v-if="recipientFilterType === 5"
           v-decorator="['recipientFilterCondition', decoratorOptions.recipientFilterType]"
           keyword="lov_user"
           :show-handler-by-select-row="lovUserShowHandler"
-        ></lov>
+        />
       </a-form-item>
 
       <a-form-item label="接收方式">
@@ -80,7 +84,7 @@
       <a-form-item label="永久有效">
         <a-row>
           <a-col :xs="5" :md="2">
-            <a-switch v-model="isImmortal"></a-switch>
+            <a-switch v-model="isImmortal" />
           </a-col>
           <a-col :xs="16" :md="16">
             <a-form-item label="">
@@ -98,8 +102,18 @@
 
       <a-form-item :wrapper-col="{offset: 7 }">
         <a-button type="dashed" @click="preview">预览</a-button>
-        <a-button style="margin-left: 8px" type="primary" :loading="submitLoading" @click="save">仅保存</a-button>
-        <a-button style="margin-left: 8px" type="primary" :loading="submitLoading" @click="saveAndPublish">保存并发布
+        <a-button
+          style="margin-left: 8px"
+          type="primary"
+          :loading="submitLoading"
+          @click="save"
+        >仅保存</a-button>
+        <a-button
+          style="margin-left: 8px"
+          type="primary"
+          :loading="submitLoading"
+          @click="saveAndPublish"
+        >保存并发布
         </a-button>
         <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
       </a-form-item>

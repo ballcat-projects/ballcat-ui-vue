@@ -1,17 +1,18 @@
 <template>
   <div :style="!$route.meta.hiddenHeaderContent ? 'margin: -24px -24px 0px;' : null">
     <!-- pageHeader , route meta :true on hide -->
-    <page-header v-if="!$route.meta.hiddenHeaderContent" :title="pageTitle" :logo="logo" :avatar="avatar">
-      <template v-slot:action>
-        <slot name="action"></slot>
+    <page-header
+      v-if="!$route.meta.hiddenHeaderContent"
+      :title="pageTitle"
+      :logo="logo"
+      :avatar="avatar"
+    >
+      <template #action>
+        <slot name="action" />
       </template>
 
-      <template v-slot:content>
-        <slot name="headerContent"></slot>
-      </template>
-
-      <template v-slot:content>
-        <div v-if="!this.$slots.headerContent && description">
+      <template #content>
+        <div v-if="!$slots.headerContent && description">
           <p style="font-size: 14px;color: rgba(0,0,0,.65)">{{ description }}</p>
           <div class="link">
             <template v-for="(link, index) in linkList">
@@ -22,30 +23,31 @@
             </template>
           </div>
         </div>
+        <slot v-else name="headerContent" />
       </template>
 
-      <template v-slot:extra>
+      <template #extra>
         <slot name="extra">
           <div class="extra-img">
-            <img v-if="typeof extraImage !== 'undefined'" :src="extraImage"/>
+            <img v-if="typeof extraImage !== 'undefined'" alt="" :src="extraImage">
           </div>
         </slot>
       </template>
 
-      <template v-slot:pageMenu>
+      <template #pageMenu>
         <div>
-          <div class="page-menu-search" v-if="search">
+          <div v-if="search" class="page-menu-search">
             <a-input-search
               style="width: 80%; max-width: 522px;"
               placeholder="请输入..."
               size="large"
-              enterButton="搜索"
+              enter-button="搜索"
             />
           </div>
-          <div class="page-menu-tabs" v-if="tabs && tabs.items">
+          <div v-if="tabs && tabs.items" class="page-menu-tabs">
             <!-- @change="callback" :activeKey="activeKey" -->
-            <a-tabs :tabBarStyle="{margin: 0}" :activeKey="tabs.active()" @change="tabs.callback">
-              <a-tab-pane v-for="item in tabs.items" :tab="item.title" :key="item.key"></a-tab-pane>
+            <a-tabs :tab-bar-style="{margin: 0}" :active-key="tabs.active()" @change="tabs.callback">
+              <a-tab-pane v-for="item in tabs.items" :key="item.key" :tab="item.title" />
             </a-tabs>
           </div>
         </div>
@@ -118,7 +120,7 @@ export default {
   methods: {
     getPageMeta () {
       // eslint-disable-next-line
-      this.pageTitle = (typeof(this.title) === 'string' || !this.title) ? this.title : this.$route.meta.title
+      this.pageTitle = (typeof (this.title) === 'string' || !this.title) ? this.title : this.$route.meta.title
 
       const content = this.$refs.content
       if (content) {
@@ -138,59 +140,66 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .content {
-    margin: 24px 24px 0;
-    .link {
-      margin-top: 16px;
-      &:not(:empty) {
-        margin-bottom: 16px;
+.content {
+  margin: 24px 24px 0;
+
+  .link {
+    margin-top: 16px;
+
+    &:not(:empty) {
+      margin-bottom: 16px;
+    }
+
+    a {
+      margin-right: 32px;
+      height: 24px;
+      line-height: 24px;
+      display: inline-block;
+
+      i {
+        font-size: 24px;
+        margin-right: 8px;
+        vertical-align: middle;
       }
-      a {
-        margin-right: 32px;
+
+      span {
         height: 24px;
         line-height: 24px;
         display: inline-block;
-        i {
-          font-size: 24px;
-          margin-right: 8px;
-          vertical-align: middle;
-        }
-        span {
-          height: 24px;
-          line-height: 24px;
-          display: inline-block;
-          vertical-align: middle;
-        }
+        vertical-align: middle;
       }
     }
   }
-  .page-menu-search {
-    text-align: center;
-    margin-bottom: 16px;
-  }
-  .page-menu-tabs {
-    margin-top: 48px;
-  }
+}
 
+.page-menu-search {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.page-menu-tabs {
+  margin-top: 48px;
+}
+
+.extra-img {
+  margin-top: -60px;
+  text-align: center;
+  width: 195px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.mobile {
   .extra-img {
-    margin-top: -60px;
+    margin-top: 0;
     text-align: center;
-    width: 195px;
+    width: 96px;
 
     img {
       width: 100%;
     }
   }
-
-  .mobile {
-    .extra-img{
-      margin-top: 0;
-      text-align: center;
-      width: 96px;
-
-      img{
-        width: 100%;
-      }
-    }
-  }
+}
 </style>

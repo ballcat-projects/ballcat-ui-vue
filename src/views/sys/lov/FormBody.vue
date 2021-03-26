@@ -2,15 +2,30 @@
   <a-card title="表格列配置" class="antd-pro-pages-form-advanced-form-style-card">
     <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible=true">新增表格列</a-button>
 
-    <div v-for="(item,index) in value" :key="item.field" style="margin-bottom: 5px;">
+    <div v-for="(item,index) in columnItems" :key="item.field" style="margin-bottom: 5px;">
       <a-input-group compact>
-        <a-input :value="item.title" addonBefore="标题" read-only style="width: 200px" />
-        <a-input :value="item.field" addonBefore="字段" read-only style="width: 200px" />
-        <a-input :value="item.index" addonBefore="索引" read-only style="width: 100px" />
+        <a-input
+          :value="item.title"
+          addon-before="标题"
+          read-only
+          style="width: 200px"
+        />
+        <a-input
+          :value="item.field"
+          addon-before="字段"
+          read-only
+          style="width: 200px"
+        />
+        <a-input
+          :value="item.index"
+          addon-before="索引"
+          read-only
+          style="width: 100px"
+        />
         <a-button style="color: blue;margin-top: -1px;" title="编辑" @click="json=item;editIndex=index;visible=true">
           <a-icon type="edit" />
         </a-button>
-        <a-button style="color: red;margin-top: -1px;" title="删除" @click="value.splice(index,1)">
+        <a-button style="color: red;margin-top: -1px;" title="删除" @click="delColumn(index)">
           <a-icon type="minus-circle" />
         </a-button>
       </a-input-group>
@@ -19,7 +34,13 @@
     <!-- 不知道为什么，如果删除下面这个，就有问题 -->
     <a-divider style="display: none" />
 
-    <a-modal :visible="visible" :width="800" title="新增表格列" @cancel="visible=false" @ok="createBody">
+    <a-modal
+      :visible="visible"
+      :width="800"
+      title="新增表格列"
+      @cancel="visible=false"
+      @ok="createBody"
+    >
       <a-row :gutter="4" class="form-row">
         <a-col :span="6">
           <a-form-item label="标题" required>
@@ -38,12 +59,16 @@
         </a-col>
 
         <a-col :span="24">
-          <a-form-item extra="请保证内容为可用的json"
-                       label="自定义属性">
-            <codemirror v-model="json.property" :options="cmOptions"
-                        style="line-height: 1.5"
-                        @mouseleave.passive="leave"
-            ></codemirror>
+          <a-form-item
+            extra="请保证内容为可用的json"
+            label="自定义属性"
+          >
+            <codemirror
+              v-model="json.property"
+              :options="cmOptions"
+              style="line-height: 1.5"
+              @mouseleave.passive="leave"
+            />
           </a-form-item>
         </a-col>
       </a-row>
@@ -58,23 +83,17 @@ import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/dracula.css'
 import 'codemirror/mode/javascript/javascript'
-import AFormItem from 'ant-design-vue/lib/form/FormItem'
 
 export default {
   name: 'FormBody',
   components: {  codemirror },
   props: {
-    value: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
     formAction: String,
     form: Object
   },
   data() {
     return {
+      columnItems: [],
       visible: false,
       editIndex: undefined,
       cmOptions: {
@@ -96,6 +115,10 @@ export default {
     }
   },
   methods: {
+    reset(value){
+      this.columnItems = value
+      this.$emit('input', this.columnItems)
+    },
     createBody() {
       const errMsg = this.valid()
 
@@ -105,7 +128,8 @@ export default {
       }
       if (typeof this.editIndex !== 'number') {
         // 新增
-        this.value.push({ ...this.json })
+        this.columnItems.push({ ...this.json })
+        this.$emit('input', this.columnItems)
       }
       this.json = {
         title: '',
@@ -134,6 +158,10 @@ export default {
         console.error(e)
         return '自定义属性转换成json时报错,请检查内容,错误信息请查看控制台'
       }
+    },
+    delColumn(index) {
+      this.columnItems.splice(index,1)
+      this.$emit('input', this.columnItems)
     }
   }
 }

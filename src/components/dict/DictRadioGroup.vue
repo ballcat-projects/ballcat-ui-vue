@@ -2,8 +2,9 @@
   <a-radio-group
     :disabled="disabled"
     :value="selectedValue"
-    @change="handleChange">
-    <a-radio v-for="dict in dictItems" :value="getValByItem(dict)" :key="dict.id">
+    @change="handleChange"
+  >
+    <a-radio v-for="dict in dictItems" :key="dict.id" :value="getValByItem(dict)">
       {{ dict.name }}
     </a-radio>
   </a-radio-group>

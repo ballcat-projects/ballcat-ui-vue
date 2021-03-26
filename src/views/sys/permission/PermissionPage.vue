@@ -10,15 +10,15 @@
           </a-button-group>
 
           <a-tree
-            :blockNode="true"
+            :block-node="true"
             :tree-data="treeData"
             :expanded-keys="expandedKeys"
-            :showIcon="true"
+            :show-icon="true"
             @select="onSelect"
             @expand="onExpand"
           >
             <template slot="custom" slot-scope="{ icon }">
-              <a-icon v-if="icon" :type="icon"/>
+              <a-icon v-if="icon" :type="icon" />
             </template>
           </a-tree>
         </a-card>
@@ -26,107 +26,141 @@
 
       <a-col :span="15">
         <a-card :bordered="false">
-          <a-form :form="form" @submit="handleSubmit" :label-col="labelCol" :wrapper-col="wrapperCol">
+          <a-form
+            :form="form"
+            :label-col="labelCol"
+            :wrapper-col="wrapperCol"
+            @submit="handleSubmit"
+          >
 
             <a-form-item label="类型">
-              <a-radio-group v-decorator="['type']"
-                             @change="onTypeChange"
-                             :disabled="readOnly">
-                <a-radio :value=0>目录</a-radio>
-                <a-radio :value=1>菜单</a-radio>
-                <a-radio :value=2>按钮/权限</a-radio>
+              <a-radio-group
+                v-decorator="['type']"
+                :disabled="readOnly"
+                @change="onTypeChange"
+              >
+                <a-radio :value="0">目录</a-radio>
+                <a-radio :value="1">菜单</a-radio>
+                <a-radio :value="2">按钮/权限</a-radio>
               </a-radio-group>
             </a-form-item>
 
             <a-form-item label="父级节点">
-              <a-input placeholder="父级节点" v-decorator="['parentId']"
-                       :disabled="true"/>
+              <a-input
+                v-decorator="['parentId']"
+                placeholder="父级节点"
+                :disabled="true"
+              />
             </a-form-item>
 
             <a-form-item label="节点">
-              <a-input placeholder="节点"
-                       v-decorator="['id', decoratorOptions.id]"
-                       type="number"
-                       :disabled="formAction !== this.FORM_ACTION.CREATE"/>
+              <a-input
+                v-decorator="['id', decoratorOptions.id]"
+                placeholder="节点"
+                type="number"
+                :disabled="formAction !== FORM_ACTION.CREATE"
+              />
             </a-form-item>
 
             <a-form-item label="标题">
-              <a-input placeholder="请输入标题"
-                       v-decorator="['title', decoratorOptions.title]"
-                       :disabled="readOnly"/>
+              <a-input
+                v-decorator="['title', decoratorOptions.title]"
+                placeholder="请输入标题"
+                :disabled="readOnly"
+              />
             </a-form-item>
 
             <div v-show="permissionType === 0">
               <a-form-item label="重定向">
-                <a-input placeholder="路由重定向地址(redirect)"
-                         :disabled="readOnly"
-                         v-decorator="['redirect', decoratorOptions.redirect]"/>
+                <a-input
+                  v-decorator="['redirect', decoratorOptions.redirect]"
+                  placeholder="路由重定向地址(redirect)"
+                  :disabled="readOnly"
+                />
               </a-form-item>
             </div>
 
             <div v-show="permissionType === 1">
               <a-form-item label="菜单路径">
-                <a-input placeholder="请输入菜单路径"
-                         :disabled="readOnly"
-                         v-decorator="['path', decoratorOptions.path]"/>
+                <a-input
+                  v-decorator="['path', decoratorOptions.path]"
+                  placeholder="请输入菜单路径"
+                  :disabled="readOnly"
+                />
               </a-form-item>
             </div>
 
             <div v-show="permissionType === 2">
               <a-form-item label="授权标识">
-                <a-input placeholder="授权标识"
-                         :disabled="readOnly"
-                         v-decorator="['code']"/>
+                <a-input
+                  v-decorator="['code']"
+                  placeholder="授权标识"
+                  :disabled="readOnly"
+                />
               </a-form-item>
             </div>
 
             <div v-show="permissionType === 0 || permissionType === 1">
               <a-form-item label="路由名称">
-                <a-input placeholder="请输入前端路由名称"
-                         v-decorator="['routerName', decoratorOptions.routerName]"
-                         :disabled="readOnly"/>
+                <a-input
+                  v-decorator="['routerName', decoratorOptions.routerName]"
+                  placeholder="请输入前端路由名称"
+                  :disabled="readOnly"
+                />
               </a-form-item>
 
               <a-form-item label="前端组件">
-                <a-input placeholder="请输入前端组件" v-decorator="['component', decoratorOptions.component]"
-                         :disabled="readOnly"/>
+                <a-input
+                  v-decorator="['component', decoratorOptions.component]"
+                  placeholder="请输入前端组件"
+                  :disabled="readOnly"
+                />
               </a-form-item>
 
               <a-form-item label="菜单图标">
-                <a-input placeholder="点击右侧按钮选择图标" v-decorator="['icon']"
-                         :disabled="readOnly">
+                <a-input
+                  v-decorator="['icon']"
+                  placeholder="点击右侧按钮选择图标"
+                  :disabled="readOnly"
+                >
                   <template #addonAfter>
-                    <a-icon type="setting" @click="selectIcons"/>
+                    <a-icon type="setting" @click="selectIcons" />
                   </template>
                 </a-input>
               </a-form-item>
             </div>
 
             <a-form-item label="排序">
-              <a-input-number placeholder="请输入排序号"
-                              :disabled="readOnly"
-                              style="width: 250px" v-decorator="['sort']"/>
+              <a-input-number
+                v-decorator="['sort']"
+                placeholder="请输入排序号"
+                :disabled="readOnly"
+                style="width: 250px"
+              />
             </a-form-item>
 
-            <a-form-item label="隐藏路由"
-                         v-show="permissionType === 0 || permissionType === 1">
+            <a-form-item
+              v-show="permissionType === 0 || permissionType === 1"
+              label="隐藏路由"
+            >
               <a-radio-group v-decorator="['hidden']" :disabled="readOnly">
-                <a-radio :value=1>是</a-radio>
-                <a-radio :value=0>否</a-radio>
+                <a-radio :value="1">是</a-radio>
+                <a-radio :value="0">否</a-radio>
               </a-radio-group>
             </a-form-item>
 
-            <a-form-item v-show="formAction !== FORM_ACTION.NONE"
-                         :wrapper-col="{offset: 7 }"
+            <a-form-item
+              v-show="formAction !== FORM_ACTION.NONE"
+              :wrapper-col="{offset: 7 }"
             >
               <a-button html-type="submit" type="primary">{{
-                  this.formAction === this.FORM_ACTION.CREATE ? '提交' : '修改'
-                }}
+                formAction === FORM_ACTION.CREATE ? '提交' : '修改'
+              }}
               </a-button>
               <a-button style="margin-left: 8px" @click="cancel">取消</a-button>
             </a-form-item>
 
-            <icon-select-modal ref="iconSelectModal" @choose="chooseIcon"></icon-select-modal>
+            <icon-select-modal ref="iconSelectModal" @choose="chooseIcon" />
           </a-form>
         </a-card>
       </a-col>

@@ -2,57 +2,66 @@
   <div class="main">
     <a-form
       id="formLogin"
-      class="user-layout-login"
       ref="formLogin"
+      class="user-layout-login"
       :form="form"
     >
       <a-tabs
-        :activeKey="customActiveKey"
-        :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
+        :active-key="customActiveKey"
+        :tab-bar-style="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="handleTabClick"
       >
         <a-tab-pane key="tab1" tab="账号密码登录">
-          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;"
-                   message="账户或密码错误（admin/ant.design )"/>
+          <a-alert
+            v-if="isLoginError"
+            type="error"
+            show-icon
+            style="margin-bottom: 24px;"
+            message="账户或密码错误（admin/ant.design )"
+          />
           <a-form-item>
             <a-input
-              size="large"
-              type="text"
-              placeholder="账户: admin"
               v-decorator="[
                 'username',
                 {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
               ]"
+              size="large"
+              type="text"
+              placeholder="账户: admin"
             >
               <template #prefix>
-                <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
 
           <a-form-item>
             <a-input
-              size="large"
-              type="password"
-              autocomplete="false"
-              placeholder="密码: a123456"
               v-decorator="[
                 'password',
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
               ]"
+              size="large"
+              type="password"
+              autocomplete="false"
+              placeholder="密码: a123456"
             >
               <template #prefix>
-                <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
         </a-tab-pane>
         <a-tab-pane key="tab2" tab="手机号登录">
           <a-form-item>
-            <a-input size="large" type="text" placeholder="手机号"
-                     v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]">
+            <a-input
+              v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]"
+              size="large"
+              type="text"
+              placeholder="手机号"
+            >
               <template #prefix>
-                <a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                <a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -60,10 +69,14 @@
           <a-row :gutter="16">
             <a-col class="gutter-row" :span="16">
               <a-form-item>
-                <a-input size="large" type="text" placeholder="验证码"
-                         v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
+                <a-input
+                  v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
+                  size="large"
+                  type="text"
+                  placeholder="验证码"
+                >
                   <template #prefix>
-                    <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+                    <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                   </template>
                 </a-input>
               </a-form-item>
@@ -75,7 +88,7 @@
                 :disabled="state.smsSendBtn"
                 @click.stop.prevent="getCaptcha"
                 v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
-              ></a-button>
+              />
             </a-col>
           </a-row>
         </a-tab-pane>
@@ -104,23 +117,23 @@
       </a-form-item>
 
       <Verify
-        @success="captchaVerifySuccess"
-        :mode="'pop'"
-        :captchaType="'blockPuzzle'"
-        :imgSize="{ width: '330px', height: '155px' }"
         ref="verify"
-      ></Verify>
+        :mode="'pop'"
+        :captcha-type="'blockPuzzle'"
+        :img-size="{ width: '330px', height: '155px' }"
+        @success="captchaVerifySuccess"
+      />
 
       <div class="user-login-other">
         <span>其他登录方式</span>
         <a>
-          <a-icon class="item-icon" type="alipay-circle"></a-icon>
+          <a-icon class="item-icon" type="alipay-circle" />
         </a>
         <a>
-          <a-icon class="item-icon" type="taobao-circle"></a-icon>
+          <a-icon class="item-icon" type="taobao-circle" />
         </a>
         <a>
-          <a-icon class="item-icon" type="weibo-circle"></a-icon>
+          <a-icon class="item-icon" type="weibo-circle" />
         </a>
         <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
       </div>

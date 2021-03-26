@@ -9,23 +9,30 @@
     @ok="handleSubmit"
     @cancel="handleClose"
   >
-    <a-form @submit="handleSubmit" :form="form" :label-col=labelCol :wrapper-col=wrapperCol>
+    <a-form
+      :form="form"
+      :label-col="labelCol"
+      :wrapper-col="wrapperCol"
+      @submit="handleSubmit"
+    >
       <a-row>
         <a-col :xs="24" :sm="24" :md="12">
           <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
-            <a-input v-decorator="['userId']"/>
+            <a-input v-decorator="['userId']" />
           </a-form-item>
 
           <a-form-item label="用户名">
             <a-input
               v-decorator="['username', decoratorOptions.username]"
-              placeholder="用户名"/>
+              placeholder="用户名"
+            />
           </a-form-item>
 
           <a-form-item label="昵称">
             <a-input
               v-decorator="['nickname', decoratorOptions.nickname]"
-              placeholder="昵称"/>
+              placeholder="昵称"
+            />
           </a-form-item>
 
           <a-form-item label="组织">
@@ -60,25 +67,29 @@
           >
             <a-input-password
               v-decorator="['pass', decoratorOptions.pass]"
-              placeholder="密码"/>
+              placeholder="密码"
+            />
           </a-form-item>
 
           <a-form-item label="性别">
-            <dict-select v-decorator="['sex', decoratorOptions.sex]"
-                         dict-code="gender">
-            </dict-select>
+            <dict-select
+              v-decorator="['sex', decoratorOptions.sex]"
+              dict-code="gender"
+            />
           </a-form-item>
 
           <a-form-item label="电话">
             <a-input
               v-decorator="['phone']"
-              placeholder="电话"/>
+              placeholder="电话"
+            />
           </a-form-item>
 
           <a-form-item label="邮箱">
             <a-input
               v-decorator="['email']"
-              placeholder="邮箱"/>
+              placeholder="邮箱"
+            />
           </a-form-item>
         </a-col>
       </a-row>

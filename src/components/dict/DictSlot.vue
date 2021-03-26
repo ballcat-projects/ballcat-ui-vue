@@ -8,20 +8,24 @@ export default {
   name: 'DictSlot',
   mixins: [dictItemMixin],
   props: {
-    value: [Number, String, Boolean],
-    dictCode: String,
+    value: {
+      type: [String, Number, Boolean],
+      default: null
+    },
     colors: {
       type: Object,
       default: function () {
         return {}
       }
     },
-    uniformColor: String
+    uniformColor: {
+      type: String,
+      default: null
+    },
   },
   data () {
     return {}
   },
-  watch: {},
   computed: {
     color() {
       let color
@@ -37,6 +41,7 @@ export default {
       return (this.dictItem && this.dictItem.name) || this.value;
     }
   },
+  watch: {},
   created () {},
   methods: {}
 }

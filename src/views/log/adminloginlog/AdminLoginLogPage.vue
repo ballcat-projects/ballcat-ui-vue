@@ -6,23 +6,23 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="用户名">
-              <a-input v-model="queryParam.username" placeholder="用户名"/>
+              <a-input v-model="queryParam.username" placeholder="用户名" />
             </a-form-item>
           </a-col>
           <template v-if="advanced">
             <a-col :md="8" :sm="24">
               <a-form-item label="事件类型">
-                <dict-select dict-code="login_event_type" v-model="queryParam.eventType"></dict-select>
+                <dict-select v-model="queryParam.eventType" dict-code="login_event_type" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="事件状态">
-                <dict-select dict-code="log_status" v-model="queryParam.status"></dict-select>
+                <dict-select v-model="queryParam.status" dict-code="log_status" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="登陆IP">
-                <a-input v-model="queryParam.ip" placeholder="登陆IP"/>
+                <a-input v-model="queryParam.ip" placeholder="登陆IP" />
               </a-form-item>
             </a-col>
           </template>
@@ -42,9 +42,9 @@
             <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-              <a @click="toggleAdvanced" style="margin-left: 8px">
+              <a style="margin-left: 8px" @click="toggleAdvanced">
                 {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
+                <a-icon :type="advanced ? 'up' : 'down'" />
               </a>
             </div>
           </a-col>
@@ -70,18 +70,20 @@
           @change="handleTableChange"
         >
           <template #status-slot="text">
-            <dict-text dict-code="log_status" :value="text"/>
+            <dict-text dict-code="log_status" :value="text" />
           </template>
           <template #event-type-slot="text">
-            <dict-slot dict-code="login_event_type" :value="text"/>
+            <dict-slot dict-code="login_event_type" :value="text" />
           </template>
 
           <template slot="action-slot" slot-scope="text, record">
             <a v-has="'log:loginlog:edit'" @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical"/>
-            <a-popconfirm v-has="'log:loginlog:del'"
-                          title="确认要删除吗？"
-                          @confirm="() => handleDel(record)">
+            <a-divider type="vertical" />
+            <a-popconfirm
+              v-has="'log:loginlog:del'"
+              title="确认要删除吗？"
+              @confirm="() => handleDel(record)"
+            >
               <a href="javascript:">删除</a>
             </a-popconfirm>
           </template>

@@ -7,12 +7,12 @@
           <a-row :gutter="16">
             <a-col :md="8" :sm="24">
               <a-form-item label="角色">
-                <a-input v-model="queryParam.name" placeholder="请输入"/>
+                <a-input v-model="queryParam.name" placeholder="请输入" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="标识">
-                <a-input v-model="queryParam.code" placeholder="请输入"/>
+                <a-input v-model="queryParam.code" placeholder="请输入" />
               </a-form-item>
             </a-col>
             <!-- <template v-if="advanced">
@@ -37,7 +37,12 @@
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">角色管理</div>
           <div class="ant-pro-table-toolbar-option">
-            <a-button v-has="'sys:sysrole:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+            <a-button
+              v-has="'sys:sysrole:add'"
+              type="primary"
+              icon="plus"
+              @click="handleAdd()"
+            >新建</a-button>
           </div>
         </div>
 
@@ -54,18 +59,20 @@
             @change="handleTableChange"
           >
             <template #type-slot="text">
-              <dict-slot dict-code="role_type" :value="text"/>
+              <dict-slot dict-code="role_type" :value="text" />
             </template>
             <template #action-slot="text, record">
               <a v-has="'sys:sysrole:edit'" @click="handleEdit(record)">编辑</a>
-              <a-divider type="vertical"/>
+              <a-divider type="vertical" />
               <a v-has="'sys:sysrole:grant'" @click="handleGrant(record)">授权</a>
-              <a-divider type="vertical"/>
+              <a-divider type="vertical" />
               <a v-has="'sys:sysrole:grant'" @click="handleBind(record)">绑定</a>
-              <a-divider type="vertical"/>
-              <a-popconfirm v-has="'sys:sysrole:del'"
-                            title="确认要删除吗？"
-                            @confirm="() => handleDel(record)">
+              <a-divider type="vertical" />
+              <a-popconfirm
+                v-has="'sys:sysrole:del'"
+                title="确认要删除吗？"
+                @confirm="() => handleDel(record)"
+              >
                 <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>

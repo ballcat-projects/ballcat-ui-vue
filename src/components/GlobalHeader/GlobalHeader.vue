@@ -4,27 +4,38 @@
       <a-layout-header
         v-if="visible"
         :class="[fixedHeader && 'ant-header-fixedHeader', sidebarOpened ? 'ant-header-side-opened' : 'ant-header-side-closed', ]"
-        :style="{ padding: '0'}">
+        :style="{ padding: '0'}"
+      >
         <div v-if="mode === 'sidemenu'" class="header">
-          <span class="trigger" @click="toggle" >
-            <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);"/>
+          <span class="trigger" @click="toggle">
+            <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);" />
           </span>
           <span class="trigger" @click="refreshContent">
             <a-icon type="reload" />
           </span>
-           <breadcrumb v-if="device !== 'mobile'" style="padding-left: 12px"/>
-          <div style="flex: 1 1 0%;"></div>
-          <user-menu/>
+          <breadcrumb v-if="device !== 'mobile'" style="padding-left: 12px" />
+          <div style="flex: 1 1 0%;" />
+          <user-menu />
         </div>
         <div v-else :class="['top-nav-header-index', theme]">
           <div class="header-index-wide">
             <div class="header-index-left">
-              <img class="top-nav-header" src="@/assets/logo.svg" alt="logo"/>
-              <s-menu v-if="device !== 'mobile'" mode="horizontal" :menu="menus" :theme="theme"/>
-              <a-icon v-else class="trigger" :type="collapsedButtonIconType" @click="toggle"
-                      style="transform: scale(1.15);"/>
+              <img class="top-nav-header" src="@/assets/logo.svg" alt="logo">
+              <s-menu
+                v-if="device !== 'mobile'"
+                mode="horizontal"
+                :menu="menus"
+                :theme="theme"
+              />
+              <a-icon
+                v-else
+                class="trigger"
+                :type="collapsedButtonIconType"
+                style="transform: scale(1.15);"
+                @click="toggle"
+              />
             </div>
-            <user-menu class="header-index-right"></user-menu>
+            <user-menu class="header-index-right" />
           </div>
         </div>
       </a-layout-header>

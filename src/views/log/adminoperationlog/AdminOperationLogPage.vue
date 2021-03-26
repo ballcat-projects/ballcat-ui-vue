@@ -6,7 +6,7 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="ID">
-              <a-input v-model="queryParam.id" placeholder/>
+              <a-input v-model="queryParam.id" placeholder />
             </a-form-item>
           </a-col>
 
@@ -16,10 +16,10 @@
             <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-<!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
-<!--                {{ advanced ? '收起' : '展开' }}-->
-<!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
-<!--              </a>-->
+              <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
+              <!--                {{ advanced ? '收起' : '展开' }}-->
+              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+              <!--              </a>-->
             </div>
           </a-col>
         </a-row>
@@ -44,16 +44,14 @@
           @change="handleTableChange"
         >
           <template #type-slot="text">
-            <dict-slot dict-code="operation_type" :value="text">
-            </dict-slot>
+            <dict-slot dict-code="operation_type" :value="text" />
           </template>
           <template #status-slot="text">
-            <dict-text dict-code="log_status" :value="text">
-            </dict-text>
+            <dict-text dict-code="log_status" :value="text" />
           </template>
           <template #expandedRowRender="record">
             <p>params:</p>
-            <pre><div class="wordwrap" v-html="record.params"></div></pre>
+            <pre><div class="wordwrap" v-html="record.params" /></pre>
             <p>userAgent:</p>
             {{ record.userAgent }}}
           </template>

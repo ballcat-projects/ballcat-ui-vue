@@ -2,13 +2,29 @@
   <div>
     <a-input-group compact>
       <a-spin :spinning="loading" size="small" style="width: 100%">
-        <a-input read-only style="width: calc(100% - 92px);" class="lov-data"
-                 v-if="!multiple" :value="selectValue" />
-        <a-select read-only style="width: calc(100% - 92px);" class="lov-data" mode="tags" v-if="multiple"
-                  :value="selectValue" :open="false" @deselect="multipleDeselect" />
+        <a-input
+          v-if="!multiple"
+          read-only
+          style="width: calc(100% - 92px);"
+          class="lov-data"
+          :value="selectValue"
+        />
+        <a-select
+          v-if="multiple"
+          read-only
+          style="width: calc(100% - 92px);"
+          class="lov-data"
+          mode="tags"
+          :value="selectValue"
+          :open="false"
+          @deselect="multipleDeselect"
+        />
 
-        <a-button :disabled="disabled" title="单击以选择数据"
-                  @click="showModal">
+        <a-button
+          :disabled="disabled"
+          title="单击以选择数据"
+          @click="showModal"
+        >
           <a-icon type="select" />
         </a-button>
         <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
@@ -17,27 +33,51 @@
       </a-spin>
     </a-input-group>
 
-    <a-modal class="lov-model" width="800px" @cancel="cancel" @ok="selectData" :visible="visible"
-             :confirm-loading="loading"
-             :footer="ret?undefined:null" :body-style="{paddingBottom:'0'}" :closable="title.length>0" :title="title">
+    <a-modal
+      :title="title"
+      class="lov-model"
+      width="800px"
+      :visible="visible"
+      :confirm-loading="loading"
+      :footer="ret?undefined:null"
+      :body-style="{paddingBottom:'0'}"
+      :closable="title.length>0"
+      @cancel="cancel"
+      @ok="selectData"
+    >
 
       <a-spin :spinning="loading">
         <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
           <a-form layout="inline">
             <a-row :gutter="12">
-              <a-col :span="6" v-for="item in searchList" :key="item.id">
+              <a-col v-for="item in searchList" :key="item.id" :span="6">
                 <a-form-item :label="item.label">
-                  <a-input v-if="item.tag==='INPUT_TEXT'" v-model="queryParam[item.field]"
-                           :placeholder="item.placeholder" />
-                  <a-input-number style="width: 100%" v-if="item.tag==='INPUT_NUMBER'" v-model="queryParam[item.field]"
-                                  :placeholder="item.placeholder"
-                                  :min="item.min" :max="item.max" />
-                  <a-select allowClear v-if="item.tag==='SELECT'" v-model="queryParam[item.field]"
-                            :placeholder="item.placeholder"
-                            :options="item.options" />
-                  <dict-select v-if="item.tag==='DICT_SELECT'" :placeholder="item.placeholder"
-                               :dict-code="item.dictCode"
-                               v-model="queryParam[item.field]" />
+                  <a-input
+                    v-if="item.tag==='INPUT_TEXT'"
+                    v-model="queryParam[item.field]"
+                    :placeholder="item.placeholder"
+                  />
+                  <a-input-number
+                    v-if="item.tag==='INPUT_NUMBER'"
+                    v-model="queryParam[item.field]"
+                    style="width: 100%"
+                    :placeholder="item.placeholder"
+                    :min="item.min"
+                    :max="item.max"
+                  />
+                  <a-select
+                    v-if="item.tag==='SELECT'"
+                    v-model="queryParam[item.field]"
+                    allow-clear
+                    :placeholder="item.placeholder"
+                    :options="item.options"
+                  />
+                  <dict-select
+                    v-if="item.tag==='DICT_SELECT'"
+                    v-model="queryParam[item.field]"
+                    :placeholder="item.placeholder"
+                    :dict-code="item.dictCode"
+                  />
                 </a-form-item>
               </a-col>
             </a-row>
@@ -46,17 +86,29 @@
 
         <!-- 搜索控制按钮 -->
         <div v-if="search" class="table-operator">
-          <a-button @click="reloadTable" type="primary">查询</a-button>
-          <a-button @click="resetSearchForm" style="margin-left: 8px">重置</a-button>
+          <a-button type="primary" @click="reloadTable">查询</a-button>
+          <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
         </div>
 
         <div v-if="showSelectAll">
           <a-form>
             <a-form-item read-only label="已选中数据 ">
-              <a-select v-if="multiple" :value="selectValue" @deselect="multipleDeselect" :open="false" read-only
-                        mode="tags" />
-              <a-select v-if="!multiple" :value="selectValue?[selectValue]:[]" @deselect="singleDeselect" :open="false"
-                        read-only mode="tags" />
+              <a-select
+                v-if="multiple"
+                :value="selectValue"
+                :open="false"
+                read-only
+                mode="tags"
+                @deselect="multipleDeselect"
+              />
+              <a-select
+                v-if="!multiple"
+                :value="selectValue?[selectValue]:[]"
+                :open="false"
+                read-only
+                mode="tags"
+                @deselect="singleDeselect"
+              />
             </a-form-item>
           </a-form>
         </div>
@@ -69,8 +121,8 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :rowSelection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
-          :customRow="customRow"
+          :row-selection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
+          :custom-row="customRow"
           @change="handleTableChange"
         />
       </a-spin>
@@ -90,7 +142,8 @@ export default {
   props: {
     // lov 的 keyword
     keyword: {
-      type: String
+      type: String,
+      required: true
     },
     showSelectAll: {
       type: Boolean,
@@ -99,7 +152,8 @@ export default {
       }
     },
     value: {
-      type: [String, Number, Array]
+      type: [String, Number, Array],
+      default: null
     },
     lazy: {
       type: Boolean,
@@ -189,11 +243,6 @@ export default {
       }
     }
   },
-  watch: {
-    value() {
-      this.copyValue()
-    }
-  },
   data() {
     return {
       customRow: (record) => {
@@ -232,6 +281,11 @@ export default {
       emitting: false,
       // 备份值， 所有操作对该值修改，emit该值，选择时重置该值
       backVal: null
+    }
+  },
+  watch: {
+    value() {
+      this.copyValue()
     }
   },
   created() {

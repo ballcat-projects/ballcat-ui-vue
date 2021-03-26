@@ -1,6 +1,3 @@
-<template>
-</template>
-
 <script>
 import { Modal } from 'ant-design-vue'
 import { readAnnouncement } from '@/api/notify/announcement'
@@ -29,6 +26,9 @@ export default {
         }
       })
     }
+  },
+  render () {
+    return null
   }
 }
 </script>

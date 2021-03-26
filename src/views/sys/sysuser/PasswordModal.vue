@@ -2,10 +2,10 @@
   <a-modal
     title="修改密码"
     :visible="visible"
-    @ok="handleOk"
-    @cancel="handleClose"
     :confirm-loading="confirmLoading"
     :mask-closable="false"
+    @ok="handleOk"
+    @cancel="handleClose"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
@@ -13,16 +13,25 @@
           <a-input
             v-decorator="['username']"
             disabled
-            placeholder="用户名"/>
+            placeholder="用户名"
+          />
         </a-form-item>
 
-        <a-form-item label="新密码" hasFeedback>
-          <a-input type="password" @blur="validateConfirmOnBlur" placeholder="新密码" v-decorator="[ 'pass', decoratorOptions.pass]"/>
+        <a-form-item label="新密码" has-feedback>
+          <a-input
+            v-decorator="[ 'pass', decoratorOptions.pass]"
+            type="password"
+            placeholder="新密码"
+            @blur="validateConfirmOnBlur"
+          />
         </a-form-item>
 
-        <a-form-item label="确认密码" hasFeedback>
-          <a-input type="password" placeholder="确认密码"
-                   v-decorator="['confirmPass', decoratorOptions.confirmPass]"/>
+        <a-form-item label="确认密码" has-feedback>
+          <a-input
+            v-decorator="['confirmPass', decoratorOptions.confirmPass]"
+            type="password"
+            placeholder="确认密码"
+          />
         </a-form-item>
       </a-form>
     </a-spin>

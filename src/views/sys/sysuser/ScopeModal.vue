@@ -2,23 +2,27 @@
   <a-modal
     title="授权"
     :visible="visible"
+    :confirm-loading="confirmLoading"
     @ok="handleOk"
     @cancel="handleClose"
-    :confirm-loading="confirmLoading"
   >
     <a-spin :spinning="confirmLoading">
       <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
         <a-form-item label="用户名">
-          <a-input v-model="username" disabled placeholder="用户名"/>
+          <a-input v-model="username" disabled placeholder="用户名" />
         </a-form-item>
         <a-form-item label="角色">
-          <a-select mode="multiple"
-                    style="width: 100%"
-                    placeholder="无角色"
-                    :allow-clear="true"
-                    v-model="roleCodes">
-            <a-select-option v-for="selectData in roleSelectData"
-                             :key="selectData.value">
+          <a-select
+            v-model="roleCodes"
+            mode="multiple"
+            style="width: 100%"
+            placeholder="无角色"
+            :allow-clear="true"
+          >
+            <a-select-option
+              v-for="selectData in roleSelectData"
+              :key="selectData.value"
+            >
               {{ selectData.name }}
             </a-select-option>
           </a-select>

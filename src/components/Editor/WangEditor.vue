@@ -1,5 +1,5 @@
 <template>
-  <div ref="editor"></div>
+  <div ref="editor" />
 </template>
 
 <script>
@@ -14,7 +14,8 @@ export default {
     },
     // 图片上传的服务端接口
     uploadImgReq: {
-      type: Function
+      type: Function,
+      default: null
     }
   },
   data () {

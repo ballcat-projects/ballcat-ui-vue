@@ -1,7 +1,3 @@
-<template>
-
-</template>
-
 <script>
 import { mapActions } from 'vuex'
 
@@ -34,6 +30,9 @@ export default {
   },
   methods: {
     ...mapActions(['checkDictStatus'])
+  },
+  render () {
+    return null
   }
 }
 </script>

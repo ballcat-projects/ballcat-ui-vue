@@ -1,9 +1,18 @@
 export default {
   name: 'DictMixin',
   props: {
-    value: [String, Number, Boolean, Array],
-    dictCode: String,
-    disabled: Boolean
+    value: {
+      type: [String, Number, Boolean, Array],
+      default: null
+    },
+    dictCode: {
+      type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
   },
   data () {
     return {

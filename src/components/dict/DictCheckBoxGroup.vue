@@ -3,9 +3,10 @@
     :name="dictCode"
     :disabled="disabled"
     :value="selectedValue"
-    @change="handleChange">
+    @change="handleChange"
+  >
     <a-checkbox v-for="dict in dictItems" :key="dict.id" :value="getValByItem(dict)">
-      {{dict.name}}
+      {{ dict.name }}
     </a-checkbox>
   </a-checkbox-group>
 </template>

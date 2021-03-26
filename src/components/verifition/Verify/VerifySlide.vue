@@ -1,47 +1,76 @@
+<!-- eslint-disable -->
 <template>
   <div style="position: relative;">
-    <div v-if="type === '2'" class="verify-img-out"
-         :style="{height: (parseInt(setSize.imgHeight) + vSpace) + 'px'}"
+    <div
+      v-if="type === '2'"
+      class="verify-img-out"
+      :style="{height: (parseInt(setSize.imgHeight) + vSpace) + 'px'}"
     >
-      <div class="verify-img-panel" :style="{width: setSize.imgWidth,
-                                                   height: setSize.imgHeight,}">
-        <img v-if="!backImgLoading" :src="'data:image/png;base64,' + this.backImgBase" alt=""
-             style="width:100%;height:100%;display:block">
-        <div v-else style=" height: 300px;
+      <div
+        class="verify-img-panel"
+        :style="{width: setSize.imgWidth,
+                 height: setSize.imgHeight,}"
+      >
+        <img
+          v-if="!backImgLoading"
+          :src="'data:image/png;base64,' + backImgBase"
+          alt=""
+          style="width:100%;height:100%;display:block"
+        >
+        <div
+          v-else
+          style=" height: 300px;
                     line-height: 150px;
-                    text-align: center">
+                    text-align: center"
+        >
           loading...
         </div>
-        <div class="verify-refresh" @click="refresh" v-show="showRefresh">
-          <i class="iconfont icon-refresh"></i>
+        <div v-show="showRefresh" class="verify-refresh" @click="refresh">
+          <i class="iconfont icon-refresh" />
         </div>
         <transition name="tips">
-          <span class="verify-tips" v-if="tipWords" :class="passFlag ?'suc-bg':'err-bg'">{{ tipWords }}</span>
+          <span v-if="tipWords" class="verify-tips" :class="passFlag ?'suc-bg':'err-bg'">{{ tipWords }}</span>
         </transition>
       </div>
     </div>
     <!-- 公共部分 -->
-    <div class="verify-bar-area" :style="{width: setSize.imgWidth,
-                                              height: barSize.height,
-                                              'line-height':barSize.height}">
-      <span class="verify-msg" v-text="text"></span>
-      <div class="verify-left-bar"
-           :style="{width: (leftBarWidth!==undefined)?leftBarWidth: barSize.height, height: barSize.height, 'border-color': leftBarBorderColor, transaction: transitionWidth}">
-        <span class="verify-msg" v-text="finishText"></span>
-        <div class="verify-move-block"
-             @touchstart="start"
-             @mousedown="start"
-             :style="{width: barSize.height, height: barSize.height, 'background-color': moveBlockBackgroundColor, left: moveBlockLeft, transition: transitionLeft}">
-          <i :class="['verify-icon iconfont', iconClass]"
-             :style="{color: iconColor}"></i>
-          <div v-if="type === '2'" class="verify-sub-block"
-               :style="{'width':Math.floor(parseInt(setSize.imgWidth)*47/310)+ 'px',
-                                  'height': setSize.imgHeight,
-                                  'top':'-' + (parseInt(setSize.imgHeight) + vSpace) + 'px',
-                                  'background-size': setSize.imgWidth + ' ' + setSize.imgHeight,
-                                  }">
-            <img v-if="!backImgLoading" :src="'data:image/png;base64,'+blockBackImgBase" alt=""
-                 style="width:100%;height:100%;display:block">
+    <div
+      class="verify-bar-area"
+      :style="{width: setSize.imgWidth,
+               height: barSize.height,
+               'line-height':barSize.height}"
+    >
+      <span class="verify-msg" v-text="text" />
+      <div
+        class="verify-left-bar"
+        :style="{width: (leftBarWidth!==undefined)?leftBarWidth: barSize.height, height: barSize.height, 'border-color': leftBarBorderColor, transaction: transitionWidth}"
+      >
+        <span class="verify-msg" v-text="finishText" />
+        <div
+          class="verify-move-block"
+          :style="{width: barSize.height, height: barSize.height, 'background-color': moveBlockBackgroundColor, left: moveBlockLeft, transition: transitionLeft}"
+          @touchstart="start"
+          @mousedown="start"
+        >
+          <i
+            :class="['verify-icon iconfont', iconClass]"
+            :style="{color: iconColor}"
+          />
+          <div
+            v-if="type === '2'"
+            class="verify-sub-block"
+            :style="{'width':Math.floor(parseInt(setSize.imgWidth)*47/310)+ 'px',
+                     'height': setSize.imgHeight,
+                     'top':'-' + (parseInt(setSize.imgHeight) + vSpace) + 'px',
+                     'background-size': setSize.imgWidth + ' ' + setSize.imgHeight,
+            }"
+          >
+            <img
+              v-if="!backImgLoading"
+              :src="'data:image/png;base64,'+blockBackImgBase"
+              alt=""
+              style="width:100%;height:100%;display:block"
+            >
           </div>
         </div>
       </div>
@@ -49,6 +78,7 @@
   </div>
 </template>
 <script type="text/babel">
+/* eslint-disable */
 /**
  * VerifySlide
  * @description 滑块
@@ -153,6 +183,21 @@ export default {
     },
     resetSize () {
       return resetSize
+    }
+  },
+  watch: {
+    // type变化则全面刷新
+    type: {
+      immediate: true,
+      handler () {
+        this.init()
+      }
+    }
+  },
+  mounted () {
+    // 禁止拖拽
+    this.$el.onselectstart = function () {
+      return false
     }
   },
   methods: {
@@ -347,21 +392,6 @@ export default {
         this.backImgLoading = false
         this.showRefresh = true
       })
-    }
-  },
-  watch: {
-    // type变化则全面刷新
-    type: {
-      immediate: true,
-      handler () {
-        this.init()
-      }
-    }
-  },
-  mounted () {
-    // 禁止拖拽
-    this.$el.onselectstart = function () {
-      return false
     }
   }
 }

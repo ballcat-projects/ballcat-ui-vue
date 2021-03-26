@@ -8,8 +8,10 @@ export default {
   name: 'DictText',
   mixins: [dictItemMixin],
   props: {
-    value: [Number, String],
-    dictCode: String,
+    value: {
+      type: [String, Number, Boolean],
+      default: null
+    },
     colors: {
       type: Object,
       default: function () {
@@ -20,7 +22,6 @@ export default {
   data () {
     return {}
   },
-  watch: {},
   computed: {
     color() {
       let color
@@ -36,6 +37,7 @@ export default {
       return (this.dictItem && this.dictItem.name) || this.value;
     }
   },
+  watch: {},
   created () {},
   methods: {}
 }

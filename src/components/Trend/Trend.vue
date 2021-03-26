@@ -1,12 +1,12 @@
 <template>
   <div :class="[prefixCls, reverseColor && 'reverse-color' ]">
     <span>
-      <slot name="term"></slot>
+      <slot name="term" />
       <span class="item-text">
-        <slot></slot>
+        <slot />
       </span>
     </span>
-    <span :class="[flag]"><a-icon :type="`caret-${flag}`"/></span>
+    <span :class="[flag]"><a-icon :type="`caret-${flag}`" /></span>
   </div>
 </template>
 

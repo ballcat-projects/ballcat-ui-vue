@@ -8,7 +8,7 @@
     @ok="handleSubmit"
     @cancel="handleClose"
   >
-    <a-form :form="form" :label-col=labelCol :wrapper-col=wrapperCol>
+    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
         <a-input v-decorator="['id']" />
       </a-form-item>
@@ -27,20 +27,19 @@
             key: 'id',
             value: 'id'
           }"
-        >
-        </a-tree-select>
+        />
       </a-form-item>
 
       <a-form-item label="组织名称">
-        <a-input placeholder="组织名称" v-decorator="['name']"/>
+        <a-input v-decorator="['name']" placeholder="组织名称" />
       </a-form-item>
 
       <a-form-item label="排序">
-        <a-input-number style="width: 60%" placeholder="按数值由小到大升序" v-decorator="['sort']"/>
+        <a-input-number v-decorator="['sort']" style="width: 60%" placeholder="按数值由小到大升序" />
       </a-form-item>
 
       <a-form-item label="描述信息">
-        <a-textarea placeholder="描述信息" v-decorator="['description']"/>
+        <a-textarea v-decorator="['description']" placeholder="描述信息" />
       </a-form-item>
     </a-form>
   </a-modal>

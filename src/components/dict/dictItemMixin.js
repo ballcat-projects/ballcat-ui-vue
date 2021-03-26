@@ -2,6 +2,12 @@ import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'DictItemMixin',
+  props: {
+    dictCode: {
+      type: String,
+      required: true
+    }
+  },
   computed: {
     ...mapState({
       dictDataCache: state => state.dict.dictDataCache

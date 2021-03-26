@@ -2,25 +2,26 @@
 <template>
   <div class="main user-layout-register">
     <h3><span>注册</span></h3>
-    <a-form ref="formRegister" :form="form" id="formRegister">
+    <a-form id="formRegister" ref="formRegister" :form="form">
       <a-form-item>
         <a-input
+          v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]"
           size="large"
           type="text"
           placeholder="邮箱"
-          v-decorator="['email', {rules: [{ required: true, type: 'email', message: '请输入邮箱地址' }], validateTrigger: ['change', 'blur']}]"
-        ></a-input>
+        />
       </a-form-item>
 
       <a-popover
+        v-model="state.passwordLevelChecked"
         placement="rightTop"
         :trigger="['focus']"
-        :getPopupContainer="(trigger) => trigger.parentElement"
-        v-model="state.passwordLevelChecked">
+        :get-popup-container="(trigger) => trigger.parentElement"
+      >
         <template #content>
-          <div :style="{ width: '240px' }" >
+          <div :style="{ width: '240px' }">
             <div :class="['user-register', passwordLevelClass]">强度：<span>{{ passwordLevelName }}</span></div>
-            <a-progress :percent="state.percent" :showInfo="false" :strokeColor=" passwordLevelColor " />
+            <a-progress :percent="state.percent" :show-info="false" :stroke-color=" passwordLevelColor " />
             <div style="margin-top: 10px;">
               <span>请至少输入 6 个字符。请不要使用容易被猜到的密码。</span>
             </div>
@@ -28,30 +29,30 @@
         </template>
         <a-form-item>
           <a-input
+            v-decorator="['password', {rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
             size="large"
             type="password"
-            @click="handlePasswordInputClick"
             autocomplete="false"
             placeholder="至少6位密码，区分大小写"
-            v-decorator="['password', {rules: [{ required: true, message: '至少6位密码，区分大小写'}, { validator: this.handlePasswordLevel }], validateTrigger: ['change', 'blur']}]"
-          ></a-input>
+            @click="handlePasswordInputClick"
+          />
         </a-form-item>
       </a-popover>
 
       <a-form-item>
         <a-input
+          v-decorator="['password2', {rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
           size="large"
           type="password"
           autocomplete="false"
           placeholder="确认密码"
-          v-decorator="['password2', {rules: [{ required: true, message: '至少6位密码，区分大小写' }, { validator: this.handlePasswordCheck }], validateTrigger: ['change', 'blur']}]"
-        ></a-input>
+        />
       </a-form-item>
 
       <a-form-item>
-        <a-input size="large" placeholder="11 位手机号" v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: this.handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]">
+        <a-input v-decorator="['mobile', {rules: [{ required: true, message: '请输入正确的手机号', pattern: /^1[3456789]\d{9}$/ }, { validator: handlePhoneCheck } ], validateTrigger: ['change', 'blur'] }]" size="large" placeholder="11 位手机号">
           <template #addonBefore>
-            <a-select size="large" defaultValue="+86">
+            <a-select size="large" default-value="+86">
               <a-select-option value="+86">+86</a-select-option>
               <a-select-option value="+87">+87</a-select-option>
             </a-select>
@@ -69,9 +70,14 @@
       <a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
           <a-form-item>
-            <a-input size="large" type="text" placeholder="验证码" v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]">
-              <template #prefix >
-                <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            <a-input
+              v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
+              size="large"
+              type="text"
+              placeholder="验证码"
+            >
+              <template #prefix>
+                <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -82,7 +88,8 @@
             size="large"
             :disabled="state.smsSendBtn"
             @click.stop.prevent="getCaptcha"
-            v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"></a-button>
+            v-text="!state.smsSendBtn && '获取验证码'||(state.time+' s')"
+          />
         </a-col>
       </a-row>
 
@@ -93,8 +100,9 @@
           html-type="submit"
           class="register-button"
           :loading="registerBtn"
+          :disabled="registerBtn"
           @click.stop.prevent="handleSubmit"
-          :disabled="registerBtn">注册
+        >注册
         </a-button>
         <router-link class="login" :to="{ name: 'login' }">使用已有账户登录</router-link>
       </a-form-item>
@@ -153,6 +161,11 @@ export default {
     },
     passwordLevelColor () {
       return levelColor[this.state.passwordLevel]
+    }
+  },
+  watch: {
+    'state.passwordLevel' (val) {
+      console.log(val)
     }
   },
   methods: {
@@ -233,11 +246,6 @@ export default {
         duration: 4
       })
       this.registerBtn = false
-    }
-  },
-  watch: {
-    'state.passwordLevel' (val) {
-      console.log(val)
     }
   }
 }

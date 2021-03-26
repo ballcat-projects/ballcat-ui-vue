@@ -1,9 +1,10 @@
 <template>
   <result
-    :isSuccess="true"
+    :is-success="true"
     :content="false"
     :title="email"
-    :description="description">
+    :description="description"
+  >
 
     <template #action>
       <a-button size="large" type="primary">查看邮箱</a-button>

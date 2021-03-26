@@ -17,12 +17,12 @@
         <a-row :gutter="16">
           <a-col :md="6" :sm="24">
             <a-form-item label="用户ID">
-              <a-input-number v-model="queryParam.userId" type="number" placeholder=""/>
+              <a-input-number v-model="queryParam.userId" type="number" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="用户名">
-              <a-input v-model="queryParam.username" placeholder=""/>
+              <a-input v-model="queryParam.username" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -62,9 +62,11 @@
       @change="handleTableChange"
     >
       <template #action-slot="text, record">
-        <a-popconfirm v-has="'sys:sysuser:grant'"
-                      title="确认要解绑吗？"
-                      @confirm="() => handleUnbind(record)">
+        <a-popconfirm
+          v-has="'sys:sysuser:grant'"
+          title="确认要解绑吗？"
+          @confirm="() => handleUnbind(record)"
+        >
           <a href="javascript:" class="ballcat-text-danger">解绑</a>
         </a-popconfirm>
       </template>

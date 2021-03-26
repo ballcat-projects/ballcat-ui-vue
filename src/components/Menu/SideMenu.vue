@@ -1,14 +1,17 @@
 <template>
+  <!-- eslint-disable vue/no-mutating-props-->
   <a-layout-sider
+    v-model="collapsed"
     :class="['sider', isDesktop() ? null : 'shadow', theme, fixSiderbar ? 'ant-fixed-sidemenu' : null ]"
     width="208px"
     :collapsible="collapsible"
-    v-model="collapsed"
     :style="style"
-    :trigger="null">
+    :trigger="null"
+  >
+    <!-- eslint-enable-->
     <div class="logo">
       <router-link :to="{name:'/'}">
-        <img src="@/assets/logo.svg" alt="logo"/>
+        <img src="@/assets/logo.svg" alt="logo">
         <h1 v-if="isMobile() || !collapsed">Ball Cat</h1>
       </router-link>
     </div>
@@ -17,7 +20,8 @@
       :menu="menus"
       :theme="theme"
       :mode="mode"
-      @select="onSelect"></s-menu>
+      @select="onSelect"
+    />
   </a-layout-sider>
 
 </template>

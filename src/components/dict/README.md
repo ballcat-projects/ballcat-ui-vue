@@ -111,7 +111,7 @@
 
 ```html
 <dict-radio-group v-decorator="['settlementMethod']"
-                  :disabled="formAction !== this.FORM_ACTION.CREATE"
+                  :disabled="formAction !== FORM_ACTION.CREATE"
                   dict-code="settlement_method">
 </dict-radio-group>
 ```

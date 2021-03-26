@@ -6,7 +6,7 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="ID">
-              <a-input v-model="queryParam.id" placeholder/>
+              <a-input v-model="queryParam.id" placeholder />
             </a-form-item>
           </a-col>
 
@@ -45,11 +45,11 @@
         >
           <template #expandedRowRender="record">
             <p>reqParams:</p>
-            <pre><div class="wordwrap" v-html="record.reqParams"></div></pre>
+            <pre><div class="wordwrap" v-html="record.reqParams" /></pre>
             <p>reqBody:</p>
-            <pre><div class="wordwrap" v-html="record.reqBody"></div></pre>
+            <pre><div class="wordwrap" v-html="record.reqBody" /></pre>
             <p>result:</p>
-            <pre><div class="wordwrap" v-html="record.result"></div></pre>
+            <pre><div class="wordwrap" v-html="record.result" /></pre>
             <p>userAgent:</p>
             {{ record.userAgent }}}
           </template>

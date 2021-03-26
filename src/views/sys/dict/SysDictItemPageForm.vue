@@ -1,20 +1,24 @@
 <template>
-  <a-form @submit="handleSubmit" :form="form" :label-col=labelCol
-          :wrapper-col=wrapperCol>
+  <a-form
+    :form="form"
+    :label-col="labelCol"
+    :wrapper-col="wrapperCol"
+    @submit="handleSubmit"
+  >
     <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
-      <a-input v-decorator="['id']"/>
+      <a-input v-decorator="['id']" />
     </a-form-item>
 
     <a-form-item label="字典标识">
-      <a-input v-decorator="['dictCode']" placeholder="字典标识" :disabled="true"/>
+      <a-input v-decorator="['dictCode']" placeholder="字典标识" :disabled="true" />
     </a-form-item>
 
     <a-form-item label="文本值">
-      <a-input v-decorator="['name']" placeholder="文本值"/>
+      <a-input v-decorator="['name']" placeholder="文本值" />
     </a-form-item>
 
     <a-form-item label="数据值">
-      <a-input v-decorator="['value']" placeholder="数据值"/>
+      <a-input v-decorator="['value']" placeholder="数据值" />
     </a-form-item>
 
     <a-form-item>
@@ -22,25 +26,35 @@
         <span>
           排序
           <a-tooltip title="升序，数值越小优先级越高">
-            <a-icon type="exclamation-circle"/>
+            <a-icon type="exclamation-circle" />
           </a-tooltip>
         </span>
       </template>
-      <a-input-number placeholder="排序（升序）" v-decorator="['sort', {initialValue: 1}]"
-                      :min=0 style="width: 70%"/>
+      <a-input-number
+        v-decorator="['sort', {initialValue: 1}]"
+        placeholder="排序（升序）"
+        :min="0"
+        style="width: 70%"
+      />
     </a-form-item>
 
     <a-form-item label="附加属性">
       <div id="code">
-        <codemirror v-model="itemAttributes" :options="cmOptions" style="line-height: 1.5"
-                    @mouseleave.passive="leave"
-        ></codemirror>
+        <codemirror
+          v-model="itemAttributes"
+          :options="cmOptions"
+          style="line-height: 1.5"
+          @mouseleave.passive="leave"
+        />
       </div>
     </a-form-item>
 
     <a-form-item label="备注">
-      <a-textarea placeholder="备注" v-decorator="['remarks']"
-                  :auto-size="{ minRows: 3, maxRows: 5 }"/>
+      <a-textarea
+        v-decorator="['remarks']"
+        placeholder="备注"
+        :auto-size="{ minRows: 3, maxRows: 5 }"
+      />
     </a-form-item>
 
     <a-form-item :wrapper-col="{offset: 7 }">

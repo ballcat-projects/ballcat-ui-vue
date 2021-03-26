@@ -20,21 +20,26 @@
 
     <div
       :style="{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          borderTop: '1px solid #e8e8e8',
-          padding: '10px 16px',
-          textAlign: 'right',
-          left: 0,
-          background: '#fff',
-          borderRadius: '0 0 4px 4px',
-        }"
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        borderTop: '1px solid #e8e8e8',
+        padding: '10px 16px',
+        textAlign: 'right',
+        left: 0,
+        background: '#fff',
+        borderRadius: '0 0 4px 4px',
+      }"
     >
-      <a-popconfirm title="确定放弃编辑？" @confirm="closeDrawer" okText="确定" cancelText="取消">
+      <a-popconfirm
+        title="确定放弃编辑？"
+        ok-text="确定"
+        cancel-text="取消"
+        @confirm="closeDrawer"
+      >
         <a-button style="margin-right: .8rem">取消</a-button>
       </a-popconfirm>
-      <a-button @click="onSubmit" type="primary" :loading="submitLoading">保存</a-button>
+      <a-button type="primary" :loading="submitLoading" @click="onSubmit">保存</a-button>
     </div>
   </a-drawer>
 </template>
@@ -54,6 +59,25 @@ export default {
       halfCheckedKeys: [],
       expandedKeys: [],
       submitLoading: false
+    }
+  },
+  watch: {
+    visible () {
+      if (this.visible) {
+        getList().then((res) => {
+          // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
+          let treeData = listToTree(res.data, 0)
+          getPermissionCode(this.roleCode).then((res) => {
+            this.treeData = treeData
+            // 由于 AntDesign 的默认父子关联，直接选中所有权限，会导致半选节点变为全选
+            // 所以这里筛选出所有太监节点，进行勾选
+            this.checkedKeys = this.resolveAllEunuchNodeId(treeData, res.data, [])
+            // 默认的半选节点为全部权限，防止未作修改直接保存导致的权限丢失
+            this.halfCheckedKeys = res.data
+            this.expandedKeys = res.data
+          })
+        })
+      }
     }
   },
   methods: {
@@ -104,25 +128,6 @@ export default {
         }
       }
       return resArr
-    }
-  },
-  watch: {
-    visible () {
-      if (this.visible) {
-        getList().then((res) => {
-          // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
-          let treeData = listToTree(res.data, 0)
-          getPermissionCode(this.roleCode).then((res) => {
-            this.treeData = treeData
-            // 由于 AntDesign 的默认父子关联，直接选中所有权限，会导致半选节点变为全选
-            // 所以这里筛选出所有太监节点，进行勾选
-            this.checkedKeys = this.resolveAllEunuchNodeId(treeData, res.data, [])
-            // 默认的半选节点为全部权限，防止未作修改直接保存导致的权限丢失
-            this.halfCheckedKeys = res.data
-            this.expandedKeys = res.data
-          })
-        })
-      }
     }
   }
 }

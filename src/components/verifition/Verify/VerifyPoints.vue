@@ -1,55 +1,78 @@
+<!-- eslint-disable -->
 <template>
-  <div style="position: relative"
+  <div
+    style="position: relative"
   >
     <div class="verify-img-out">
-      <div class="verify-img-panel" :style="{'width': setSize.imgWidth,
-                                                   'height': setSize.imgHeight,
-                                                   'background-size' : setSize.imgWidth + ' '+ setSize.imgHeight,
-                                                   'margin-bottom': vSpace + 'px'}"
+      <div
+        class="verify-img-panel"
+        :style="{'width': setSize.imgWidth,
+                 'height': setSize.imgHeight,
+                 'background-size' : setSize.imgWidth + ' '+ setSize.imgHeight,
+                 'margin-bottom': vSpace + 'px'}"
       >
-        <div class="verify-refresh" style="z-index:3" @click="refresh" v-show="showRefresh">
-          <i class="iconfont icon-refresh"></i>
+        <div
+          v-show="showRefresh"
+          class="verify-refresh"
+          style="z-index:3"
+          @click="refresh"
+        >
+          <i class="iconfont icon-refresh" />
         </div>
 
-        <img v-if="!backImgLoading" :src="'data:image/png;base64,'+pointBackImgBase"
-             ref="canvas"
-             alt="" style="width:100%;height:100%;display:block"
-             @click="bindingClick?canvasClick($event):undefined">
-        <div v-else style=" height: 300px;
+        <img
+          v-if="!backImgLoading"
+          ref="canvas"
+          :src="'data:image/png;base64,'+pointBackImgBase"
+          alt=""
+          style="width:100%;height:100%;display:block"
+          @click="bindingClick?canvasClick($event):undefined"
+        >
+        <div
+          v-else
+          style=" height: 300px;
                       line-height: 150px;
-                      text-align: center">
+                      text-align: center"
+        >
           loading...
         </div>
 
-        <div v-for="(tempPoint, index) in tempPoints" :key="index" class="point-area"
-             :style="{
-                        'background-color':'#1abd6c',
-                        color:'#fff',
-                        'z-index':9999,
-                        width:'20px',
-                        height:'20px',
-                        'text-align':'center',
-                        'line-height':'20px',
-                        'border-radius': '50%',
-                        position:'absolute',
-                        top:parseInt(tempPoint.y-10) + 'px',
-                        left:parseInt(tempPoint.x-10) + 'px'
-                     }">
+        <div
+          v-for="(tempPoint, index) in tempPoints"
+          :key="index"
+          class="point-area"
+          :style="{
+            'background-color':'#1abd6c',
+            color:'#fff',
+            'z-index':9999,
+            width:'20px',
+            height:'20px',
+            'text-align':'center',
+            'line-height':'20px',
+            'border-radius': '50%',
+            position:'absolute',
+            top:parseInt(tempPoint.y-10) + 'px',
+            left:parseInt(tempPoint.x-10) + 'px'
+          }"
+        >
           {{ index + 1 }}
         </div>
       </div>
     </div>
     <!-- 'height': this.barSize.height, -->
-    <div class="verify-bar-area"
-         :style="{'width': setSize.imgWidth,
-                      'color': this.barAreaColor,
-                      'border-color': this.barAreaBorderColor,
-                      'line-height':this.barSize.height}">
+    <div
+      class="verify-bar-area"
+      :style="{'width': setSize.imgWidth,
+               'color': barAreaColor,
+               'border-color': barAreaBorderColor,
+               'line-height': barSize.height}"
+    >
       <span class="verify-msg">{{ text }}</span>
     </div>
   </div>
 </template>
 <script type="text/babel">
+/* eslint-disable */
 /**
  * VerifyPoints
  * @description 点选
@@ -123,6 +146,21 @@ export default {
   computed: {
     resetSize () {
       return resetSize
+    }
+  },
+  watch: {
+    // type变化则全面刷新
+    type: {
+      immediate: true,
+      handler () {
+        this.init()
+      }
+    }
+  },
+  mounted () {
+    // 禁止拖拽
+    this.$el.onselectstart = function () {
+      return false
     }
   },
   methods: {
@@ -241,21 +279,6 @@ export default {
       })
       // console.log(newPointArr,"newPointArr");
       return newPointArr
-    }
-  },
-  watch: {
-    // type变化则全面刷新
-    type: {
-      immediate: true,
-      handler () {
-        this.init()
-      }
-    }
-  },
-  mounted () {
-    // 禁止拖拽
-    this.$el.onselectstart = function () {
-      return false
     }
   }
 }

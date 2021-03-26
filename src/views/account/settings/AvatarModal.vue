@@ -7,45 +7,45 @@
     :confirm-loading="confirmLoading"
     :width="800"
     :footer="null"
-    @cancel="cancelHandel">
+    @cancel="cancelHandel"
+  >
     <a-row>
       <a-col :xs="24" :md="12" :style="{height: '350px'}">
         <vue-cropper
           ref="cropper"
           :img="options.img"
           :info="true"
-          :autoCrop="options.autoCrop"
-          :autoCropWidth="options.autoCropWidth"
-          :autoCropHeight="options.autoCropHeight"
-          :fixedBox="options.fixedBox"
+          :auto-crop="options.autoCrop"
+          :auto-crop-width="options.autoCropWidth"
+          :auto-crop-height="options.autoCropHeight"
+          :fixed-box="options.fixedBox"
           @realTime="realTime"
-        >
-        </vue-cropper>
+        />
       </a-col>
       <a-col :xs="24" :md="12" :style="{height: '350px'}">
         <div class="avatar-upload-preview">
-          <img :src="previews.url" :style="previews.img"/>
+          <img :src="previews.url" :style="previews.img">
         </div>
       </a-col>
     </a-row>
     <br>
     <a-row>
       <a-col :lg="2" :md="2">
-        <a-upload name="file" :beforeUpload="beforeUpload" :showUploadList="false">
+        <a-upload name="file" :before-upload="beforeUpload" :show-upload-list="false">
           <a-button icon="upload">选择图片</a-button>
         </a-upload>
       </a-col>
       <a-col :lg="{span: 1, offset: 2}" :md="2">
-        <a-button icon="plus" @click="changeScale(1)"/>
+        <a-button icon="plus" @click="changeScale(1)" />
       </a-col>
       <a-col :lg="{span: 1, offset: 1}" :md="2">
-        <a-button icon="minus" @click="changeScale(-1)"/>
+        <a-button icon="minus" @click="changeScale(-1)" />
       </a-col>
       <a-col :lg="{span: 1, offset: 1}" :md="2">
-        <a-button icon="undo" @click="rotateLeft"/>
+        <a-button icon="undo" @click="rotateLeft" />
       </a-col>
       <a-col :lg="{span: 1, offset: 1}" :md="2">
-        <a-button icon="redo" @click="rotateRight"/>
+        <a-button icon="redo" @click="rotateRight" />
       </a-col>
       <a-col :lg="{span: 2, offset: 6}" :md="2">
         <a-button type="primary" @click="finish('blob')">保存</a-button>

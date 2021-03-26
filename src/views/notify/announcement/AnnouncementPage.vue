@@ -7,15 +7,15 @@
           <a-row :gutter="16">
             <a-col :md="8" :sm="24">
               <a-form-item label="标题">
-                <a-input v-model="queryParam.title" placeholder="支持模糊查询"></a-input>
+                <a-input v-model="queryParam.title" placeholder="支持模糊查询" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="接收人范围">
                 <dict-select
-                  v-model=queryParam.recipientFilterType
-                  dict-code="recipient_filter_type">
-                </dict-select>
+                  v-model="queryParam.recipientFilterType"
+                  dict-code="recipient_filter_type"
+                />
               </a-form-item>
             </a-col>
 
@@ -40,7 +40,12 @@
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">公告信息</div>
           <div class="ant-pro-table-toolbar-option">
-            <a-button v-has="'notify:announcement:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+            <a-button
+              v-has="'notify:announcement:add'"
+              type="primary"
+              icon="plus"
+              @click="handleAdd()"
+            >新建</a-button>
           </div>
         </div>
 
@@ -57,7 +62,7 @@
             @change="handleTableChange"
           >
             <template #status-slot="status">
-              <a-badge :status="status | statusTypeFilter" :text="status | statusFilter"/>
+              <a-badge :status="status | statusTypeFilter" :text="status | statusFilter" />
             </template>
 
             <template #content-slot="content, record">
@@ -65,37 +70,43 @@
             </template>
 
             <template #recipient-slot="type">
-              <dict-text dict-code="recipient_filter_type" :value="type"></dict-text>
+              <dict-text dict-code="recipient_filter_type" :value="type" />
             </template>
 
             <template #receive-mode-slot="modes">
               <dict-slot
-                dict-code="notify_channel"
                 v-for="mode in modes"
                 :key="mode"
+                dict-code="notify_channel"
                 :value="mode"
                 style="margin-right: 5px"
-              ></dict-slot>
+              />
             </template>
 
             <template #action-slot="text, record">
-              <template v-has="'notify:announcement:edit'">
+              <span v-has="'notify:announcement:edit'">
                 <a :disabled="record.status !== 2" @click="handleEdit(record)">编辑</a>
-                <a-divider type="vertical"/>
-                <a-popconfirm title="确认要发布吗？"
-                              @confirm="() => handlePublish(record)">
+                <a-divider type="vertical" />
+                <a-popconfirm
+                  title="确认要发布吗？"
+                  @confirm="() => handlePublish(record)"
+                >
                   <a href="javascript:" :disabled="record.status !== 2">发布</a>
                 </a-popconfirm>
-                <a-divider type="vertical"/>
-                <a-popconfirm title="确认要关闭吗？"
-                              @confirm="() => handleClose(record)">
+                <a-divider type="vertical" />
+                <a-popconfirm
+                  title="确认要关闭吗？"
+                  @confirm="() => handleClose(record)"
+                >
                   <a href="javascript:" :disabled="record.status === 0">关闭</a>
                 </a-popconfirm>
-              </template>
-              <a-divider type="vertical" v-if="$has('notify:announcement:edit') || $has('notify:announcement:del')"/>
-              <a-popconfirm v-has="'notify:announcement:del'"
-                            title="确认要删除吗？"
-                            @confirm="() => handleDel(record)">
+              </span>
+              <a-divider v-if="$has('notify:announcement:edit') || $has('notify:announcement:del')" type="vertical" />
+              <a-popconfirm
+                v-has="'notify:announcement:del'"
+                title="确认要删除吗？"
+                @confirm="() => handleDel(record)"
+              >
                 <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>

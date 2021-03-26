@@ -1,21 +1,29 @@
 <template>
   <div>
     <!-- 页头 -->
-    <a-page-header
-      :ghost="false"
-      title="Lov 配置"
-    >
+    <a-page-header :ghost="false" title="Lov 配置">
       该组件主要用于多条件查询的数据录入
     </a-page-header>
 
     <!-- 表单 -->
     <a-spin :spinning="submitLoading" size="large" class="ant-pro-page-container-children-content">
-      <a-form @submit="handleSubmit" :form="form" class="form">
-        <form-basic :form="form" :formAction="formAction"/>
-        <form-body v-model="bodyList" :form="form" :formAction="formAction"/>
-        <form-search v-model="searchList" :form="form" :formAction="formAction"/>
+      <a-form :form="form" class="form" @submit="handleSubmit">
+        <form-basic :form="form" :form-action="formAction" />
+        <form-body
+          ref="formBody"
+          v-model="bodyList"
+          :form="form"
+          :form-action="formAction"
+        />
+        <form-search v-model="searchList" :form="form" :form-action="formAction" />
         <a-divider>单击预览按钮后，下方会生成预览的lov组件,修改配置后需要重新单击预览更新数据</a-divider>
-        <lov :lazy="true" style="margin-bottom: 56px;" ref="lov_pre" keyword="lov_pre" v-model="lovVal"/>
+        <lov
+          ref="lov_pre"
+          v-model="lovVal"
+          :lazy="true"
+          style="margin-bottom: 56px;"
+          keyword="lov_pre"
+        />
       </a-form>
     </a-spin>
 
@@ -23,7 +31,12 @@
     <footer-tool-bar>
       <div class="table-operator" style="text-align: center;">
         <a-button :loading="submitLoading" @click="preview">预览</a-button>
-        <a-button style="margin-left: 8px" html-type="submit" type="primary" :loading="submitLoading">提交</a-button>
+        <a-button
+          style="margin-left: 8px"
+          html-type="submit"
+          type="primary"
+          :loading="submitLoading"
+        >提交</a-button>
         <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
       </div>
     </footer-tool-bar>
@@ -81,7 +94,7 @@ export default {
     echoDataProcess (data) {
       this.submitLoading = true
       getData(data.keyword).then(res => {
-        this.bodyList = res.data.bodyList
+        this.$refs.formBody.reset(res.data.bodyList);
         this.searchList = res.data.searchList
         this.submitLoading = false
       })

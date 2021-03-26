@@ -1,5 +1,5 @@
 <template>
-  <global-web-socket-listener/>
+  <global-web-socket-listener />
 </template>
 <script>
 import { ACCESS_TOKEN } from '@/store/storage-types'

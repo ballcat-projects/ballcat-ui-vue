@@ -18,6 +18,11 @@ export default {
       breadList: []
     }
   },
+  watch: {
+    $route () {
+      this.getBreadcrumb()
+    }
+  },
   created () {
     this.getBreadcrumb()
   },
@@ -31,11 +36,6 @@ export default {
         // item.name !== 'index' && this.breadList.push(item)
         this.breadList.push(item)
       })
-    }
-  },
-  watch: {
-    $route () {
-      this.getBreadcrumb()
     }
   }
 }

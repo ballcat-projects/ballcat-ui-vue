@@ -1,18 +1,18 @@
 <template>
-  <div class="text-container" v-if="announcementNum > 0">
+  <div v-if="announcementNum > 0" class="text-container">
     <transition class="" name="slide" mode="out-in">
       <span :key="announcement.id" class="announcement-content">
-        <a-icon type="sound" theme="filled"/>
+        <a-icon type="sound" theme="filled" />
         <a href="javascript:" class="text" @click="readAnnouncement">{{ announcement.title }}</a>
       </span>
     </transition>
-    <announcement-modal ref="announcementModal"></announcement-modal>
+    <announcement-modal ref="announcementModal" />
   </div>
 </template>
 
 <script>
 import AnnouncementModal from '@/components/notify/AnnouncementModal'
-import { getUserAnnouncements, readAnnouncement } from '@/api/notify/announcement'
+import { getUserAnnouncements } from '@/api/notify/announcement'
 
 export default {
   name: 'AnnouncementRibbon',

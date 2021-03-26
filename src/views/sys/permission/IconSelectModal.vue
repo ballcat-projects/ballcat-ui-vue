@@ -1,12 +1,12 @@
 <template>
   <div>
     <a-modal
+      v-model="visible"
       :closable="false"
       width="900px"
-      v-model="visible"
       @ok="handleOk"
     >
-      <icon-selector @change="handleIconChange" v-model="icon"/>
+      <icon-selector v-model="icon" @change="handleIconChange" />
     </a-modal>
   </div>
 </template>

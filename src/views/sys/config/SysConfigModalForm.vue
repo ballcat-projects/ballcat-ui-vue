@@ -8,29 +8,29 @@
     @ok="handleSubmit"
     @cancel="handleClose"
   >
-    <a-form :form="form" :label-col=labelCol :wrapper-col=wrapperCol>
+    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
       <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
         <a-input v-decorator="['id']" />
       </a-form-item>
 
       <a-form-item label="配置名称">
-        <a-input placeholder="配置名称" v-decorator="['name']"/>
+        <a-input v-decorator="['name']" placeholder="配置名称" />
       </a-form-item>
 
       <a-form-item label="配置键">
-        <a-input placeholder="配置键" v-decorator="['confKey']"/>
+        <a-input v-decorator="['confKey']" placeholder="配置键" />
       </a-form-item>
 
       <a-form-item label="配置值">
-        <a-input placeholder="配置值" v-decorator="['confValue']"/>
+        <a-input v-decorator="['confValue']" placeholder="配置值" />
       </a-form-item>
 
       <a-form-item label="分类">
-        <a-input placeholder="分类" v-decorator="['category']"/>
+        <a-input v-decorator="['category']" placeholder="分类" />
       </a-form-item>
 
       <a-form-item label="备注">
-        <a-textarea placeholder="备注" v-decorator="['description']"/>
+        <a-textarea v-decorator="['description']" placeholder="备注" />
       </a-form-item>
     </a-form>
   </a-modal>

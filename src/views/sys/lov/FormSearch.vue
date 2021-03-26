@@ -2,19 +2,51 @@
   <a-card style="margin-top: 5px" title="搜索组件配置">
     <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible=true">新增搜索组件</a-button>
 
-    <div v-for="(item,index) in value" :key="item.field" style="margin-bottom: 5px;">
+    <div v-for="(item,index) in searchItems" :key="item.field" style="margin-bottom: 5px;">
       <a-input-group compact>
-        <a-input :value="item.label" addonBefore="标签" read-only style="width: 150px" />
-        <a-input :value="item.field" addonBefore="字段" read-only style="width: 200px" />
-        <a-input :value="item.tag" addonBefore="标签" read-only style="width: 200px" />
-        <a-input v-if="item.tag==='INPUT_NUMBER'" :value="item.min" addonBefore="min" read-only style="width: 100px" />
-        <a-input v-if="item.tag==='INPUT_NUMBER'" :value="item.max" addonBefore="max" read-only style="width: 100px" />
-        <a-input v-if="item.tag==='DICT_SELECT'" :value="item.dictCode" addonBefore="dictCode" read-only
-                 style="width: 200px" />
+        <a-input
+          :value="item.label"
+          addon-before="标签"
+          read-only
+          style="width: 150px"
+        />
+        <a-input
+          :value="item.field"
+          addon-before="字段"
+          read-only
+          style="width: 200px"
+        />
+        <a-input
+          :value="item.tag"
+          addon-before="标签"
+          read-only
+          style="width: 200px"
+        />
+        <a-input
+          v-if="item.tag==='INPUT_NUMBER'"
+          :value="item.min"
+          addon-before="min"
+          read-only
+          style="width: 100px"
+        />
+        <a-input
+          v-if="item.tag==='INPUT_NUMBER'"
+          :value="item.max"
+          addon-before="max"
+          read-only
+          style="width: 100px"
+        />
+        <a-input
+          v-if="item.tag==='DICT_SELECT'"
+          :value="item.dictCode"
+          addon-before="dictCode"
+          read-only
+          style="width: 200px"
+        />
         <a-button style="color: blue;margin-top: -1px;" title="编辑" @click="json=item;editIndex=index;visible=true">
           <a-icon type="edit" />
         </a-button>
-        <a-button style="color: red;margin-top: -1px;" title="删除" @click="value.splice(index,1)">
+        <a-button style="color: red;margin-top: -1px;" title="删除" @click="delSearchItem(1)">
           <a-icon type="minus-circle" />
         </a-button>
       </a-input-group>
@@ -23,7 +55,13 @@
     <!-- 不知道为什么，如果删除下面这个，就有问题 -->
     <a-divider style="display: none" />
 
-    <a-modal :visible="visible" :width="800" title="新增搜索组件" @cancel="visible=false" @ok="createSearch">
+    <a-modal
+      :visible="visible"
+      :width="800"
+      title="新增搜索组件"
+      @cancel="visible=false"
+      @ok="createSearch"
+    >
       <a-row :gutter="4" class="form-row">
         <a-col :span="4">
           <a-form-item label="标签" required>
@@ -66,13 +104,14 @@
         <a-col v-if="json.tag==='SELECT'" :span="24">
           <a-form-item extra="select所有选项" label="options" required>
             <a-button
-              @click="optionsCheck(json.options)&&json.options.push({key:`${json.options.length+1}`,value:undefined, label: undefined})">
+              @click="optionsCheck(json.options)&&json.options.push({key:`${json.options.length+1}`,value:undefined, label: undefined})"
+            >
               新增选项
             </a-button>
             <a-input-group v-for="(option,index) in json.options" :key="option.key" compact>
-              <a-input v-model="option.key" addonBefore="key" style="width: 150px" />
-              <a-input v-model="option.label" addonBefore="label" style="width: 150px" />
-              <a-input v-model="option.value" addonBefore="value" style="width: 150px" />
+              <a-input v-model="option.key" addon-before="key" style="width: 150px" />
+              <a-input v-model="option.label" addon-before="label" style="width: 150px" />
+              <a-input v-model="option.value" addon-before="value" style="width: 150px" />
               <a-button style="color: red;" title="删除" @click="json.options.splice(index,1)">
                 <a-icon type="minus-circle" />
               </a-button>
@@ -89,18 +128,13 @@
 export default {
   name: 'FormSearch',
   props: {
-    value: {
-      type: Array,
-      default: function () {
-        return []
-      }
-    },
     formAction: String,
     getForm: Function,
     form: Object
   },
-  data() {
+  data () {
     return {
+      searchItems: [],
       visible: false,
       editIndex: undefined,
       json: {
@@ -116,7 +150,11 @@ export default {
     }
   },
   methods: {
-    optionsCheck(options) {
+    reset(value){
+      this.searchItems = value
+      this.$emit('input', this.searchItems)
+    },
+    optionsCheck (options) {
       for (let i = 0; i < options.length; i++) {
         let item = options[i]
         if (!item.key || item.key.trim().length === 0) {
@@ -132,10 +170,9 @@ export default {
           return false
         }
       }
-      console.log('success')
       return true
     },
-    createSearch() {
+    createSearch () {
       const json = { ...this.json }
       json.le = !json.label || json.label.trim().length === 0
       json.fe = !json.field || json.field.trim().length === 0
@@ -163,14 +200,17 @@ export default {
         }
       }
 
-      if (typeof this.editIndex === 'number') {
-
-      } else {
-        this.value.push({ ...this.json })
+      if (typeof this.editIndex !== 'number') {
+        this.searchItems.push({ ...this.json })
+        this.$emit('input', this.searchItems)
       }
       this.json = { tag: 'INPUT_TEXT', options: [] }
       this.editIndex = undefined
       this.visible = false
+    },
+    delSearchItem(index) {
+      this.searchItems.splice(index,1)
+      this.$emit('input', this.searchItems)
     }
   }
 }

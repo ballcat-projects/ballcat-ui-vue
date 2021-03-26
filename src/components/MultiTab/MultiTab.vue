@@ -100,7 +100,6 @@ export default {
       })
     },
     closeAll (key) {
-      const currentIndex = this.fullPathList.indexOf(key)
       this.fullPathList.forEach((item, index) => {
           this.remove(item)
       })

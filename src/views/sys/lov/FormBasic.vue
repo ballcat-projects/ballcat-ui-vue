@@ -13,8 +13,10 @@
         </a-col>
         <a-col :span="4">
           <a-form-item extra="关键字,唯一,加载lov数据时通过关键字加载" label="关键字">
-            <a-input v-decorator="['keyword',decoratorOptions.keyword]"
-                     placeholder="关键字,唯一,加载lov数据时通过关键字加载" />
+            <a-input
+              v-decorator="['keyword',decoratorOptions.keyword]"
+              placeholder="关键字,唯一,加载lov数据时通过关键字加载"
+            />
           </a-form-item>
         </a-col>
         <a-col :span="4">
@@ -54,20 +56,43 @@
         <a-col :span="24">
           <a-form-item extra="固定请求参数,单击按钮以配置值" label="固定请求参数">
             <a-input-group compact>
-              <a-input style="cursor: pointer;width: 50px;" type="button" value="配置" @click="showFixedParams" />
-              <a-input v-decorator="['fixedParams',decoratorOptions.fixedParams]" disabled placeholder="固定请求参数"
-                       style="width: calc(100% - 50px)" />
+              <a-input
+                style="cursor: pointer;width: 50px;"
+                type="button"
+                value="配置"
+                @click="showFixedParams"
+              />
+              <a-input
+                v-decorator="['fixedParams',decoratorOptions.fixedParams]"
+                disabled
+                placeholder="固定请求参数"
+                style="width: calc(100% - 50px)"
+              />
             </a-input-group>
           </a-form-item>
         </a-col>
       </a-row>
 
-      <a-modal :visible="visible" title="配置固定请求参数" @cancel="visible=false" @ok="configFixedParams">
+      <a-modal
+        :visible="visible"
+        title="配置固定请求参数"
+        @cancel="visible=false"
+        @ok="configFixedParams"
+      >
         <a-button style="margin-bottom: 5px;" @click="addFixedParams">新增</a-button>
         <a-input-group v-for="(item,index) in fp" :key="`${index}`" compact>
-          <a-input v-model="item.key" :class="item.ke?'validator-error':''" addonBefore="key" style="width: 150px" />
-          <a-input v-model="item.val" :class="item.ve?'validator-error':''" addonBefore="value"
-                   style="width: calc(100% - 200px)" />
+          <a-input
+            v-model="item.key"
+            :class="item.ke?'validator-error':''"
+            addon-before="key"
+            style="width: 150px"
+          />
+          <a-input
+            v-model="item.val"
+            :class="item.ve?'validator-error':''"
+            addon-before="value"
+            style="width: calc(100% - 200px)"
+          />
           <a-button style="color: red" title="删除" @click="fp.splice(index,1)">
             <a-icon type="minus-circle" />
           </a-button>
@@ -88,7 +113,7 @@
 
         <a-col :span="4">
           <a-form-item label="retField" extra="返回字段">
-            <a-input v-decorator="['retField',decoratorOptions.retField]"/>
+            <a-input v-decorator="['retField',decoratorOptions.retField]" />
           </a-form-item>
         </a-col>
         <a-col :span="4">

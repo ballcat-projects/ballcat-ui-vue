@@ -1,5 +1,12 @@
 <template>
-  <iframe :id="id" :src="url" frameborder="0" width="100%" height="800px" scrolling="auto"></iframe>
+  <iframe
+    :id="id"
+    :src="url"
+    frameborder="0"
+    width="100%"
+    height="800px"
+    scrolling="auto"
+  />
 </template>
 
 <script>

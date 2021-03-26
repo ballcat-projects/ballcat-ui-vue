@@ -6,7 +6,7 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="ID">
-              <a-input v-model="queryParam.id" placeholder=""/>
+              <a-input v-model="queryParam.id" placeholder="" />
             </a-form-item>
           </a-col>
 
@@ -32,7 +32,12 @@
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">配置信息</div>
         <div class="ant-pro-table-toolbar-option">
-          <a-button v-has="'sys:config:edit'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+          <a-button
+            v-has="'sys:config:edit'"
+            type="primary"
+            icon="plus"
+            @click="handleAdd()"
+          >新建</a-button>
         </div>
       </div>
       <div class="ant-pro-table-wrapper">
@@ -49,10 +54,12 @@
         >
           <template #action-slot="text, record">
             <a v-has="'sys:config:edit'" @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical"/>
-            <a-popconfirm v-has="'sys:config:del'"
-                          title="确认要删除吗？"
-                          @confirm="() => handleDel(record)">
+            <a-divider type="vertical" />
+            <a-popconfirm
+              v-has="'sys:config:del'"
+              title="确认要删除吗？"
+              @confirm="() => handleDel(record)"
+            >
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>

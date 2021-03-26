@@ -3,9 +3,12 @@
 
     <a-row :gutter="14">
       <a-col :md="5">
-        <a-card :body-style="{padding: '24px 18px'}" :bordered="false"
-                style="min-width: 200px; margin-bottom: 16px; min-height: calc(100vh - 122px);">
-          <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization"/>
+        <a-card
+          :body-style="{padding: '24px 18px'}"
+          :bordered="false"
+          style="min-width: 200px; margin-bottom: 16px; min-height: calc(100vh - 122px);"
+        >
+          <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization" />
           <a-tree
             :block-node="true"
             :tree-data="organizationTree"
@@ -13,31 +16,31 @@
             :selected-keys="organizationSelectedKeys"
             :multiple="true"
             :replace-fields="{
-                title: 'name',
-                key: 'id',
-                value: 'id'
-              }"
+              title: 'name',
+              key: 'id',
+              value: 'id'
+            }"
             @select="selectOrganization"
             @expand="expandOrganization"
           >
             <template #title="{ name }">
-                <span v-if="name.indexOf(searchValue) > -1">
-                  {{ name.substr(0, name.indexOf(searchValue)) }}
-                  <span style="color: #f50">{{ searchValue }}</span>
-                  {{ name.substr(name.indexOf(searchValue) + searchValue.length) }}
-                </span>
+              <span v-if="name.indexOf(searchValue) > -1">
+                {{ name.substr(0, name.indexOf(searchValue)) }}
+                <span style="color: #f50">{{ searchValue }}</span>
+                {{ name.substr(name.indexOf(searchValue) + searchValue.length) }}
+              </span>
               <span v-else>{{ name }}</span>
             </template>
           </a-tree>
         </a-card>
       </a-col>
-      <a-col :md="19" ref="sysUserCol">
+      <a-col ref="sysUserCol" :md="19">
         <div class="ant-pro-table-search">
           <a-form v-bind="searchFormLayout">
             <a-row :gutter="16">
               <a-col :md="8" :sm="24">
                 <a-form-item label="用户名">
-                  <a-input v-model="queryParam.username" placeholder=""/>
+                  <a-input v-model="queryParam.username" placeholder="" />
                 </a-form-item>
               </a-col>
               <a-col :md="8" :sm="24">
@@ -52,17 +55,17 @@
               <template v-if="advanced">
                 <a-col :md="8" :sm="24">
                   <a-form-item label="昵称">
-                    <a-input v-model="queryParam.nickname" style="width: 100%"/>
+                    <a-input v-model="queryParam.nickname" style="width: 100%" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="8" :sm="24">
                   <a-form-item label="邮箱">
-                    <a-input v-model="queryParam.email" style="width: 100%"/>
+                    <a-input v-model="queryParam.email" style="width: 100%" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="8" :sm="24">
                   <a-form-item label="电话">
-                    <a-input-number v-model="queryParam.phone" style="width: 100%"/>
+                    <a-input-number v-model="queryParam.phone" style="width: 100%" />
                   </a-form-item>
                 </a-col>
               </template>
@@ -70,9 +73,9 @@
                 <div class="table-page-search-submitButtons">
                   <a-button type="primary" @click="reloadTable">查询</a-button>
                   <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                  <a @click="toggleAdvanced" style="margin-left: 8px">
+                  <a style="margin-left: 8px" @click="toggleAdvanced">
                     {{ advanced ? '收起' : '展开' }}
-                    <a-icon :type="advanced ? 'up' : 'down'"/>
+                    <a-icon :type="advanced ? 'up' : 'down'" />
                   </a>
                 </div>
               </a-col>
@@ -84,26 +87,31 @@
           <div class="ant-pro-table-toolbar">
             <div class="ant-pro-table-toolbar-title">系统用户</div>
             <div class="ant-pro-table-toolbar-option">
-              <a-dropdown v-has="'sys:sysuser:edit'" v-if="selectedRowKeys.length > 0">
+              <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'sys:sysuser:edit'">
                 <template #overlay>
                   <a-menu @click="handleUpdateStatus">
                     <a-menu-item key="1">
-                      <a-icon type="delete"/>
+                      <a-icon type="delete" />
                       开启
                     </a-menu-item>
                     <!-- lock | unlock -->
                     <a-menu-item key="0">
-                      <a-icon type="lock"/>
+                      <a-icon type="lock" />
                       锁定
                     </a-menu-item>
                   </a-menu>
                 </template>
                 <a-button style="margin-left: 8px">
                   批量操作
-                  <a-icon type="down"/>
+                  <a-icon type="down" />
                 </a-button>
               </a-dropdown>
-              <a-button v-has="'sys:sysuser:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+              <a-button
+                v-has="'sys:sysuser:add'"
+                type="primary"
+                icon="plus"
+                @click="handleAdd()"
+              >新建</a-button>
             </div>
           </div>
 
@@ -111,7 +119,7 @@
             <a-alert :show-icon="true" style="margin-bottom: 16px">
               <template #message>
                 <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>
-                <a style="margin-left: 24px" v-show='selectedRows.length > 0' @click="onClearSelected">清空</a>
+                <a v-show="selectedRows.length > 0" style="margin-left: 24px" @click="onClearSelected">清空</a>
               </template>
             </a-alert>
 
@@ -130,14 +138,19 @@
             >
               <!--数据表格-->
               <template #status-slot="text">
-                <a-badge :status="text | statusTypeFilter" :text="text | statusFilter"/>
+                <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
               </template>
               <template #gender-slot="text">
-                <dict-text dict-code="gender" :value="text"></dict-text>
+                <dict-text dict-code="gender" :value="text" />
               </template>
               <template #avatar-slot="text, record">
-                <a-avatar shape="square" :src="fileAbsoluteUrl(record.avatar)" icon="user" size="large"
-                          @click="beforeUpdateAvatar(record.userId)"/>
+                <a-avatar
+                  shape="square"
+                  :src="fileAbsoluteUrl(record.avatar)"
+                  icon="user"
+                  size="large"
+                  @click="beforeUpdateAvatar(record.userId)"
+                />
               </template>
 
               <template #action-slot="text, record">
@@ -159,7 +172,8 @@
                       <a-menu-item v-has="'sys:sysuser:del'">
                         <a-popconfirm
                           title="确认要删除吗？"
-                          @confirm="() => handleDel(record)">
+                          @confirm="() => handleDel(record)"
+                        >
                           <a href="javascript:;">删除</a>
                         </a-popconfirm>
                       </a-menu-item>
@@ -181,16 +195,16 @@
     />
 
     <!--头像弹框-->
-    <cropper-modal ref="avatarModal"></cropper-modal>
+    <cropper-modal ref="avatarModal" />
 
     <!--用户授权-->
     <div v-if="scopeInited">
-      <scope-modal ref="scopeModal"></scope-modal>
+      <scope-modal ref="scopeModal" />
     </div>
 
     <!--修改密码-->
     <div v-if="passInited">
-      <password-modal ref="passwordModal"></password-modal>
+      <password-modal ref="passwordModal" />
     </div>
 
 

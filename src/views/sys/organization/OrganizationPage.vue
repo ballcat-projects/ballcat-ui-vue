@@ -6,7 +6,7 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="组织名称">
-              <a-input v-model="queryParam.name" placeholder="查询操作维护中(就是懒得写)"/>
+              <a-input v-model="queryParam.name" placeholder="查询操作维护中(就是懒得写)" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24" class="table-page-search-wrapper">
@@ -28,7 +28,12 @@
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">组织架构</div>
         <div class="ant-pro-table-toolbar-option">
-          <a-button v-has="'sys:organization:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+          <a-button
+            v-has="'sys:organization:add'"
+            type="primary"
+            icon="plus"
+            @click="handleAdd()"
+          >新建</a-button>
         </div>
       </div>
 
@@ -41,19 +46,21 @@
           :columns="columns"
           :data-source="dataSource"
           :loading="loading"
+          :expand-icon="expandIconRender"
           @change="handleTableChange"
-          :expandIcon="expandIconRender"
         >
           <template slot="expandIcon">
-            <a-icon type="caret-down"/>
+            <a-icon type="caret-down" />
           </template>
 
           <template slot="action-slot" slot-scope="text, record">
             <a v-has="'sys:organization:edit'" @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical"/>
-            <a-popconfirm v-has="'sys:organization:del'"
-                          title="确认要删除吗？"
-                          @confirm="() => handleDel(record)">
+            <a-divider type="vertical" />
+            <a-popconfirm
+              v-has="'sys:organization:del'"
+              title="确认要删除吗？"
+              @confirm="() => handleDel(record)"
+            >
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>

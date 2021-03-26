@@ -19,13 +19,13 @@ export default {
       default: false
     }
   },
-  created () {
-    this.localOpenKeys = this.openKeys.slice(0)
-  },
   data () {
     return {
       localOpenKeys: []
     }
+  },
+  created () {
+    this.localOpenKeys = this.openKeys.slice(0)
   },
   methods: {
     handlePlus (item) {

@@ -8,7 +8,7 @@
           <a-row :gutter="16">
             <a-col :md="8" :sm="24">
               <a-form-item label="关键字">
-                <a-input v-model="queryParam.keyword" placeholder=""/>
+                <a-input v-model="queryParam.keyword" placeholder="" />
               </a-form-item>
             </a-col>
 
@@ -33,7 +33,12 @@
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">LOV</div>
           <div class="ant-pro-table-toolbar-option">
-            <a-button v-has="'sys:lov:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+            <a-button
+              v-has="'sys:lov:add'"
+              type="primary"
+              icon="plus"
+              @click="handleAdd()"
+            >新建</a-button>
           </div>
         </div>
 
@@ -51,10 +56,12 @@
           >
             <template #action-slot="text, record">
               <a v-has="'sys:lov:edit'" @click="handleEdit(record)">编辑</a>
-              <a-divider type="vertical"/>
-              <a-popconfirm v-has="'sys:lov:del'"
-                            title="确认要删除吗？"
-                            @confirm="() => handleDel(record)">
+              <a-divider type="vertical" />
+              <a-popconfirm
+                v-has="'sys:lov:del'"
+                title="确认要删除吗？"
+                @confirm="() => handleDel(record)"
+              >
                 <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>
@@ -63,7 +70,7 @@
       </a-card>
     </div>
     <!--表单页面-->
-    <lov-page-form v-show="!tableShow" ref="pageForm" @back-to-page="backToPage"/>
+    <lov-page-form v-show="!tableShow" ref="pageForm" @back-to-page="backToPage" />
   </div>
 </template>
 

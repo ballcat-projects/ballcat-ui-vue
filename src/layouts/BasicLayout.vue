@@ -26,10 +26,12 @@
       :theme="navTheme"
       :collapsed="collapsed"
       :collapsible="true"
-    ></side-menu>
+    />
 
-    <a-layout :class="[layoutMode, `content-width-${contentWidth}`]"
-              :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }">
+    <a-layout
+      :class="[layoutMode, `content-width-${contentWidth}`]"
+      :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }"
+    >
       <!-- layout header -->
       <global-header
         :mode="layoutMode"
@@ -41,30 +43,30 @@
       />
 
 
-      <multi-tab v-if="multiTab"/>
+      <multi-tab v-if="multiTab" />
 
       <!-- 公告彩条 -->
-<!--      <announcement-ribbon />-->
+      <!--      <announcement-ribbon />-->
 
       <!-- layout content -->
       <!--      <a-layout-content :style="{ height: '100%', margin: '18px 18px 0', paddingTop: fixedHeader ? '64px' : '0' }">-->
       <a-layout-content>
         <transition name="page-transition">
-          <route-view/>
+          <route-view />
         </transition>
       </a-layout-content>
 
       <!-- layout footer -->
       <a-layout-footer>
-        <global-footer/>
+        <global-footer />
       </a-layout-footer>
 
       <!-- Setting Drawer (show in development mode) -->
-<!--      <setting-drawer v-if="!production"></setting-drawer>-->
+      <!--      <setting-drawer v-if="!production"></setting-drawer>-->
     </a-layout>
 
     <!-- websocket -->
-    <global-web-socket/>
+    <global-web-socket />
   </a-layout>
 </template>
 
@@ -78,19 +80,15 @@ import RouteView from './RouteView'
 import SideMenu from '@/components/Menu/SideMenu'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
-import SettingDrawer from '@/components/SettingDrawer'
-import AnnouncementRibbon from '@/components/notify/AnnouncementRibbon'
 import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
 
 export default {
   name: 'BasicLayout',
   components: {
-    AnnouncementRibbon,
     RouteView,
     SideMenu,
     GlobalHeader,
     GlobalFooter,
-    SettingDrawer,
     GlobalWebSocket
   },
   mixins: [mixin, mixinDevice],

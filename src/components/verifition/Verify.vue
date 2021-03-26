@@ -1,32 +1,36 @@
+<!-- eslint-disable -->
 <template>
-  <div :class="mode=='pop'?'mask':''" v-show="showBox">
+  <div v-show="showBox" :class="mode=='pop'?'mask':''">
     <div :class="mode=='pop'?'verifybox':''" :style="{'max-width':parseInt(imgSize.width)+30+'px'}">
-      <div class="verifybox-top" v-if="mode=='pop'">
+      <div v-if="mode=='pop'" class="verifybox-top">
         请完成安全验证
         <span class="verifybox-close" @click="closeBox">
-                <i class="iconfont icon-close"></i>
-            </span>
+          <i class="iconfont icon-close" />
+        </span>
       </div>
       <div class="verifybox-bottom" :style="{padding:mode=='pop'?'15px':'0'}">
         <!-- 验证码容器 -->
-        <components v-if="componentType"
-                    :is="componentType"
-                    :captchaType="captchaType"
-                    :type="verifyType"
-                    :figure="figure"
-                    :arith="arith"
-                    :mode="mode"
-                    :vSpace="vSpace"
-                    :explain="explain"
-                    :imgSize="imgSize"
-                    :blockSize="blockSize"
-                    :barSize="barSize"
-                    ref="instance"></components>
+        <components
+          :is="componentType"
+          v-if="componentType"
+          ref="instance"
+          :captcha-type="captchaType"
+          :type="verifyType"
+          :figure="figure"
+          :arith="arith"
+          :mode="mode"
+          :v-space="vSpace"
+          :explain="explain"
+          :img-size="imgSize"
+          :block-size="blockSize"
+          :bar-size="barSize"
+        />
       </div>
     </div>
   </div>
 </template>
 <script type="text/babel">
+/* eslint-disable */
 /**
  * Verify 验证码组件
  * @description 分发验证码使用
@@ -36,6 +40,10 @@ import VerifyPoints from './Verify/VerifyPoints'
 
 export default {
   name: 'Vue2Verify',
+  components: {
+    VerifySlide,
+    VerifyPoints
+  },
   props: {
     // 双语化
     locale: {
@@ -97,6 +105,35 @@ export default {
       componentType: undefined
     }
   },
+  computed: {
+    instance () {
+      return this.$refs.instance || {}
+    },
+    showBox () {
+      if (this.mode == 'pop') {
+        return this.clickShow
+      } else {
+        return true
+      }
+    }
+  },
+  watch: {
+    captchaType: {
+      immediate: true,
+      handler (captchaType) {
+        switch (captchaType.toString()) {
+          case 'blockPuzzle':
+            this.verifyType = '2'
+            this.componentType = 'VerifySlide'
+            break
+          case 'clickWord':
+            this.verifyType = ''
+            this.componentType = 'VerifyPoints'
+            break
+        }
+      }
+    }
+  },
   methods: {
     /**
      * i18n
@@ -131,39 +168,6 @@ export default {
         this.refresh()
       }
     }
-  },
-  computed: {
-    instance () {
-      return this.$refs.instance || {}
-    },
-    showBox () {
-      if (this.mode == 'pop') {
-        return this.clickShow
-      } else {
-        return true
-      }
-    }
-  },
-  watch: {
-    captchaType: {
-      immediate: true,
-      handler (captchaType) {
-        switch (captchaType.toString()) {
-          case 'blockPuzzle':
-            this.verifyType = '2'
-            this.componentType = 'VerifySlide'
-            break
-          case 'clickWord':
-            this.verifyType = ''
-            this.componentType = 'VerifyPoints'
-            break
-        }
-      }
-    }
-  },
-  components: {
-    VerifySlide,
-    VerifyPoints
   }
 }
 </script>

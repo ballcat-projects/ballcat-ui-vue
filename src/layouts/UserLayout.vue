@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <route-view></route-view>
+      <route-view />
 
       <div class="footer">
         <div class="links">

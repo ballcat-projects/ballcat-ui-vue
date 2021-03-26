@@ -3,15 +3,15 @@ const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 const url = 'http://ballcat-admin:8080'
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
 /**
- * check production or preview(pro.loacg.com only)
+ * 判断当前是否是生产环境
  * @returns {boolean}
  */
-function isProd () {
+function isProd() {
   return process.env.NODE_ENV === 'production'
 }
 
@@ -20,8 +20,8 @@ const assetsCDN = {
   // https://unpkg.com/browse/vue@2.6.10/
   js: [
     '//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js',
-    '//cdn.jsdelivr.net/npm/vue-router@3.4.9/dist/vue-router.min.js',
-    '//cdn.jsdelivr.net/npm/vuex@3.5.1/dist/vuex.min.js',
+    '//cdn.jsdelivr.net/npm/vue-router@3.5.1/dist/vue-router.min.js',
+    '//cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
     '//cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js'
   ]
 }
@@ -85,10 +85,10 @@ const vueConfig = {
             // 'primary-color': '#F5222D',
             // 'link-color': '#F5222D',
             'text-color': 'rgba(0, 0, 0, 0.85)', // 主文本色
-            'border-radius-base': '2px',  // 按钮圆角
-            'layout-header-height': '48px',  // layout 头高度
-            'menu-collapsed-width': '48px',  // inline 菜单收起宽度
-            },
+            'border-radius-base': '2px', // 按钮圆角
+            'layout-header-height': '48px', // layout 头高度
+            'menu-collapsed-width': '48px' // inline 菜单收起宽度
+          },
           javascriptEnabled: true
         }
       }
@@ -113,7 +113,7 @@ const vueConfig = {
 
   // disable source map in production
   productionSourceMap: false,
-  lintOnSave: false,
+  lintOnSave: !isProd(),
   // babel-loader no-ignore node_modules/*
   transpileDependencies: []
 }

@@ -14,7 +14,12 @@
     <div v-show="tableShow">
       <!-- 操作按钮区域 -->
       <div style="padding-bottom: 10px">
-        <a-button v-has="'sys:dict:add'" type="primary" icon="plus" @click="handleAdd(dictCode)">新建</a-button>
+        <a-button
+          v-has="'sys:dict:add'"
+          type="primary"
+          icon="plus"
+          @click="handleAdd(dictCode)"
+        >新建</a-button>
       </div>
 
       <!--数据表格区域-->
@@ -30,10 +35,12 @@
       >
         <template #action-slot="text, record">
           <a v-has="'sys:dict:edit'" @click="handleEdit(record)">编辑</a>
-          <a-divider type="vertical"/>
-          <a-popconfirm v-has="'sys:dict:del'"
-                        title="确认要删除吗？"
-                        @confirm="() => handleDel(record)">
+          <a-divider type="vertical" />
+          <a-popconfirm
+            v-has="'sys:dict:del'"
+            title="确认要删除吗？"
+            @confirm="() => handleDel(record)"
+          >
             <a href="javascript:" class="ballcat-text-danger">删除</a>
           </a-popconfirm>
         </template>

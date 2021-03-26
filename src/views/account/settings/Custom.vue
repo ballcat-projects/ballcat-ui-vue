@@ -14,11 +14,6 @@ export default {
     ASwitch,
     Meta
   },
-  mixins: [mixin],
-  data () {
-    return {
-    }
-  },
   filters: {
     themeFilter (theme) {
       const themeMap = {
@@ -26,6 +21,11 @@ export default {
         'light': '白色'
       }
       return themeMap[theme]
+    }
+  },
+  mixins: [mixin],
+  data () {
+    return {
     }
   },
   methods: {

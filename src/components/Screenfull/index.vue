@@ -1,6 +1,6 @@
 <template>
-  <div @click="click" >
-    <a-icon :type="isFullscreen?'fullscreen-exit':'fullscreen'"/>
+  <div @click="click">
+    <a-icon :type="isFullscreen?'fullscreen-exit':'fullscreen'" />
   </div>
 </template>
 

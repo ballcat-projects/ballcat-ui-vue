@@ -1,6 +1,6 @@
 <template>
   <a-list
-    itemLayout="horizontal"
+    item-layout="horizontal"
     :data-source="data"
   >
     <template #renderItem="item, index1">

@@ -6,12 +6,12 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="字典标识">
-              <a-input v-model="queryParam.code" placeholder="字典标识"/>
+              <a-input v-model="queryParam.code" placeholder="字典标识" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item label="字典标题">
-              <a-input v-model="queryParam.title" placeholder="字典标题"/>
+              <a-input v-model="queryParam.title" placeholder="字典标题" />
             </a-form-item>
           </a-col>
           <!-- <template v-if="advanced">
@@ -36,7 +36,12 @@
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">数据字典</div>
         <div class="ant-pro-table-toolbar-option">
-          <a-button v-has="'sys:dict:add'" type="primary" icon="plus" @click="handleAdd()">新建</a-button>
+          <a-button
+            v-has="'sys:dict:add'"
+            type="primary"
+            icon="plus"
+            @click="handleAdd()"
+          >新建</a-button>
         </div>
       </div>
 
@@ -53,17 +58,19 @@
           @change="handleTableChange"
         >
           <template #type-slot="text">
-            <dict-slot dict-code="dict_property" :value="text"/>
+            <dict-slot dict-code="dict_property" :value="text" />
           </template>
 
           <template #action-slot="text, record">
             <a v-has="'sys:dict:edit'" @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical"/>
+            <a-divider type="vertical" />
             <a @click="handleShowItem(record)">字典项</a>
-            <a-divider type="vertical"/>
-            <a-popconfirm v-has="'sys:dict:del'"
-                          title="确认要删除吗？"
-                          @confirm="() => handleDel(record)">
+            <a-divider type="vertical" />
+            <a-popconfirm
+              v-has="'sys:dict:del'"
+              title="确认要删除吗？"
+              @confirm="() => handleDel(record)"
+            >
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>

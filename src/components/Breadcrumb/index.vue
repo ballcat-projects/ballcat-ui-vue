@@ -1,6 +1,6 @@
 <template>
-  <a-breadcrumb :routes="routes">
-    <template slot="itemRender" slot-scope="{ route, params, routes, paths }">
+  <a-breadcrumb :routes="routeList">
+    <template #itemRender="{ route, routes }">
       <span v-if="routes.indexOf(route) === routes.length - 1">
         {{ route.meta.title }}
       </span>
@@ -15,12 +15,11 @@
 export default {
   name: 'Breadcrumb',
   computed: {
-    routes () {
+    routeList () {
       let routes = []
       this.$route.matched.forEach(item => {
         routes.push(item)
       })
-      console.log(routes)
       return routes
     }
   }

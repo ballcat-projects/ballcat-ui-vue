@@ -6,7 +6,7 @@
           <a-menu
             :mode="device == 'mobile' ? 'horizontal' : 'inline'"
             :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
-            :selectedKeys="selectedKeys"
+            :selected-keys="selectedKeys"
             type="inner"
             @openChange="onOpenChange"
           >
@@ -41,7 +41,7 @@
           <div class="account-settings-info-title">
             <span>{{ $route.meta.title }}</span>
           </div>
-          <route-view></route-view>
+          <route-view />
         </div>
       </div>
     </a-card>
@@ -49,13 +49,12 @@
 </template>
 
 <script>
-import { PageView, RouteView } from '@/layouts'
+import { RouteView } from '@/layouts'
 import { mixinDevice } from '@/utils/mixin.js'
 
 export default {
   components: {
-    RouteView,
-    PageView
+    RouteView
   },
   mixins: [mixinDevice],
   data () {
@@ -87,6 +86,11 @@ export default {
       pageTitle: ''
     }
   },
+  watch: {
+    '$route' (val) {
+      this.updateMenu()
+    }
+  },
   created () {
     this.updateMenu()
   },
@@ -97,11 +101,6 @@ export default {
     updateMenu () {
       const routes = this.$route.matched.concat()
       this.selectedKeys = [ routes.pop().path ]
-    }
-  },
-  watch: {
-    '$route' (val) {
-      this.updateMenu()
     }
   }
 }
