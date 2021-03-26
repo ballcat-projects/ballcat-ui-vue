@@ -5,5 +5,10 @@ export const DICT = {
   DEL_DICT_CACHE: 'delete_invalid_dict'
 }
 
-
+export const LOV = {
+  SET_CACHE: 'set_lov_cache',
+  DEL_CACHE: 'del_lov_cache',
+  SET_REQUEST: 'set_lov_request',
+  DEL_REQUEST: 'del_lov_request'
+}
 
