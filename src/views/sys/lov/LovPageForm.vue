@@ -36,9 +36,9 @@
         <a-button :loading="submitLoading" @click="preview">预览</a-button>
         <a-button
           style="margin-left: 8px"
-          @click="submitClick"
           type="primary"
           :loading="submitLoading"
+          @click="submitClick"
         >提交</a-button>
         <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
       </div>
