@@ -36,7 +36,7 @@
     <a-modal
       :title="title"
       class="lov-model"
-      width="800px"
+      :width="width"
       :visible="visible"
       :confirm-loading="loading"
       :footer="ret?undefined:null"
@@ -115,7 +115,7 @@
 
         <a-table
           ref="table"
-          size="middle"
+          :size="tableSize"
           :row-key="rowKey"
           :columns="columns"
           :data-source="dataSource"
@@ -143,6 +143,18 @@ export default {
     keyword: {
       type: String,
       required: true
+    },
+    width: {
+      type: String,
+      default: function(){
+        return '800px'
+      }
+    },
+    tableSize: {
+      type: String,
+      default: function(){
+        return 'middle'
+      }
     },
     showSelectAll: {
       type: Boolean,
