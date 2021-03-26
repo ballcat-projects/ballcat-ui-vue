@@ -73,8 +73,7 @@ const user = {
         }
         commit(DICT.DEL_DICT_REQUEST_FLAG, requestFlagKey)
       } catch (e) {
-        console.log(e)
-
+        console.error(e)
       }
     },
     async checkDictStatus ({ commit, state }) {

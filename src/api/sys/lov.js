@@ -34,3 +34,11 @@ export function create(obj) {
     data: obj
   })
 }
+
+export function check(map) {
+  return request({
+    url: '/lov/check',
+    method: 'post',
+    data: map
+  })
+}

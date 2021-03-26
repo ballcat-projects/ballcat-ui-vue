@@ -25,7 +25,7 @@
           v-model="lovVal"
           :lazy="true"
           style="margin-bottom: 56px;"
-          keyword="lov_pre"
+          keyword="local_preview"
         />
       </a-form>
     </a-spin>
@@ -53,8 +53,8 @@ import { mixin, mixinDevice } from '@/utils/mixin'
 import FormBasic from '@/views/sys/lov/FormBasic'
 import FormBody from '@/views/sys/lov/FormBody'
 import FormSearch from '@/views/sys/lov/FormSearch'
-import Vue from 'vue'
 import FooterToolBar from '@/components/FooterToolbar'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'SysLovFormPage',
@@ -75,17 +75,19 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['setLovPreview', 'delLovPreview']),
     preview () {
       this.submitLoading = true
       // 表单校验，成功则进行预览
       this.form.validateFields((err, values) => {
         if (!err) {
           const pre = this.$refs.lov_pre
-          Vue.ls.set(pre.getCacheKey(), JSON.stringify({
+          this.delLovPreview()
+          this.setLovPreview({
             ...values,
             bodyList: this.bodyList,
             searchList: this.searchList
-          }))
+          })
           pre.cleanAll()
           pre.load()
         } else {
@@ -118,7 +120,7 @@ export default {
     // 提交成功
     submitSuccess (res) {
       // 更新成功、删除缓存
-      Vue.ls.remove(this.$refs.lov_pre.getCacheKeyByKeyword(this.form.getFieldValue('keyword')))
+      this.delLovPreview()
       this.backToPage(true)
     }
   }

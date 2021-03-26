@@ -7,6 +7,7 @@ import i18n from './modules/i18n'
 import userRouter from './modules/user-router'
 import dict from './modules/dict'
 import getters from './getters'
+import lovModule from './modules/lov'
 
 Vue.use(Vuex)
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     user,
     i18n,
     dict,
-    userRouter
+    userRouter,
+    lovModule
   },
   state: {
 

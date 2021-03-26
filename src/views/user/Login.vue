@@ -172,7 +172,7 @@ export default {
   created () {
   },
   methods: {
-    ...mapActions(['Login', 'Logout', 'checkDictStatus']),
+    ...mapActions(['Login', 'Logout', 'checkDictStatus','checkLov','delLovInfo']),
     // handler
     handleUsernameOrEmail (rule, value, callback) {
       const { state } = this
@@ -250,6 +250,13 @@ export default {
     loginSuccess (res) {
       // 校验并删除过期字典数据
       this.checkDictStatus()
+      // 校验lov数据
+      this.checkLov().then(array => {
+        for (let keyword of array) {
+          this.delLovInfo(keyword)
+        }
+      })
+
       this.$router.push({ name: '/' }, () => {
         this.$notification.success({
           message: '欢迎',

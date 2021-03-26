@@ -132,9 +132,8 @@
 
 <script>
 import { TablePageMixin } from '@/mixins'
-import Vue from 'vue'
 import request from '@/utils/request'
-import { getData } from '@/api/sys/lov'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Lov',
@@ -294,6 +293,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['getLovInfoByKeyword']),
     showModal() {
       this.multiple ? this.backVal = [...this.value] : this.backVal = this.value
       this.selectedRows = []
@@ -303,11 +303,14 @@ export default {
     },
     load() {
       this.loading = true
+      // 获取数据
+      this.getLovInfoByKeyword(this.keyword).then(json => {
+        if (!json) {
+          this.$message.error(`加载lov异常!keyword: ${this.keyword}`)
+          console.error(`加载lov异常!keyword: ${this.keyword}`)
+          return
+        }
 
-      // 获取到 keyword
-      let cache_key = this.getCacheKey()
-
-      this.initByKeyword(cache_key, this.keyword).then(json => {
         if (json.title && json.title.trim().length > 0) {
           this.title = json.title
         } else {
@@ -376,12 +379,6 @@ export default {
         this.loading = false
       })
     },
-    getCacheKey() {
-      return this.getCacheKeyByKeyword(this.keyword)
-    },
-    getCacheKeyByKeyword(keyword) {
-      return `lov_${keyword}`
-    },
     onSelectAll(selected, selectedRows, changeRows) {
       changeRows.forEach(row => {
         this.onSelect(row, selected, selectedRows)
@@ -393,17 +390,6 @@ export default {
         this.selectRow(record, selectedRows, nativeEvent)
       } else {
         this.unselectRow(record, selectedRows, nativeEvent)
-      }
-    },
-    initByKeyword(cache_key, keyword) {
-      const cache_data = Vue.ls.get(cache_key)
-      if (!cache_data) {
-        return getData(keyword).then((res => {
-          Vue.ls.set(cache_key, JSON.stringify(res.data), 7 * 24 * 60 * 60 * 1000)
-          return res.data
-        }))
-      } else {
-        return Promise.resolve(JSON.parse(cache_data))
       }
     },
     selectData() {

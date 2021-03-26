@@ -12,6 +12,15 @@ export default {
           handle: () => {
             this.checkDictStatus()
           }
+        },
+        {
+          // lov更新事件
+          type: 'lov_change',
+          handle: res => {
+            if (res.keyword){
+              this.delLovInfo(res.keyword)
+            }
+          }
         }
       ]
     }
@@ -29,7 +38,7 @@ export default {
     })
   },
   methods: {
-    ...mapActions(['checkDictStatus'])
+    ...mapActions(['checkDictStatus', 'delLovInfo'])
   },
   render () {
     return null
