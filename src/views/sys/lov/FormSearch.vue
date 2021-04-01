@@ -128,9 +128,14 @@
 export default {
   name: 'FormSearch',
   props: {
-    formAction: String,
-    getForm: Function,
-    form: Object
+    formAction: {
+      type: String,
+      required: true
+    },
+    form: {
+      type: Object,
+      required: true
+    },
   },
   data () {
     return {

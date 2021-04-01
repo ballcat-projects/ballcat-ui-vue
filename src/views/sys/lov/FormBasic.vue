@@ -134,8 +134,14 @@
 export default {
   name: 'FormBasic',
   props: {
-    formAction: String,
-    form: Object,
+    formAction: {
+      type: String,
+      required: true
+    },
+    form: {
+      type: Object,
+      required: true
+    },
   },
   data() {
     return {

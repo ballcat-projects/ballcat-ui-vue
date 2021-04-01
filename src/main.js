@@ -25,7 +25,7 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
 import DictPlugin  from '@/components/dict/dictPlugin'
 Vue.use(DictPlugin)
 // lov注册
-import LovPlugin from '@/components/lov/lovPlugin'
+import LovPlugin from '@/components/Lov/lovPlugin'
 Vue.use(LovPlugin)
 
 Vue.config.productionTip = false

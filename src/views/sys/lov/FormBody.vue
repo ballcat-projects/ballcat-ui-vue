@@ -88,8 +88,14 @@ export default {
   name: 'FormBody',
   components: {  codemirror },
   props: {
-    formAction: String,
-    form: Object
+    formAction: {
+      type: String,
+      required: true
+    },
+    form: {
+      type: Object,
+      required: true
+    },
   },
   data() {
     return {
