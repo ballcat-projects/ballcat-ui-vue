@@ -1,4 +1,4 @@
-import Lov from '@/components/Lov/Lov'
+import Lov from '@/components/lov/Lov'
 
 export default {
   install: function (Vue) {
