@@ -46,7 +46,7 @@
         <a-button style="color: blue;margin-top: -1px;" title="编辑" @click="json=item;editIndex=index;visible=true">
           <a-icon type="edit" />
         </a-button>
-        <a-button style="color: red;margin-top: -1px;" title="删除" @click="delSearchItem(1)">
+        <a-button style="color: red;margin-top: -1px;" title="删除" @click="delSearchItem(index)">
           <a-icon type="minus-circle" />
         </a-button>
       </a-input-group>
