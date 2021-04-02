@@ -51,7 +51,13 @@
         <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
           <a-form layout="inline">
             <a-row :gutter="12">
-              <a-col v-for="item in searchList" :key="item.id" :span="6">
+              <a-col
+                v-for="item in searchList"
+                :key="item.id"
+                :span="6"
+                :md="8"
+                :sm="24"
+              >
                 <a-form-item :label="item.label">
                   <a-input
                     v-if="item.tag==='INPUT_TEXT'"
