@@ -52,7 +52,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :body-style="{padding: 0}">
+    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">登陆日志</div>

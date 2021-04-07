@@ -5,7 +5,7 @@
     :mask-closable="false"
     :body-style="{paddingBottom: '8px'}"
     :confirm-loading="submitLoading"
-    :width="680"
+    :width="650"
     @ok="handleSubmit"
     @cancel="handleClose"
   >

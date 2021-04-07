@@ -35,19 +35,17 @@
 
 .ant-pro-table-toolbar {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  height: 64px;
-  padding: 0 24px;
+  padding: 16px 0;
 }
 
 .ant-pro-table-toolbar-title {
-  flex: 1 1;
-  color: rgba(0, 0, 0, .85);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: rgba(0,0,0,.85);
   font-weight: 500;
   font-size: 16px;
-  line-height: 24px;
-  opacity: .85;
 }
 
 .ant-pro-table-toolbar-option {
@@ -56,7 +54,7 @@
   justify-content: flex-end;
 
   button {
-    margin-right: 8px;
+    margin-left: 8px;
   }
 }
 
@@ -76,19 +74,13 @@
   }
 }
 
-.ant-pro-table-wrapper {
-  .ant-table-thead > tr:first-child > th:first-child, .ant-table-tbody .ant-table-row > td:first-child {
-    padding-left: 24px !important;
-  }
-}
-
 .antd-pro-pages-form-advanced-form-style-card {
   margin-bottom: 18px !important;
 }
 
 .ant-pro-page-container-children-content {
   height: 100%;
-  margin: 16px 16px 0;
+  padding: 16px;
 }
 
 // 警告文本，多用于删除按钮

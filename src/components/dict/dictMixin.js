@@ -1,9 +1,9 @@
 export default {
   name: 'DictMixin',
   props: {
+    // eslint-disable-next-line vue/require-default-prop
     value: {
-      type: [String, Number, Boolean, Array],
-      default: null
+      type: [String, Number, Boolean, Array]
     },
     dictCode: {
       type: String,
