@@ -1,5 +1,5 @@
 <template>
-  <div class="page-header-index-wide">
+  <div class="ant-pro-page-container-children-content">
     <a-card :bordered="false" :body-style="{ padding: '16px 0', height: '100%' }" :style="{ height: '100%' }">
       <div class="account-settings-info-main" :class="device">
         <div class="account-settings-info-left">
@@ -11,27 +11,27 @@
             @openChange="onOpenChange"
           >
             <a-menu-item key="/account/settings/base">
-              <router-link :to="{ name: 'BaseSettings' }">
+              <router-link :to="{ name: 'AccountSettingsBase' }">
                 基本设置
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/security">
-              <router-link :to="{ name: 'SecuritySettings' }">
+              <router-link :to="{ name: 'AccountSettingsSecurity' }">
                 安全设置
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/custom">
-              <router-link :to="{ name: 'CustomSettings' }">
+              <router-link :to="{ name: 'AccountSettingsCustom' }">
                 个性化
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/binding">
-              <router-link :to="{ name: 'BindingSettings' }">
+              <router-link :to="{ name: 'AccountSettingsBinding' }">
                 账户绑定
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/notification">
-              <router-link :to="{ name: 'NotificationSettings' }">
+              <router-link :to="{ name: 'AccountSettingsNotification' }">
                 新消息通知
               </router-link>
             </a-menu-item>
@@ -41,7 +41,7 @@
           <div class="account-settings-info-title">
             <span>{{ $route.meta.title }}</span>
           </div>
-          <route-view />
+          <router-view />
         </div>
       </div>
     </a-card>

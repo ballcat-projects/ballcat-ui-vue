@@ -56,7 +56,7 @@ export default {
   },
   created () {
     this.initDefaultSort()
-    !this.lazyLoad && this.loadData()
+    !this.lazyLoad && this.reloadTable()
   },
   methods: {
 

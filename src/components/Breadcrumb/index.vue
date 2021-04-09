@@ -1,12 +1,14 @@
 <template>
   <a-breadcrumb :routes="routeList">
     <template #itemRender="{ route, routes }">
-      <span v-if="routes.indexOf(route) === routes.length - 1">
+      <template v-if="route.path === '' || route.path === '/'">
+        <router-link to="/">
+          <a-icon type="home" />
+        </router-link>
+      </template>
+      <span v-if="routes.indexOf(route) !== 0">
         {{ route.meta.title }}
       </span>
-      <router-link v-else :to="route.path">
-        {{ route.meta.title }}
-      </router-link>
     </template>
   </a-breadcrumb>
 </template>

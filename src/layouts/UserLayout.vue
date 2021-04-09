@@ -13,7 +13,7 @@
         </div>
       </div>
 
-      <route-view />
+      <router-view />
 
       <div class="footer">
         <div class="links">
@@ -30,12 +30,10 @@
 </template>
 
 <script>
-import RouteView from './RouteView'
 import { mixinDevice } from '@/utils/mixin'
 
 export default {
   name: 'UserLayout',
-  components: { RouteView },
   mixins: [mixinDevice],
   data () {
     return {}

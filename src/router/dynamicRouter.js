@@ -1,4 +1,4 @@
-import { getLoginUserRouter } from '@/api/sys/permission'
+import { getLoginUserMenu } from '@/api/sys/sysmenu'
 import { listToTree } from '@/utils/treeUtil'
 
 // 前端未找到页面路由（固定不用改）
@@ -18,25 +18,19 @@ const homeRouter = {
 
 /**
  * 动态生成菜单
- * @param token
  * @returns {Promise<Router>}
  */
 export const generatorDynamicRouter = () => {
   return new Promise((resolve, reject) => {
-    getLoginUserRouter().then(res => {
+    getLoginUserMenu().then(res => {
       const { data } = res
 
       // 后端数据, 根级树数组,  根级 PID
       const menuNav = listToTree(data, 0, (treeNode, item) => {
         treeNode.key = item.routerName
       })
-
-      const menuRouters = generator(menuNav)
-      homeRouter.children = menuRouters
-
-      // 默认根路径跳转地址
-      let defaultMenu = menuRouters.find(r => !r.hidden)
-      homeRouter.redirect = defaultMenu.name
+      homeRouter.children = generator(menuNav)
+      fillRedirect(homeRouter)
 
       const routers = []
       routers.push(homeRouter)
@@ -49,6 +43,8 @@ export const generatorDynamicRouter = () => {
   })
 }
 
+
+
 /**
  * 格式化树形结构数据 生成 vue-router 层级路由表
  *
@@ -58,24 +54,38 @@ export const generatorDynamicRouter = () => {
  */
 export const generator = (routerMap, parent) => {
   return routerMap.map(item => {
+    // 内容打开方式
+    const targetType = item.targetType
+    const path = `${parent && parent.path || ''}/${item.path}`
+
+    // 路由名称，由路由地址生成，大驼峰形式
+    const name = path.replace('-', '/').split('/').filter(x => x && x !== '').map(
+      x => x.replace(/^\S/, s => s.toUpperCase())
+    ).join('')
+
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
-      path: item.path || `${parent && parent.path || ''}/${item.key}`,
+      path: path,
       // 路由名称，建议唯一
-      name: item.name || item.key || '',
+      name: name,
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
-      meta: { title: item.title, icon: item.icon || undefined, target: item.target }
+      meta: { title: item.title, icon: item.icon || undefined, targetType: targetType }
     }
-    // 该路由对应页面的 组件 :方案1
-    // component: constantRouterComponents[item.component || item.key],
-    // 该路由对应页面的 组件 :方案2 (动态加载)
-    const component = item.component
-    if (component) {
-      // import 前面第一位必须是常量
-      if (component.indexOf('layouts/') !== -1) {
-        currentRouter.component = () => import(`@/layouts/${component.replace('layouts/', '')}`)
-      } else {
-        currentRouter.component = () => import(`@/views/${component}`)
+
+    // 目录类型组件固定使用 ContentView
+    if(item.type === 0){
+      currentRouter.component = () => import(`@/layouts/ContentView`)
+    }
+
+    // 菜单类型需要拼接组件地址
+    if(item.type === 1){
+      if(targetType === 1){
+        // 内置组件
+        item.uri && (currentRouter.component = () => import(`@/views/${item.uri}`))
+      }else if(targetType === 2){
+        // 内嵌iframe
+        currentRouter.meta.url = item.uri
+        currentRouter.component = () => import(`@/views/iframe`)
       }
     }
 
@@ -83,23 +93,23 @@ export const generator = (routerMap, parent) => {
     if (item.hidden === 1) {
       currentRouter.hidden = true
     }
-    // 是否设置了隐藏子菜单
-    if (item.hideChildren) {
-      currentRouter.hideChildrenInMenu = true
-    }
-    // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
-    if (!currentRouter.path.startsWith('http')) {
-      currentRouter.path = currentRouter.path.replace('//', '/')
-    }
-    // 重定向
-    item.redirect && (currentRouter.redirect = item.redirect)
+
     // 是否有子菜单，并递归处理
     if (item.children && item.children.length > 0) {
       // Recursion
       currentRouter.children = generator(item.children, currentRouter)
+      fillRedirect(currentRouter)
     }
     return currentRouter
   })
 }
 
-
+/**
+ * 设置当前路由的默认跳转地址为其子路由的path
+ * @param currentRouter
+ */
+function fillRedirect (currentRouter) {
+  const children = currentRouter.children
+  const redirectRouter = children.find(x => !x.hidden)
+  redirectRouter && (currentRouter.redirect = redirectRouter.path)
+}

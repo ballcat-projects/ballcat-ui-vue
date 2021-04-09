@@ -49,10 +49,9 @@
       <!--      <announcement-ribbon />-->
 
       <!-- layout content -->
-      <!--      <a-layout-content :style="{ height: '100%', margin: '18px 18px 0', paddingTop: fixedHeader ? '64px' : '0' }">-->
       <a-layout-content>
         <transition name="page-transition">
-          <route-view />
+          <router-view />
         </transition>
       </a-layout-content>
 
@@ -76,7 +75,6 @@ import { mapState, mapActions } from 'vuex'
 import { mixin, mixinDevice } from '@/utils/mixin'
 import config from '@/config/defaultSettings'
 
-import RouteView from './RouteView'
 import SideMenu from '@/components/Menu/SideMenu'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
@@ -85,7 +83,6 @@ import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
 export default {
   name: 'BasicLayout',
   components: {
-    RouteView,
     SideMenu,
     GlobalHeader,
     GlobalFooter,

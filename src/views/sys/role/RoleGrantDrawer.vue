@@ -44,7 +44,7 @@
   </a-drawer>
 </template>
 <script>
-import { getList } from '@/api/sys/permission'
+import { getList } from '@/api/sys/sysmenu'
 import { getPermissionCode, putPermissionIds } from '@/api/sys/role'
 import { listToTree } from '@/utils/treeUtil'
 

@@ -1,2 +1,7 @@
 import IconSelector from './IconSelector'
-export default IconSelector
+import IconSelectorModal from './IconSelectorModal'
+
+export {
+  IconSelector,
+  IconSelectorModal
+}

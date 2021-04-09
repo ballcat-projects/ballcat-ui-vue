@@ -16,7 +16,7 @@ export default {
       this.submitLoading = false
     },
     add(attributes) {
-      this.buildCreatedForm()
+      this.buildCreatedForm(attributes)
       this.show(attributes)
     },
     update(record, attributes) {

@@ -12,26 +12,26 @@
 </template>
 
 <script>
-import IconSelector from '@/components/IconSelector'
+import { IconSelector } from '@/components/IconSelector'
 
 export default {
-  name: 'IconSelectModal',
-  components: {IconSelector},
-  data() {
+  name: 'IconSelectorModal',
+  components: { IconSelector },
+  data () {
     return {
       visible: false,
       icon: ''
     }
   },
   methods: {
-    show() {
+    show () {
       this.visible = true
     },
-    handleOk(e) {
+    handleOk (e) {
       this.$emit('choose', this.icon)
       this.visible = false
     },
-    handleIconChange (icon){
+    handleIconChange (icon) {
       this.icon = icon
     }
   }
