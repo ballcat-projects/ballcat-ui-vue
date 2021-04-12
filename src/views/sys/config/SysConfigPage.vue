@@ -92,18 +92,19 @@ export default {
       columns: [
         {
           title: '#',
-          dataIndex: 'id'
+          dataIndex: 'id',
+          width: 50,
         },
         {
           title: '配置名称',
           dataIndex: 'name'
         },
         {
-          title: '缓存Key',
+          title: 'Key',
           dataIndex: 'confKey'
         },
         {
-          title: '配置值',
+          title: 'Value',
           dataIndex: 'confValue'
         },
         {
@@ -111,27 +112,27 @@ export default {
           dataIndex: 'category'
         },
         {
-          title: '备注',
+          title: '备注信息',
           dataIndex: 'description',
-          width: '150px',
+          width: 200,
           ellipsis: true
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '150px',
+          width: 150,
           sorter: true
         },
         {
           title: '更新时间',
           dataIndex: 'updateTime',
-          width: '150px',
+          width: 150,
           sorter: true
         },
         {
           title: '操作',
           align: 'center',
-          width: '150px',
+          width: 100,
           scopedSlots: { customRender: 'action-slot' }
         }
       ]
