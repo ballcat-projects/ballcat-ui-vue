@@ -106,36 +106,39 @@ export default {
 
       columns: [
         {
-          title: '#',
-          dataIndex: 'id'
-        },
-        {
           title: '标识',
-          dataIndex: 'code'
+          dataIndex: 'code',
+          width: 180,
+          ellipsis: true
         },
         {
           title: '标题',
-          dataIndex: 'title'
+          dataIndex: 'title',
+          width: 180,
+          ellipsis: true
         },
         {
           title: '属性',
           dataIndex: 'editable',
+          width: 60,
           scopedSlots: { customRender: 'type-slot' }
         },
         {
           title: '备注',
-          dataIndex: 'remarks'
+          dataIndex: 'remarks',
+          width: 250,
+          ellipsis: true
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '150px',
+          width: 150,
           sorter: true
         },
         {
           title: '操作',
           align: 'center',
-          width: '165px',
+          width: 160,
           scopedSlots: { customRender: 'action-slot' }
         }
       ],

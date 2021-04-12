@@ -117,46 +117,49 @@ export default {
 
       columns: [
         {
-          title: '#',
-          dataIndex: 'id'
-        },
-        {
           title: '角色名称',
           dataIndex: 'name',
-          sorter: true
+          sorter: true,
+          width: 150,
+          ellipsis: true
         },
         {
           title: '角色标识',
           dataIndex: 'code',
-          sorter: true
+          sorter: true,
+          width: 180,
+          ellipsis: true
         },
         {
           title: '类型',
           dataIndex: 'type',
           sorter: true,
+          width: 80,
           scopedSlots: { customRender: 'type-slot' }
         },
         {
           title: '备注',
           dataIndex: 'note',
-          sorter: true
+          sorter: true,
+          width: 150,
+          ellipsis: true
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '180px',
+          width: 150,
           sorter: true
         },
         {
           title: '更新时间',
           dataIndex: 'updateTime',
-          width: '180px',
+          width: 150,
           sorter: true
         },
         {
           title: '操作',
           align: 'center',
-          width: '200px',
+          width: 180,
           scopedSlots: { customRender: 'action-slot' }
         }
       ]

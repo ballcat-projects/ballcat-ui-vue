@@ -93,25 +93,27 @@ export default {
       columns: [
         {
           title: '组织机构层级',
-          dataIndex: 'name'
+          dataIndex: 'name',
         },
         {
           title: '排序',
-          dataIndex: 'sort'
+          dataIndex: 'sort',
         },
         {
           title: '描述信息',
-          dataIndex: 'description'
+          dataIndex: 'description',
+          width: 200,
+          ellipsis: true
         },
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '150px'
+          width: 150
         },
         {
           title: '操作',
           align: 'center',
-          width: '150px',
+          width: 120,
           scopedSlots: { customRender: 'action-slot' }
         }
       ]

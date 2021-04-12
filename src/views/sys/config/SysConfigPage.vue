@@ -91,11 +91,6 @@ export default {
 
       columns: [
         {
-          title: '#',
-          dataIndex: 'id',
-          width: 50,
-        },
-        {
           title: '配置名称',
           dataIndex: 'name'
         },
