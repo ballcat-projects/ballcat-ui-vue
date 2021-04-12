@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { LOV } from '@/store/mutation-types'
-import { check, getData } from '@/api/sys/lov'
+import { check, getData } from '@/api/system/lov'
 
 // 缓存过期时间
 const TTL = 7 * 24 * 60 * 60 * 1000

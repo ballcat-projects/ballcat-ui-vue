@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { DICT } from '@/store/mutation-types'
-import { getDictData, invalidDictHash } from '@/api/sys/sysdict'
+import { getDictData, invalidDictHash } from '@/api/system/dict'
 
 // 字典项hash列表的Key
 const DICT_HASH_KEY = 'dict-hashes'

@@ -124,8 +124,8 @@
 <script>
 import { PageFormMixin } from '@/mixins'
 import { addObj, putObj, uploadImage } from '@/api/notify/announcement'
-import { getSelectData } from '@/api/sys/role'
-import { getTree } from '@/api/sys/organization'
+import { getSelectData } from '@/api/system/role'
+import { getTree } from '@/api/system/organization'
 import WangEditor from '@/components/Editor/WangEditor'
 
 export default {

@@ -5,7 +5,7 @@ import Tree from '@/components/Tree/Tree'
 import Trend from '@/components/Trend'
 import MultiTab from '@/components/MultiTab'
 import Result from '@/components/Result'
-import IconSelector from '@/components/IconSelector'
+import {IconSelector} from '@/components/IconSelector'
 
 
 export {

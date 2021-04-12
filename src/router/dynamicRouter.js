@@ -1,4 +1,4 @@
-import { getLoginUserMenu } from '@/api/sys/sysmenu'
+import { getLoginUserMenu } from '@/api/system/menu'
 import { listToTree } from '@/utils/treeUtil'
 
 // 前端未找到页面路由（固定不用改）

@@ -49,13 +49,9 @@
 </template>
 
 <script>
-import { RouteView } from '@/layouts'
 import { mixinDevice } from '@/utils/mixin.js'
 
 export default {
-  components: {
-    RouteView
-  },
   mixins: [mixinDevice],
   data () {
     return {

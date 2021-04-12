@@ -61,7 +61,7 @@
       </a-layout-footer>
 
       <!-- Setting Drawer (show in development mode) -->
-      <!--      <setting-drawer v-if="!production"></setting-drawer>-->
+      <setting-drawer v-if="!production" />
     </a-layout>
 
     <!-- websocket -->
@@ -79,10 +79,12 @@ import SideMenu from '@/components/Menu/SideMenu'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
+import SettingDrawer from '@/components/SettingDrawer/SettingDrawer'
 
 export default {
   name: 'BasicLayout',
   components: {
+    SettingDrawer,
     SideMenu,
     GlobalHeader,
     GlobalFooter,
