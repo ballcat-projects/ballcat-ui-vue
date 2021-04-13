@@ -2,11 +2,11 @@
   <a-layout :class="['layout', device]">
     <!-- SideMenu -->
     <a-drawer
-      v-if="isMobile()"
+      v-if="isMobile"
       placement="left"
       :wrap-class-name="`drawer-sider ${navTheme}`"
       :closable="false"
-      :visible="collapsed"
+      :visible="sideMenuCollapsed"
       :width="208"
       @close="drawerClose"
     >
@@ -24,7 +24,7 @@
       mode="inline"
       :menus="menus"
       :theme="navTheme"
-      :collapsed="collapsed"
+      :collapsed="sideMenuCollapsed"
       :collapsible="true"
     />
 
@@ -37,11 +37,7 @@
         :mode="layoutMode"
         :menus="menus"
         :theme="navTheme"
-        :collapsed="collapsed"
-        :device="device"
-        @toggle="toggle"
       />
-
 
       <multi-tab v-if="multiTab" />
 
@@ -70,8 +66,7 @@
 </template>
 
 <script>
-import { triggerWindowResizeEvent } from '@/utils/util'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import { mixin, mixinDevice } from '@/utils/mixin'
 import config from '@/config/defaultSettings'
 
@@ -94,20 +89,20 @@ export default {
   data () {
     return {
       production: config.production,
-      collapsed: false,
       menus: []
     }
   },
   computed: {
+    ...mapGetters(['sideMenuCollapsed']),
     ...mapState({
       // 动态主路由
       mainMenu: state => state.userRouter.userRouters
     }),
     contentPaddingLeft () {
-      if (!this.fixSidebar || this.isMobile()) {
+      if (!this.fixSidebar || this.isMobile) {
         return '0'
       }
-      return this.collapsed ? '48px' : '208px'
+      return this.sideMenuCollapsed ? '48px' : '208px'
     }
   },
   created () {
@@ -117,36 +112,36 @@ export default {
     const userAgent = navigator.userAgent
     if (userAgent.indexOf('Edge') > -1) {
       this.$nextTick(() => {
-        this.collapsed = !this.collapsed
+        this.TOGGLE_SIDE_MENU_COLLAPSED();
         setTimeout(() => {
-          this.collapsed = !this.collapsed
+          this.TOGGLE_SIDE_MENU_COLLAPSED();
         }, 16)
       })
     }
   },
   methods: {
-    ...mapActions(['setSidebar']),
-    toggle () {
-      this.collapsed = !this.collapsed
-      this.setSidebar(!this.collapsed)
-      triggerWindowResizeEvent()
-    },
+    ...mapMutations(['TOGGLE_SIDE_MENU_COLLAPSED']),
+    // toggle () {
+    //   this.collapsed = !this.collapsed
+    //   this.setSidebar(!this.collapsed)
+    //   triggerWindowResizeEvent()
+    // },
     paddingCalc () {
       let left = ''
-      if (this.collapsed) {
-        left = (this.isMobile() && '0') || ((this.fixSidebar && '48px') || '0')
+      if (this.sideMenuCollapsed) {
+        left = (this.isMobile && '0') || ((this.fixSidebar && '48px') || '0')
       } else {
-        left = this.isDesktop() ? '208px' : '48px'
+        left = this.isDesktop ? '48px': '208px'
       }
       return left
     },
     menuSelect () {
-      if (!this.isDesktop()) {
-        this.collapsed = false
+      if (!this.isDesktop) {
+        this.TOGGLE_SIDE_MENU_COLLAPSED();
       }
     },
     drawerClose () {
-      this.collapsed = false
+      this.TOGGLE_SIDE_MENU_COLLAPSED();
     }
   }
 }

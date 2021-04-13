@@ -4,7 +4,6 @@
 @ballcat-header-height: 48px;
 
 body {
-
   &.colorWeak {
     filter: invert(80%);
   }
@@ -62,16 +61,6 @@ body {
     flex-direction: row;
   }
 
-  .trigger {
-    line-height: @ballcat-header-height;
-    padding: 0 12px;
-    cursor: pointer;
-    transition: color 0.3s;
-    &:hover {
-      background: rgba(0, 0, 0, 0.025);
-    }
-  }
-
   .topmenu {
     .ant-header-fixedHeader {
       position: fixed;
@@ -102,9 +91,6 @@ body {
             max-width: calc(100vw - 190px - 238px - 25px);
             flex: 1 1 calc(100vw - 190px - 238px - 25px);
           }
-        }
-        .header-index-right{
-          margin-right:25px;
         }
       }
 
@@ -146,35 +132,6 @@ body {
 
   .header,
   .top-nav-header-index {
-    .user-wrapper {
-      height: 100%;
-
-      .action {
-        cursor: pointer;
-        padding: 0 12px;
-        display: flex;
-        transition: all 0.3s;
-        height: 100%;
-        align-items: center;
-
-        &:hover {
-          background: rgba(0, 0, 0, 0.025);
-        }
-
-        .avatar {
-          margin: 20px 8px 20px 0;
-          color: #1890ff;
-          background: hsla(0, 0%, 100%, 0.85);
-          vertical-align: top;
-        }
-
-        .icon {
-          font-size: 16px;
-          padding: 4px;
-        }
-      }
-    }
-
     &.dark {
       .user-wrapper {
         .action {
@@ -250,9 +207,7 @@ body {
     transition: background 0.3s, width 0.2s;
 
     .header-index-wide {
-      max-width: 1200px;
-      margin: auto;
-      padding-left: 0;
+      padding: 0 16px;
       display: flex;
       height: @ballcat-header-height;
 
@@ -293,17 +248,6 @@ body {
             margin: 0 0 0 12px;
             font-weight: 400;
           }
-        }
-      }
-
-      .header-index-right {
-        flex: 0 0 238px;
-        align-self: flex-end;
-        height: @ballcat-header-height;
-        overflow: hidden;
-
-        .content-box {
-          float: right;
         }
       }
     }
@@ -442,27 +386,6 @@ body {
     .ant-menu-light {
       border-right-color: transparent;
     }
-  }
-}
-
-// 外置的样式控制
-.user-dropdown-menu {
-  span {
-    user-select: none;
-  }
-}
-.user-dropdown-menu-wrapper.ant-dropdown-menu {
-  padding: 4px 0;
-
-  .ant-dropdown-menu-item {
-    width: 160px;
-  }
-
-  .ant-dropdown-menu-item > .anticon:first-child,
-  .ant-dropdown-menu-item > a > .anticon:first-child,
-  .ant-dropdown-menu-submenu-title > .anticon:first-child .ant-dropdown-menu-submenu-title > a > .anticon:first-child {
-    min-width: 12px;
-    margin-right: 8px;
   }
 }
 

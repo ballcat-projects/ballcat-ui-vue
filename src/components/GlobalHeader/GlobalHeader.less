@@ -1,0 +1,115 @@
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
+.ballcat-global-header {
+
+  z-index: 105;
+
+  &-tool{
+
+    &-action {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 0 12px;
+      cursor: pointer;
+      transition: all .3s;
+      > span {
+        vertical-align: middle;
+      }
+      &:hover {
+        background: @pro-header-hover-bg;
+      }
+      &:global(.opened) {
+        background: @pro-header-hover-bg;
+      }
+    }
+
+    &-left {
+      display: flex;
+      height: 48px;
+      overflow: hidden;
+    }
+
+    &-right {
+      display: flex;
+      float: right;
+      height: 48px;
+      margin-left: auto;
+      overflow: hidden;
+    }
+
+
+    &-avatar-dropdown {
+      white-space: nowrap;
+
+      .avatar {
+        margin: 20px 8px 20px 0;
+        color: #1890ff;
+        vertical-align: top;
+        background: rgba(255, 255, 255, 0.85);
+        user-select: none;
+      }
+
+      &-menu {
+        .ant-dropdown-menu-item {
+          width: 160px;
+        }
+
+        .ant-dropdown-menu-item > .anticon:first-child,
+        .ant-dropdown-menu-item > a > .anticon:first-child,
+        .ant-dropdown-menu-submenu-title > .anticon:first-child .ant-dropdown-menu-submenu-title > a > .anticon:first-child {
+          min-width: 12px;
+          margin-right: 12px;
+        }
+      }
+    }
+
+  }
+}
+
+
+
+
+.ballcat-top-nav-header-logo {
+  position: relative;
+  min-width: 165px;
+  height: 100%;
+  overflow: hidden;
+  padding: 0 12px;
+
+  img {
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
+    border-style: none;
+  }
+  h1 {
+    display: inline-block;
+    margin: 0 0 0 12px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+    vertical-align: top;
+    overflow: hidden;
+    flex-shrink: 0;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+
+
+// 暗色主题时，背景颜色需要转换
+&.dark {
+  .ballcat-global-header-tool-action {
+    color: rgba(255, 255, 255, 0.85);
+    a {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.16);
+    }
+  }
+}

@@ -1,7 +1,7 @@
 <template>
   <a-dropdown>
-    <span class="action global-lang">
-      <a-icon type="global" style="font-size: 16px" />
+    <span style="font-size: 16px">
+      <a-icon type="global" />
     </span>
     <template #overlay>
       <a-menu style="width: 150px;" @click="SwitchLang">

@@ -219,7 +219,7 @@ export default {
     },
 
     handlePasswordInputClick () {
-      if (!this.isMobile()) {
+      if (!this.isMobile) {
         this.state.passwordLevelChecked = true
         return
       }

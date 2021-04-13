@@ -1,10 +1,10 @@
 <template>
   <!-- eslint-disable vue/no-mutating-props-->
   <a-layout-sider
-    v-model="collapsed"
-    :class="['sider', isDesktop() ? null : 'shadow', theme, fixSiderbar ? 'ant-fixed-sidemenu' : null ]"
+    :class="['sider', isDesktop ? null : 'shadow', theme, fixSiderbar ? 'ant-fixed-sidemenu' : null ]"
     width="208px"
-    :collapsible="collapsible"
+    :collapsed="collapsed"
+    :collapsible="true"
     :style="style"
     :trigger="null"
   >
@@ -12,7 +12,7 @@
     <div class="logo">
       <router-link :to="{name:'/'}">
         <img src="@/assets/logo.svg" alt="logo">
-        <h1 v-if="isMobile() || !collapsed">Ball Cat</h1>
+        <h1 v-if="!collapsed">Ball Cat</h1>
       </router-link>
     </div>
     <s-menu
@@ -29,6 +29,7 @@
 <script>
 import SMenu from './index'
 import { mixin, mixinDevice } from '@/utils/mixin'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SideMenu',
@@ -45,24 +46,18 @@ export default {
       required: false,
       default: 'dark'
     },
-    collapsible: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    collapsed: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
     menus: {
       type: Array,
       required: true
     }
   },
   computed: {
+    ...mapGetters(['sideMenuCollapsed']),
+    collapsed() {
+      return  this.isMobile? !this.sideMenuCollapsed: this.sideMenuCollapsed
+    },
     style(){
-      const width = this.collapsed ? '48px': '208px'
+      const width = this.collapsed ?  '48px': '208px'
       return {
         overflow: 'hidden',
         flex: '0 0 ' + width,

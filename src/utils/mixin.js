@@ -35,9 +35,7 @@ const mixinDevice = {
   computed: {
     ...mapState({
       device: state => state.app.device
-    })
-  },
-  methods: {
+    }),
     isMobile () {
       return this.device === DEVICE_TYPE.MOBILE
     },

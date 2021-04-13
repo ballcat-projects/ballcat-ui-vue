@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import Breadcrumb from '@/components/tools/Breadcrumb'
+import Breadcrumb from '@/components/tools/GlobalHeaderBreadcrumb'
 
 export default {
   name: 'PageHeader',

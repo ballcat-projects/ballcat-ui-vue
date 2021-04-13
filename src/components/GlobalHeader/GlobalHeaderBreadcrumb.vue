@@ -1,5 +1,5 @@
 <template>
-  <a-breadcrumb :routes="routeList">
+  <a-breadcrumb :routes="routeList" style="white-space:nowrap">
     <template #itemRender="{ route, routes }">
       <template v-if="route.path === '' || route.path === '/'">
         <router-link to="/">

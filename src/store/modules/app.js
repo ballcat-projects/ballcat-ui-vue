@@ -15,6 +15,7 @@ import {
 const app = {
   state: {
     sidebar: true,
+    sideMenuCollapsed: false,
     device: 'desktop',
     theme: '',
     layout: '',
@@ -24,9 +25,15 @@ const app = {
     autoHideHeader: false,
     color: null,
     weak: false,
-    multiTab: true
+    multiTab: true,
+  },
+  getters: {
+    sideMenuCollapsed: state => state.sideMenuCollapsed,
   },
   mutations: {
+    TOGGLE_SIDE_MENU_COLLAPSED: (state) => {
+      state.sideMenuCollapsed = !state.sideMenuCollapsed
+    },
     SET_SIDEBAR_TYPE: (state, type) => {
       state.sidebar = type
       Vue.ls.set(SIDEBAR_TYPE, type)

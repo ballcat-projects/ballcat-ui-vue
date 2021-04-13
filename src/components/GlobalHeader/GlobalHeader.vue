@@ -1,41 +1,34 @@
 <template>
   <transition name="showHeader">
-    <div v-if="visible" class="header-animat">
+    <div v-if="visible" class="ballcat-global-header">
       <a-layout-header
         v-if="visible"
         :class="[fixedHeader && 'ant-header-fixedHeader', sidebarOpened ? 'ant-header-side-opened' : 'ant-header-side-closed', ]"
         :style="{ padding: '0'}"
       >
         <div v-if="mode === 'sidemenu'" class="header">
-          <span class="trigger" @click="toggle">
-            <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);" />
-          </span>
-          <span class="trigger" @click="refreshContent">
-            <a-icon type="reload" />
-          </span>
-          <breadcrumb v-if="device !== 'mobile'" style="padding-left: 12px" />
-          <div style="flex: 1 1 0%;" />
-          <user-menu />
+          <global-header-tool-left />
+          <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
+          <div style="flex: 1 1 0" />
+          <global-header-tool-right />
         </div>
         <div v-else :class="['top-nav-header-index', theme]">
           <div class="header-index-wide">
             <div class="header-index-left">
-              <img class="top-nav-header" src="@/assets/logo.svg" alt="logo">
-              <s-menu
-                v-if="device !== 'mobile'"
-                mode="horizontal"
-                :menu="menus"
-                :theme="theme"
-              />
-              <a-icon
-                v-else
-                class="trigger"
-                :type="collapsedButtonIconType"
-                style="transform: scale(1.15);"
-                @click="toggle"
-              />
+              <template v-if="!isMobile">
+                <div class="ballcat-top-nav-header-logo">
+                  <img src="@/assets/logo.svg" alt="logo">
+                  <h1>Ball Cat</h1>
+                </div>
+                <s-menu
+                  mode="horizontal"
+                  :menu="menus"
+                  :theme="theme"
+                />
+              </template>
+              <global-header-tool-left v-else />
             </div>
-            <user-menu class="header-index-right" />
+            <global-header-tool-right />
           </div>
         </div>
       </a-layout-header>
@@ -44,19 +37,21 @@
 </template>
 
 <script>
-import UserMenu from '../tools/UserMenu'
 import SMenu from '../Menu/'
-import Breadcrumb from '@/components/Breadcrumb'
-import { mixin } from '@/utils/mixin'
+import GlobalHeaderBreadcrumb from '@/components/GlobalHeader/GlobalHeaderBreadcrumb'
+import GlobalHeaderToolLeft from '@/components/GlobalHeader/GlobalHeaderToolLeft'
+import GlobalHeaderToolRight from '@/components/GlobalHeader/GlobalHeaderToolRight'
+import { mixin, mixinDevice } from '@/utils/mixin'
 
 export default {
   name: 'GlobalHeader',
   components: {
-    UserMenu,
+    GlobalHeaderToolRight,
+    GlobalHeaderToolLeft,
     SMenu,
-    Breadcrumb
+    GlobalHeaderBreadcrumb
   },
-  mixins: [mixin],
+  mixins: [mixin, mixinDevice],
   props: {
     mode: {
       type: String,
@@ -71,33 +66,12 @@ export default {
       type: String,
       required: false,
       default: 'dark'
-    },
-    collapsed: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    device: {
-      type: String,
-      required: false,
-      default: 'desktop'
     }
   },
   data () {
     return {
       visible: true,
       oldScrollTop: 0
-    }
-  },
-  computed: {
-    collapsedButtonIconType () {
-      const isMobile = this.device === 'mobile'
-      const collapsed = this.collapsed
-      if ((collapsed && isMobile) || (!collapsed && !isMobile)) {
-        return 'menu-fold'
-      } else {
-        return 'menu-unfold'
-      }
     }
   },
   mounted () {
@@ -127,24 +101,13 @@ export default {
           this.ticking = false
         })
       }
-    },
-    toggle () {
-      this.$emit('toggle')
-    },
-    refreshContent () {
-      this.$bus.$emit('refresh-content')
     }
   }
 }
 </script>
 
 <style lang="less">
-@import url('~@/styles/index.less');
-
-.header-animat {
-  position: relative;
-  z-index: @ant-global-header-zindex;
-}
+@import url('./GlobalHeader');
 
 .showHeader-enter-active {
   transition: all 0.25s ease;
@@ -157,6 +120,4 @@ export default {
 .showHeader-enter, .showHeader-leave-to {
   opacity: 0;
 }
-
-
 </style>
