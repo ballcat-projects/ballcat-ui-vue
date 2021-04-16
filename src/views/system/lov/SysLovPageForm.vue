@@ -38,7 +38,7 @@
           style="margin-left: 8px"
           type="primary"
           :loading="submitLoading"
-          @click="submitClick"
+          @click="handleSubmit"
         >提交</a-button>
         <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
       </div>
@@ -49,7 +49,6 @@
 <script>
 import { PageFormMixin } from '@/mixins'
 import { create, getData, update } from '@/api/system/lov'
-import { mixin, mixinDevice } from '@/utils/mixin'
 import FormBasic from '@/views/system/lov/FormBasic'
 import FormBody from '@/views/system/lov/FormBody'
 import FormSearch from '@/views/system/lov/FormSearch'
@@ -59,7 +58,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'SysLovFormPage',
   components: { FormBasic, FormBody, FormSearch, FooterToolBar },
-  mixins: [mixin, mixinDevice, PageFormMixin],
+  mixins: [PageFormMixin],
   data () {
     return {
       dictCodes: ['lov_http_method', 'tf', 'lov_http_params_position', 'lov_ret_data_type', 'lov_search_tag'],
@@ -95,11 +94,6 @@ export default {
         }
         this.submitLoading = false
       })
-    },
-    submitClick(){
-      // 提交按钮单击事件
-      console.log(this.$refs.refForm)
-      this.$refs.refForm.onSubmit()
     },
     echoDataProcess (data) {
       this.submitLoading = true
