@@ -35,10 +35,9 @@
             </div>
           </div>
         </div>
+        <!-- 固定头部时进行 占位使用 -->
+        <div v-if="fixedHeader" style="visibility:hidden;" class="header" />
       </a-layout-header>
-
-      <!-- 固定头部时进行 占位使用 -->
-      <div v-if="fixedHeader" style="visibility:hidden;" class="header" />
     </div>
   </transition>
 </template>
