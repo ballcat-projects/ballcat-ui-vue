@@ -1,0 +1,23 @@
+<template>
+  <div class="project-logo">
+    <router-link :to="{name:'/'}">
+      <img src="@/assets/logo.svg" alt="logo">
+      <h1 v-if="!sidebarCollapsed || layout === 'top'">Ball Cat</h1>
+    </router-link>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'Logo',
+  computed: {
+    ...mapGetters(['sidebarCollapsed', 'layout'])
+  }
+}
+</script>
+
+<style scoped lang="less">
+@import "ProjectLogo.less";
+</style>

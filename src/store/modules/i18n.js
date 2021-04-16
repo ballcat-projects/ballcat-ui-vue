@@ -9,6 +9,9 @@ const i18n = {
       state.lang = lang
     }
   },
+  getters: {
+    lang: state => state.lang
+  },
   actions: {
     // 设置界面语言
     SetLang ({ commit }, lang) {

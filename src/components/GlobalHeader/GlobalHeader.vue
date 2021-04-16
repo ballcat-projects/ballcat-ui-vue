@@ -1,37 +1,37 @@
 <template>
   <transition name="showHeader">
-    <div v-if="visible" class="ballcat-global-header">
-      <a-layout-header
-        v-if="visible"
-        :class="[fixedHeader && 'ant-header-fixedHeader', sidebarOpened ? 'ant-header-side-opened' : 'ant-header-side-closed', ]"
-        :style="{ padding: '0'}"
+    <div class="ballcat-global-header">
+      <div
+        :class="[
+          fixedHeader && 'ant-header-fixedHeader',
+          isSideMenu ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
+        ]"
       >
-        <div v-if="mode === 'sidemenu'" class="header">
-          <global-header-tool-left />
-          <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
-          <div style="flex: 1 1 0" />
-          <global-header-tool-right />
-        </div>
-        <div v-else :class="['top-nav-header-index', theme]">
-          <div class="header-index-wide">
-            <div class="header-index-left">
-              <template v-if="!isMobile">
-                <div class="ballcat-top-nav-header-logo">
-                  <img src="@/assets/logo.svg" alt="logo">
-                  <h1>Ball Cat</h1>
-                </div>
-                <s-menu
-                  mode="horizontal"
-                  :menu="menus"
-                  :theme="theme"
-                />
-              </template>
-              <global-header-tool-left v-else />
-            </div>
+        <a-layout-header :style="{ padding: '0'}">
+          <div v-if="mode === 'side'" class="header">
+            <global-header-tool-left />
+            <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
+            <div style="flex: 1 1 0" />
             <global-header-tool-right />
           </div>
-        </div>
-      </a-layout-header>
+          <div v-else :class="['top-nav-header-index', theme]">
+            <div class="header-index-wide">
+              <global-header-tool-left v-if="isMobile" style="flex: 1 1 0" />
+              <template v-else>
+                <div class="header-index-left">
+                  <project-logo class="ballcat-top-nav-header-logo" />
+                </div>
+                <s-menu mode="horizontal" :menu="menus" :theme="theme" />
+                <div style="flex: 1 1 0" />
+              </template>
+              <global-header-tool-right />
+            </div>
+          </div>
+        </a-layout-header>
+      </div>
+
+      <!-- 固定头部时进行 占位使用 -->
+      <div v-if="fixedHeader" style="visibility:hidden;" class="header" />
     </div>
   </transition>
 </template>
@@ -41,11 +41,14 @@ import SMenu from '../Menu/'
 import GlobalHeaderBreadcrumb from '@/components/GlobalHeader/GlobalHeaderBreadcrumb'
 import GlobalHeaderToolLeft from '@/components/GlobalHeader/GlobalHeaderToolLeft'
 import GlobalHeaderToolRight from '@/components/GlobalHeader/GlobalHeaderToolRight'
+import ProjectLogo from '@/components/ProjectLogo'
 import { mixin, mixinDevice } from '@/utils/mixin'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'GlobalHeader',
   components: {
+    ProjectLogo,
     GlobalHeaderToolRight,
     GlobalHeaderToolLeft,
     SMenu,
@@ -55,8 +58,8 @@ export default {
   props: {
     mode: {
       type: String,
-      // sidemenu, topmenu
-      default: 'sidemenu'
+      // side, top
+      default: 'side'
     },
     menus: {
       type: Array,
@@ -68,40 +71,8 @@ export default {
       default: 'dark'
     }
   },
-  data () {
-    return {
-      visible: true,
-      oldScrollTop: 0
-    }
-  },
-  mounted () {
-    document.addEventListener('scroll', this.handleScroll, { passive: true })
-  },
-  beforeDestroy () {
-    document.body.removeEventListener('scroll', this.handleScroll, true)
-  },
-  methods: {
-    handleScroll () {
-      if (!this.autoHideHeader) {
-        return
-      }
-
-      const scrollTop = document.body.scrollTop + document.documentElement.scrollTop
-      if (!this.ticking) {
-        this.ticking = true
-        requestAnimationFrame(() => {
-          if (this.oldScrollTop > scrollTop) {
-            this.visible = true
-          } else if (scrollTop > 300 && this.visible) {
-            this.visible = false
-          } else if (scrollTop < 300 && !this.visible) {
-            this.visible = true
-          }
-          this.oldScrollTop = scrollTop
-          this.ticking = false
-        })
-      }
-    }
+  computed: {
+    ...mapGetters(['sidebarCollapsed', 'isSideMenu'])
   }
 }
 </script>

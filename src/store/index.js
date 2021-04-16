@@ -1,33 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import app from './modules/app'
-import user from './modules/user'
-import i18n from './modules/i18n'
-import userRouter from './modules/user-router'
-import dict from './modules/dict'
-import getters from './getters'
-import lovModule from './modules/lov'
+// https://webpack.js.org/guides/dependency-management/#requirecontext
+const modulesFiles = require.context('./modules', true, /\.js$/)
+
+// you do not need `import app from './modules/app'`
+// it will auto require all vuex module from modules file
+const modules = {}
+modulesFiles.keys().forEach(key => {
+  let moduleName = key.replace(/(\.\/|\.js)/g, '');
+  modules[moduleName] = modulesFiles(key).default
+})
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    app,
-    user,
-    i18n,
-    dict,
-    userRouter,
-    lovModule
-  },
-  state: {
-
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  },
-  getters
+  modules: modules
 })

@@ -18,7 +18,7 @@
               <template slot="title">
                 暗色菜单风格
               </template>
-              <div class="setting-drawer-index-item" @click="handleMenuTheme('dark')">
+              <div class="setting-drawer-index-item" @click="handleNavTheme('dark')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg" alt="dark">
                 <div v-if="navTheme === 'dark'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
@@ -30,7 +30,7 @@
               <template slot="title">
                 亮色菜单风格
               </template>
-              <div class="setting-drawer-index-item" @click="handleMenuTheme('light')">
+              <div class="setting-drawer-index-item" @click="handleNavTheme('light')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg" alt="light">
                 <div v-if="navTheme !== 'dark'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
@@ -65,9 +65,9 @@
               <template slot="title">
                 侧边栏导航
               </template>
-              <div class="setting-drawer-index-item" @click="handleLayout('sidemenu')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" alt="sidemenu">
-                <div v-if="layoutMode === 'sidemenu'" class="setting-drawer-index-selectIcon">
+              <div class="setting-drawer-index-item" @click="handleLayout('side')">
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" alt="side">
+                <div v-if="layout === 'side'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
               </div>
@@ -77,9 +77,9 @@
               <template slot="title">
                 顶部栏导航
               </template>
-              <div class="setting-drawer-index-item" @click="handleLayout('topmenu')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="topmenu">
-                <div v-if="layoutMode !== 'sidemenu'" class="setting-drawer-index-selectIcon">
+              <div class="setting-drawer-index-item" @click="handleLayout('top')">
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="top">
+                <div v-if="layout === 'top'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
               </div>
@@ -88,20 +88,16 @@
           <div :style="{ marginTop: '24px' }">
             <a-list :split="false">
               <a-list-item>
-                <a-tooltip slot="actions">
-                  <template slot="title">
-                    该设定仅 [顶部栏导航] 时有效
-                  </template>
-                  <a-select
-                    size="small"
-                    style="width: 80px;"
-                    :default-value="contentWidth"
-                    @change="handleContentWidthChange"
-                  >
-                    <a-select-option value="Fixed">固定</a-select-option>
-                    <a-select-option v-if="layoutMode !== 'sidemenu'" value="Fluid">流式</a-select-option>
-                  </a-select>
-                </a-tooltip>
+                <a-select
+                  slot="actions"
+                  size="small"
+                  style="width: 80px;"
+                  :default-value="contentWidth"
+                  @change="handleContentWidthChange"
+                >
+                  <a-select-option v-if="layout === 'top'" value="Fixed">定宽</a-select-option>
+                  <a-select-option value="Fluid">流式</a-select-option>
+                </a-select>
                 <a-list-item-meta>
                   <div slot="title">内容区域宽度</div>
                 </a-list-item-meta>
@@ -121,27 +117,12 @@
                 <a-switch
                   slot="actions"
                   size="small"
-                  :disabled="!fixedHeader"
-                  :default-checked="autoHideHeader"
-                  @change="handleFixedHeaderHidden"
-                />
-                <a-list-item-meta>
-                  <a-tooltip slot="title" placement="left">
-                    <template slot="title">固定 Header 时可配置</template>
-                    <div :style="{ opacity: !fixedHeader ? '0.5' : '1' }">下滑时隐藏 Header</div>
-                  </a-tooltip>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-switch
-                  slot="actions"
-                  size="small"
-                  :disabled="(layoutMode === 'topmenu')"
+                  :disabled="(layout === 'top')"
                   :default-checked="fixSiderbar"
                   @change="handleFixSiderbar"
                 />
                 <a-list-item-meta>
-                  <div slot="title" :style="{ textDecoration: layoutMode === 'topmenu' ? 'line-through' : 'unset' }">固定侧边菜单</div>
+                  <div slot="title" :style="{ opacity: layout === 'top' ? 0.5: null }">固定侧边菜单</div>
                 </a-list-item-meta>
               </a-list-item>
             </a-list>
@@ -193,7 +174,12 @@
           </a-alert>
         </div>
       </div>
-      <div slot="handle" class="setting-drawer-index-handle" @click="toggle">
+      <div
+        v-if="showHandle"
+        slot="handle"
+        class="setting-drawer-index-handle"
+        @click="toggle"
+      >
         <a-icon v-if="!visible" type="setting" />
         <a-icon v-else type="close" />
       </div>
@@ -202,28 +188,34 @@
 </template>
 
 <script>
-import config from '@/config/defaultSettings'
+import { appDefaultSetting } from '@/config/defaultSettings'
 import { updateTheme, updateColorWeak, colorList } from './settingConfig'
 import { mixin, mixinDevice } from '@/utils/mixin'
+import { mapMutations } from 'vuex'
+import { APP_MUTATIONS } from '@/store/mutation-types'
 
 export default {
   mixins: [mixin, mixinDevice],
+  props: {
+    showHandle: {
+      type: Boolean,
+      default: true
+    }
+  },
   data () {
     return {
       visible: false,
       colorList
     }
   },
-  watch: {
-
-  },
   mounted () {
     updateTheme(this.primaryColor)
-    if (this.colorWeak !== config.colorWeak) {
+    if (this.colorWeak !== appDefaultSetting.colorWeak) {
       updateColorWeak(this.colorWeak)
     }
   },
   methods: {
+    ...mapMutations(Object.keys(APP_MUTATIONS)),
     showDrawer () {
       this.visible = true
     },
@@ -233,36 +225,47 @@ export default {
     toggle () {
       this.visible = !this.visible
     },
-    onColorWeak (checked) {
-      this.$store.dispatch('ToggleWeak', checked)
-      updateColorWeak(checked)
+    handleNavTheme (navTheme) {
+      this[APP_MUTATIONS.TOGGLE_NAV_THEME](navTheme)
     },
-    onMultiTab (checked) {
-      this.$store.dispatch('ToggleMultiTab', checked)
+    changeColor (color) {
+      if (this.primaryColor !== color) {
+        this[APP_MUTATIONS.TOGGLE_PRIMARY_COLOR](color)
+        updateTheme(color)
+      }
     },
-    handleMenuTheme (theme) {
-      this.$store.dispatch('ToggleTheme', theme)
+    handleLayout (layout) {
+      this[APP_MUTATIONS.TOGGLE_LAYOUT](layout)
     },
+    handleContentWidthChange (contentWidthType) {
+      this[APP_MUTATIONS.TOGGLE_CONTENT_WIDTH](contentWidthType)
+    },
+    handleFixedHeader (fixed) {
+      this[APP_MUTATIONS.TOGGLE_FIXED_HEADER](fixed)
+    },
+    handleFixSiderbar (fixed) {
+      this[APP_MUTATIONS.TOGGLE_FIXED_SIDERBAR](fixed)
+    },
+    onColorWeak (colorWeak) {
+      this[APP_MUTATIONS.TOGGLE_COLOR_WEAK](colorWeak)
+      updateColorWeak(colorWeak)
+    },
+    onMultiTab (multiTabOpened) {
+      this[APP_MUTATIONS.TOGGLE_MULTI_TAB](multiTabOpened)
+    },
+
     doCopy () {
       // get current settings from mixin or this.$store.state.app, pay attention to the property name
       const text = `export default {
-  primaryColor: '${this.primaryColor}', // primary color of ant design
-  navTheme: '${this.navTheme}', // theme for nav menu
-  layout: '${this.layoutMode}', // nav menu position: sidemenu or topmenu
-  contentWidth: '${this.contentWidth}', // layout of content: Fluid or Fixed, only works when layout is topmenu
-  fixedHeader: ${this.fixedHeader}, // sticky header
-  fixSiderbar: ${this.fixSiderbar}, // sticky siderbar
-  autoHideHeader: ${this.autoHideHeader}, //  auto hide header
-  colorWeak: ${this.colorWeak},
-  multiTab: ${this.multiTab},
-  production: process.env.NODE_ENV === 'production',
-  // vue-ls options
-  storageOptions: {
-    namespace: 'ballcat__',
-    name: 'ls',
-    storage: 'local',
-  }
-}`
+        primaryColor: '${this.primaryColor}', // primary color of ant design
+        navTheme: '${this.navTheme}', // theme for nav menu
+        layout: '${this.layout}', // nav menu position: side or top or mix
+        contentWidth: '${this.contentWidth}', // layout of content: Fluid or Fixed, Does not work in side modes
+        fixedHeader: ${this.fixedHeader}, // sticky header
+        fixSiderbar: ${this.fixSiderbar}, // sticky siderbar
+        colorWeak: ${this.colorWeak},
+        multiTab: ${this.multiTab}
+      }`
       this.$copyText(text).then(message => {
         console.log('copy', message)
         this.$message.success('复制完毕')
@@ -271,33 +274,6 @@ export default {
         this.$message.error('复制失败')
       })
     },
-    handleLayout (mode) {
-      this.$store.dispatch('ToggleLayoutMode', mode)
-      // 因为顶部菜单不能固定左侧菜单栏，所以强制关闭
-      this.handleFixSiderbar(false)
-    },
-    handleContentWidthChange (type) {
-      this.$store.dispatch('ToggleContentWidth', type)
-    },
-    changeColor (color) {
-      if (this.primaryColor !== color) {
-        this.$store.dispatch('ToggleColor', color)
-        updateTheme(color)
-      }
-    },
-    handleFixedHeader (fixed) {
-      this.$store.dispatch('ToggleFixedHeader', fixed)
-    },
-    handleFixedHeaderHidden (autoHidden) {
-      this.$store.dispatch('ToggleFixedHeaderHidden', autoHidden)
-    },
-    handleFixSiderbar (fixed) {
-      if (this.layoutMode === 'topmenu') {
-        this.$store.dispatch('ToggleFixSiderbar', false)
-        return
-      }
-      this.$store.dispatch('ToggleFixSiderbar', fixed)
-    }
   }
 }
 </script>

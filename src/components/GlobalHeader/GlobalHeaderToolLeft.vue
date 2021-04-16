@@ -10,30 +10,25 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex'
-import { triggerWindowResizeEvent } from '@/utils/util'
+import { mapGetters, mapMutations } from 'vuex'
+import { APP_MUTATIONS } from '@/store/mutation-types'
 
 export default {
   name: 'GlobalHeaderToolLeft',
   computed: {
-    ...mapGetters(['sideMenuCollapsed', 'device']),
+    ...mapGetters(['sidebarCollapsed', 'device']),
     collapsedButtonIconType () {
-      const isMobile = this.device === 'mobile'
-      const collapsed = this.sideMenuCollapsed
-      if ((collapsed && isMobile) || (!collapsed && !isMobile)) {
-        return 'menu-fold'
-      } else {
+      if (this.sidebarCollapsed) {
         return 'menu-unfold'
+      } else {
+        return 'menu-fold'
       }
     }
   },
   methods: {
-    ...mapActions(['setSidebar']),
-    ...mapMutations(['TOGGLE_SIDE_MENU_COLLAPSED']),
+    ...mapMutations([APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]),
     toggle(){
-      this.TOGGLE_SIDE_MENU_COLLAPSED()
-      this.setSidebar(!this.sideMenuCollapsed)
-      triggerWindowResizeEvent()
+      this[APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED](!this.sidebarCollapsed)
     },
     refreshContent () {
       this.$bus.$emit('refresh-content')

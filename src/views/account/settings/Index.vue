@@ -4,8 +4,8 @@
       <div class="account-settings-info-main" :class="device">
         <div class="account-settings-info-left">
           <a-menu
-            :mode="device == 'mobile' ? 'horizontal' : 'inline'"
-            :style="{ border: '0', width: device == 'mobile' ? '560px' : 'auto'}"
+            :mode="device === 'mobile' ? 'horizontal' : 'inline'"
+            :style="{ border: '0', width: device === 'mobile' ? '560px' : 'auto'}"
             :selected-keys="selectedKeys"
             type="inner"
             @openChange="onOpenChange"
@@ -18,11 +18,6 @@
             <a-menu-item key="/account/settings/security">
               <router-link :to="{ name: 'AccountSettingsSecurity' }">
                 安全设置
-              </router-link>
-            </a-menu-item>
-            <a-menu-item key="/account/settings/custom">
-              <router-link :to="{ name: 'AccountSettingsCustom' }">
-                个性化
               </router-link>
             </a-menu-item>
             <a-menu-item key="/account/settings/binding">

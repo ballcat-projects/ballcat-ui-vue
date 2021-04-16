@@ -1,129 +1,120 @@
 import Vue from 'vue'
-import {
-  SIDEBAR_TYPE,
-  DEFAULT_THEME,
-  DEFAULT_LAYOUT_MODE,
-  DEFAULT_COLOR,
-  DEFAULT_COLOR_WEAK,
-  DEFAULT_FIXED_HEADER,
-  DEFAULT_FIXED_SIDE_MENU,
-  DEFAULT_FIXED_HEADER_HIDDEN,
-  DEFAULT_CONTENT_WIDTH_TYPE,
-  DEFAULT_MULTI_TAB
-} from '@/store/storage-types'
+import { SETTINGS_LS } from '@/store/storage-types'
+import { APP_MUTATIONS } from '@/store/mutation-types'
+import { DEVICE_TYPE } from '@/utils/device'
+
+
+const SIDEBAR_TYPE = {
+  NONE: 'None',
+  SIDE_MENU: 'SideMenu',
+  DRAWER_MENU: 'DrawerMenu'
+}
 
 const app = {
   state: {
-    sidebar: true,
-    sideMenuCollapsed: false,
-    device: 'desktop',
-    theme: '',
-    layout: '',
-    contentWidth: '',
+    // 设置相关
+    navTheme: '',
+    layout: 'side',
+    contentWidth: 'Fluid',
     fixedHeader: false,
     fixSiderbar: false,
-    autoHideHeader: false,
-    color: null,
-    weak: false,
+    primaryColor: null,
+    colorWeak: false,
     multiTab: true,
+    // 设备类型
+    device: DEVICE_TYPE.DESKTOP,
+    // 侧边栏状态
+    sidebarType: SIDEBAR_TYPE.SIDE_MENU,
+    sidebarCollapsed: false,
   },
   getters: {
-    sideMenuCollapsed: state => state.sideMenuCollapsed,
+    // 设置相关
+    navTheme: state => state.navTheme,
+    layout: state => state.layout,
+    contentWidth: state => state.contentWidth,
+    fixedHeader: state => state.fixedHeader,
+    fixSiderbar: state => state.fixSiderbar,
+    primaryColor: state => state.primaryColor,
+    colorWeak: state => state.colorWeak,
+    multiTab: state => state.multiTab,
+    // 设置类型
+    device: state => state.device,
+    // 侧边栏状态
+    isDrawerMenu: state => state.sidebarType === SIDEBAR_TYPE.DRAWER_MENU,
+    isSideMenu: state => state.sidebarType === SIDEBAR_TYPE.SIDE_MENU,
+    sidebarCollapsed: state => state.sidebarCollapsed
   },
   mutations: {
-    TOGGLE_SIDE_MENU_COLLAPSED: (state) => {
-      state.sideMenuCollapsed = !state.sideMenuCollapsed
+    // 整体风格设置
+    [APP_MUTATIONS.TOGGLE_NAV_THEME]: (state, navTheme) => {
+      Vue.ls.set(SETTINGS_LS.NAV_THEME, navTheme)
+      state.navTheme = navTheme
     },
-    SET_SIDEBAR_TYPE: (state, type) => {
-      state.sidebar = type
-      Vue.ls.set(SIDEBAR_TYPE, type)
+    // 主题色设置
+    [APP_MUTATIONS.TOGGLE_PRIMARY_COLOR]: (state, primaryColor) => {
+      Vue.ls.set(SETTINGS_LS.PRIMARY_COLOR, primaryColor)
+      state.primaryColor = primaryColor
     },
-    CLOSE_SIDEBAR: (state) => {
-      Vue.ls.set(SIDEBAR_TYPE, true)
-      state.sidebar = false
-    },
-    TOGGLE_DEVICE: (state, device) => {
-      state.device = device
-    },
-    TOGGLE_THEME: (state, theme) => {
-      // setStore('_DEFAULT_THEME', theme)
-      Vue.ls.set(DEFAULT_THEME, theme)
-      state.theme = theme
-    },
-    TOGGLE_LAYOUT_MODE: (state, layout) => {
-      Vue.ls.set(DEFAULT_LAYOUT_MODE, layout)
+    // 导航模式
+    [APP_MUTATIONS.TOGGLE_LAYOUT]: (state, layout) => {
+      // 若导航类型不是顶部，则默认内容宽度使用流式
+      if (layout !== 'top') {
+        Vue.ls.set(SETTINGS_LS.CONTENT_WIDTH_TYPE, 'Fluid')
+        state.contentWidth = 'Fluid'
+      }
+      // 切换导航时，若导航类型是顶部，则强制关闭侧边栏
+      if(state.device === DEVICE_TYPE.DESKTOP){
+        state.sidebarType = layout === 'top' ? SIDEBAR_TYPE.NONE: SIDEBAR_TYPE.SIDE_MENU
+      }else {
+        state.sidebarType = SIDEBAR_TYPE.DRAWER_MENU
+      }
+      // 切换导航模式
       state.layout = layout
+      Vue.ls.set(SETTINGS_LS.LAYOUT, layout)
     },
-    TOGGLE_FIXED_HEADER: (state, fixed) => {
-      Vue.ls.set(DEFAULT_FIXED_HEADER, fixed)
-      state.fixedHeader = fixed
-    },
-    TOGGLE_FIXED_SIDERBAR: (state, fixed) => {
-      Vue.ls.set(DEFAULT_FIXED_SIDE_MENU, fixed)
-      state.fixSiderbar = fixed
-    },
-    TOGGLE_FIXED_HEADER_HIDDEN: (state, show) => {
-      Vue.ls.set(DEFAULT_FIXED_HEADER_HIDDEN, show)
-      state.autoHideHeader = show
-    },
-    TOGGLE_CONTENT_WIDTH: (state, type) => {
-      Vue.ls.set(DEFAULT_CONTENT_WIDTH_TYPE, type)
+    // 内容区域宽度类型
+    [APP_MUTATIONS.TOGGLE_CONTENT_WIDTH]: (state, type) => {
+      Vue.ls.set(SETTINGS_LS.CONTENT_WIDTH_TYPE, type)
       state.contentWidth = type
     },
-    TOGGLE_COLOR: (state, color) => {
-      Vue.ls.set(DEFAULT_COLOR, color)
-      state.color = color
+    // 固定头部
+    [APP_MUTATIONS.TOGGLE_FIXED_HEADER]: (state, fixed) => {
+      Vue.ls.set(SETTINGS_LS.FIXED_HEADER, fixed)
+      state.fixedHeader = fixed
     },
-    TOGGLE_WEAK: (state, flag) => {
-      Vue.ls.set(DEFAULT_COLOR_WEAK, flag)
-      state.weak = flag
+    // 固定侧边栏
+    [APP_MUTATIONS.TOGGLE_FIXED_SIDERBAR]: (state, fixed) => {
+      Vue.ls.set(SETTINGS_LS.FIXED_SIDE_MENU, fixed)
+      state.fixSiderbar = fixed
     },
-    TOGGLE_MULTI_TAB: (state, bool) => {
-      Vue.ls.set(DEFAULT_MULTI_TAB, bool)
-      state.multiTab = bool
+    // 色弱模式
+    [APP_MUTATIONS.TOGGLE_COLOR_WEAK]: (state, flag) => {
+      Vue.ls.set(SETTINGS_LS.COLOR_WEAK, flag)
+      state.colorWeak = flag
+    },
+    // 多页签
+    [APP_MUTATIONS.TOGGLE_MULTI_TAB]: (state, multiTabOpened) => {
+      Vue.ls.set(SETTINGS_LS.MULTI_TAB, multiTabOpened)
+      state.multiTab = multiTabOpened
+    },
+
+    // 当前设备类型
+    [APP_MUTATIONS.TOGGLE_DEVICE]: (state, device) => {
+      state.device = device
+      // 切换导航时，若导航类型是顶部，则强制关闭侧边栏
+      if(state.device === DEVICE_TYPE.DESKTOP){
+        state.sidebarType = state.layout === 'top' ? SIDEBAR_TYPE.NONE: SIDEBAR_TYPE.SIDE_MENU
+        state.sidebarCollapsed = false
+      }else {
+        state.sidebarType = SIDEBAR_TYPE.DRAWER_MENU
+        state.sidebarCollapsed = true
+      }
+    },
+    // 侧边菜单的折叠状态
+    [APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]: (state, sidebarCollapsed) => {
+      state.sidebarCollapsed = sidebarCollapsed
     }
   },
-  actions: {
-    setSidebar ({ commit }, type) {
-      commit('SET_SIDEBAR_TYPE', type)
-    },
-    CloseSidebar ({ commit }) {
-      commit('CLOSE_SIDEBAR')
-    },
-    ToggleDevice ({ commit }, device) {
-      commit('TOGGLE_DEVICE', device)
-    },
-    ToggleTheme ({ commit }, theme) {
-      commit('TOGGLE_THEME', theme)
-    },
-    ToggleLayoutMode ({ commit }, mode) {
-      commit('TOGGLE_LAYOUT_MODE', mode)
-    },
-    ToggleFixedHeader ({ commit }, fixedHeader) {
-      if (!fixedHeader) {
-        commit('TOGGLE_FIXED_HEADER_HIDDEN', false)
-      }
-      commit('TOGGLE_FIXED_HEADER', fixedHeader)
-    },
-    ToggleFixSiderbar ({ commit }, fixSiderbar) {
-      commit('TOGGLE_FIXED_SIDERBAR', fixSiderbar)
-    },
-    ToggleFixedHeaderHidden ({ commit }, show) {
-      commit('TOGGLE_FIXED_HEADER_HIDDEN', show)
-    },
-    ToggleContentWidth ({ commit }, type) {
-      commit('TOGGLE_CONTENT_WIDTH', type)
-    },
-    ToggleColor ({ commit }, color) {
-      commit('TOGGLE_COLOR', color)
-    },
-    ToggleWeak ({ commit }, weakFlag) {
-      commit('TOGGLE_WEAK', weakFlag)
-    },
-    ToggleMultiTab ({ commit }, bool) {
-      commit('TOGGLE_MULTI_TAB', bool)
-    }
-  }
 }
 
 export default app

@@ -3,10 +3,12 @@
 /*缩小首页布 局顶部的高度*/
 @ballcat-header-height: 48px;
 
+// 色弱模式
+#app.colorWeak {
+  filter: invert(80%);
+}
+
 body {
-  &.colorWeak {
-    filter: invert(80%);
-  }
   &.userLayout {
     overflow: auto;
   }
@@ -36,8 +38,8 @@ body {
         min-width: 800px;
       }
     }
-    .topmenu {
-      /* 必须为 topmenu  才能启用流式布局 */
+    .top {
+      /* 必须为 top  才能启用流式布局 */
       &.content-width-Fluid {
         .header-index-wide {
           margin-left: 0;
@@ -47,7 +49,7 @@ body {
   }
 
   &.mobile {
-    .sidemenu {
+    .side {
       .ant-header-fixedHeader {
         &.ant-header-side-opened,
         &.ant-header-side-closed {
@@ -61,7 +63,7 @@ body {
     flex-direction: row;
   }
 
-  .topmenu {
+  .top {
     .ant-header-fixedHeader {
       position: fixed;
       top: 0;
@@ -78,15 +80,11 @@ body {
         width: 100%;
       }
     }
-    /* 必须为 topmenu  才能启用流式布局 */
+    /* 必须为 top  才能启用流式布局 */
     &.content-width-Fluid {
       .header-index-wide {
         max-width: unset;
         .header-index-left {
-          flex: 1 1 1000px;
-          .logo{
-            margin-left: 25px;
-          }
           .ant-menu.ant-menu-horizontal{
             max-width: calc(100vw - 190px - 238px - 25px);
             flex: 1 1 calc(100vw - 190px - 238px - 25px);
@@ -100,21 +98,21 @@ body {
     }
   }
 
-  .sidemenu {
+  .side {
     .ant-header-fixedHeader {
       position: fixed;
       top: 0;
       right: 0;
-      z-index: 9;
+      z-index: 19;
       width: 100%;
       transition: width 0.2s;
 
       &.ant-header-side-opened {
-        width: calc(100% - 256px);
+        width: calc(100% - 208px);
       }
 
       &.ant-header-side-closed {
-        width: calc(100% - 80px);
+        width: calc(100% - 48px);
       }
     }
   }
@@ -122,7 +120,7 @@ body {
 
   .header {
     height: @ballcat-header-height;
-    padding: 0 12px;
+    padding-left: 12px;
     background: #fff;
     box-shadow: 1px 1px 0 #f0f0f0;
     // box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
@@ -207,7 +205,7 @@ body {
     transition: background 0.3s, width 0.2s;
 
     .header-index-wide {
-      padding: 0 16px;
+      padding-left: 16px;
       display: flex;
       height: @ballcat-header-height;
 
@@ -220,50 +218,13 @@ body {
       }
 
       .header-index-left {
-        flex: 0 1 1000px;
+        min-width: 192px;
         display: flex;
-
-        .logo.top-nav-header {
-          flex: 0 0 165px;
-          width: 165px;
-          height: @ballcat-header-height;
-          position: relative;
-          line-height: @ballcat-header-height;
-          transition: all 0.3s;
-          overflow: hidden;
-
-          img,
-          svg {
-            display: inline-block;
-            vertical-align: middle;
-            height: 32px;
-            width: 32px;
-          }
-
-          h1 {
-            color: #fff;
-            display: inline-block;
-            vertical-align: top;
-            font-size: 16px;
-            margin: 0 0 0 12px;
-            font-weight: 400;
-          }
-        }
       }
     }
 
     &.light {
       background-color: #fff;
-
-      .header-index-wide {
-        .header-index-left {
-          .logo {
-            h1 {
-              color: #002140;
-            }
-          }
-        }
-      }
     }
   }
 
@@ -280,7 +241,7 @@ body {
   }
 }
 
-.topmenu {
+.top {
   .page-header-index-wide {
     max-width: 1200px;
     margin: 0 auto;
@@ -335,53 +296,9 @@ body {
     height: 100%;
   }
 
-  .logo {
-    position: relative;
-    display: flex;
-    align-items: center;
-    padding: 16px 16px 16px 32px;
-    line-height: 32px;
-    cursor: pointer;
-    background: #001529;
-
-    img,
-    svg {
-      height: 32px;
-      width: 32px;
-      display: inline-block;
-      vertical-align: middle;
-    }
-
-    a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 32px;
-    }
-
-    h1 {
-      display: inline-block;
-      height: 32px;
-      margin: 0 0 0 12px;
-      color: #fff;
-      font-weight: 600;
-      font-size: 20px;
-      line-height: 32px;
-      vertical-align: middle;
-      white-space:nowrap;
-    }
-  }
-
   &.light {
     background-color: #fff;
     box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
-
-    .logo {
-      background: #fff;
-      h1 {
-        color: unset;
-      }
-    }
 
     .ant-menu-light {
       border-right-color: transparent;

@@ -20,31 +20,6 @@ export function triggerWindowResizeEvent () {
   window.dispatchEvent(event)
 }
 
-export function handleScrollHeader (callback) {
-  let timer = 0
-
-  let beforeScrollTop = window.pageYOffset
-  callback = callback || function () {}
-  window.addEventListener(
-    'scroll',
-    event => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        let direction = 'up'
-        const afterScrollTop = window.pageYOffset
-        const delta = afterScrollTop - beforeScrollTop
-        if (delta === 0) {
-          return false
-        }
-        direction = delta > 0 ? 'down' : 'up'
-        callback(direction)
-        beforeScrollTop = afterScrollTop
-      }, 50)
-    },
-    false
-  )
-}
-
 /**
  * Remove loading animate
  * @param id parent element id or class

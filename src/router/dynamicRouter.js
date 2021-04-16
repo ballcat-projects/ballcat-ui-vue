@@ -86,6 +86,10 @@ export const generator = (routerMap, parent) => {
         // 内嵌iframe
         currentRouter.meta.url = item.uri
         currentRouter.component = () => import(`@/views/iframe`)
+      }else if(targetType === 3){
+        // 外链 TODO 外链跳转地址问题
+        currentRouter.meta.target = '_blank'
+        currentRouter.meta.herf = item.uri
       }
     }
 

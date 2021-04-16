@@ -3,20 +3,15 @@
   <a-layout-sider
     :class="['sider', isDesktop ? null : 'shadow', theme, fixSiderbar ? 'ant-fixed-sidemenu' : null ]"
     width="208px"
-    :collapsed="collapsed"
+    :collapsed="sidebarCollapsed"
     :collapsible="true"
     :style="style"
     :trigger="null"
   >
     <!-- eslint-enable-->
-    <div class="logo">
-      <router-link :to="{name:'/'}">
-        <img src="@/assets/logo.svg" alt="logo">
-        <h1 v-if="!collapsed">Ball Cat</h1>
-      </router-link>
-    </div>
+    <project-logo />
     <s-menu
-      :collapsed="collapsed"
+      :collapsed="sidebarCollapsed"
       :menu="menus"
       :theme="theme"
       :mode="mode"
@@ -30,10 +25,11 @@
 import SMenu from './index'
 import { mixin, mixinDevice } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
+import ProjectLogo from '@/components/ProjectLogo'
 
 export default {
   name: 'SideMenu',
-  components: { SMenu },
+  components: { ProjectLogo, SMenu },
   mixins: [mixin, mixinDevice],
   props: {
     mode: {
@@ -52,18 +48,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sideMenuCollapsed']),
-    collapsed() {
-      return  this.isMobile? !this.sideMenuCollapsed: this.sideMenuCollapsed
-    },
+    ...mapGetters(['sidebarCollapsed']),
     style(){
-      const width = this.collapsed ?  '48px': '208px'
+      const width = this.sidebarCollapsed ?  '48px': '208px'
       return {
         overflow: 'hidden',
         flex: '0 0 ' + width,
         maxWidth: width,
         minWidth: width,
-        width: width
+        width: width,
+        height: '100%'
       }
     }
   },

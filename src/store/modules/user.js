@@ -1,15 +1,25 @@
 import Vue from 'vue'
 import { login, logout } from '@/api/auth'
 import { ACCESS_TOKEN, USER_INFO, PERMISSIONS, ROLES } from '@/store/storage-types'
+import { generatorDynamicRouter } from '@/router/dynamicRouter'
+import { constantRouters } from '@/router/constantRouter'
 
 const user = {
   state: {
     token: '',
     roles: [],
     permissions: [],
-    info: {}
+    info: {},
+    routers: constantRouters,
+    userRouters: []
   },
-
+  getters: {
+    token: state => state.token,
+    roles: state => state.roles,
+    permissions: state => state.permissions,
+    userInfo: state => state.info,
+    userRouters: state => state.userRouters,
+  },
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -22,6 +32,10 @@ const user = {
     },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
+    },
+    SET_ROUTERS: (state, routers) => {
+      state.userRouters = routers
+      state.routers = constantRouters.concat(routers)
     }
   },
 
@@ -81,8 +95,16 @@ const user = {
         Vue.ls.remove(ROLES)
         resolve()
       })
-    }
+    },
 
+    GenerateRoutes ({ commit }) {
+      return new Promise(resolve => {
+        generatorDynamicRouter().then(routers => {
+          commit('SET_ROUTERS', routers)
+          resolve()
+        })
+      })
+    }
   }
 }
 

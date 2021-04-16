@@ -102,7 +102,7 @@ export default {
       const target = menu.meta.target || null
       const tag = target && 'a' || 'router-link'
       const props = { to: { name: menu.name } }
-      const attrs = { href: menu.path, target: menu.meta.target }
+      const attrs = { href: menu.meta.herf, target: menu.meta.target }
 
       if (menu.children && menu.hideChildrenInMenu) {
         // 把有子菜单的 并且 父菜单是要隐藏子菜单的
@@ -157,7 +157,7 @@ export default {
       mode: mode,
       theme: theme,
       openKeys: this.openKeys,
-      inlineIndent: 16
+      inlineIndent: 24
     }
     const on = {
       select: obj => {

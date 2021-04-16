@@ -121,39 +121,42 @@ export default {
     })
 
     return (
-      <a-tabs
-        class="ant-pro-multi-tab"
-        hideAdd
-        type={'editable-card'}
-        v-model={this.activeKey}
-        tabBarStyle={{ margin: 0}}
-        {...{ on: { edit: onEdit } }}
-      >
-        {panes}
-        <a-dropdown slot="tabBarExtraContent" class="multi-tab-drop">
-          <div><a-icon type="down"/></div>
-          <a-menu slot="overlay" {...{
-            on: {
-              click: ({ key }) => {
-                this.closeMenuClick(key)
+      <div class="ballcat-multi-tab">
+        <a-tabs
+          hideAdd
+          type={'editable-card'}
+          v-model={this.activeKey}
+          tabBarStyle={{ margin: 0 }}
+          {...{ on: { edit: onEdit } }}
+        >
+          {panes}
+          <a-dropdown slot="tabBarExtraContent" class="multi-tab-drop">
+            <div>
+              <a-icon type="down"/>
+            </div>
+            <a-menu slot="overlay" {...{
+              on: {
+                click: ({ key }) => {
+                  this.closeMenuClick(key)
+                }
               }
-            }
-          }}>
-            <a-menu-item key="closeLeft">
-              <a-icon type="arrow-left"/>
-              关闭左侧
-            </a-menu-item>
-            <a-menu-item key="closeRight">
-              <a-icon type="arrow-right"/>
-              关闭右侧
-            </a-menu-item>
-            <a-menu-item key="closeOther">
-              <a-icon type="close"/>
-              关闭其他
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
-      </a-tabs>
+            }}>
+              <a-menu-item key="closeLeft">
+                <a-icon type="arrow-left"/>
+                关闭左侧
+              </a-menu-item>
+              <a-menu-item key="closeRight">
+                <a-icon type="arrow-right"/>
+                关闭右侧
+              </a-menu-item>
+              <a-menu-item key="closeOther">
+                <a-icon type="close"/>
+                关闭其他
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
+        </a-tabs>
+      </div>
     )
   }
 }
