@@ -1,13 +1,13 @@
 <template>
   <transition name="showHeader">
-    <div class="ballcat-global-header">
-      <div
-        :class="[
-          fixedHeader && 'ant-header-fixedHeader',
-          isSideMenu ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
-        ]"
-      >
-        <a-layout-header :style="{ padding: '0'}">
+    <div :class="['ballcat-global-header']">
+      <a-layout-header :style="{ padding: '0'}">
+        <div
+          :class="[
+            fixedHeader && 'ant-header-fixedHeader',
+            isSideMenu ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
+          ]"
+        >
           <div v-if="mode === 'side'" class="header">
             <global-header-tool-left />
             <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
@@ -16,19 +16,26 @@
           </div>
           <div v-else :class="['top-nav-header-index', theme]">
             <div class="header-index-wide">
-              <global-header-tool-left v-if="isMobile" style="flex: 1 1 0" />
+              <template v-if="isMobile">
+                <global-header-tool-left />
+                <div style="flex: 1 1 0" />
+              </template>
               <template v-else>
                 <div class="header-index-left">
                   <project-logo class="ballcat-top-nav-header-logo" />
                 </div>
-                <s-menu mode="horizontal" :menu="menus" :theme="theme" />
-                <div style="flex: 1 1 0" />
+                <s-menu
+                  mode="horizontal"
+                  :menu="menus"
+                  :theme="theme"
+                  style="flex: 1 1 0"
+                />
               </template>
               <global-header-tool-right />
             </div>
           </div>
-        </a-layout-header>
-      </div>
+        </div>
+      </a-layout-header>
 
       <!-- 固定头部时进行 占位使用 -->
       <div v-if="fixedHeader" style="visibility:hidden;" class="header" />
