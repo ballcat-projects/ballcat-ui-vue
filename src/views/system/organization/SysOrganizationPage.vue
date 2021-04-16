@@ -6,7 +6,7 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="组织名称">
-              <a-input v-model="queryParam.name" placeholder="查询操作维护中(就是懒得写)" />
+              <a-input v-model="queryParam.name" placeholder="请输入" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24" class="table-page-search-wrapper">
@@ -149,7 +149,7 @@ export default {
      */
     loadData () {
       this.loading = true
-      getTree()
+      getTree(this.queryParam)
         .then(res => {
           if (res.code === 200) {
             this.dataSource = res.data

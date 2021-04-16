@@ -50,7 +50,7 @@ export default {
         },
         wrapperCol: {
           md: { span: 18 }
-        },
+        }
       }
     }
   },
@@ -63,7 +63,7 @@ export default {
     /**
      * 默认排序规则
      */
-    initDefaultSort(){
+    initDefaultSort () {
       this.sortField = 'id'
       this.sortOrder = 'desc'
     },
@@ -114,8 +114,8 @@ export default {
             this.$message.warning(res.message || 'error request')
           }
         }).catch((e) => {
-          // 未被 axios拦截器处理过，则在这里继续处理
-          !e.resolved && this.$message.error(e.message || 'error request')
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
       }).finally(() => {
         this.loading = false
       })
@@ -124,7 +124,7 @@ export default {
      * 分页查询成功回调
      * @param page
      */
-    onPageLoadSuccess(page){
+    onPageLoadSuccess (page) {
 
     },
     /**
@@ -135,11 +135,11 @@ export default {
      */
     handleTableChange (pagination, filters, sorter) {
       this.filters = filters
-      if(sorter && sorter.field){
-        if(sorter.order){
+      if (sorter && sorter.field) {
+        if (sorter.order) {
           this.sortField = sorter.field
-          this.sortOrder = sorter.order === 'ascend' ? 'asc': 'desc'
-        }else{
+          this.sortOrder = sorter.order === 'ascend' ? 'asc' : 'desc'
+        } else {
           this.initDefaultSort()
         }
       }
@@ -174,6 +174,9 @@ export default {
         } else {
           this.$message.error(res.message)
         }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
 

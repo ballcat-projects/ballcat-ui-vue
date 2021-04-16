@@ -15,7 +15,7 @@
 
       <a-form-item label="父级组织">
         <a-tree-select
-          v-decorator="['parentId']"
+          v-decorator="['parentId', decoratorOptions.parentId]"
           placeholder="父级组织"
           style="width: 100%"
           :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
@@ -31,7 +31,7 @@
       </a-form-item>
 
       <a-form-item label="组织名称">
-        <a-input v-decorator="['name']" placeholder="组织名称" />
+        <a-input v-decorator="['name', decoratorOptions.name]" placeholder="组织名称" />
       </a-form-item>
 
       <a-form-item label="排序">
@@ -39,7 +39,12 @@
       </a-form-item>
 
       <a-form-item label="描述信息">
-        <a-textarea v-decorator="['description']" placeholder="描述信息" />
+        <a-textarea
+          v-decorator="['description', decoratorOptions.description]"
+          placeholder="描述信息"
+          rows="3"
+          :max-length="512"
+        />
       </a-form-item>
     </a-form>
   </a-modal>
@@ -77,7 +82,21 @@ export default {
       },
 
       // 校验配置
-      decoratorOptions: {}
+      decoratorOptions: {
+        parentId: {
+          rules: [{
+            required: true,
+            type: 'number',
+            message: '请选择父级组织'
+          }]
+        },
+        name: {
+          rules: [{ required: true, message: '请输入组织名称!' }]
+        },
+        description: {
+          rules: [{ max: 512 }]
+        }
+      }
     }
   },
   methods: {}
