@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { Result } from '@/components/Result'
+import Result from '@/components/Result'
 
 export default {
   name: 'RegisterResult',

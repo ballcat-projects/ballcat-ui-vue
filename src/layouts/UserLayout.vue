@@ -5,11 +5,11 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">Ball Cat</span>
+            <span class="title">{{ projectTitle }}</span>
           </a>
         </div>
         <div class="desc">
-          Ball Cat 一个简单的项目启动脚手架
+          {{ projectDesc }}
         </div>
       </div>
 
@@ -31,12 +31,18 @@
 
 <script>
 import { mixinDevice } from '@/utils/mixin'
+import projectConfig from '@/config/projectConfig'
 
 export default {
   name: 'UserLayout',
   mixins: [mixinDevice],
   data () {
-    return {}
+    return {
+      // 项目标题
+      projectTitle: projectConfig.projectTitle,
+      // 项目描述
+      projectDesc: projectConfig.projectDesc
+    }
   },
   mounted () {
     document.body.classList.add('userLayout')

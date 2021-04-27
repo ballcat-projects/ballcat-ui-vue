@@ -1,7 +1,8 @@
 const path = require('path')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
-const url = 'http://ballcat-admin:8080'
+const projectConfig = require('./src/config/projectConfig')
+const serverAddress = 'http://ballcat-admin:8080'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -14,6 +15,9 @@ function resolve(dir) {
 function isProd() {
   return process.env.NODE_ENV === 'production'
 }
+
+// 页面标题
+const name = projectConfig.projectTitle
 
 const assetsCDN = {
   css: [],
@@ -37,6 +41,9 @@ const prodExternals = {
 // vue.config.js
 const vueConfig = {
   configureWebpack: {
+    // provide the app's title in webpack's name field, so that
+    // it can be accessed in index.html to inject the correct title.
+    name: name,
     // webpack plugins
     plugins: [
       // Ignore all locale files of moment.js
@@ -126,7 +133,7 @@ const vueConfig = {
     // If you want to turn on the proxy, please remove the mockjs /src/main.jsL11
     proxy: {
       '^/api': {
-        target: url,
+        target: serverAddress,
         changeOrigin: true,
         ws: true,
         pathRewrite: {

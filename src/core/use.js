@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueStorage from 'vue-ls'
-import { storageOptions } from '@/config/projectConfig'
+import projectConfig from '@/config/projectConfig'
 
 // base library
 import Antd from 'ant-design-vue'
@@ -24,6 +24,6 @@ VueClipboard.config.autoSetContainer = true
 Vue.use(Antd)
 Vue.use(MultiTab)
 Vue.use(PageLoading)
-Vue.use(VueStorage, storageOptions)
+Vue.use(VueStorage, projectConfig.storageOptions)
 Vue.use(VueClipboard)
 Vue.use(VueCropper)
