@@ -35,7 +35,6 @@ const user = {
     },
     SET_ROUTERS: (state, routers) => {
       state.userRouters = routers
-      state.routers = constantRouters.concat(routers)
     }
   },
 
