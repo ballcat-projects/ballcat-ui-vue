@@ -7,7 +7,8 @@ import { DEVICE_TYPE } from '@/utils/device'
 const SIDEBAR_TYPE = {
   NONE: 'None',
   SIDE_MENU: 'SideMenu',
-  DRAWER_MENU: 'DrawerMenu'
+  DRAWER_MENU: 'DrawerMenu',
+  MIX_MENU:'MixMenu'
 }
 
 const app = {
@@ -42,6 +43,7 @@ const app = {
     // 侧边栏状态
     isDrawerMenu: state => state.sidebarType === SIDEBAR_TYPE.DRAWER_MENU,
     isSideMenu: state => state.sidebarType === SIDEBAR_TYPE.SIDE_MENU,
+    isMixMenu:state => state.sidebarType === SIDEBAR_TYPE.MIX_MENU,
     sidebarCollapsed: state => state.sidebarCollapsed
   },
   mutations: {
@@ -64,7 +66,14 @@ const app = {
       }
       // 切换导航时，若导航类型是顶部，则强制关闭侧边栏
       if(state.device === DEVICE_TYPE.DESKTOP){
-        state.sidebarType = layout === 'top' ? SIDEBAR_TYPE.NONE: SIDEBAR_TYPE.SIDE_MENU
+        if(layout === 'top'){
+           state.sidebarType=SIDEBAR_TYPE.NONE
+        }else if(layout === 'side'){
+           state.sidebarType=SIDEBAR_TYPE.SIDE_MENU
+        }else{
+           state.sidebarType=SIDEBAR_TYPE.MIX_MENU
+        }
+        //state.sidebarType = layout === 'top' ? SIDEBAR_TYPE.NONE: SIDEBAR_TYPE.SIDE_MENU
       }else {
         state.sidebarType = SIDEBAR_TYPE.DRAWER_MENU
       }
@@ -103,7 +112,14 @@ const app = {
       state.device = device
       // 切换导航时，若导航类型是顶部，则强制关闭侧边栏
       if(state.device === DEVICE_TYPE.DESKTOP){
-        state.sidebarType = state.layout === 'top' ? SIDEBAR_TYPE.NONE: SIDEBAR_TYPE.SIDE_MENU
+        if(state.layout === 'top'){
+          state.sidebarType=SIDEBAR_TYPE.NONE
+       }else if(state.layout === 'side'){
+          state.sidebarType=SIDEBAR_TYPE.SIDE_MENU
+       }else{
+          state.sidebarType=SIDEBAR_TYPE.MIX_MENU
+       }
+        // state.sidebarType = state.layout === 'top' ? SIDEBAR_TYPE.NONE: SIDEBAR_TYPE.SIDE_MENU
         state.sidebarCollapsed = false
       }else {
         state.sidebarType = SIDEBAR_TYPE.DRAWER_MENU

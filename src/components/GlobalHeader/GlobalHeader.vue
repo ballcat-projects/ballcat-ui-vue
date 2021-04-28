@@ -5,14 +5,19 @@
         <div
           :class="[
             fixedHeader && 'ant-header-fixedHeader',
-            isSideMenu ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
+            (isSideMenu || isMixMenu) ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
           ]"
         >
           <div v-if="mode === 'side'" class="header">
-            <global-header-tool-left />
-            <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
+            <global-header-tool-left /> 
+            <!-- <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" /> -->
             <div style="flex: 1 1 0" />
             <global-header-tool-right />
+          </div>
+          <div v-else-if="mode === 'mix'" class="header">
+              <global-header-tool-left />
+              <top-menu v-if="device !== 'mobile'" :menus="menus" />
+              <global-header-tool-right />
           </div>
           <div v-else :class="['top-nav-header-index', theme]">
             <div class="header-index-wide">
@@ -47,6 +52,7 @@ import SMenu from '../Menu/'
 import GlobalHeaderBreadcrumb from '@/components/GlobalHeader/GlobalHeaderBreadcrumb'
 import GlobalHeaderToolLeft from '@/components/GlobalHeader/GlobalHeaderToolLeft'
 import GlobalHeaderToolRight from '@/components/GlobalHeader/GlobalHeaderToolRight'
+import TopMenu from '@/components/TopMenu/index'
 import ProjectLogo from '@/components/ProjectLogo'
 import { mixin, mixinDevice } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
@@ -58,7 +64,8 @@ export default {
     GlobalHeaderToolRight,
     GlobalHeaderToolLeft,
     SMenu,
-    GlobalHeaderBreadcrumb
+    GlobalHeaderBreadcrumb,
+    TopMenu
   },
   mixins: [mixin, mixinDevice],
   props: {
@@ -78,7 +85,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isSideMenu'])
+    ...mapGetters(['sidebarCollapsed', 'isSideMenu','isMixMenu'])
   }
 }
 </script>

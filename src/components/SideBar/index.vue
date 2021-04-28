@@ -18,7 +18,7 @@
       />
     </a-drawer>
     <side-menu
-      v-if="isSideMenu"
+      v-if="isSideMenu || isMixMenu"
       mode="inline"
       :menus="menus"
       :theme="navTheme"
@@ -45,7 +45,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isDrawerMenu', 'isSideMenu']),
+    ...mapGetters(['sidebarCollapsed', 'isDrawerMenu', 'isSideMenu','isMixMenu']),
   },
   methods: {
     ...mapMutations([APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]),

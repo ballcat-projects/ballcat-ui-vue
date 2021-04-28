@@ -84,6 +84,17 @@
                 </div>
               </div>
             </a-tooltip>
+            <a-tooltip>
+              <template slot="title">
+                混和导航
+              </template>
+              <div class="setting-drawer-index-item" @click="handleLayout('mix')">
+                <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="top">
+                <div v-if="layout === 'mix'" class="setting-drawer-index-selectIcon">
+                  <a-icon type="check" />
+                </div>
+              </div>
+            </a-tooltip>
           </div>
           <div :style="{ marginTop: '24px' }">
             <a-list :split="false">
