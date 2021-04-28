@@ -12,7 +12,7 @@
     <project-logo />
     <s-menu
       :collapsed="sidebarCollapsed"
-      :menu="menus"
+      :menu="currentMenus"
       :theme="theme"
       :mode="mode"
       @select="onSelect"
@@ -47,6 +47,26 @@ export default {
       required: true
     }
   },
+  data(){
+    return{
+      currentMenus:[]
+    }
+  }, 
+  watch:{
+      $route(to){
+        this.firstToUpper(to)
+      },
+      layout(){
+        this.firstToUpper(this.$route)
+      },
+      device(){
+        this.firstToUpper(this.$route)
+      }
+  },
+  created(){
+     // 刚刚开始加载菜单
+     this.firstToUpper(this.$route)
+  },
   computed: {
     ...mapGetters(['sidebarCollapsed']),
     style(){
@@ -62,6 +82,17 @@ export default {
     }
   },
   methods: {
+    firstToUpper(path) {
+        if(this.device=="mobile" || this.layout=='side'){return this.currentMenus=this.menus};
+        let pathName=path.matched[1].name
+        this.menus.find((item)=>{
+           if(pathName){
+              return (!item.hidden && item.name==pathName) && (this.currentMenus=item.children)
+           }else{
+              return !item.hidden && (this.currentMenus=item.children)
+           }
+        })
+    },
     onSelect (obj) {
       this.$emit('menuSelect', obj)
     }

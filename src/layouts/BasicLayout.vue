@@ -18,7 +18,7 @@
         v-if="multiTab"
         :class="[
           fixedHeader && 'ant-header-fixedHeader',
-          isSideMenu ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
+          (isSideMenu || isMixMenu) ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
         ]"
       >
         <multi-tab :class="fixedHeader && 'ballcat-multi-tab-fixed'" />
@@ -71,10 +71,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isSideMenu', 'userRouters']),
+    ...mapGetters(['sidebarCollapsed', 'isSideMenu', 'isMixMenu','userRouters']),
     contentPaddingLeft () {
-      if (!this.fixSiderbar || !this.isSideMenu) {
-        return '0'
+      if (!this.fixSiderbar || !this.isSideMenu ) {
+         if(this.isMixMenu){return this.sidebarCollapsed ? '48px' : '208px'}
+         return '0'
       }
       return this.sidebarCollapsed ? '48px' : '208px'
     }

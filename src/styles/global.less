@@ -109,7 +109,24 @@ body {
       }
     }
   }
+  .mix {
+    .ant-header-fixedHeader {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 19;
+      width: 100%;
+      transition: width 0.2s;
 
+      &.ant-header-side-opened {
+        width: calc(100% - 208px);
+      }
+
+      &.ant-header-side-closed {
+        width: calc(100% - 48px);
+      }
+    }
+  }
 
   .header {
     height: @ballcat-header-height;
