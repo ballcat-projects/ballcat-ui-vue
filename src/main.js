@@ -19,7 +19,7 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
 };
 
 // 字典注册
-import DictPlugin  from '@/components/dict/dictPlugin'
+import DictPlugin  from '@/components/Dict/dictPlugin'
 Vue.use(DictPlugin)
 // lov注册
 import LovPlugin from '@/components/Lov/lovPlugin'

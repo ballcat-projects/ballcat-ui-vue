@@ -146,7 +146,7 @@
 import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { passEncrypt } from '@/utils/password'
-import Verify from '@/components/verifition/Verify'
+import Verify from '@/components/Verifition/Verify'
 
 export default {
   components: { Verify },

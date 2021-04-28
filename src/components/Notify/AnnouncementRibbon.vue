@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AnnouncementModal from '@/components/notify/AnnouncementModal'
+import AnnouncementModal from '@/components/Notify/AnnouncementModal'
 import { getUserAnnouncements } from '@/api/notify/announcement'
 
 export default {

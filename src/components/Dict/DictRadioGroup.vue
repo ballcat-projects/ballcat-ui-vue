@@ -10,8 +10,8 @@
   </a-radio-group>
 </template>
 <script>
-import DictMixin from '@/components/dict/dictMixin'
-import dictItemMixin from '@/components/dict/dictItemMixin'
+import DictMixin from '@/components/Dict/dictMixin'
+import dictItemMixin from '@/components/Dict/dictItemMixin'
 
 export default {
   name: 'DictRadioGroup',
