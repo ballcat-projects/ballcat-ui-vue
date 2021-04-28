@@ -46,7 +46,7 @@
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
-        <a-input v-decorator="['id', decoratorOptions.id]" :disable="formAction === FORM_ACTION.UPDATE" />
+        <a-input v-decorator="['id', decoratorOptions.id]" :disable="isUpdateForm" />
       </a-form-item>
 
       <a-row :gutter="16">
