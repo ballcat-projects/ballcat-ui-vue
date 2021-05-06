@@ -9,15 +9,15 @@
           ]"
         >
           <div v-if="mode === 'side'" class="header">
-            <global-header-tool-left /> 
-            <!-- <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" /> -->
+            <global-header-tool-left />
+            <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
             <div style="flex: 1 1 0" />
             <global-header-tool-right />
           </div>
           <div v-else-if="mode === 'mix'" class="header">
-              <global-header-tool-left />
-              <top-menu v-if="device !== 'mobile'" :menus="menus" />
-              <global-header-tool-right />
+            <global-header-tool-left />
+            <top-menu v-if="device !== 'mobile'" :menus="menus" />
+            <global-header-tool-right />
           </div>
           <div v-else :class="['top-nav-header-index', theme]">
             <div class="header-index-wide">
