@@ -19,7 +19,7 @@
                 暗色菜单风格
               </template>
               <div class="setting-drawer-index-item" @click="handleNavTheme('dark')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg" alt="dark">
+                <div class="setting-drawer-index-item-side setting-drawer-index-item-com-style"></div>
                 <div v-if="navTheme === 'dark'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
@@ -31,7 +31,7 @@
                 亮色菜单风格
               </template>
               <div class="setting-drawer-index-item" @click="handleNavTheme('light')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg" alt="light">
+                <div class="setting-drawer-index-item-light setting-drawer-index-item-com-style"></div>
                 <div v-if="navTheme !== 'dark'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
@@ -66,7 +66,7 @@
                 侧边栏导航
               </template>
               <div class="setting-drawer-index-item" @click="handleLayout('side')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" alt="side">
+                 <div class="setting-drawer-index-item-side setting-drawer-index-item-com-style"></div>
                 <div v-if="layout === 'side'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
@@ -78,7 +78,7 @@
                 顶部栏导航
               </template>
               <div class="setting-drawer-index-item" @click="handleLayout('top')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="top">
+                <div class="setting-drawer-index-item-top setting-drawer-index-item-com-style"></div>
                 <div v-if="layout === 'top'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
@@ -89,7 +89,7 @@
                 混和导航
               </template>
               <div class="setting-drawer-index-item" @click="handleLayout('mix')">
-                <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="top">
+                <div class="setting-drawer-index-item-mix setting-drawer-index-item-com-style"></div>
                 <div v-if="layout === 'mix'" class="setting-drawer-index-selectIcon">
                   <a-icon type="check" />
                 </div>
@@ -336,6 +336,68 @@ export default {
       i {
         font-size: 14px;
       }
+    }
+    .setting-drawer-index-item-com-style {
+      position: relative;
+      width: 44px;
+      height: 36px;
+      margin-right: 16px;
+      overflow: hidden;
+      background-color: #f0f2f5;
+      border-radius: 4px;
+      box-shadow: 1px 2px 3px #d2d2d2;
+      cursor: pointer;
+    }
+    .setting-drawer-index-item-com-style:before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 33%;
+        height: 100%;
+        background-color: #fff;
+        content: ""
+   }
+  .setting-drawer-index-item-com-style:after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 25%;
+        background-color: #fff;
+        content: ""
+  }
+    .setting-drawer-index-item-mix:before{
+        background-color: #fff;
+        content: ""
+    }
+    .setting-drawer-index-item-mix:after{
+        background-color:#001529;
+        content: ""
+    }
+    .setting-drawer-index-item-top:before{
+        background-color: #f0f2f5;
+        content: ""
+    }
+    .setting-drawer-index-item-top:after{
+        background-color:#001529;
+        content: ""
+    }
+    .setting-drawer-index-item-side:before{
+        background-color:#001529;
+        content: "";
+        z-index:1;
+    }
+    .setting-drawer-index-item-side:after{
+       background-color:#fff;
+       content: ""
+    }
+    .setting-drawer-index-item-light:after{
+      background-color:#fff;
+      content: ""
+    }
+    .setting-drawer-index-item-light:before{
+      background-color:#fff;
+      content: ""
     }
   }
 

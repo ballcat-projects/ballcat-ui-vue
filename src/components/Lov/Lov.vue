@@ -2,34 +2,34 @@
   <div>
     <a-input-group compact>
       <a-spin :spinning="loading" size="small" style="width: 100%">
-        <a-input
-          v-if="!multiple"
-          read-only
-          style="width: calc(100% - 92px);"
-          class="lov-data"
-          :value="selectValue"
-        />
-        <a-select
-          v-if="multiple"
-          read-only
-          style="width: calc(100% - 92px);"
-          class="lov-data"
-          mode="tags"
-          :value="selectValue"
-          :open="false"
-          @deselect="multipleDeselect"
-        />
-
-        <a-button
-          :disabled="disabled"
-          title="单击以选择数据"
-          @click="showModal"
-        >
-          <a-icon type="select" />
-        </a-button>
-        <a-button :disabled="disabled" title="单击以清除选中内容" @click="cleanAll">
-          <a-icon style="color: red;" type="close-circle" />
-        </a-button>
+         <div v-if="!multiple" style="display:flex;position:relative">
+              <a-input class="lov-data" :value="selectValue" v-if="!multiple" :placeholder='placeholder' read-only>
+                  <a-icon slot="addonAfter" type="select"  @click="showModal"/>
+              </a-input>
+              <div v-show="selectValue" @click="cleanAll" style="position:absolute;right:46px;top:6px;z-index:1;cursor:pointer;width:18px;height:18px" class="aa">
+                  <svg t="1619765878911" class="icon" viewBox="0 0 1024 1024" version="1.1" style="color:red" xmlns="http://www.w3.org/2000/svg" p-id="2618" width="14" height="14"><path d="M512 85.333333C276.48 85.333333 85.333333 276.48 85.333333 512S276.48 938.666667 512 938.666667 938.666667 747.52 938.666667 512 747.52 85.333333 512 85.333333z m136.533333 531.342223c11.377778 11.377778 11.377778 29.582222 0 39.822222-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444L512 559.786667l-96.711111 96.711111c-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444c-11.377778-11.377778-11.377778-29.582222 0-39.822222l96.711111-96.711112-104.675556-104.675555c-11.377778-11.377778-11.377778-29.582222 0-39.822222 11.377778-11.377778 29.582222-11.377778 39.822223 0l104.675555 104.675555 104.675556-104.675555c11.377778-11.377778 29.582222-11.377778 39.822222 0 11.377778 11.377778 11.377778 29.582222 0 39.822222l-104.675556 104.675555 97.848889 96.711112z" p-id="2619" fill="#bfbfbf"></path></svg>
+              </div>
+          </div>
+          <div  v-else style="display:flex;position:relative">
+          <a-select
+            read-only
+            style="width: calc(100% - 50px);"
+            class="lov-data"
+            mode="tags"
+            :value="selectValue"
+            :placeholder='placeholder'
+            :open="false"
+            @deselect="multipleDeselect"
+          >
+        </a-select>
+         <a-button
+            :disabled="disabled"
+            title="单击以选择数据"
+            @click="showModal"><a-icon type="select" /></a-button>
+          <div v-if="selectValue" @click="cleanAll" style="position:absolute;right:55px;top:6px;z-index:1;cursor:pointer;width:18px;height:18px" class="aa">
+               <svg t="1619765878911" class="icon" viewBox="0 0 1024 1024" version="1.1" style="color:red" xmlns="http://www.w3.org/2000/svg" p-id="2618" width="14" height="14"><path d="M512 85.333333C276.48 85.333333 85.333333 276.48 85.333333 512S276.48 938.666667 512 938.666667 938.666667 747.52 938.666667 512 747.52 85.333333 512 85.333333z m136.533333 531.342223c11.377778 11.377778 11.377778 29.582222 0 39.822222-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444L512 559.786667l-96.711111 96.711111c-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444c-11.377778-11.377778-11.377778-29.582222 0-39.822222l96.711111-96.711112-104.675556-104.675555c-11.377778-11.377778-11.377778-29.582222 0-39.822222 11.377778-11.377778 29.582222-11.377778 39.822223 0l104.675555 104.675555 104.675556-104.675555c11.377778-11.377778 29.582222-11.377778 39.822222 0 11.377778 11.377778 11.377778 29.582222 0 39.822222l-104.675556 104.675555 97.848889 96.711112z" p-id="2619" fill="#bfbfbf"></path></svg>
+          </div>
+        </div>
       </a-spin>
     </a-input-group>
 
