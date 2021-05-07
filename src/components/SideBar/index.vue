@@ -12,7 +12,6 @@
       <side-menu
         mode="inline"
         :menus="menus"
-        :theme="navTheme"
         :collapsible="false"
         @menuSelect="menuSelect"
       />
@@ -21,7 +20,6 @@
       v-if="isSideMenu || isMixMenu"
       mode="inline"
       :menus="menus"
-      :theme="navTheme"
       :collapsed="sidebarCollapsed"
       :collapsible="true"
     />

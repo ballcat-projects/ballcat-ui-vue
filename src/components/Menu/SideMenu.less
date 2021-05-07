@@ -1,0 +1,138 @@
+@import '~ant-design-vue/es/style/themes/default.less';
+@pro-layout-sider-menu-prefix-cls: ~'sider';
+
+.@{pro-layout-sider-menu-prefix-cls} {
+  position: relative;
+  background-color: @layout-sider-background;
+  border-right: 0;
+  transition: background-color 0.3s, min-width 0.3s,
+  max-width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  // 这里关掉了动画，不然使用无法兼容
+  .@{ant-prefix}-menu {
+    background: transparent;
+    &-item {
+      transition: none;
+    }
+    &-submenu-title {
+      transition: none;
+    }
+  }
+
+  &.@{ant-prefix}-layout-sider-light {
+    .@{ant-prefix}-menu-item a {
+      color: @heading-color;
+    }
+    .@{ant-prefix}-menu-item-selected a,
+    .@{ant-prefix}-menu-item a:hover {
+      color: @primary-color;
+    }
+  }
+
+  // TODO 未用上此 class
+  &-menu {
+    position: relative;
+    z-index: 10;
+    min-height: 100%;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+
+    span.@{ant-prefix}-pro-menu-item-title {
+      transition: none;
+    }
+  }
+
+  .@{ant-prefix}-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      -webkit-box-shadow: inset 0 0 5px rgba(37, 37, 37, 0.05);
+    }
+
+    /* 滚动条滑块 */
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.05);
+    }
+  }
+
+
+  &.@{ant-prefix}-layout-sider.@{pro-layout-sider-menu-prefix-cls}-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+
+    > .ant-menu-root {
+      :not(.@{pro-layout-sider-menu-prefix-cls}-link-menu) {
+        height: ~'calc(100vh - 48)';
+        overflow-y: auto;
+      }
+    }
+  }
+
+  &-light {
+    .@{ant-prefix}-layout-sider-children {
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
+      }
+
+      /* 滚动条滑块 */
+      ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.12);
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
+      }
+    }
+
+    background-color: @white;
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+    .@{pro-layout-sider-menu-prefix-cls}-logo {
+      h1 {
+        color: @primary-color;
+      }
+    }
+    .@{ant-prefix}-menu-light {
+      border-right-color: transparent;
+    }
+
+    .@{pro-layout-sider-menu-prefix-cls}-collapsed-button {
+      border-top: @border-width-base @border-style-base @border-color-split;
+    }
+  }
+
+  .drawer .drawer-content {
+    background: @layout-sider-background;
+  }
+}
+
+
+@keyframes pro-layout-title-hide {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  80% {
+    display: none;
+    opacity: 0;
+  }
+  100% {
+    display: unset;
+    opacity: 1;
+  }
+}
