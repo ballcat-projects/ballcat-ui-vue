@@ -11,7 +11,7 @@
     <!-- 表单 -->
     <a-spin :spinning="submitLoading" size="large" class="ant-pro-page-container-children-content">
       <a-form :form="form" class="form" @submit="handleSubmit">
-        <form-basic :form="form" :form-action="formAction" />
+        <form-basic :form="form" :is-update-form="isUpdateForm" />
         <form-body
           ref="formBody"
           v-model="bodyList"

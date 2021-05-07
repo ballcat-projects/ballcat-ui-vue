@@ -5,7 +5,7 @@
     :wrapper-col="wrapperCol"
     @submit="handleSubmit"
   >
-    <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
+    <a-form-item v-if="isUpdateForm" style="display: none">
       <a-input v-decorator="['id']" />
     </a-form-item>
 

@@ -132,7 +132,7 @@
 import { getPage, delObj, publish, close } from '@/api/notify/announcement'
 import AnnouncementPageForm from './AnnouncementPageForm'
 import { TablePageMixin } from '@/mixins'
-import AnnouncementModal from '@/components/notify/AnnouncementModal'
+import AnnouncementModal from '@/components/Notify/AnnouncementModal'
 
 const statusFilterArr = [
   {

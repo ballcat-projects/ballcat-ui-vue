@@ -15,9 +15,9 @@
             <global-header-tool-right />
           </div>
           <div v-else-if="mode === 'mix'" class="header">
-              <global-header-tool-left />
-              <top-menu v-if="device !== 'mobile'" :menus="menus" />
-              <global-header-tool-right />
+            <global-header-tool-left />
+            <top-menu v-if="device !== 'mobile'" :menus="menus" />
+            <global-header-tool-right />
           </div>
           <div v-else :class="['top-nav-header-index', theme]">
             <div class="header-index-wide">

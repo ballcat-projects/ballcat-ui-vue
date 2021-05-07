@@ -1,7 +1,7 @@
 <template>
   <div :form="form">
     <a-card title="基础配置" class="antd-pro-pages-form-advanced-form-style-card">
-      <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
+      <a-form-item v-if="isUpdateForm" style="display: none">
         <a-input v-decorator="['id']" />
       </a-form-item>
 
@@ -134,8 +134,8 @@
 export default {
   name: 'FormBasic',
   props: {
-    formAction: {
-      type: String,
+    isUpdateForm: {
+      type: Boolean,
       required: true
     },
     form: {

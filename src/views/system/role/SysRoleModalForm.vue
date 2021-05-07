@@ -14,7 +14,7 @@
       :wrapper-col="wrapperCol"
     >
       <a-form-item
-        v-if="formAction === FORM_ACTION.UPDATE"
+        v-if="isUpdateForm"
         style="display: none"
       >
         <a-input v-decorator="['id']" />
@@ -30,7 +30,7 @@
       <a-form-item label="角色标识">
         <a-input
           v-decorator="['code', decoratorOptions.code]"
-          :disabled="formAction === FORM_ACTION.UPDATE"
+          :disabled="isUpdateForm"
           placeholder="角色标识必须以ROLE_开头!"
         />
       </a-form-item>
@@ -38,7 +38,7 @@
       <a-form-item label="角色类型">
         <a-radio-group
           v-decorator="['type', decoratorOptions.type]"
-          :disabled="formAction === FORM_ACTION.UPDATE"
+          :disabled="isUpdateForm"
         >
           <a-radio-button :value="1">
             系统角色

@@ -17,7 +17,7 @@
     >
       <a-row>
         <a-col :xs="24" :sm="24" :md="12">
-          <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
+          <a-form-item v-if="isUpdateForm" style="display: none">
             <a-input v-decorator="['userId']" />
           </a-form-item>
 
@@ -62,7 +62,7 @@
 
         <a-col :xs="24" :sm="24" :md="12">
           <a-form-item
-            v-if="formAction === FORM_ACTION.CREATE"
+            v-if="isCreateForm"
             label="密码"
           >
             <a-input-password

@@ -11,9 +11,6 @@ import './permission' // permission control
 import './utils/filter' // global filter
 import i18n from './locales'
 
-// ballcat 引入常量
-import sysConst  from './ballcat/sys_const'
-Vue.prototype.FORM_ACTION = sysConst.FORM_ACTION;
 // 文件相对路径转绝对路径
 Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
   if (relativeUrl) {
@@ -22,7 +19,7 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
 };
 
 // 字典注册
-import DictPlugin  from '@/components/dict/dictPlugin'
+import DictPlugin  from '@/components/Dict/dictPlugin'
 Vue.use(DictPlugin)
 // lov注册
 import LovPlugin from '@/components/Lov/lovPlugin'

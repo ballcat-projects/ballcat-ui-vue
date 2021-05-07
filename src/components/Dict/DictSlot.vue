@@ -2,7 +2,7 @@
   <a-tag :color="color">{{ showText }}</a-tag>
 </template>
 <script>
-import dictItemMixin from '@/components/dict/dictItemMixin'
+import dictItemMixin from '@/components/Dict/dictItemMixin'
 
 export default {
   name: 'DictSlot',

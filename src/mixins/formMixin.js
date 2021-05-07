@@ -1,5 +1,12 @@
 import pick from 'lodash.pick'
 
+// 表单行为类型，标识当前表单是用来新建的还是更新的
+const FORM_ACTION = {
+  NONE: 'none',
+  CREATE: 'create',
+  UPDATE: 'update'
+}
+
 export default {
   data () {
     return {
@@ -19,7 +26,7 @@ export default {
       submitLoading: false,
 
       // 表单行为
-      formAction: this.FORM_ACTION.NONE,
+      formAction: FORM_ACTION.NONE,
       // 请求方法，属性key为表单行为，value为对应请求方法（返回值为一个promise对象）
       reqFunctions: {
         create: function () {
@@ -29,6 +36,14 @@ export default {
       }
     }
   },
+  computed: {
+    isCreateForm(){
+      return this.formAction === FORM_ACTION.CREATE
+    },
+    isUpdateForm(){
+      return this.formAction === FORM_ACTION.UPDATE
+    }
+  },
   methods: {
     /**
      * 构建新建型表单
@@ -36,7 +51,7 @@ export default {
      */
     buildCreatedForm (attributes) {
       this.form.resetFields()
-      this.formAction = this.FORM_ACTION.CREATE
+      this.formAction = FORM_ACTION.CREATE
       // 钩子函数 处理某些页面定制需求
       this.createdFormCallback(attributes)
     },
@@ -75,7 +90,7 @@ export default {
      */
     buildUpdatedForm (record, options) {
       let that = this
-      that.formAction = that.FORM_ACTION.UPDATE
+      that.formAction = FORM_ACTION.UPDATE
       that.echoDataProcess(record)
       this.fillFormData(record, true)
       this.updatedFormCallback(options)

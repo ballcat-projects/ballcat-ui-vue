@@ -10,7 +10,7 @@
     @cancel="handleClose"
   >
     <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-item v-if="formAction === FORM_ACTION.UPDATE" style="display: none">
+      <a-form-item v-if="isUpdateForm" style="display: none">
         <a-input v-decorator="['id']" />
       </a-form-item>
 
