@@ -52,6 +52,20 @@ export default {
       currentMenus:[]
     }
   }, 
+  computed: {
+    ...mapGetters(['sidebarCollapsed']),
+    style(){
+      const width = this.sidebarCollapsed ?  '48px': '208px'
+      return {
+        overflow: 'hidden',
+        flex: '0 0 ' + width,
+        maxWidth: width,
+        minWidth: width,
+        width: width,
+        height: '100%'
+      }
+    }
+  },
   watch:{
       $route(to){
         this.firstToUpper(to)
@@ -66,20 +80,6 @@ export default {
   created(){
      // 刚刚开始加载菜单
      this.firstToUpper(this.$route)
-  },
-  computed: {
-    ...mapGetters(['sidebarCollapsed']),
-    style(){
-      const width = this.sidebarCollapsed ?  '48px': '208px'
-      return {
-        overflow: 'hidden',
-        flex: '0 0 ' + width,
-        maxWidth: width,
-        minWidth: width,
-        width: width,
-        height: '100%'
-      }
-    }
   },
   methods: {
     firstToUpper(path) {
