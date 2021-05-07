@@ -10,7 +10,7 @@
             :placeholder="placeholder"
             read-only
           >
-            <a-icon slot="addonAfter" type="select" @click="showModal" />
+            <a-icon slot="addonAfter" type="ellipsis" @click="showModal" />
           </a-input>
           <div
             v-show="selectValue"
@@ -46,7 +46,7 @@
             :disabled="disabled"
             title="单击以选择数据"
             @click="showModal"
-          ><a-icon type="select" /></a-button>
+          ><a-icon type="ellipsis" /></a-button>
           <div
             v-if="selectValue"
             style="position:absolute;right:55px;top:6px;z-index:1;cursor:pointer;width:18px;height:18px"
