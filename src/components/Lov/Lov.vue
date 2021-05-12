@@ -34,7 +34,7 @@
         <div v-else style="display:flex;position:relative">
           <a-select
             read-only
-            style="width: calc(100% - 50px);"
+            style="width: calc(100% - 37px);position:absolute;left:0;top:0;z-index:1"
             class="lov-data"
             mode="tags"
             :value="selectValue"
@@ -42,15 +42,12 @@
             :open="false"
             @deselect="multipleDeselect"
           />
-          <a-button
-            :disabled="disabled"
+          <div class="ballcat-select-btn"
             title="单击以选择数据"
-            @click="showModal"
-          ><a-icon type="select" /></a-button>
+            @click="showModal"><a-icon type="select" /></div>
           <div
-            v-if="selectValue"
-            style="position:absolute;right:55px;top:6px;z-index:1;cursor:pointer;width:18px;height:18px"
-            class="aa"
+            v-show="selectValue"
+            class="ballcat-select-clear"
             @click="cleanAll"
           >
             <svg
@@ -76,14 +73,14 @@
       :visible="visible"
       :centered="true"
       :confirm-loading="loading"
-      :footer="ret?undefined:null"
-      :body-style="{padding:'0 16px 0'}"
+      :footer="null"
+      :body-style="{padding:'0 0 65px 0'}"
       :closable="title.length>0"
       @cancel="cancel"
       @ok="selectData"
     >
 
-      <a-spin :spinning="loading">
+      <!-- <a-spin :spinning="loading"> -->
         <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
           <a-form layout="inline">
             <a-row :gutter="12">
@@ -129,46 +126,62 @@
 
         <!-- 搜索控制按钮 -->
         <div v-if="search" class="table-operator">
-          <a-button type="primary" @click="reloadTable">查询</a-button>
-          <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+          <div style="margin-top:3px;padding-bottom:5%">
+              <a-button type="primary" @click="reloadTable">查询</a-button>
+              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+          </div>
         </div>
 
-        <div v-if="showSelectAll">
+        <div v-if="showSelectAll" style="padding:0 20px;">
           <a-form>
-            <a-form-item read-only label="已选中数据 ">
+            <a-form-item read-only style="margin-top:10px;">
               <a-select
                 v-if="multiple"
                 :value="selectValue"
                 :open="false"
                 read-only
                 mode="tags"
+                placeholder="已选数据"
                 @deselect="multipleDeselect"
               />
-              <a-select
+              <a-input
                 v-if="!multiple"
-                :value="selectValue?[selectValue]:[]"
+                :value="selectValue"
                 :open="false"
                 read-only
                 mode="tags"
-                @deselect="singleDeselect"
-              />
+                placeholder="已选数据"
+              >
+                <a-icon slot="addonAfter" type="close"  @click="singleDeselect"/>
+              </a-input>
             </a-form-item>
           </a-form>
         </div>
 
-        <a-table
+        <a-table style="margin-top:-10px"
           ref="table"
           :size="tableSize"
           :row-key="rowKey"
           :columns="columns"
           :data-source="dataSource"
-          :pagination="pagination"
+          :pagination="false"
           :loading="loading"
+          :scroll="{ y: 300 }"
           :row-selection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
           :custom-row="customRow"
           @change="handleTableChange"
         />
-      </a-spin>
+    
+      <!-- </a-spin> -->
+          <div class="ballcat-model-bottom">
+         <a-pagination v-model="pagination.current" :total="pagination.total" 
+         :pageSize='pagination.pageSize' :showTotal="pagination.showTotal"  showSizeChanger size="small" @change="loadData" 
+         />
+         <div>
+          <a-button key="back" @click="cancel"> 取消</a-button>
+          <a-button key="submit" type="primary" :loading="loading" @click="selectData" style="margin-left:8px">确定</a-button>
+         </div>
+      </div>
     </a-modal>
   </div>
 </template>
@@ -224,6 +237,10 @@ export default {
     placeholder:{
       type: String,
       default: ''
+    },
+    sourceLov:{
+      type: Number,
+      default: 0
     },
     /**
      * 选中表格行处理
@@ -357,8 +374,12 @@ export default {
       this.multiple ? this.backVal = [...this.value] : this.backVal = this.value
       this.selectedRows = []
       this.selectedRowKeys = []
-      this.reloadTable()
-      this.visible = true
+      if(this.sourceLov==1){
+           this.$emit('preview')
+      }else{
+           this.reloadTable()
+           this.visible=true;
+      } 
     },
     load() {
       this.loading = true
@@ -500,8 +521,14 @@ export default {
         this.backVal = [...backVal]
       } else {
         // 单选处理
-        this.selectValue = this.value
-        this.backVal = this.value
+        let inputVal=''
+        if(Object.prototype.toString.call(this.value) === '[object Array]'){
+           inputVal=this.value.length ? this.value[0] : ''
+        }else{
+           inputVal=this.value;
+        }
+        this.selectValue = inputVal
+        this.backVal = inputVal
       }
       this.loading = false
     },
@@ -535,6 +562,7 @@ export default {
       if (si !== -1) {
         this.selectedRows.splice(si, 1)
         this.selectedRowKeys.splice(this.selectedRowKeys.indexOf(row[this.rowKey]), 1)
+        !this.visible && this.emit(this.backVal)
       }
       this.loading = false
     },
@@ -547,7 +575,9 @@ export default {
       this.loading = false
     },
     cleanAll() {
+      this.dataSource=[];
       this.emit(this.multiple ? [] : '')
+      this.multiple || this.$emit('clear', this.multiple ? [] : '')
       this.selectedRows = []
       this.selectedRowKeys = []
     }
@@ -559,10 +589,24 @@ export default {
 .lov-data {
   width: 100%;
 }
-
-.ant-select-search__field__wrap {
-  .ant-select-search__field input {
-
-  }
+.ballcat-select-btn{
+  position:absolute;right:0;top:0;
+  padding: 4px 11px;
+  color: rgba(0,0,0,.65);
+  font-weight: 400;
+  font-size: 15px;
+  text-align: center;
+  background-color: #fafafa;
+  border: 1px solid #d9d9d9;
+  border-radius: 1px;
+  transition: all .3s;
+}
+.ballcat-select-clear{
+ position:absolute;right:45px;top:7px;z-index:1;cursor:pointer;width:18px;height:18px
+}
+.ballcat-model-bottom{
+  width:94%;
+  display:flex;justify-content:space-between;
+  position:absolute;bottom:15px;left:20px
 }
 </style>

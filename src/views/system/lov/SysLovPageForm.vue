@@ -19,10 +19,12 @@
           :form-action="formAction"
         />
         <form-search v-model="searchList" :form="form" :form-action="formAction" />
-        <a-divider>单击预览按钮后，下方会生成预览的lov组件,修改配置后需要重新单击预览更新数据</a-divider>
+        <a-divider>查看生成的lov</a-divider>
         <lov
           ref="lov_pre"
           v-model="lovVal"
+          :sourceLov="sourceLov"
+          @preview="previewParent"
           :lazy="true"
           style="margin-bottom: 56px;"
           keyword="local_preview"
@@ -33,14 +35,14 @@
     <!-- fixed footer toolbar -->
     <footer-tool-bar>
       <div class="table-operator" style="text-align: center;">
-        <a-button :loading="submitLoading" @click="preview">预览</a-button>
+        <!-- <a-button :loading="submitLoading" @click="preview">预览</a-button> -->
         <a-button
           style="margin-left: 8px"
           type="primary"
           :loading="submitLoading"
           @click="handleSubmit"
         >提交</a-button>
-        <a-button style="margin-left: 8px" @click="backToPage(false)">取消</a-button>
+        <a-button style="margin-left: 8px" @click="lovCancel(false)">取消</a-button>
       </div>
     </footer-tool-bar>
   </div>
@@ -70,11 +72,32 @@ export default {
       decoratorOptions: {},
       bodyList: [],
       searchList: [],
-      lovVal: undefined
+      lovVal: undefined,
+      sourceLov:1,
+      previewLov:true
     }
   },
   methods: {
     ...mapActions(['setLovPreview', 'delLovPreview']),
+    previewParent(){
+       if(this.previewLov){
+          this.previewLov=false
+          const pre = this.$refs.lov_pre
+          this.form.validateFields((err) => {
+              if (err) {
+                pre.cleanAll()
+                this.$message.error(`您有${Object.keys(err).length}个内容未通过校验!请检查并修改后重新预览!`)
+                this.submitLoading = false
+                pre.visible=false
+                this.previewLov=true
+              }else{   
+                this.preview();
+                this.sourceLov=0;
+                setTimeout(()=>{pre.reloadTable();pre.visible=true;this.previewLov=true},200)
+              }
+          })
+       }
+    },
     preview () {
       this.submitLoading = true
       // 表单校验，成功则进行预览
@@ -116,6 +139,11 @@ export default {
       // 更新成功、删除缓存
       this.delLovPreview()
       this.backToPage(true)
+    },
+    lovCancel(){
+       this.sourceLov=1;
+       this.$refs.lov_pre.cleanAll()
+       this.backToPage(false)
     }
   }
 }

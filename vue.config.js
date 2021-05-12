@@ -2,7 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 const projectConfig = require('./src/config/projectConfig')
-const serverAddress = 'http://ballcat-admin:8080'
+const serverAddress = 'http://admin.ballcat.cn'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
