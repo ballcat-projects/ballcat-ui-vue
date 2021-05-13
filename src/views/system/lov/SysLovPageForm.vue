@@ -23,11 +23,11 @@
         <lov
           ref="lov_pre"
           v-model="lovVal"
-          :sourceLov="sourceLov"
-          @preview="previewParent"
+          :source-lov="sourceLov"
           :lazy="true"
           style="margin-bottom: 56px;"
           keyword="local_preview"
+          @preview="previewParent"
         />
       </a-form>
     </a-spin>
@@ -92,7 +92,6 @@ export default {
                 this.previewLov=true
               }else{   
                 this.preview();
-                this.sourceLov=0;
                 setTimeout(()=>{pre.reloadTable();pre.visible=true;this.previewLov=true},200)
               }
           })
@@ -109,8 +108,8 @@ export default {
             ...values,
             bodyList: this.bodyList,
             searchList: this.searchList
-          })
-          pre.cleanAll()
+          });
+          (!pre.backVal || !pre.backVal.length) && (pre.cleanAll())
           pre.load()
         } else {
           this.$message.error(`您有${Object.keys(err).length}个内容未通过校验!请检查并修改后重新预览!`)
@@ -141,7 +140,6 @@ export default {
       this.backToPage(true)
     },
     lovCancel(){
-       this.sourceLov=1;
        this.$refs.lov_pre.cleanAll()
        this.backToPage(false)
     }

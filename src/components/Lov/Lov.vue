@@ -42,9 +42,11 @@
             :open="false"
             @deselect="multipleDeselect"
           />
-          <div class="ballcat-select-btn"
+          <div
+            class="ballcat-select-btn"
             title="单击以选择数据"
-            @click="showModal"><a-icon type="select" /></div>
+            @click="showModal"
+          ><a-icon type="select" /></div>
           <div
             v-show="selectValue"
             class="ballcat-select-clear"
@@ -81,106 +83,119 @@
     >
 
       <!-- <a-spin :spinning="loading"> -->
-        <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
-          <a-form layout="inline">
-            <a-row :gutter="12">
-              <a-col
-                v-for="item in searchList"
-                :key="item.id"
-                :span="6"
-                :md="8"
-                :sm="24"
-              >
-                <a-form-item :label="item.label">
-                  <a-input
-                    v-if="item.tag==='INPUT_TEXT'"
-                    v-model="queryParam[item.field]"
-                    :placeholder="item.placeholder"
-                  />
-                  <a-input-number
-                    v-if="item.tag==='INPUT_NUMBER'"
-                    v-model="queryParam[item.field]"
-                    style="width: 100%"
-                    :placeholder="item.placeholder"
-                    :min="item.min"
-                    :max="item.max"
-                  />
-                  <a-select
-                    v-if="item.tag==='SELECT'"
-                    v-model="queryParam[item.field]"
-                    allow-clear
-                    :placeholder="item.placeholder"
-                    :options="item.options"
-                  />
-                  <dict-select
-                    v-if="item.tag==='DICT_SELECT'"
-                    v-model="queryParam[item.field]"
-                    :placeholder="item.placeholder"
-                    :dict-code="item.dictCode"
-                  />
-                </a-form-item>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
+      <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
+        <a-form layout="inline">
+          <a-row :gutter="12">
+            <a-col
+              v-for="item in searchList"
+              :key="item.id"
+              :span="6"
+              :md="8"
+              :sm="24"
+            >
+              <a-form-item :label="item.label">
+                <a-input
+                  v-if="item.tag==='INPUT_TEXT'"
+                  v-model="queryParam[item.field]"
+                  :placeholder="item.placeholder"
+                />
+                <a-input-number
+                  v-if="item.tag==='INPUT_NUMBER'"
+                  v-model="queryParam[item.field]"
+                  style="width: 100%"
+                  :placeholder="item.placeholder"
+                  :min="item.min"
+                  :max="item.max"
+                />
+                <a-select
+                  v-if="item.tag==='SELECT'"
+                  v-model="queryParam[item.field]"
+                  allow-clear
+                  :placeholder="item.placeholder"
+                  :options="item.options"
+                />
+                <dict-select
+                  v-if="item.tag==='DICT_SELECT'"
+                  v-model="queryParam[item.field]"
+                  :placeholder="item.placeholder"
+                  :dict-code="item.dictCode"
+                />
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form>
+      </div>
 
-        <!-- 搜索控制按钮 -->
-        <div v-if="search" class="table-operator">
-          <div style="margin-top:3px;padding-bottom:5%">
-              <a-button type="primary" @click="reloadTable">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-          </div>
+      <!-- 搜索控制按钮 -->
+      <div v-if="search" class="table-operator">
+        <div style="margin-top:3px;padding-bottom:5%">
+          <a-button type="primary" @click="reloadTable">查询</a-button>
+          <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
         </div>
+      </div>
 
-        <div v-if="showSelectAll" style="padding:0 20px;">
-          <a-form>
-            <a-form-item read-only style="margin-top:10px;">
-              <a-select
-                v-if="multiple"
-                :value="selectValue"
-                :open="false"
-                read-only
-                mode="tags"
-                placeholder="已选数据"
-                @deselect="multipleDeselect"
-              />
-              <a-input
-                v-if="!multiple"
-                :value="selectValue"
-                :open="false"
-                read-only
-                mode="tags"
-                placeholder="已选数据"
-              >
-                <a-icon slot="addonAfter" type="close"  @click="singleDeselect"/>
-              </a-input>
-            </a-form-item>
-          </a-form>
-        </div>
+      <div v-if="showSelectAll" style="padding:0 20px;">
+        <a-form>
+          <a-form-item read-only style="margin-top:10px;">
+            <a-select
+              v-if="multiple"
+              :value="selectValue"
+              :open="false"
+              read-only
+              mode="tags"
+              placeholder="已选数据"
+              @deselect="multipleDeselect"
+            />
+            <a-input
+              v-if="!multiple"
+              :value="selectValue"
+              :open="false"
+              read-only
+              mode="tags"
+              placeholder="已选数据"
+            >
+              <a-icon slot="addonAfter" type="close" @click="singleDeselect" />
+            </a-input>
+          </a-form-item>
+        </a-form>
+      </div>
 
-        <a-table style="margin-top:-10px"
-          ref="table"
-          :size="tableSize"
-          :row-key="rowKey"
-          :columns="columns"
-          :data-source="dataSource"
-          :pagination="false"
-          :loading="loading"
-          :scroll="{ y: 300 }"
-          :row-selection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
-          :custom-row="customRow"
-          @change="handleTableChange"
-        />
+      <a-table
+        ref="table"
+        style="margin-top:-10px"
+        :size="tableSize"
+        :row-key="rowKey"
+        :columns="columns"
+        :data-source="dataSource"
+        :pagination="false"
+        :loading="loading"
+        :scroll="{ y: 300 }"
+        :row-selection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
+        :custom-row="customRow"
+        @change="handleTableChange"
+      />
     
       <!-- </a-spin> -->
-          <div class="ballcat-model-bottom">
-         <a-pagination v-model="pagination.current" :total="pagination.total" 
-         :pageSize='pagination.pageSize' :showTotal="pagination.showTotal"  showSizeChanger size="small" @change="loadData" 
-         />
-         <div>
+      <div class="ballcat-model-bottom">
+        <a-pagination
+          v-model="pagination.current"
+          :total="pagination.total" 
+          :page-size="pagination.pageSize"
+          :show-total="pagination.showTotal"
+          show-size-changer
+          size="small"
+          @change="loadData" 
+        />
+        <div>
           <a-button key="back" @click="cancel"> 取消</a-button>
-          <a-button key="submit" type="primary" :loading="loading" @click="selectData" style="margin-left:8px">确定</a-button>
-         </div>
+          <a-button
+            key="submit"
+            type="primary"
+            :loading="loading"
+            style="margin-left:8px"
+            @click="selectData"
+          >确定</a-button>
+        </div>
       </div>
     </a-modal>
   </div>
