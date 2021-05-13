@@ -10,7 +10,7 @@
             :placeholder="placeholder"
             read-only
           >
-            <a-icon slot="addonAfter" type="select" @click="showModal" />
+            <a-icon slot="addonAfter" type="ellipsis" @click="showModal" />
           </a-input>
           <div
             v-show="selectValue"
@@ -46,7 +46,7 @@
             class="ballcat-select-btn"
             title="单击以选择数据"
             @click="showModal"
-          ><a-icon type="select" /></div>
+          ><a-icon type="ellipsis" /></div>
           <div
             v-show="selectValue"
             class="ballcat-select-clear"
