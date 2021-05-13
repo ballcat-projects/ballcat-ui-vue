@@ -75,25 +75,22 @@
       :visible="visible"
       :centered="true"
       :confirm-loading="loading"
-      :footer="null"
-      :body-style="{padding:'0 0 65px 0'}"
+      :body-style="computedStyle"
       :closable="title.length>0"
       @cancel="cancel"
       @ok="selectData"
     >
-
       <!-- <a-spin :spinning="loading"> -->
-      <div v-if="search" class="table-page-search-wrapper" style="text-align: left">
-        <a-form layout="inline">
-          <a-row :gutter="12">
+      <div v-if="search" class="table-page-search-wrapper" style="margin-top:15px;">
+        <a-form  :label-col="{ span:8 }" :wrapper-col="{ span: 16 }" >
+          <a-row :gutter="8">
             <a-col
               v-for="item in searchList"
               :key="item.id"
-              :span="6"
               :md="8"
-              :sm="24"
+              :sm="16"
             >
-              <a-form-item :label="item.label">
+              <a-form-item :label="item.label" style="height:20px">
                 <a-input
                   v-if="item.tag==='INPUT_TEXT'"
                   v-model="queryParam[item.field]"
@@ -122,18 +119,21 @@
                 />
               </a-form-item>
             </a-col>
+            <!-- 搜索控制按钮 -->
+            <a-col
+              :xs="8"
+              :sm="8"
+              :md="8"
+              style="margin-top:2px"
+            >
+              <div style="display:flex;">
+                <a-button type="primary" style="margin-left:5%" @click="reloadTable">查询</a-button>
+                <a-button style="margin-left:8px" @click="resetSearchForm">重置</a-button>
+              </div>
+            </a-col>
           </a-row>
         </a-form>
-      </div>
-
-      <!-- 搜索控制按钮 -->
-      <div v-if="search" class="table-operator">
-        <div style="margin-top:3px;padding-bottom:5%">
-          <a-button type="primary" @click="reloadTable">查询</a-button>
-          <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-        </div>
-      </div>
-
+      </div> 
       <div v-if="showSelectAll" style="padding:0 20px;">
         <a-form>
           <a-form-item read-only style="margin-top:10px;">
@@ -162,14 +162,13 @@
 
       <a-table
         ref="table"
-        style="margin-top:-10px"
+        style="margin-top:-10px;"
         :size="tableSize"
         :row-key="rowKey"
         :columns="columns"
         :data-source="dataSource"
         :pagination="false"
         :loading="loading"
-        :scroll="{ y: 300 }"
         :row-selection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
         :custom-row="customRow"
         @change="handleTableChange"
@@ -184,18 +183,9 @@
           :show-total="pagination.showTotal"
           show-size-changer
           size="small"
-          @change="loadData" 
+          style="margin-left:3%"
+          @change="loadData"
         />
-        <div>
-          <a-button key="back" @click="cancel"> 取消</a-button>
-          <a-button
-            key="submit"
-            type="primary"
-            :loading="loading"
-            style="margin-left:8px"
-            @click="selectData"
-          >确定</a-button>
-        </div>
       </div>
     </a-modal>
   </div>
@@ -372,6 +362,12 @@ export default {
       // 备份值， 所有操作对该值修改，emit该值，选择时重置该值
       backVal: null
     }
+  },
+  computed: {
+    computedStyle() {
+        let screenHeight = document.body.clientHeight * 0.75;
+        return {padding:'0', maxHeight: screenHeight + 'px',overflowY: 'scroll' }
+      }
   },
   watch: {
     value() {
@@ -620,8 +616,9 @@ export default {
  position:absolute;right:45px;top:7px;z-index:1;cursor:pointer;width:18px;height:18px
 }
 .ballcat-model-bottom{
-  width:94%;
+  width:100%;
+  background:#fff;
   display:flex;justify-content:space-between;
-  position:absolute;bottom:15px;left:20px
+  position:absolute;bottom:0;left:0;padding-bottom:15px
 }
 </style>
