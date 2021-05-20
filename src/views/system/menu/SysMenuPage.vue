@@ -68,6 +68,7 @@
           :loading="loading"
           :expand-icon-column-index="1"
           :pagination="false"
+          :scroll="{x : 1150}"
           @change="handleTableChange"
         >
           <template #menu-title-slot="text, record">
@@ -164,7 +165,8 @@ export default {
         {
           title: '操作',
           align: 'center',
-          width: 130,
+          width: 150,
+          fixed: 'right',
           scopedSlots: { customRender: 'action-slot' }
         }
       ],
@@ -214,6 +216,10 @@ export default {
 }
 </script>
 <style scoped>
+>>> .ant-table-body {
+  overflow-x: auto !important;
+}
+
 .menu-tree-table >>> td {
   white-space: nowrap !important;
 }

@@ -56,6 +56,7 @@
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
+            :scroll="{x : 1100}"
             @change="handleTableChange"
           >
             <template #type-slot="text">
@@ -185,3 +186,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+>>> .ant-table-body {
+  overflow-x: auto !important;
+}
+</style>
