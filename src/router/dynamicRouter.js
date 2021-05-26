@@ -1,5 +1,6 @@
 import { getLoginUserMenu } from '@/api/system/menu'
 import { listToTree } from '@/utils/treeUtil'
+import { firstUpperCase } from '@/utils/strUtil'
 
 // 前端未找到页面路由（固定不用改）
 const notFoundRouter = {
@@ -43,8 +44,6 @@ export const generatorDynamicRouter = () => {
   })
 }
 
-
-
 /**
  * 格式化树形结构数据 生成 vue-router 层级路由表
  *
@@ -59,9 +58,11 @@ export const generator = (routerMap, parent) => {
     const path = `${parent && parent.path || ''}/${item.path}`
 
     // 路由名称，由路由地址生成，大驼峰形式
-    const name = path.replace('-', '/').split('/').filter(x => x && x !== '').map(
-      x => x.replace(/^\S/, s => s.toUpperCase())
-    ).join('')
+    const name = path.replace('-', '/')
+      .split('/')
+      .filter(x => x && x !== '')
+      .map(x => firstUpperCase(x))
+      .join('')
 
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
@@ -73,20 +74,20 @@ export const generator = (routerMap, parent) => {
     }
 
     // 目录类型组件固定使用 ContentView
-    if(item.type === 0){
+    if (item.type === 0) {
       currentRouter.component = () => import(`@/layouts/ContentView`)
     }
 
     // 菜单类型需要拼接组件地址
-    if(item.type === 1){
-      if(targetType === 1){
+    if (item.type === 1) {
+      if (targetType === 1) {
         // 内置组件
         item.uri && (currentRouter.component = () => import(`@/views/${item.uri}`))
-      }else if(targetType === 2){
+      } else if (targetType === 2) {
         // 内嵌iframe
         currentRouter.meta.url = item.uri
         currentRouter.component = () => import(`@/views/iframe`)
-      }else if(targetType === 3){
+      } else if (targetType === 3) {
         // 外链 TODO 外链跳转地址问题
         currentRouter.meta.target = '_blank'
         currentRouter.meta.herf = item.uri

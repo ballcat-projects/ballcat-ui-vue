@@ -68,7 +68,7 @@
           :loading="loading"
           :expand-icon-column-index="1"
           :pagination="false"
-          :scroll="{x : 1150}"
+          :scroll="{x : 1100}"
           @change="handleTableChange"
         >
           <template #menu-title-slot="text, record">
