@@ -40,7 +40,7 @@
     </a-layout>
 
     <!-- websocket -->
-    <global-web-socket />
+    <global-web-socket v-if="enableWebsocket" />
   </a-layout>
 </template>
 
@@ -52,6 +52,7 @@ import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
 import SideBar from '@/components/SideBar'
+import { projectConfig } from '@/config/projectConfig'
 
 import { APP_MUTATIONS } from '@/store/mutation-types'
 
@@ -67,7 +68,8 @@ export default {
   data () {
     return {
       production: process.env.NODE_ENV === 'production',
-      menus: []
+      menus: [],
+      enableWebsocket: projectConfig.enableWebsocket
     }
   },
   computed: {
