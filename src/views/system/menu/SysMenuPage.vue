@@ -216,10 +216,6 @@ export default {
 }
 </script>
 <style scoped>
->>> .ant-table-body {
-  overflow-x: auto !important;
-}
-
 .menu-tree-table >>> td {
   white-space: nowrap !important;
 }

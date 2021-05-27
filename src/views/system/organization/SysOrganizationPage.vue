@@ -47,6 +47,7 @@
           :data-source="dataSource"
           :loading="loading"
           :expand-icon="expandIconRender"
+          :scroll="{x : 800}"
           @change="handleTableChange"
         >
           <template slot="expandIcon">
@@ -93,10 +94,12 @@ export default {
       columns: [
         {
           title: '组织机构层级',
+          width: 250,
           dataIndex: 'name',
         },
         {
           title: '排序',
+          width: 80,
           dataIndex: 'sort',
         },
         {

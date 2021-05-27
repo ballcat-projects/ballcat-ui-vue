@@ -17,7 +17,7 @@
             type="error"
             show-icon
             style="margin-bottom: 24px;"
-            message="账户或密码错误（admin/ant.design )"
+            message="账户或密码错误（admin/a123456 )"
           />
           <a-form-item>
             <a-input

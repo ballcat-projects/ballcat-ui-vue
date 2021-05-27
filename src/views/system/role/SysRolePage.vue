@@ -186,8 +186,3 @@ export default {
   }
 }
 </script>
-<style scoped>
->>> .ant-table-body {
-  overflow-x: auto !important;
-}
-</style>

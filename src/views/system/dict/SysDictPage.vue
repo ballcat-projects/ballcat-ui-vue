@@ -55,6 +55,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
+          :scroll="{x : 800}"
           @change="handleTableChange"
         >
           <template #type-slot="text">

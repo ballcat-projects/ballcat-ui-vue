@@ -134,6 +134,7 @@
               :loading="loading"
               :alert="{show: true, clear: true}"
               :row-selection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
+              :scroll="{x : 800}"
               @change="handleTableChange"
             >
               <!--数据表格-->

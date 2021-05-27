@@ -67,6 +67,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
+          :scroll="{x : 1100}"
           @change="handleTableChange"
         >
           <template #status-slot="text">
@@ -108,44 +109,54 @@ export default {
         {
           title: '追踪ID',
           dataIndex: 'traceId',
-          width: '220px',
+          width: 205,
         },
         {
           title: '用户名',
-          dataIndex: 'username'
+          dataIndex: 'username',
+          width: 100,
+          ellipsis: true
         },
         {
           title: '事件',
           dataIndex: 'eventType',
           align: 'center',
+          width: 60,
           scopedSlots: { customRender: 'event-type-slot' },
         },
         {
           title: '登陆IP',
           dataIndex: 'ip',
-          width: '120px'
+          width: 120
         },
         {
           title: '浏览器',
-          dataIndex: 'browser'
+          dataIndex: 'browser',
+          width: 100,
+          ellipsis: true
         },
         {
           title: '操作系统',
-          dataIndex: 'os'
+          dataIndex: 'os',
+          width: 110,
+          ellipsis: true
         },
         {
           title: '操作信息',
-          dataIndex: 'msg'
+          dataIndex: 'msg',
+          width: 180,
+          ellipsis: true
         },
         {
           title: '状态',
           dataIndex: 'status',
+          width: 50,
           scopedSlots: { customRender: 'status-slot' }
         },
         {
           title: '登录/登出时间',
           dataIndex: 'loginTime',
-          width: '150px',
+          width: 150,
           sorter: true
         }
       ]

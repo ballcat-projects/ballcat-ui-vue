@@ -59,6 +59,7 @@
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
+            :scroll="{x : 1000}"
             @change="handleTableChange"
           >
             <template #status-slot="status">

@@ -50,6 +50,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
+          :scroll="{x : 1000}"
           @change="handleTableChange"
         >
           <template #action-slot="text, record">
@@ -92,19 +93,27 @@ export default {
       columns: [
         {
           title: '配置名称',
-          dataIndex: 'name'
+          dataIndex: 'name',
+          width: 100,
+          ellipsis: true
         },
         {
           title: 'Key',
-          dataIndex: 'confKey'
+          dataIndex: 'confKey',
+          width: 100,
+          ellipsis: true
         },
         {
           title: 'Value',
-          dataIndex: 'confValue'
+          dataIndex: 'confValue',
+          width: 100,
+          ellipsis: true
+
         },
         {
           title: '分类',
-          dataIndex: 'category'
+          dataIndex: 'category',
+          width: 100
         },
         {
           title: '备注信息',

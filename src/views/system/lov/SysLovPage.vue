@@ -52,6 +52,7 @@
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
+            :scroll="{x : 800}"
             @change="handleTableChange"
           >
             <template #action-slot="text, record">
@@ -140,7 +141,7 @@ export default {
         {
           title: '操作',
           align: 'center',
-          width: '150px',
+          width: 100,
           scopedSlots: { customRender: 'action-slot' }
         }
       ]

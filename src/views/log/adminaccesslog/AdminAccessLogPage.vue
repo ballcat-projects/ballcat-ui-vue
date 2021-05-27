@@ -41,6 +41,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
+          :scroll="{x : 1000}"
           @change="handleTableChange"
         >
           <template #expandedRowRender="record">
@@ -88,6 +89,7 @@ export default {
         {
           title: '请求URI',
           dataIndex: 'uri',
+          width: 200,
           ellipsis: true
         },
         {
