@@ -52,7 +52,7 @@ import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
 import SideBar from '@/components/SideBar'
-import { projectConfig } from '@/config/projectConfig'
+import projectConfig from '@/config/projectConfig'
 
 import { APP_MUTATIONS } from '@/store/mutation-types'
 
