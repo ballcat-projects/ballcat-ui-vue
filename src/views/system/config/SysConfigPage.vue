@@ -4,15 +4,32 @@
     <div class="ant-pro-table-search">
       <a-form v-bind="searchFormLayout">
         <a-row :gutter="16">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="ID">
-              <a-input v-model="queryParam.id" placeholder="" />
+          <a-col :xl="6" :md="12" :sm="24">
+            <a-form-item label="名称">
+              <a-input v-model="queryParam.name" placeholder="请输入" />
+            </a-form-item>
+          </a-col>
+
+          <a-col :xl="6" :md="12" :sm="24">
+            <a-form-item label="Key">
+              <a-input v-model="queryParam.confKey" placeholder="请输入" />
+            </a-form-item>
+          </a-col>
+
+          <a-col :xl="6" :md="12" :sm="24">
+            <a-form-item label="分类">
+              <a-input v-model="queryParam.category" placeholder="请输入" />
             </a-form-item>
           </a-col>
 
           <!-- <template v-if="advanced">
            </template>-->
-          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+          <a-col
+            :xl="6"
+            :md="12"
+            :sm="24"
+            class="table-page-search-wrapper"
+          >
             <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
@@ -37,7 +54,8 @@
             type="primary"
             icon="plus"
             @click="handleAdd()"
-          >新建</a-button>
+          >新建
+          </a-button>
         </div>
       </div>
       <div class="ant-pro-table-wrapper">
@@ -89,6 +107,7 @@ export default {
     return {
       getPage: getPage,
       delObj: delObj,
+      rowKey: 'confKey',
 
       columns: [
         {

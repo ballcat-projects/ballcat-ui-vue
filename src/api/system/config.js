@@ -16,16 +16,9 @@ export function addObj(obj) {
   })
 }
 
-export function getObj(id) {
+export function delObj(confKey) {
   return request({
-    url: '/system/config/' + id,
-    method: 'get'
-  })
-}
-
-export function delObj(id) {
-  return request({
-    url: '/system/config/' + id,
+    url: `/system/config?confKey=${confKey}`,
     method: 'delete'
   })
 }

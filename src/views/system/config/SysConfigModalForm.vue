@@ -10,16 +10,12 @@
     @cancel="handleClose"
   >
     <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
-      <a-form-item v-if="isUpdateForm" style="display: none">
-        <a-input v-decorator="['id']" />
-      </a-form-item>
-
       <a-form-item label="名称">
         <a-input v-decorator="['name', decoratorOptions.name]" placeholder="请输入" />
       </a-form-item>
 
       <a-form-item label="Key">
-        <a-input v-decorator="['confKey', decoratorOptions.confKey]" placeholder="请输入" />
+        <a-input v-decorator="['confKey', decoratorOptions.confKey]" :disabled="isUpdateForm" placeholder="请输入" />
       </a-form-item>
 
       <a-form-item label="Value">
