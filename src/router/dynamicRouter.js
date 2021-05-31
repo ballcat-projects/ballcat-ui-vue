@@ -83,6 +83,7 @@ export const generator = (routerMap, parent) => {
       if (targetType === 1) {
         // 内置组件
         item.uri && (currentRouter.component = () => import(`@/views/${item.uri}`))
+        item.uri && (currentRouter.meta['componentName'] = item.uri.split("/").pop())
       } else if (targetType === 2) {
         // 内嵌iframe
         currentRouter.meta.url = item.uri
