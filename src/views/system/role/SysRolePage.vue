@@ -104,7 +104,7 @@ import { TablePageMixin } from '@/mixins'
 import RoleUserModal from '@/views/system/role/SysRoleUserModal'
 
 export default {
-  name: 'RolePage',
+  name: 'SysRolePage',
   components: {
     RoleUserModal,
     RoleGrantDrawer,

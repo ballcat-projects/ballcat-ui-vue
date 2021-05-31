@@ -1,6 +1,6 @@
 <template>
   <div v-if="isShowRouter">
-    <keep-alive v-if="shouldKeepAlive">
+    <keep-alive v-if="shouldKeepAlive" :include="keepAliveList">
       <router-view />
     </keep-alive>
     <router-view v-else />
@@ -24,7 +24,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['multiTab']),
+    ...mapGetters(['multiTab','keepAliveList']),
     shouldKeepAlive () {
       const meta = this.$route.meta
       if(!this.multiTab && !!meta.keepAlive){

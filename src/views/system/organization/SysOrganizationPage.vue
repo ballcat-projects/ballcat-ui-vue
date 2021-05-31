@@ -84,7 +84,7 @@ import OrganizationModalForm from './SysOrganizationModalForm'
 import { TablePageMixin } from '@/mixins'
 
 export default {
-  name: 'OrganizationPage',
+  name: 'SysOrganizationPage',
   components: { OrganizationModalForm },
   mixins: [TablePageMixin],
   data () {

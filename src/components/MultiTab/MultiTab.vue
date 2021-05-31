@@ -1,6 +1,6 @@
 <script>
 import events from './events'
-
+import { APP_MUTATIONS } from '@/store/mutation-types'
 export default {
   name: 'MultiTab',
   data () {
@@ -14,6 +14,7 @@ export default {
   watch: {
     '$route': function (newVal) {
       this.activeKey = newVal.fullPath
+      this.componentNameList()
       if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
         this.fullPathList.push(newVal.fullPath)
         this.pages.push(newVal)
@@ -40,6 +41,7 @@ export default {
 
     this.pages.push(this.$route)
     this.fullPathList.push(this.$route.fullPath)
+    this.componentNameList()
     this.selectedLastPath()
   },
   methods: {
@@ -49,6 +51,7 @@ export default {
     remove (targetKey) {
       this.pages = this.pages.filter(page => page.fullPath !== targetKey)
       this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
+      this.componentNameList()
       // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
       if (!this.fullPathList.includes(this.activeKey)) {
         this.selectedLastPath()
@@ -106,6 +109,13 @@ export default {
     },
     closeMenuClick (key) {
       this[key](this.activeKey)
+    },
+    componentNameList(){
+       let componentList=[]
+       this.pages.forEach(item=>{
+          componentList.push(item.meta.componentName)
+       });
+       this.$store.commit(APP_MUTATIONS.TOGGLE_SET_KEEPALIVE,[...componentList]);
     }
   },
   render () {

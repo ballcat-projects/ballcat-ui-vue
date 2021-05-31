@@ -27,6 +27,7 @@ const app = {
     // 侧边栏状态
     sidebarType: SIDEBAR_TYPE.SIDE_MENU,
     sidebarCollapsed: false,
+    keepAliveList:[]
   },
   getters: {
     // 设置相关
@@ -44,7 +45,8 @@ const app = {
     isDrawerMenu: state => state.sidebarType === SIDEBAR_TYPE.DRAWER_MENU,
     isSideMenu: state => state.sidebarType === SIDEBAR_TYPE.SIDE_MENU,
     isMixMenu:state => state.sidebarType === SIDEBAR_TYPE.MIX_MENU,
-    sidebarCollapsed: state => state.sidebarCollapsed
+    sidebarCollapsed: state => state.sidebarCollapsed,
+    keepAliveList:state => state.keepAliveList
   },
   mutations: {
     // 整体风格设置
@@ -129,6 +131,10 @@ const app = {
     // 侧边菜单的折叠状态
     [APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]: (state, sidebarCollapsed) => {
       state.sidebarCollapsed = sidebarCollapsed
+    },
+    // 多页签
+    [APP_MUTATIONS.TOGGLE_SET_KEEPALIVE]:(state,keepAliveList)=>{
+      state.keepAliveList=keepAliveList
     }
   },
 }
