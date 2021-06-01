@@ -4,41 +4,46 @@
     <div class="ant-pro-table-search">
       <a-form v-bind="searchFormLayout">
         <a-row :gutter="16">
-          <a-col :md="8" :sm="24">
+          <a-col :xl="8" :md="12" :sm="24">
             <a-form-item label="用户名">
               <a-input v-model="queryParam.username" placeholder="用户名" />
             </a-form-item>
           </a-col>
+          <a-col :xl="8" :md="12" :sm="24">
+            <a-form-item label="登陆IP">
+              <a-input v-model="queryParam.ip" placeholder="登陆IP" />
+            </a-form-item>
+          </a-col>
           <template v-if="advanced">
-            <a-col :md="8" :sm="24">
+            <a-col :xl="8" :md="12" :sm="24">
               <a-form-item label="事件类型">
                 <dict-select v-model="queryParam.eventType" dict-code="login_event_type" />
               </a-form-item>
             </a-col>
-            <a-col :md="8" :sm="24">
+            <a-col :xl="8" :md="12" :sm="24">
               <a-form-item label="事件状态">
                 <dict-select v-model="queryParam.status" dict-code="log_status" />
               </a-form-item>
             </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="登陆IP">
-                <a-input v-model="queryParam.ip" placeholder="登陆IP" />
+            <a-col :xl="10" :md="12" :sm="24">
+              <a-form-item label="登陆时间">
+                <a-range-picker
+                  :value="searchTimeValue"
+                  show-time
+                  :placeholder="['Start Time', 'End Time']"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  @change="onTimeChange"
+                />
               </a-form-item>
             </a-col>
           </template>
 
-          <a-col :md="8" :sm="24">
-            <a-form-item label="登陆时间">
-              <a-range-picker
-                show-time
-                :placeholder="['Start Time', 'End Time']"
-                format="YYYY-MM-DD HH:mm:ss"
-                @change="onTimeChange"
-              />
-            </a-form-item>
-          </a-col>
-
-          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+          <a-col
+            :xl="6"
+            :md="12"
+            :sm="24"
+            class="table-page-search-wrapper"
+          >
             <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
@@ -95,11 +100,11 @@
 </template>
 
 <script>
-import { getPage } from '@/api/log/adminloginlog'
+import { getPage } from '@/api/log/login-log'
 import { TablePageMixin } from '@/mixins'
 
 export default {
-  name: 'AdminLoginLogPage',
+  name: 'LoginLogPage',
   mixins: [TablePageMixin],
   data () {
     return {
@@ -159,14 +164,22 @@ export default {
           width: 150,
           sorter: true
         }
-      ]
+      ],
+
+      // 查询时间
+      searchTimeValue: []
     }
   },
   methods: {
     onTimeChange (dates, dateStrings) {
-      console.log(dates)
+      this.searchTimeValue = dateStrings
       this.queryParam.startTime = dateStrings[0]
       this.queryParam.endTime = dateStrings[1]
+    },
+    // 清空搜索条件
+    resetSearchForm () {
+      this.queryParam = {}
+      this.searchTimeValue = []
     }
   }
 }
