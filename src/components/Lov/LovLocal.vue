@@ -205,7 +205,7 @@ export default {
   name: 'Lov',
   mixins: [TablePageMixin],
   props: {
-    keyword: {
+    options: {
       type: Object,
       required: true
     },
@@ -396,7 +396,7 @@ export default {
       this.lazyLoad=false
     },
     load() {
-        const lovObj=this.keyword;
+        const lovObj=this.options;
         this.checkFlag=this.handlerInitData(lovObj) && this.handlerInitSearch(lovObj);
         if(!this.checkFlag){return}
         this.loading = true
