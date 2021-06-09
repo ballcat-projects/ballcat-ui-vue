@@ -4,22 +4,53 @@
     <div class="ant-pro-table-search">
       <a-form v-bind="searchFormLayout">
         <a-row :gutter="16">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="ID">
-              <a-input v-model="queryParam.id" placeholder />
+          <a-col :xl="8" :md="12" :sm="24">
+            <a-form-item label="追踪ID">
+              <a-input v-model="queryParam.traceId" placeholder="请输入" />
             </a-form-item>
           </a-col>
+          <a-col :xl="8" :md="12" :sm="24">
+            <a-form-item label="请求IP">
+              <a-input v-model="queryParam.ip" placeholder="请输入" />
+            </a-form-item>
+          </a-col>
+          <template v-if="advanced">
+            <a-col :xl="8" :md="12" :sm="24">
+              <a-form-item label="请求URI">
+                <a-input v-model="queryParam.uri" placeholder="请输入" />
+              </a-form-item>
+            </a-col>
+            <a-col :xl="8" :md="12" :sm="24">
+              <a-form-item label="日志消息">
+                <a-input v-model="queryParam.msg" placeholder="请输入" />
+              </a-form-item>
+            </a-col>
+            <a-col :xl="10" :md="12" :sm="24">
+              <a-form-item label="访问时间">
+                <a-range-picker
+                  :value="searchTimeValue"
+                  show-time
+                  :placeholder="['Start Time', 'End Time']"
+                  format="YYYY-MM-DD HH:mm:ss"
+                  @change="onTimeChange"
+                />
+              </a-form-item>
+            </a-col>
+          </template>
 
-          <!-- <template v-if="advanced">
-          </template>-->
-          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
+          <a-col
+            :xl="6"
+            :md="12"
+            :sm="24"
+            class="table-page-search-wrapper"
+          >
             <div class="table-page-search-submitButtons">
               <a-button type="primary" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-              <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
-              <!--                {{ advanced ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
-              <!--              </a>-->
+              <a style="margin-left: 8px" @click="toggleAdvanced">
+                {{ advanced ? '收起' : '展开' }}
+                <a-icon :type="advanced ? 'up' : 'down'" />
+              </a>
             </div>
           </a-col>
         </a-row>
@@ -63,11 +94,11 @@
 </template>
 
 <script>
-import { getPage } from '@/api/log/adminoperationlog'
+import { getPage } from '@/api/log/operation-log'
 import { TablePageMixin } from '@/mixins'
 
 export default {
-  name: 'AdminOperationLogPage',
+  name: 'OperationLogPage',
   mixins: [TablePageMixin],
   data () {
     return {
@@ -127,13 +158,22 @@ export default {
           width: '150px',
           sorter: true
         }
-      ]
+      ],
+
+      // 查询时间
+      searchTimeValue: []
     }
   },
   methods: {
     onTimeChange (dates, dateStrings) {
+      this.searchTimeValue = dateStrings
       this.queryParam.startTime = dateStrings[0]
       this.queryParam.endTime = dateStrings[1]
+    },
+    // 清空搜索条件
+    resetSearchForm () {
+      this.queryParam = {}
+      this.searchTimeValue = []
     }
   }
 }
