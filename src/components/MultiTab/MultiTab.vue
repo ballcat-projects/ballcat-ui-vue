@@ -13,15 +13,37 @@ export default {
   },
   watch: {
     '$route': function (newVal) {
-      this.activeKey = newVal.fullPath
-      this.componentNameList()
-      if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
+      const index = this.pages.findIndex(n=>n.fullPath === newVal.fullPath)
+      if(index < 0){
         this.fullPathList.push(newVal.fullPath)
         this.pages.push(newVal)
+      }else{
+        const data = this.pages[index]
+        if(newVal.params){
+          if(data.params !== newVal.params){
+            this.pages.splice(index,1,newVal)
+          }
+        }
       }
+      this.activeKey = newVal.fullPath
+      this.componentNameList()
+      // this.activeKey = newVal.fullPath
+      // this.componentNameList()
+      // if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
+      //   this.fullPathList.push(newVal.fullPath)
+      //   this.pages.push(newVal)
+      // }
     },
     activeKey: function (newPathKey) {
-      this.$router.push({ path: newPathKey })
+      // this.$router.push({ path: newPathKey })
+      if(newPathKey === '/'){
+        this.$router.push({ name: '/'})
+      }
+      let index = this.pages.findIndex(n=>n.path === newPathKey)
+      if(index >= 0){
+        const data = this.pages[index]
+        this.$router.push({ name: data.name, params: data.params })
+      }
     }
   },
   created () {
