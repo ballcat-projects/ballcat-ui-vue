@@ -171,7 +171,7 @@ export default {
       this.delObj(record[this.rowKey]).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
-          this.reloadTable()
+          this.reloadTable(false)
         } else {
           this.$message.error(res.message)
         }
