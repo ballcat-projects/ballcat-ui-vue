@@ -30,3 +30,10 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+export function revised() {
+  return request({
+    url: '/system/organization/revised',
+    method: 'patch'
+  })
+}

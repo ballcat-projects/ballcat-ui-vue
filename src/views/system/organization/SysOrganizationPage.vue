@@ -28,12 +28,23 @@
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">组织架构</div>
         <div class="ant-pro-table-toolbar-option">
+          <a-popconfirm
+            v-has="'system:organization:revised'"
+            title="是否确认进行校正操作?"
+            ok-text="Yes"
+            cancel-text="No"
+            @confirm="handleRevised"
+          >
+            <a-button type="danger" icon="interaction">校正层级深度</a-button>
+          </a-popconfirm>
+
           <a-button
             v-has="'system:organization:add'"
             type="primary"
             icon="plus"
             @click="handleAdd()"
-          >新建</a-button>
+          >新建
+          </a-button>
         </div>
       </div>
 
@@ -79,7 +90,7 @@
 </template>
 
 <script>
-import { getTree, delObj } from '@/api/system/organization'
+import { getTree, delObj, revised } from '@/api/system/organization'
 import OrganizationModalForm from './SysOrganizationModalForm'
 import { TablePageMixin } from '@/mixins'
 
@@ -95,12 +106,12 @@ export default {
         {
           title: '组织机构层级',
           width: 250,
-          dataIndex: 'name',
+          dataIndex: 'name'
         },
         {
           title: '排序',
           width: 80,
-          dataIndex: 'sort',
+          dataIndex: 'sort'
         },
         {
           title: '描述信息',
@@ -179,6 +190,19 @@ export default {
      */
     handleEdit (record) {
       this.$refs.formModal.update(record, { title: '编辑组织' })
+    },
+    /**
+     * 校正层级深度
+     */
+    handleRevised () {
+      revised().then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.reloadTable()
+        } else {
+          this.$message.error(res.message)
+        }
+      })
     }
   }
 }
