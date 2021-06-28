@@ -17,8 +17,7 @@
             :multiple="true"
             :replace-fields="{
               title: 'name',
-              key: 'id',
-              value: 'id'
+              key: 'id'
             }"
             @select="selectOrganization"
             @expand="expandOrganization"
