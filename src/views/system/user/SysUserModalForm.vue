@@ -22,23 +22,21 @@
           </a-form-item>
 
           <a-form-item label="用户名">
-            <a-input
-              v-decorator="['username', decoratorOptions.username]"
-              placeholder="用户名"
-            />
+            <a-input v-decorator="['username', decoratorOptions.username]" placeholder="请输入" />
+          </a-form-item>
+
+          <a-form-item v-if="isCreateForm" label="密码">
+            <a-input-password v-decorator="['pass', decoratorOptions.pass]" placeholder="请输入" />
           </a-form-item>
 
           <a-form-item label="昵称">
-            <a-input
-              v-decorator="['nickname', decoratorOptions.nickname]"
-              placeholder="昵称"
-            />
+            <a-input v-decorator="['nickname', decoratorOptions.nickname]" placeholder="请输入" />
           </a-form-item>
 
           <a-form-item label="组织">
             <a-tree-select
               v-decorator="['organizationId']"
-              placeholder="父级组织"
+              placeholder="请选择"
               style="width: 100%"
               :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
               :tree-data="organizationTree"
@@ -52,6 +50,7 @@
             />
           </a-form-item>
 
+
           <a-form-item label="状态">
             <a-radio-group v-decorator="['status', decoratorOptions.status]">
               <a-radio :value="1">开启</a-radio>
@@ -61,35 +60,20 @@
         </a-col>
 
         <a-col :xs="24" :sm="24" :md="12">
-          <a-form-item
-            v-if="isCreateForm"
-            label="密码"
-          >
-            <a-input-password
-              v-decorator="['pass', decoratorOptions.pass]"
-              placeholder="密码"
-            />
-          </a-form-item>
-
           <a-form-item label="性别">
-            <dict-select
-              v-decorator="['sex', decoratorOptions.sex]"
-              dict-code="gender"
-            />
+            <dict-select v-decorator="['sex', decoratorOptions.sex]" dict-code="gender" />
           </a-form-item>
 
           <a-form-item label="电话">
-            <a-input
-              v-decorator="['phone']"
-              placeholder="电话"
-            />
+            <a-input v-decorator="['phone']" placeholder="请输入" />
           </a-form-item>
 
           <a-form-item label="邮箱">
-            <a-input
-              v-decorator="['email']"
-              placeholder="邮箱"
-            />
+            <a-input v-decorator="['email']" placeholder="请输入" />
+          </a-form-item>
+
+          <a-form-item v-if="isCreateForm" label="角色">
+            <sys-role-select v-decorator="['roleCodes', decoratorOptions.roleCodes]" placeholder="请选择" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -101,9 +85,11 @@
 import { addObj, putObj } from '@/api/system/user'
 import { PopUpFormMixin } from '@/mixins'
 import { passEncrypt } from '@/utils/password'
+import SysRoleSelect from '@/views/system/role/SysRoleSelect'
 
 export default {
   name: 'SysUserModalForm',
+  components: { SysRoleSelect },
   mixins: [PopUpFormMixin],
   props: {
     organizationTree: {
@@ -144,6 +130,9 @@ export default {
         },
         status: {
           initialValue: 1
+        },
+        roleCodes: {
+          initialValue: []
         }
       }
     }

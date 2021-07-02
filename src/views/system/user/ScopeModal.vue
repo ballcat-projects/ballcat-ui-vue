@@ -12,20 +12,7 @@
           <a-input v-model="username" disabled placeholder="用户名" />
         </a-form-item>
         <a-form-item label="角色">
-          <a-select
-            v-model="roleCodes"
-            mode="multiple"
-            style="width: 100%"
-            placeholder="无角色"
-            :allow-clear="true"
-          >
-            <a-select-option
-              v-for="selectData in roleSelectData"
-              :key="selectData.value"
-            >
-              {{ selectData.name }}
-            </a-select-option>
-          </a-select>
+          <sys-role-select v-model="roleCodes" placeholder="无角色" />
         </a-form-item>
       </a-form>
     </a-spin>
@@ -33,10 +20,11 @@
 </template>
 <script>
 import { getUserScope, putUserScope } from '@/api/system/user'
-import { getSelectData } from '@/api/system/role'
+import SysRoleSelect from '@/views/system/role/SysRoleSelect'
 
 export default {
   name: 'ScopeModal',
+  components: { SysRoleSelect },
   data () {
     return {
       visible: false,
@@ -53,14 +41,8 @@ export default {
 
       userId: '',
       username: '',
-      roleCodes: [],
-      roleSelectData: []
+      roleCodes: []
     }
-  },
-  created () {
-    getSelectData({}).then(res => {
-      this.roleSelectData = res.data
-    })
   },
   methods: {
     show (record) {
