@@ -73,9 +73,10 @@ export const generator = (routerMap, parent) => {
       meta: { title: item.title, icon: item.icon || undefined, targetType: targetType }
     }
 
-    // 目录类型组件固定使用 ContentView
+    // 目录类型组件
     if (item.type === 0) {
-      currentRouter.component = () => import(`@/layouts/ContentView`)
+      // 一级目录固定使用 ContentView，二级三级等其他目录使用 BlankRouterView
+      currentRouter.component = parent ? () => import(`@/layouts/BlankRouterView`): () => import(`@/layouts/ContentView`)
     }
 
     // 菜单类型需要拼接组件地址
@@ -100,7 +101,7 @@ export const generator = (routerMap, parent) => {
       currentRouter.hidden = true
     }
 
-    // 是否有子菜单，并递归处理
+    // 有子菜单则递归处理
     if (item.children && item.children.length > 0) {
       // Recursion
       currentRouter.children = generator(item.children, currentRouter)
