@@ -206,6 +206,10 @@ export default {
           parentId: record.type === 2 ? record.parentId: record.id,
           type: record.type === 2 ? 2 : record.type + 1
         }
+      }else {
+        attributes.formData = {
+          type: 0
+        }
       }
       this.$refs.formModal.add(attributes)
     },

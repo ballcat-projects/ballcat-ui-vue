@@ -257,7 +257,6 @@ export default {
      * 菜单ID 的规则校验
      */
     checkMenuId (rule, value, callback) {
-      console.log(this.nonButtonMenuTree)
       let errorMsg = null
 
       const idStr = String(value)
