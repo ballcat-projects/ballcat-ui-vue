@@ -15,6 +15,10 @@
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
+      <!-- 原始的菜单ID 用于支持菜单ID 的修改功能-->
+      <a-form-item v-if="isUpdateForm" style="display: none">
+        <a-input v-decorator="['originalId']" />
+      </a-form-item>
 
       <a-form-item label="上级菜单">
         <a-tree-select
@@ -27,7 +31,13 @@
             key: 'id',
             value: 'id'
           }"
-        />
+        >
+          <template #title="treeNode">
+            <span>
+              【{{ treeNode.titleName }}】{{ treeNode.id }}
+            </span>
+          </template>
+        </a-tree-select>
       </a-form-item>
 
       <a-form-item label="菜单类型">
@@ -42,11 +52,13 @@
       <a-form-item>
         <span slot="label">
           菜单ID&nbsp;
-          <a-tooltip title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX">
+          <a-tooltip
+            title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX"
+          >
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
-        <a-input v-decorator="['id', decoratorOptions.id]" :disable="isUpdateForm" />
+        <a-input v-decorator="['id', decoratorOptions.id]" />
       </a-form-item>
 
       <a-row :gutter="16">
@@ -200,7 +212,7 @@ export default {
         id: {
           rules: [
             { required: true, message: '请输入菜单ID!' },
-            { validator: this.checkMenuId}
+            { validator: this.checkMenuId }
           ]
         },
         parentId: {
@@ -222,8 +234,8 @@ export default {
         path: {
           rules: [
             { required: true, message: '请输入路由地址!' },
-            {pattern: /^[a-z0-9-]+$/, message: '仅小写字母、中划线、数字'}
-            ],
+            { pattern: /^[a-z0-9-]+$/, message: '仅小写字母、中划线、数字' }
+          ]
         },
         targetType: {
           initialValue: 1
@@ -232,10 +244,10 @@ export default {
           initialValue: 1
         },
         uri: {
-          rules: [{ required: true, message: '请输入资源路径!' }],
+          rules: [{ required: true, message: '请输入资源路径!' }]
         },
         permission: {
-          rules: [{ required: true, message: '请输入授权标识!' }],
+          rules: [{ required: true, message: '请输入授权标识!' }]
         }
       }
     }
@@ -244,31 +256,32 @@ export default {
     /**
      * 菜单ID 的规则校验
      */
-    checkMenuId(rule, value, callback) {
-      let errorMsg = null;
+    checkMenuId (rule, value, callback) {
+      console.log(this.nonButtonMenuTree)
+      let errorMsg = null
 
       const idStr = String(value)
-      if(idStr.length !== 6){
-        callback("菜单长度必须为 6 位！")
+      if (idStr.length !== 6) {
+        callback('菜单长度必须为 6 位！')
         return
       }
 
-      if(this.menuType === 0){
-        if(!idStr.endsWith('0000')){
+      if (this.menuType === 0) {
+        if (!idStr.endsWith('0000')) {
           errorMsg = '目录类型 ID 格式为 XX0000，xx 为目录编号'
         }
-      }else if(this.menuType === 1){
-        if(!idStr.endsWith('00')){
+      } else if (this.menuType === 1) {
+        if (!idStr.endsWith('00')) {
           errorMsg = '菜单类型 ID 格式为 XXXX00，前两位 XX 为所属目录编号，后两位 XX 为菜单编号'
         }
       }
-      errorMsg? callback(errorMsg): callback();
+      errorMsg ? callback(errorMsg) : callback()
     },
     /**
      * 新建表单的回调
      */
     createdFormCallback (attributes) {
-      if(attributes && attributes.formData){
+      if (attributes && attributes.formData) {
         this.menuType = attributes.formData.type
         this.$nextTick(function () {
           this.form.setFieldsValue(attributes.formData)
@@ -278,8 +291,9 @@ export default {
     echoDataProcess (record) {
       this.icon = record.icon
       this.menuType = record.type
+      record.originalId = record.id
     },
-    onTypeChange(menuType){
+    onTypeChange (menuType) {
       this.menuType = menuType
     },
     selectIcons () {

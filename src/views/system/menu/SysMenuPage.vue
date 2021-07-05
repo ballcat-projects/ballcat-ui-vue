@@ -106,8 +106,6 @@ import { TablePageMixin } from '@/mixins'
 import SysMenuModalForm from '@/views/system/menu/SysMenuModalForm'
 import { listToTree } from '@/utils/treeUtil'
 
-const TREE_ROOT = [{ id: 0, title: '根目录', children: [] }]
-
 export default {
   name: 'SysMenuPage',
   components: { SysMenuModalForm },
@@ -174,14 +172,21 @@ export default {
       // 懒加载，取消mixin中的自动加载，第一次加载交由组件自己处理
       lazyLoad: true,
       // 菜单树
-      nonButtonMenuTree: TREE_ROOT
+      nonButtonMenuTree: [{ id: 0, titleName: '根目录', children: [], scopedSlots: { title: 'title' } }]
     }
   },
   created () {
     list().then(res => {
       const data = res.data
       this.dataSource = listToTree(data, 0)
-      TREE_ROOT[0].children = listToTree(data.filter(x => x.type !== 2), 0)
+      const onlyMenuTree = listToTree(data.filter(x => x.type !== 2), 0, (treeNode, item) => {
+        // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
+        // @see https://github.com/vueComponent/ant-design-vue/issues/2826
+        treeNode.titleName = treeNode.title
+        delete treeNode.title
+        treeNode.scopedSlots = { title: 'title' }
+      })
+      this.$set(this.nonButtonMenuTree[0], 'children' , onlyMenuTree);
     })
   },
   methods: {
