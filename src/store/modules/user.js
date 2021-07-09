@@ -47,17 +47,22 @@ const user = {
           const ttl = res.expires_in * 1000
           const accessToken = res.access_token
           const refreshToken = res.refresh_token
+          const info = res.info
 
-          if (res.permissions.length < 0) {
+          const attributes = res.attributes || {}
+          const permissions = attributes.permissions
+          const roles = attributes.roles
+
+          if (permissions.length < 0) {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
 
-          Vue.ls.set(USER_INFO, res.info, ttl)
-          commit('SET_INFO', res.info)
-          Vue.ls.set(ROLES, res.roles, ttl)
-          commit('SET_ROLES', res.roles)
-          Vue.ls.set(PERMISSIONS, res.permissions, ttl)
-          commit('SET_PERMISSIONS', res.permissions)
+          Vue.ls.set(USER_INFO, info, ttl)
+          commit('SET_INFO', info)
+          Vue.ls.set(ROLES, roles, ttl)
+          commit('SET_ROLES', roles)
+          Vue.ls.set(PERMISSIONS, permissions, ttl)
+          commit('SET_PERMISSIONS', permissions)
           Vue.ls.set(ACCESS_TOKEN, accessToken, ttl)
           commit('SET_TOKEN', accessToken)
 
