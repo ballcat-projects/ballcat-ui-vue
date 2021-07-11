@@ -114,7 +114,7 @@ export default {
       this.confirmLoading = false
     },
     validateConfirmOnBlur (){
-      this.form.validateFields(['confirm'], {force: true})
+      this.form.validateFields(['confirmPass'], {force: true})
     },
     validateConfirm (rule, confirm, callback) {
       const pass = this.form.getFieldValue('pass')
