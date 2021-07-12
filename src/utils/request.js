@@ -39,9 +39,12 @@ const onRejected = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
+  // token
   const token = Vue.ls.get(ACCESS_TOKEN)
-  if (token) {
-    config.headers['Authorization'] = 'Bearer '+ token // 让每个请求携带自定义 token 请根据实际情况自行修改
+  // Authorization 请求头不存在再进行追加
+  const headers = config.headers
+  if (token && headers && !headers['Authorization']) {
+    headers['Authorization'] = 'Bearer '+ token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
   return config
 }, onRejected)
