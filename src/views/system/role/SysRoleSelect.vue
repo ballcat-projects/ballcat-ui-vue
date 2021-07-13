@@ -5,6 +5,7 @@
     :mode="mode"
     :placeholder="placeholder"
     :allow-clear="allowClear"
+    :filter-option="filterOption"
     @change="handleChange"
   >
     <a-select-option
@@ -61,6 +62,11 @@ export default {
     })
   },
   methods: {
+    filterOption(input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      );
+    },
     handleChange (val) {
       if (val && val.target) {
         this.roleCodes = val.target.value

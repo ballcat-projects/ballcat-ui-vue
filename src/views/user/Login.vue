@@ -45,6 +45,7 @@
               type="password"
               autocomplete="false"
               placeholder="密码: a123456"
+              @pressEnter="showCaptchaBox"
             >
               <template #prefix>
                 <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
