@@ -83,9 +83,10 @@
           </template>
           <template #expandedRowRender="record">
             <p>params:</p>
-            <pre><div class="wordwrap" >{{record.params}}</div> </pre>
+            <pre><span class="wordwrap">{{ record.params }}</span></pre>
             <p>userAgent:</p>
-            {{ record.userAgent }}}
+            <pre><span class="wordwrap">{{ record.params }}</span></pre>
+            {{ record.userAgent }}
           </template>
         </a-table>
       </div>
