@@ -83,7 +83,7 @@
           </template>
           <template #expandedRowRender="record">
             <p>params:</p>
-            <pre><div class="wordwrap" v-html="record.params" /></pre>
+            <pre><div class="wordwrap" >{{record.params}}</div> </pre>
             <p>userAgent:</p>
             {{ record.userAgent }}}
           </template>

@@ -77,11 +77,11 @@
         >
           <template #expandedRowRender="record">
             <p>reqParams:</p>
-            <pre><div class="wordwrap" v-html="record.reqParams" /></pre>
+            <pre><div class="wordwrap" >{{record.reqParams}}</div> </pre>
             <p>reqBody:</p>
-            <pre><div class="wordwrap" v-html="record.reqBody" /></pre>
+            <pre><div class="wordwrap" >{{record.reqBody}}</div> </pre>
             <p>result:</p>
-            <pre><div class="wordwrap" v-html="record.result" /></pre>
+            <pre><div class="wordwrap" >{{record.result}}</div> </pre>
             <p>userAgent:</p>
             {{ record.userAgent }}}
           </template>
