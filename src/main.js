@@ -16,19 +16,21 @@ Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
   if (relativeUrl) {
     return 'https://hccake-img.oss-cn-shanghai.aliyuncs.com/' + relativeUrl
   }
-};
+}
 
 // 字典注册
-import DictPlugin  from '@/components/Dict/dictPlugin'
+import DictPlugin from '@/components/Dict/dictPlugin'
+
 Vue.use(DictPlugin)
 // lov注册
 import LovPlugin from '@/components/Lov/lovPlugin'
+
 Vue.use(LovPlugin)
 
 Vue.config.productionTip = false
 
 new Vue({
-  beforeCreate(){
+  beforeCreate () {
     // 全局事件总线
     Vue.prototype.$bus = this
   },
