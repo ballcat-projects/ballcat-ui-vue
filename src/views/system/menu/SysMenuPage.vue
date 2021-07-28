@@ -176,24 +176,28 @@ export default {
     }
   },
   created () {
-    list().then(res => {
-      const data = res.data
-      this.dataSource = listToTree(data, 0)
-      const onlyMenuTree = listToTree(data.filter(x => x.type !== 2), 0, (treeNode, item) => {
-        // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
-        // @see https://github.com/vueComponent/ant-design-vue/issues/2826
-        treeNode.titleName = treeNode.title
-        delete treeNode.title
-        treeNode.scopedSlots = { title: 'title' }
-      })
-      this.$set(this.nonButtonMenuTree[0], 'children' , onlyMenuTree);
-    })
+    this.loadData()
   },
   methods: {
-    reloadTable () {
+    loadData () {
+      this.loading = true
       list(this.queryParam).then(res => {
-        this.dataSource = listToTree(res.data, 0)
+        const data = res.data
+        this.dataSource = listToTree(data, 0)
+        const onlyMenuTree = listToTree(data.filter(x => x.type !== 2), 0, (treeNode, item) => {
+          // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
+          // @see https://github.com/vueComponent/ant-design-vue/issues/2826
+          treeNode.titleName = treeNode.title
+          delete treeNode.title
+          treeNode.scopedSlots = { title: 'title' }
+        })
+        this.$set(this.nonButtonMenuTree[0], 'children', onlyMenuTree)
+      }).finally(() => {
+        this.loading = false
       })
+    },
+    reloadTable () {
+      this.loadData()
     },
     /**
      * 新建菜单权限
@@ -201,12 +205,12 @@ export default {
     handleAdd (record) {
       const attributes = { title: '新建菜单权限' }
       // 按钮类型不允许有子级，所以默认变成创建平级
-      if( record ){
+      if (record) {
         attributes.formData = {
-          parentId: record.type === 2 ? record.parentId: record.id,
+          parentId: record.type === 2 ? record.parentId : record.id,
           type: record.type === 2 ? 2 : record.type + 1
         }
-      }else {
+      } else {
         attributes.formData = {
           type: 0
         }
