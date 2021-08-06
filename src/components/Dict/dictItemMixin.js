@@ -10,13 +10,27 @@ export default {
   },
   computed: {
     ...mapState({
-      dictDataCache: state => state.dict.dictDataCache
+      dictDataCache: state => state.dict.dictDataCache,
+      lang: state => state.i18n.lang
     }),
     dictItems () {
-      if (!this.dictDataCache[this.dictCode]) {
+      let dictData = this.dictDataCache[this.dictCode]
+      if (!dictData) {
         this.fillDictCache([this.dictCode]).finally()
       }
-      return this.dictDataCache[this.dictCode] || []
+
+      let dictItems = [];
+      if(dictData){
+        // 配置了国际化信息时，进行国际化处理
+        dictItems =  dictData.map(dictItem => {
+          const languages = dictItem.attributes.languages
+          if (languages && languages[this.lang]) {
+            dictItem.name = languages[this.lang]
+          }
+          return dictItem
+        })
+      }
+      return dictItems
     }
   },
   created () {
@@ -26,16 +40,16 @@ export default {
   },
   methods: {
     ...mapActions(['fillDictCache']),
-    getValByItem (dict) {
-      let res = dict.value
+    getValByItem (dictItem) {
+      let res = dictItem.value
       // 如果没有type， 按number 处理
-      let valueType = dict.valueType || 1
+      let valueType = dictItem.valueType || 1
       if (valueType === 1) {
-        res = Number(dict.value)         // 数字
+        res = Number(dictItem.value)         // 数字
       } else if (valueType === 2) {
-        res = String(dict.value)         // 字符串
+        res = String(dictItem.value)         // 字符串
       } else if (valueType === 3) {
-        res = Boolean(dict.value)        // 布尔
+        res = Boolean(dictItem.value)        // 布尔
       }
       return res
     }
