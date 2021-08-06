@@ -5,57 +5,54 @@
  */
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-// default language
-import enUS from './lang/en-US'
-// change default accept-language
-import request from '@/utils/request'
+import store from '@/store'
+import { APP_LANGUAGE } from '@/store/storage-types'
 
 Vue.use(VueI18n)
 
-export const defaultLang = 'en-US'
-
+// default language
+export const defaultLang = 'zh-CN'
+import zhCN from './lang/zh-CN'
 const messages = {
-  'en-US': {
-    ...enUS
+  'zh-CN': {
+    ...zhCN
   }
 }
 
-const i18n = new VueI18n({
-  locale: defaultLang,
+export const i18n = new VueI18n({
+  locale: defaultLang, // 设置语言环境
   fallbackLocale: defaultLang,
-  messages
+  messages // 设置语言环境信息
 })
 
-export default i18n
+const loadedLanguages = [defaultLang]  // 我们的预装默认语言
 
-const loadedLanguages = [defaultLang]
-
-// 从缓存設置中加载当前语言
-// if (Vue.ls.get('lang') !== null && defaultLang !== Vue.ls.get('lang')) {
-//   loadLanguageAsync(localStorage.lang)
-// }
 
 function setI18nLanguage (lang) {
+  store.commit('SET_LANG', lang)
+  Vue.ls.set(APP_LANGUAGE, lang)
   i18n.locale = lang
-  request.defaults.headers.common['Accept-Language'] = lang
   document.querySelector('html').setAttribute('lang', lang)
   return lang
 }
 
-export function loadLanguageAsync (lang = defaultLang) {
-  return new Promise(resolve => {
-    // 缓存语言设置
-    Vue.ls.set('lang', lang)
-    if (i18n.locale !== lang) {
-      if (!loadedLanguages.includes(lang)) {
-        return import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}`).then(msg => {
-          i18n.setLocaleMessage(lang, msg.default)
-          loadedLanguages.push(lang)
-          return setI18nLanguage(lang)
-        })
-      }
-      return resolve(setI18nLanguage(lang))
+export function loadLanguageAsync (lang) {
+  // 如果语言相同
+  if (i18n.locale === lang) {
+    return Promise.resolve(setI18nLanguage(lang))
+  }
+
+  // 如果语言已经加载
+  if (loadedLanguages.includes(lang)) {
+    return Promise.resolve(setI18nLanguage(lang))
+  }
+
+  // 如果尚未加载语言
+  return import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}.js`).then(
+    messages => {
+      i18n.setLocaleMessage(lang, messages.default)
+      loadedLanguages.push(lang)
+      return setI18nLanguage(lang)
     }
-    return resolve(lang)
-  })
+  )
 }

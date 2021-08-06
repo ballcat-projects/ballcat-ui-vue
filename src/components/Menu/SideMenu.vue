@@ -76,6 +76,9 @@ export default {
     },
     device () {
       this.firstToUpper(this.$route)
+    },
+    menus (){
+      this.firstToUpper(this.$route)
     }
   },
   created () {

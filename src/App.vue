@@ -7,14 +7,18 @@
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import { AppDeviceEnquire } from '@/utils/mixin'
+import { mapGetters } from 'vuex'
 
 export default {
   mixins: [AppDeviceEnquire],
   data () {
-    return {
-      locale: zhCN
+    return {}
+  },
+  computed: {
+    ...mapGetters(["lang"]),
+    locale () {
+      return this.$i18n.getLocaleMessage(this.lang).antLocale
     }
   },
   mounted () {

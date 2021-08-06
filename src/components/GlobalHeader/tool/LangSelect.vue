@@ -1,29 +1,19 @@
 <template>
   <a-dropdown>
     <span style="font-size: 16px">
-      <a-icon type="global" />
+      <a-icon :component="i18nIcon" />
     </span>
     <template #overlay>
-      <a-menu style="width: 150px;" @click="SwitchLang">
+      <a-menu
+        style="width: 150px;"
+        :selected-keys="selectedKeys"
+        @click="switchLang"
+      >
         <a-menu-item key="zh-CN">
-          <a rel="noopener noreferrer">
-            <span role="img" aria-label="简体中文">🇨🇳</span> 简体中文
-          </a>
-        </a-menu-item>
-        <a-menu-item key="zh-TW">
-          <a rel="noopener noreferrer">
-            <span role="img" aria-label="繁体中文">🇭🇰</span> 繁体中文
-          </a>
+          <span role="img" aria-label="简体中文">🇨🇳</span> 简体中文
         </a-menu-item>
         <a-menu-item key="en-US">
-          <a rel="noopener noreferrer">
-            <span role="img" aria-label="English">🇬🇧</span> English
-          </a>
-        </a-menu-item>
-        <a-menu-item key="pt-BR">
-          <a rel="noopener noreferrer">
-            <span role="img" aria-label="Português">🇧🇷</span> Português
-          </a>
+          <span role="img" aria-label="English">🇺🇸</span> English
         </a-menu-item>
       </a-menu>
     </template>
@@ -31,14 +21,41 @@
 </template>
 
 <script>
+import { i18nIcon } from '@/core/icons'
+import { loadLanguageAsync } from '@/locales'
+import { mapActions, mapGetters } from 'vuex'
+import router, { resetRouter } from '@/router'
+
 export default {
   name: 'LangSelect',
   data () {
-    return {}
+    return {
+      i18nIcon
+    }
+  },
+  computed: {
+    ...mapGetters(['lang', 'userRouters']),
+    selectedKeys() {
+      return [this.lang]
+    }
   },
   methods: {
-    SwitchLang (row) {
-      console.log('待实现')
+    ...mapActions(['GenerateRoutes']),
+    switchLang (row) {
+      const newLang = row.key
+      if (this.lang !== newLang) {
+        // 切换国际化配置
+        loadLanguageAsync(newLang).then(() => {
+            // 切换对应语言的国际化
+            this.GenerateRoutes().then(() => {
+              resetRouter()
+              router.addRoutes(this.userRouters)
+              // 发送切换语言事件
+              this.$bus.$emit('switch-language', newLang)
+            })
+          }
+        )
+      }
     }
   }
 }

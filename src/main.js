@@ -9,7 +9,7 @@ import bootstrap from './core/bootstrap'
 import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
-import i18n from './locales'
+import { i18n } from './locales'
 
 // 文件相对路径转绝对路径
 Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {

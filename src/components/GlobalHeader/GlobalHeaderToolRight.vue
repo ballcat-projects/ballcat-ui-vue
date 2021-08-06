@@ -13,6 +13,8 @@
 
     <user-account-dropdown class="ballcat-global-header-tool-action" />
 
+    <lang-select class="ballcat-global-header-tool-action" />
+
     <!--    <lang-select class="ballcat-global-header-tool-action" />-->
     <span class="ballcat-global-header-tool-action" @click="showSettingDrawer">
       <a-icon type="more" style="font-size: 16px; font-weight: bolder" />
@@ -25,6 +27,7 @@
 import Screenfull from '@/components/Screenfull'
 import NoticeIcon from '@/components/GlobalHeader/tool/NoticeIcon'
 import UserAccountDropdown from '@/components/GlobalHeader/tool/AvatarDropdown'
+import LangSelect from '@/components/GlobalHeader/tool/LangSelect'
 import SettingDrawer from '@/components/SettingDrawer/SettingDrawer'
 
 export default {
@@ -33,7 +36,8 @@ export default {
     SettingDrawer,
     NoticeIcon,
     Screenfull,
-    UserAccountDropdown
+    UserAccountDropdown,
+    LangSelect
   },
   methods: {
     showSettingDrawer(){

@@ -12,9 +12,11 @@ export const SETTINGS_LS = {
   MULTI_TAB: 'multi_tab'
 }
 
-
 // 用户信息
 export const ACCESS_TOKEN = 'access-token'
 export const USER_INFO = 'user_info'
 export const PERMISSIONS = 'permissions'
 export const ROLES = 'roles'
+
+// 国际化语言
+export const APP_LANGUAGE = 'app_language'
