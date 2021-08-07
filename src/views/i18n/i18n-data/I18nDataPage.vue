@@ -1,0 +1,183 @@
+<template>
+  <div class="ant-pro-page-container-children-content">
+    <!-- 查询条件 -->
+    <div class="ant-pro-table-search">
+      <a-form v-bind="searchFormLayout">
+        <a-row :gutter="16">
+          <a-col :xl="6" :md="12" :sm="24">
+            <a-form-item :label="$t('i18n.i18nData.code')">
+              <a-input v-model="queryParam.code" :placeholder="$t('message.pleaseEnter')" />
+            </a-form-item>
+          </a-col>
+          <a-col :xl="6" :md="12" :sm="24">
+            <a-form-item :label="$t('i18n.i18nData.message')">
+              <a-input v-model="queryParam.message" :placeholder="$t('message.pleaseEnter')" />
+            </a-form-item>
+          </a-col>
+          <a-col
+            :xl="8"
+            :md="12"
+            :sm="24"
+          >
+            <a-form-item
+              :label="$t('i18n.i18nData.languageTag')"
+              :label-col="{ xl: {span: 7}, md: {span: 6}}"
+              :wrapper-col=" { xl: {span: 17}, md: {span: 18} }"
+            >
+              <a-input v-model="queryParam.languageTag" :placeholder="$t('message.pleaseEnter')" />
+            </a-form-item>
+          </a-col>
+          <!-- <template v-if="advanced">
+           </template>-->
+          <a-col
+            :xl="4"
+            :md="12"
+            :sm="24"
+            class="table-page-search-wrapper"
+          >
+            <div class="table-page-search-submitButtons">
+              <a-button type="primary" @click="reloadTable">{{ $t('action.query') }}</a-button>
+              <a-button style="margin-left: 8px" @click="resetSearchForm">{{ $t('action.reset') }}</a-button>
+              <!--<a @click="toggleAdvanced" style="margin-left: 8px">
+                {{ advanced ? $t('action.expand') : $t('action.collapse') }}
+                <a-icon :type="advanced ? 'up' : 'down'"/>
+              </a>-->
+            </div>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
+
+    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+      <!-- 操作按钮区域 -->
+      <div class="ant-pro-table-toolbar">
+        <div class="ant-pro-table-toolbar-title">{{ $t('i18n.i18nData.text') }}</div>
+        <div class="ant-pro-table-toolbar-option">
+          <a-button
+            v-has="'i18n:i18n-data:add'"
+            type="primary"
+            icon="plus"
+            @click="handleAdd()"
+          >{{ $t('action.create') }}
+          </a-button>
+        </div>
+      </div>
+
+      <!--数据表格区域-->
+      <div class="ant-pro-table-wrapper">
+        <a-table
+          ref="table"
+          size="middle"
+          :row-key="rowKey"
+          :columns="columns"
+          :data-source="dataSource"
+          :pagination="pagination"
+          :loading="loading"
+          @change="handleTableChange"
+        >
+          <template #action-slot="text, record">
+            <a v-has="'i18n:i18n-data:edit'" @click="handleEdit(record)">{{ $t('action.edit') }}</a>
+            <a-divider type="vertical" />
+            <a-popconfirm
+              v-has="'i18n:i18n-data:del'"
+              :title="$t('message.confirmDelete')"
+              @confirm="() => handleDel(record)"
+            >
+              <a href="javascript:" class="ballcat-text-danger">{{ $t('action.delete') }}</a>
+            </a-popconfirm>
+          </template>
+        </a-table>
+      </div>
+    </a-card>
+
+    <!--表单弹窗-->
+    <i18n-data-modal-form ref="formModal" @reload-page-table="reloadTable" />
+  </div>
+</template>
+
+<script>
+import { getPage, delObj } from '@/api/i18n/i18n-data'
+import { TablePageMixin } from '@/mixins'
+import I18nDataModalForm from '@/views/i18n/i18n-data/I18nDataModalForm'
+
+export default {
+  name: 'I18nDataPage',
+  components: { I18nDataModalForm },
+  mixins: [TablePageMixin],
+  data () {
+    return {
+      getPage: getPage,
+      delObj: delObj
+    }
+  },
+  computed: {
+    columns () {
+      return [
+        {
+          title: '#',
+          dataIndex: 'id'
+        },
+        {
+          title: this.$t('i18n.i18nData.languageTag.text'),
+          dataIndex: 'languageTag'
+        },
+        {
+          title: this.$t('i18n.i18nData.code.text'),
+          dataIndex: 'code'
+        },
+        {
+          title: this.$t('i18n.i18nData.message.text'),
+          dataIndex: 'message'
+        },
+        {
+          title: this.$t('common.remark'),
+          dataIndex: 'remark'
+        },
+        {
+          title: this.$t('common.createTime'),
+          dataIndex: 'createTime',
+          width: '150px',
+          sorter: true
+        },
+        {
+          title: this.$t('common.operation'),
+          align: 'center',
+          width: '150px',
+          scopedSlots: { customRender: 'action-slot' }
+        }
+      ]
+    }
+  },
+  methods: {
+    /**
+     * 新建国际化信息
+     */
+    handleAdd () {
+      const attributes = { title: this.$t('action.create') + ' ' + this.$t('i18n.i18nData.text') }
+      this.$refs.formModal.add(attributes)
+    },
+    /**
+     * 编辑国际化信息
+     * @param record 当前国际化信息属性
+     */
+    handleEdit (record) {
+      const attributes = { title: this.$t('action.edit') + ' ' + this.$t('i18n.i18nData.text') }
+      this.$refs.formModal.update(record, attributes)
+    },
+    // 删除
+    handleDel (record) {
+      this.delObj(record.code, record.languageTag).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.reloadTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
+  }
+}
+</script>

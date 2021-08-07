@@ -10,11 +10,49 @@ const components = {
 export default {
   ...components,
 
-  dashboard: {
-    workplace: {
-      project: 'Project Count',
-      teamRank: 'Team rank',
-      views: 'Views'
+  action: {
+    query: 'Query',
+    reset: 'Reset',
+    expand: 'Expand',
+    collapse: 'Collapse',
+    more: 'More',
+    create: 'New',
+    delete: 'Delete',
+    edit: 'Edit',
+    export: 'Export',
+    details: 'Details',
+  },
+
+  common: {
+    operation: 'Operation',
+    createTime: 'Create Time',
+    updateTime: 'Update Time',
+    remark: 'Remark',
+  },
+
+  message: {
+    confirmDelete: 'Are you sure delete?',
+    pleaseEnter: 'Please enter',
+  },
+
+  i18n: {
+    i18nData: {
+      text: 'I18N Data',
+      languageTag: {
+        text: 'Language Tag',
+        tips: 'LanguageTag，eg. zh-CN en-Us',
+        required: 'Please enter i18n data language-tag！'
+      },
+      code: {
+        text: 'Code',
+        tips: 'A unique code for i18n data',
+        required: 'Please enter i18n data code！'
+      },
+      message: {
+        text:  'Message',
+        tips: 'The text of the i18n data',
+        required: 'Please enter i18n data message！！'
+      }
     }
   }
 }
