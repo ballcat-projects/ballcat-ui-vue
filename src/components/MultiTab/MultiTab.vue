@@ -80,6 +80,10 @@ export default {
     this.componentNameList()
     this.selectedLastPath()
   },
+  destroyed () {
+    // 销毁监听事件
+    this.$bus.$off('switch-language', this.switchTitle)
+  },
   methods: {
     switchTitle () {
       const routes = this.$router.getRoutes()

@@ -11,6 +11,7 @@ import {
 
 import { appDefaultSetting } from '@/config/defaultSettings'
 import { APP_MUTATIONS } from '@/store/mutation-types'
+import { switchLanguage } from '@/locales'
 
 export default function Initializer () {
   console.log(`API_URL: ${process.env.VUE_APP_API_BASE_URL}`)
@@ -32,6 +33,6 @@ export default function Initializer () {
   store.commit('SET_ROLES', Vue.ls.get(ROLES))
   store.commit('SET_PERMISSIONS', Vue.ls.get(PERMISSIONS))
 
-  // 切换语言
-  store.commit('SET_LANG', Vue.ls.get(APP_LANGUAGE, 'zh-CN'))
+  // 国际化处理
+  switchLanguage(Vue.ls.get(APP_LANGUAGE, 'zh-CN'))
 }

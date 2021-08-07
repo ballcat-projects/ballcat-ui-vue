@@ -13,6 +13,7 @@ Vue.use(VueI18n)
 // default language
 export const defaultLang = 'zh-CN'
 import zhCN from './lang/zh-CN'
+
 const messages = {
   'zh-CN': {
     ...zhCN
@@ -27,32 +28,42 @@ export const i18n = new VueI18n({
 
 const loadedLanguages = [defaultLang]  // 我们的预装默认语言
 
-
-function setI18nLanguage (lang) {
+/**
+ * 切换语言
+ * @param lang
+ * @returns {*}
+ */
+export function switchLanguage (lang) {
+  // 同步切换 vuex，ls, html 标识的语言，防止异常
   store.commit('SET_LANG', lang)
   Vue.ls.set(APP_LANGUAGE, lang)
-  i18n.locale = lang
   document.querySelector('html').setAttribute('lang', lang)
+  // 异步切换 i18n 的语言，方便做到懒加载
+  setI18nLanguageAsync(lang)
   return lang
 }
 
-export function loadLanguageAsync (lang) {
+/**
+ * 切换 vue-i18n.locale，如果语言文件未加载，则异步加载后切换
+ * @param lang
+ */
+function setI18nLanguageAsync (lang) {
   // 如果语言相同
   if (i18n.locale === lang) {
-    return Promise.resolve(setI18nLanguage(lang))
+    return
   }
 
   // 如果语言已经加载
   if (loadedLanguages.includes(lang)) {
-    return Promise.resolve(setI18nLanguage(lang))
+    i18n.locale = lang
   }
 
   // 如果尚未加载语言
-  return import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}.js`).then(
+  import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}.js`).then(
     messages => {
       i18n.setLocaleMessage(lang, messages.default)
       loadedLanguages.push(lang)
-      return setI18nLanguage(lang)
+      i18n.locale = lang
     }
   )
 }

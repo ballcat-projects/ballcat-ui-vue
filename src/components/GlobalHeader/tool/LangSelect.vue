@@ -22,7 +22,7 @@
 
 <script>
 import { i18nIcon } from '@/core/icons'
-import { loadLanguageAsync } from '@/locales'
+import { switchLanguage } from '@/locales'
 import { mapActions, mapGetters } from 'vuex'
 import router, { resetRouter } from '@/router'
 
@@ -45,16 +45,15 @@ export default {
       const newLang = row.key
       if (this.lang !== newLang) {
         // 切换国际化配置
-        loadLanguageAsync(newLang).then(() => {
-            // 切换对应语言的国际化
-            this.GenerateRoutes().then(() => {
-              resetRouter()
-              router.addRoutes(this.userRouters)
-              // 发送切换语言事件
-              this.$bus.$emit('switch-language', newLang)
-            })
-          }
-        )
+        switchLanguage(newLang)
+        // 切换菜单/路由的国际化
+        this.GenerateRoutes().then(() => {
+          // 重置路由
+          resetRouter()
+          router.addRoutes(this.userRouters)
+          // 发送切换语言事件，多页签会接收此事件，进行多语言切换
+          this.$bus.$emit('switch-language', newLang)
+        })
       }
     }
   }
