@@ -7,26 +7,28 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import store from '@/store'
 import { APP_LANGUAGE } from '@/store/storage-types'
+// import { defaultLanguage } from '@/config/projectConfig'
 
+// 加载 vueI18n
 Vue.use(VueI18n)
 
-// default language
-export const defaultLang = 'zh-CN'
-import zhCN from './lang/zh-CN'
+// 已经加载的语言列表
+const loadedLanguages = []
 
-const messages = {
-  'zh-CN': {
-    ...zhCN
-  }
-}
+// 当找不到对应语言的配置时，是否需要回退
+const fallbackLocale = false;
 
+// 这里没有加载语言，语言加载交由 bootstrap.js 中处理，这样避免默认语言和设置语言不一样时，依然要先加载默认语言的问题
 export const i18n = new VueI18n({
-  locale: defaultLang, // 设置语言环境
-  fallbackLocale: defaultLang,
-  messages // 设置语言环境信息
+  locale: 'unKnow', // 设置语言环境，这里故意给定 unKnow，方便切换
+  fallbackLocale: fallbackLocale,
+  messages: {} // 设置语言环境信息
 })
 
-const loadedLanguages = [defaultLang]  // 我们的预装默认语言
+// 当需要回退语言时，则需要预先加载默认语言的配置
+if(fallbackLocale !== false){
+  loadLanguageProperties(fallbackLocale)
+}
 
 /**
  * 切换语言
@@ -59,6 +61,15 @@ function setI18nLanguageAsync (lang) {
   }
 
   // 如果尚未加载语言
+  loadLanguageProperties(lang)
+}
+
+
+/**
+ * 加载语言配置文件
+ * @param lang
+ */
+function loadLanguageProperties (lang) {
   import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}.js`).then(
     messages => {
       i18n.setLocaleMessage(lang, messages.default)

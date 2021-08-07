@@ -1,6 +1,8 @@
+import { defaultLanguage } from '@/config/projectConfig'
+
 const i18n = {
   state: {
-    lang: 'zh-CN'
+    lang: defaultLanguage
   },
   mutations: {
     SET_LANG: (state, lang) => {
