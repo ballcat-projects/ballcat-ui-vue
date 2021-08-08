@@ -21,6 +21,70 @@
       <a-input v-decorator="['value']" placeholder="数据值" />
     </a-form-item>
 
+    <a-row :gutter="16">
+      <a-col :xs="12" :sm="24" :md="12">
+        <a-form-item label="标签颜色" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
+
+          <a-popover trigger="click" placement="top">
+            <template slot="content">
+              <template v-for="tagColor in antdTagColor">
+                <a-tag :key="tagColor" :color="tagColor" @click="presetTagColor(tagColor)">{{ tagColor }}</a-tag>
+              </template>
+            </template>
+            <a-tag :color="tagColorAttribute" style="margin: 0 0 0 5px">点我换色</a-tag>
+          </a-popover>
+
+          <a-popover trigger="click" placement="right">
+            <template slot="content">
+              <sketch-picker v-model="tagColorPicker" @input="onTagColorPicker" />
+            </template>
+            <a href="javascript:" style="margin-left: 5px"><a-icon :component="colorPicker" /></a>
+          </a-popover>
+
+
+          <a
+            v-if="tagColorAttribute"
+            href="javascript:"
+            style="margin-left: 5px; display: inline-block"
+            @click="clearTagColor"
+          >
+            <a-icon type="delete" />
+          </a>
+        </a-form-item>
+      </a-col>
+
+      <a-col :xs="12" :sm="24" :md="12">
+        <a-form-item label="文本颜色" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
+          <span :style="{marginLeft: '5px', color: textColorAttribute || 'black'}">颜色演示</span>
+          <a-popover trigger="click" placement="right">
+            <template slot="content">
+              <sketch-picker v-model="textColorPicker" @input="onTextColorPicker" />
+            </template>
+            <a href="javascript:" style="margin-left: 5px"><a-icon :component="colorPicker" /></a>
+          </a-popover>
+          <a
+            v-if="textColorAttribute"
+            href="javascript:"
+            style="margin-left: 5px; display: inline-block"
+            @click="clearTextColor"
+          >
+            <a-icon type="delete" />
+          </a>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
+
+
+    <a-form-item label="国际化">
+      <a-input
+        v-for="language in supportLanguage"
+        :key="language.lang"
+        v-model="languagesAttribute[language.lang]"
+        :addon-before="language.title"
+      />
+    </a-form-item>
+
     <a-form-item>
       <template #label>
         <span>
@@ -36,17 +100,6 @@
         :min="0"
         style="width: 70%"
       />
-    </a-form-item>
-
-    <a-form-item label="附加属性">
-      <div id="code">
-        <codemirror
-          v-model="itemAttributes"
-          :options="cmOptions"
-          style="line-height: 1.5"
-          @mouseleave.passive="leave"
-        />
-      </div>
     </a-form-item>
 
     <a-form-item label="备注">
@@ -65,21 +118,22 @@
 </template>
 
 <script>
+import { colorPicker } from '@/core/icons'
 import { PageFormMixin } from '@/mixins'
+import { supportLanguage } from '@/locales'
 
 import { addObj, putObj } from '@/api/system/dict-item'
-// codemirror
-import { codemirror } from 'vue-codemirror'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/dracula.css'
-import 'codemirror/mode/javascript/javascript'
+
+import { Sketch } from 'vue-color'
 
 export default {
   name: 'SysDictItemPageForm',
-  components: { codemirror },
+  components: { 'sketch-picker': Sketch },
   mixins: [PageFormMixin],
   data () {
     return {
+      colorPicker,
+
       reqFunctions: {
         create: addObj,
         update: putObj
@@ -87,75 +141,100 @@ export default {
 
       labelCol: {
         sm: { span: 24 },
-        md: { span: 3 }
+        md: { span: 4 }
       },
       wrapperCol: {
         sm: { span: 24 },
-        md: { span: 20 }
+        md: { span: 18 }
+      },
+
+      rowLabelCol: {
+        sm: { span: 24 },
+        md: { span: 8 }
+      },
+      rowWrapperCol: {
+        sm: { span: 24 },
+        md: { span: 12 }
       },
 
       // 校验配置
       decoratorOptions: {},
 
-      cmOptions: {
-        // codemirror options
-        size: { height: '150px' },
-        tabSize: 2,
-        mode: 'application/json',
-        theme: 'dracula',
-        lineNumbers: true,
-        line: true,
-        matchBrackets: true,
-        extraKeys: {
-          // 格式化
-          'Ctrl-Alt-L': () => {
-            this.itemAttributesFormat()
-          }
-        }
-        // more codemirror options, 更多 codemirror 的高级配置...
-      },
-      itemAttributes: '{}'
+      antdTagColor: ["pink", 'red', 'orange', 'green', 'cyan', 'blue', 'purple'],
+
+      // dict-tag 的颜色
+      // 拾色器绑定对象
+      tagColorPicker: '',
+      // 颜色属性
+      tagColorAttribute: '',
+
+      // dict-text 的颜色
+      textColorPicker: '',
+      textColorAttribute: '',
+
+      // 支持的语言列表
+      supportLanguage: supportLanguage,
+      // 语言属性
+      languagesAttribute: {}
+    }
+  },
+  computed: {
+    colorBoxStyle () {
+      return {
+        display: 'inline-block',
+        width: '16px',
+        height: '16px',
+        marginTop: '12px',
+        border: '1px',
+        borderStyle: 'solid',
+        borderColor: '#000000',
+        backgroundColor: this.tagColorAttribute
+      }
     }
   },
   methods: {
+    presetTagColor(tagColor){
+      this.tagColorAttribute = tagColor
+    },
+    onTagColorPicker(tagColorPicker){
+      this.tagColorAttribute = tagColorPicker.hex
+    },
+    onTextColorPicker(textColorPicker){
+      this.textColorAttribute = textColorPicker.hex
+    },
+    clearTagColor() {
+      this.tagColorAttribute = ''
+    },
+    clearTextColor() {
+      this.textColorAttribute = ''
+    },
     createdFormCallback (attributes) {
       this.form.setFieldsValue({ dictCode: attributes.dictCode })
     },
     echoDataProcess (data) {
-      this.itemAttributes = JSON.stringify(data.attributes, null, 2)
-    },
-    /**
-     * 提交前校验数据
-     */
-    beforeStartSubmit () {
-      if (this.itemAttributes && !this.checkItemAttributes()) {
-        this.$message.error('附加属性必须为一个正确的json字符串对象或者为空')
-        return false
+      let attributes = data.attributes
+      if (!attributes.languages) {
+        attributes.languages = {}
       }
-    },
-    submitDataProcess (data) {
-      data.attributes = JSON.parse(this.itemAttributes)
-      return data
-    },
-    /**
-     * 格式化 attributes
-     */
-    itemAttributesFormat () {
-      if (this.itemAttributes && this.checkItemAttributes()) {
-        this.itemAttributes = JSON.stringify(JSON.parse(this.itemAttributes), null, 2)
+      this.languagesAttribute = attributes.languages
+
+      if(!attributes.tagColor){
+        attributes.tagColor = ''
       }
-    },
-    /**
-     * 校验附加属性是否是一个正确的 json 字符串, 切必须是一个对象
-     * @returns {boolean}
-     */
-    checkItemAttributes () {
-      let jsonStr
-      try {
-        jsonStr = JSON.parse(this.itemAttributes)
-      } catch (e) {
+      this.tagColorAttribute = attributes.tagColor
+
+      if(!attributes.textColor){
+        attributes.textColor = ''
       }
-      return jsonStr && typeof jsonStr == 'object'
+      this.textColorAttribute = attributes.textColor
+    },
+    submitDataProcess (submitData) {
+      submitData.attributes = {
+        tagColor: this.tagColorAttribute,
+        textColor: this.textColorAttribute,
+        languages: this.languagesAttribute
+      }
+      return submitData
     }
   }
 }

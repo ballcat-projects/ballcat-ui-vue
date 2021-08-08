@@ -17,10 +17,18 @@
         <a-input v-decorator="['id']" />
       </a-form-item>
       <a-form-item :label="$t('i18n.i18nData.languageTag')">
-        <a-input v-decorator="['languageTag', decoratorOptions.languageTag]" :placeholder="$t('i18n.i18nData.languageTag.tips')" />
+        <a-input
+          v-decorator="['languageTag', decoratorOptions.languageTag]"
+          :placeholder="$t('i18n.i18nData.languageTag.tips')"
+          :disabled="isUpdateForm"
+        />
       </a-form-item>
       <a-form-item :label="$t('i18n.i18nData.code')">
-        <a-input v-decorator="['code', decoratorOptions.code]" :placeholder="$t('i18n.i18nData.code.tips')" />
+        <a-input
+          v-decorator="['code', decoratorOptions.code]"
+          :placeholder="$t('i18n.i18nData.code.tips')"
+          :disabled="isUpdateForm"
+        />
       </a-form-item>
       <a-form-item :label="$t('i18n.i18nData.message')">
         <a-input v-decorator="['message', decoratorOptions.message]" :placeholder="$t('i18n.i18nData.message.tips')" />

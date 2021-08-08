@@ -9,6 +9,20 @@ import store from '@/store'
 import { APP_LANGUAGE } from '@/store/storage-types'
 // import { defaultLanguage } from '@/config/projectConfig'
 
+// 支持的语言列表
+export const supportLanguage = {
+  'zh-CN': {
+    lang: 'zh-CN',
+    title: '简体中文',
+    symbol: '🇨🇳'
+  },
+  'en-US': {
+    lang: 'en-US',
+    title: 'English',
+    symbol: '🇺🇸'
+  }
+}
+
 // 加载 vueI18n
 Vue.use(VueI18n)
 

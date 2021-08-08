@@ -9,12 +9,11 @@
         :selected-keys="selectedKeys"
         @click="switchLang"
       >
-        <a-menu-item key="zh-CN">
-          <span role="img" aria-label="简体中文">🇨🇳</span> 简体中文
-        </a-menu-item>
-        <a-menu-item key="en-US">
-          <span role="img" aria-label="English">🇺🇸</span> English
-        </a-menu-item>
+        <template v-for="language in supportLanguage">
+          <a-menu-item :key="language.lang">
+            <span role="img" :aria-label="language.title">{{ language.symbol }}</span> {{ language.title }}
+          </a-menu-item>
+        </template>
       </a-menu>
     </template>
   </a-dropdown>
@@ -22,7 +21,7 @@
 
 <script>
 import { i18nIcon } from '@/core/icons'
-import { switchLanguage } from '@/locales'
+import { switchLanguage, supportLanguage } from '@/locales'
 import { mapActions, mapGetters } from 'vuex'
 import router, { resetRouter } from '@/router'
 
@@ -30,12 +29,13 @@ export default {
   name: 'LangSelect',
   data () {
     return {
-      i18nIcon
+      i18nIcon,
+      supportLanguage
     }
   },
   computed: {
     ...mapGetters(['lang', 'userRouters']),
-    selectedKeys() {
+    selectedKeys () {
       return [this.lang]
     }
   },

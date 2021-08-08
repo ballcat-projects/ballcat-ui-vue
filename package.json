@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@antv/data-set": "^0.11.8",
-    "ant-design-vue": "^1.7.6",
+    "ant-design-vue": "^1.7.7",
     "axios": "^0.21.1",
     "core-js": "3.7.0",
     "crypto-js": "^4.0.0",
@@ -25,6 +25,7 @@
     "vue": "^2.6.12",
     "vue-clipboard2": "^0.3.1",
     "vue-codemirror": "^4.0.6",
+    "vue-color": "^2.8.1",
     "vue-cropper": "0.5.5",
     "vue-i18n": "^8.24.2",
     "vue-ls": "^3.2.2",

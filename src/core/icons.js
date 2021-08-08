@@ -7,5 +7,6 @@
  * 所有图标均从这里加载，方便管理
  */
 import i18nIcon from '@/assets/icons/i18n.svg?inline' // path to your '*.svg?inline' file.
+import colorPicker from '@/assets/icons/colorPicker.svg?inline'
 
-export { i18nIcon }
+export { i18nIcon, colorPicker }
