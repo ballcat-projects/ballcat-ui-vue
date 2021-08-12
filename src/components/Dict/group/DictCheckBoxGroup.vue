@@ -5,7 +5,12 @@
     :value="selectedValue"
     @change="handleChange"
   >
-    <a-checkbox v-for="dictItem in dictItems" :key="dictItem.id" :value="dictItem.value">
+    <a-checkbox
+      v-for="dictItem in dictItems"
+      :key="dictItem.id"
+      :value="dictItem.value"
+      :disabled="dictItem.disabled"
+    >
       {{ dictItem.name }}
     </a-checkbox>
   </a-checkbox-group>

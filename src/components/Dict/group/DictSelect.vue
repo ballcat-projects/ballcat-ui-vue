@@ -9,7 +9,12 @@
     @change="handleChange"
   >
     <a-select-option v-if="placeholderOption" value="">{{ placeholder }}</a-select-option>
-    <a-select-option v-for="dictItem in dictItems" :key="dictItem.id" :value="dictItem.value">
+    <a-select-option
+      v-for="dictItem in dictItems"
+      :key="dictItem.id"
+      :value="dictItem.value"
+      :disabled="dictItem.disabled"
+    >
       {{ dictItem.name }}
     </a-select-option>
   </a-select>

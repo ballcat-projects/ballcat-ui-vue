@@ -11,14 +11,6 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    },
-    itemFilter: {
-      type: Function,
-      default: null
-    },
-    itemIsDisabled: {
-      type: Function,
-      default: null
     }
   },
   data () {

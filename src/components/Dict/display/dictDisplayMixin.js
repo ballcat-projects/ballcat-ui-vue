@@ -24,7 +24,6 @@ export default {
       return  this.dictItems.find(dictItem => dictItem.value === this.value) || {};
     },
     showText() {
-      console.log(this.dictItems)
       return (this.dictItem && this.dictItem.name) || this.value;
     }
   },
