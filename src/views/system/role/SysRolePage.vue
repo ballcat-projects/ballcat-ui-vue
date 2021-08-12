@@ -60,7 +60,7 @@
             @change="handleTableChange"
           >
             <template #type-slot="text">
-              <dict-slot dict-code="role_type" :value="text" />
+              <dict-tag dict-code="role_type" :value="text" />
             </template>
             <template #action-slot="text, record">
               <a v-has="'system:role:edit'" @click="handleEdit(record)">编辑</a>

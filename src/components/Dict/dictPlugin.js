@@ -1,5 +1,5 @@
 // 字典相关组件
-import DictSlot from '@/components/Dict/display/DictSlot'
+import DictTag from '@/components/Dict/display/DictTag'
 import DictRadioGroup from '@/components/Dict/group/DictRadioGroup'
 import DictSelect from '@/components/Dict/group/DictSelect'
 import DictText from '@/components/Dict/display/DictText'
@@ -11,7 +11,7 @@ export default {
     Vue.component('DictCheckBoxGroup', DictCheckBoxGroup)
     Vue.component('DictRadioGroup', DictRadioGroup)
     Vue.component('DictSelect', DictSelect)
-    Vue.component('DictSlot', DictSlot)
+    Vue.component('DictTag', DictTag)
     Vue.component('DictText', DictText)
   }
 }

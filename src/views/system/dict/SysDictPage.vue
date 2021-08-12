@@ -59,7 +59,7 @@
           @change="handleTableChange"
         >
           <template #type-slot="text">
-            <dict-slot dict-code="dict_property" :value="text" />
+            <dict-tag dict-code="dict_property" :value="text" />
           </template>
 
           <template #action-slot="text, record">

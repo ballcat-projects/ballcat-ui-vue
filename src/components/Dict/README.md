@@ -130,7 +130,7 @@
 
 ```html
 <span slot="settlementMethod-slot" slot-scope="text">
-  <dict-slot :value="text" dict-code='settlement_method'></dict-slot>
+  <dict-tag :value="text" dict-code='settlement_method'></dict-tag>
 </span>
 ```
 

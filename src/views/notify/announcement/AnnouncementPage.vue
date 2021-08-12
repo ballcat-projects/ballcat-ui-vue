@@ -75,7 +75,7 @@
             </template>
 
             <template #receive-mode-slot="modes">
-              <dict-slot
+              <dict-tag
                 v-for="mode in modes"
                 :key="mode"
                 dict-code="notify_channel"

@@ -79,7 +79,7 @@
             <dict-text dict-code="log_status" :value="text" />
           </template>
           <template #event-type-slot="text">
-            <dict-slot dict-code="login_event_type" :value="text" />
+            <dict-tag dict-code="login_event_type" :value="text" />
           </template>
 
           <template slot="action-slot" slot-scope="text, record">
