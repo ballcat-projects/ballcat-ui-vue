@@ -4,20 +4,46 @@ import { getDictData, invalidDictHash } from '@/api/system/dict'
 
 // 字典项hash列表的Key
 const DICT_HASH_KEY = 'dict-hashes'
-const DICT_DATA_KEY_PREFIX = 'dict-data-'
+const DICT_DATA_KEY_PREFIX = 'dict-data:'
 // 失效时间
 const DICT_TTL = 7 * 24 * 60 * 60 * 1000
 
-const user = {
+
+/**
+ * 服务端返回的都是 String 类型，需转换为真实类型
+ * @param value 值
+ * @param valueType 值类型
+ * @returns {number | boolean | string}
+ */
+function convertValueType(value, valueType) {
+  let res = value
+  // 如果没有type， 按number 处理
+  valueType = valueType || 1
+  if (valueType === 1) {
+    res = Number(value)         // 数字
+  } else if (valueType === 2) {
+    res = String(value)         // 字符串
+  } else if (valueType === 3) {
+    res = Boolean(value)        // 布尔
+  }
+  return res
+}
+
+
+export default {
   state: {
     dictDataCache: {},
     // 控制请求，防止同页面渲染重复请求
     dictRequestFlag: {}
   },
 
+  getters: {
+    dictDataCache: state => state.dictDataCache
+  },
+
   mutations: {
-    [DICT.SET_DICT_CACHE] (state, { dictCode, dictItems }) {
-      Vue.set(state.dictDataCache, dictCode, dictItems)
+    [DICT.SET_DICT_CACHE] (state, dictData) {
+      Vue.set(state.dictDataCache, dictData.dictCode, dictData)
     },
     [DICT.DEL_DICT_CACHE] (state, dictCode) {
       Vue.delete(state.dictDataCache, dictCode)
@@ -36,9 +62,9 @@ const user = {
       try {
         const noDataList = dictCodes.filter((dictCode) => {
           if (!state.dictDataCache[dictCode]) {
-            const dictItems = Vue.ls.get(DICT_DATA_KEY_PREFIX + dictCode)
-            if (dictItems) {
-              commit(DICT.SET_DICT_CACHE, { dictCode, dictItems })
+            const dictData = Vue.ls.get(DICT_DATA_KEY_PREFIX + dictCode)
+            if (dictData) {
+              commit(DICT.SET_DICT_CACHE, dictData)
             } else {
               return dictCode
             }
@@ -51,19 +77,19 @@ const user = {
         commit(DICT.SET_DICT_REQUEST_FLAG, requestFlagKey)
         const res = await getDictData(noDataList)
         if (res.code === 200 && res.data) {
-          res.data.forEach(dict => {
-            const dictCode = dict.dictCode
-            const hashCode = dict.hashCode
-            const dictItems = dict.dictItems
+          res.data.forEach(dictData => {
+            const dictCode = dictData.dictCode
+            const hashCode = dictData.hashCode
+            const dictItems = dictData.dictItems
 
-            // 存储数据类型 TODO 后端返回
+            // 服务端返回的都是 String 类型，需转换为真实类型
             dictItems.forEach(item => {
-              item.valueType = dict.valueType
+              item.value = convertValueType(item.value, dictData.valueType)
             })
 
             // ls中存储字典
-            commit(DICT.SET_DICT_CACHE, { dictCode, dictItems })
-            Vue.ls.set(DICT_DATA_KEY_PREFIX + dictCode, dictItems, DICT_TTL)
+            commit(DICT.SET_DICT_CACHE, dictData)
+            Vue.ls.set(DICT_DATA_KEY_PREFIX + dictCode, dictData, DICT_TTL)
             // 存储字典项Hash
             let hashes = Vue.ls.get(DICT_HASH_KEY)
             let map = hashes ? JSON.parse(hashes) : {}
@@ -98,5 +124,3 @@ const user = {
     }
   }
 }
-
-export default user

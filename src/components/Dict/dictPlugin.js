@@ -1,9 +1,9 @@
 // 字典相关组件
-import DictSlot from '@/components/Dict/DictSlot'
-import DictRadioGroup from '@/components/Dict/DictRadioGroup'
-import DictSelect from '@/components/Dict/DictSelect'
-import DictText from '@/components/Dict/DictText'
-import DictCheckBoxGroup from '@/components/Dict/DictCheckBoxGroup'
+import DictSlot from '@/components/Dict/display/DictSlot'
+import DictRadioGroup from '@/components/Dict/group/DictRadioGroup'
+import DictSelect from '@/components/Dict/group/DictSelect'
+import DictText from '@/components/Dict/display/DictText'
+import DictCheckBoxGroup from '@/components/Dict/group/DictCheckBoxGroup'
 
 export default {
   install: function (Vue) {

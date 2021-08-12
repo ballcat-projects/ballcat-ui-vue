@@ -9,18 +9,17 @@
     @change="handleChange"
   >
     <a-select-option v-if="placeholderOption" value="">{{ placeholder }}</a-select-option>
-    <a-select-option v-for="dict in dictItems" :key="dict.id" :value="getValByItem(dict)">
-      {{ dict.name }}
+    <a-select-option v-for="dictItem in dictItems" :key="dictItem.id" :value="dictItem.value">
+      {{ dictItem.name }}
     </a-select-option>
   </a-select>
 </template>
 <script>
-import DictMixin from '@/components/Dict/dictMixin'
-import dictItemMixin from '@/components/Dict/dictItemMixin'
+import DictGroupMixin from '@/components/Dict/group/dictGroupMixin'
 
 export default {
   name: 'DictSelect',
-  mixins: [DictMixin, dictItemMixin],
+  mixins: [DictGroupMixin],
   props: {
     mode: {
       type: String,
