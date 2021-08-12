@@ -9,7 +9,7 @@
     <div style="margin-bottom: 60px">
       <a-spin :spinning="submitLoading">
         <a-tree
-          checkable="true"
+          :checkable="true"
           :tree-data="treeData"
           :checked-keys="checkedKeys"
           :expanded-keys="expandedKeys"
@@ -49,6 +49,7 @@
 import { grantList } from '@/api/system/menu'
 import { getPermissionCode, putPermissionIds } from '@/api/system/role'
 import { listToTree } from '@/utils/treeUtil'
+import pick from 'lodash.pick'
 
 export default {
   name: 'RoleGrantDrawer',
@@ -78,8 +79,12 @@ export default {
             // 默认的半选节点为全部权限，防止未作修改直接保存导致的权限丢失
             this.halfCheckedKeys = res.data
             this.expandedKeys = res.data
+            this.$nextTick(function () {
+              this.submitLoading = false
+            })
           })
-        }).finally(() => {
+        }).catch(() => {
+          // 这里不能放在 finally 里面，否则会导致数据未勾选完，loading 动画就消失了
           this.submitLoading = false
         })
       }
