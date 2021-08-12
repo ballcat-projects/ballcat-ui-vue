@@ -7,7 +7,6 @@ export function getLoginUserMenu () {
   })
 }
 
-
 export function list(query) {
   return request({
     url: '/system/menu/list',
@@ -15,6 +14,14 @@ export function list(query) {
     params: query
   })
 }
+
+export function grantList() {
+  return request({
+    url: '/system/menu/grant-list',
+    method: 'get'
+  })
+}
+
 
 export function addObj(obj) {
   return request({

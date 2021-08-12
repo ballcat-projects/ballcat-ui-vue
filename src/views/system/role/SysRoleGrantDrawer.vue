@@ -7,15 +7,17 @@
     @close="closeDrawer"
   >
     <div style="margin-bottom: 60px">
-      <a-tree
-        checkable
-        :tree-data="treeData"
-        :checked-keys="checkedKeys"
-        :expanded-keys="expandedKeys"
-        :half-checked-keys="halfCheckedKeys"
-        @check="onCheck"
-        @expand="onExpand"
-      />
+      <a-spin :spinning="submitLoading">
+        <a-tree
+          checkable="true"
+          :tree-data="treeData"
+          :checked-keys="checkedKeys"
+          :expanded-keys="expandedKeys"
+          :half-checked-keys="halfCheckedKeys"
+          @check="onCheck"
+          @expand="onExpand"
+        />
+      </a-spin>
     </div>
 
     <div
@@ -44,7 +46,7 @@
   </a-drawer>
 </template>
 <script>
-import { list } from '@/api/system/menu'
+import { grantList } from '@/api/system/menu'
 import { getPermissionCode, putPermissionIds } from '@/api/system/role'
 import { listToTree } from '@/utils/treeUtil'
 
@@ -64,7 +66,8 @@ export default {
   watch: {
     visible () {
       if (this.visible) {
-        list().then((res) => {
+        this.submitLoading = true
+        grantList().then((res) => {
           // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
           let treeData = listToTree(res.data, 0)
           getPermissionCode(this.roleCode).then((res) => {
@@ -76,6 +79,8 @@ export default {
             this.halfCheckedKeys = res.data
             this.expandedKeys = res.data
           })
+        }).finally(() => {
+          this.submitLoading = false
         })
       }
     }
