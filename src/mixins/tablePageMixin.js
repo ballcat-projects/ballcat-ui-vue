@@ -82,7 +82,7 @@ export default {
      * @returns {{current: number, size: number} & {sortOrders: null, sortFields: null}}
      */
     pageParams: function () {
-      return Object.assign(this.queryParam, {
+      return Object.assign({}, this.queryParam, {
         current: this.pagination.current,
         size: this.pagination.pageSize
       }, {
