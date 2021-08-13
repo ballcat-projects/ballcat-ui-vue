@@ -65,8 +65,8 @@ export default {
      * 默认排序规则
      */
     initDefaultSort () {
-      this.sortField = littleCamelToUnderline(this.rowKey)
-      this.sortOrder = 'desc'
+      !this.sortField && (this.sortField = littleCamelToUnderline(this.rowKey))
+      !this.sortOrder && (this.sortOrder = 'desc')
     },
     /**
      * 表格重新加载方法
