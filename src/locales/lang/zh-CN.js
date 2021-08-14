@@ -21,6 +21,7 @@ export default {
     delete: '删除',
     edit: '编辑',
     export: '导出',
+    import: '导入',
     details: '详情',
   },
 
@@ -45,9 +46,9 @@ export default {
         required: '请输入语言标签！'
       },
       code: {
-        text: '唯一标识',
-        tips: '国际化信息的唯一标识',
-        required: '请输入唯一标识！'
+        text: '国际化标识',
+        tips: '国际化信息的标识',
+        required: '请输入国际化标识！'
       },
       message: {
         text:  '文本值',

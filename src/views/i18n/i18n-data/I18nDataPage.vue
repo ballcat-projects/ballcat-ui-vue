@@ -5,7 +5,11 @@
       <a-form v-bind="searchFormLayout">
         <a-row :gutter="16">
           <a-col :xl="6" :md="12" :sm="24">
-            <a-form-item :label="$t('i18n.i18nData.code')">
+            <a-form-item
+              :label="$t('i18n.i18nData.code')"
+              :label-col="{ xl: {span: 8}, md: {span: 6}}"
+              :wrapper-col=" { xl: {span: 16}, md: {span: 18} }"
+            >
               <a-input v-model="queryParam.code" :placeholder="$t('message.pleaseEnter')" />
             </a-form-item>
           </a-col>
@@ -36,7 +40,7 @@
             class="table-page-search-wrapper"
           >
             <div class="table-page-search-submitButtons">
-              <a-button type="primary" @click="reloadTable">{{ $t('action.query') }}</a-button>
+              <a-button type="primary" :loading="loading" @click="reloadTable">{{ $t('action.query') }}</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">{{ $t('action.reset') }}</a-button>
               <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? $t('action.expand') : $t('action.collapse') }}
@@ -51,8 +55,25 @@
     <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
-        <div class="ant-pro-table-toolbar-title">{{ $t('i18n.i18nData.text') }}</div>
+        <div class="ant-pro-table-toolbar-title">
+          {{ $t('i18n.i18nData.text') }}
+        </div>
         <div class="ant-pro-table-toolbar-option">
+          <a-button
+            v-has="'i18n:i18n-data:export'"
+            :loading="loading"
+            style="margin-left: 8px"
+            icon="download"
+            @click="handleExport()"
+          >
+            {{ $t('action.export') }}
+          </a-button>
+          <a-button
+            v-has="'i18n:i18n-data:import'"
+            icon="upload"
+            @click="handleImport()"
+          >{{ $t('action.import') }}
+          </a-button>
           <a-button
             v-has="'i18n:i18n-data:add'"
             type="primary"
@@ -92,17 +113,22 @@
 
     <!--表单弹窗-->
     <i18n-data-modal-form ref="formModal" @reload-page-table="reloadTable" />
+
+    <!--导入弹窗-->
+    <i18n-data-import-modal ref="importModal" @reload-page-table="reloadTable" />
   </div>
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/i18n/i18n-data'
+import { getPage, delObj, exportExcel } from '@/api/i18n/i18n-data'
 import { TablePageMixin } from '@/mixins'
 import I18nDataModalForm from '@/views/i18n/i18n-data/I18nDataModalForm'
+import I18nDataImportModal from '@/views/i18n/i18n-data/I18nDataImportModal'
+import { remoteFileDownload } from '@/utils/fileUtil'
 
 export default {
   name: 'I18nDataPage',
-  components: { I18nDataModalForm },
+  components: { I18nDataModalForm, I18nDataImportModal },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -177,6 +203,25 @@ export default {
         // 未被 axios拦截器处理过，则在这里继续处理
         !e.resolved && this.$message.error(e.message || 'error request')
       })
+    },
+    /**
+     * 导出国际化信息
+     */
+    handleExport () {
+      this.loading = true
+      exportExcel(this.queryParam).then(response => {
+        remoteFileDownload(response)
+      }).finally(() => {
+          this.loading = false
+        }
+      )
+    },
+    /**
+     * 导入国际化信息
+     */
+    handleImport () {
+      const attributes = { title: this.$t('action.import') + ' ' + this.$t('i18n.i18nData.text') }
+      this.$refs.importModal.show(attributes)
     },
   }
 }

@@ -20,6 +20,7 @@ export default {
     delete: 'Delete',
     edit: 'Edit',
     export: 'Export',
+    import: 'Import',
     details: 'Details',
   },
 
