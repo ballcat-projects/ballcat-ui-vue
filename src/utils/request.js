@@ -57,7 +57,12 @@ service.interceptors.request.use(config => {
 
 // response interceptor
 service.interceptors.response.use((response) => {
-  return response.data
+  const headers = response.headers
+  if (headers != null && headers['content-type'] && headers['content-type'].startsWith("application/json")) {
+    return response.data
+  }else {
+    return response
+  }
 }, onRejected)
 
 export default service
