@@ -210,6 +210,9 @@ export default {
     },
     createdFormCallback (attributes) {
       this.form.setFieldsValue({ dictCode: attributes.dictCode })
+      this.languagesAttribute = {}
+      this.tagColorAttribute = ''
+      this.textColorAttribute = ''
     },
     echoDataProcess (data) {
       let attributes = data.attributes
