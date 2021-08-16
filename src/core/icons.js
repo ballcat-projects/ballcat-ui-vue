@@ -6,6 +6,7 @@
  * 自定义图标加载表
  * 所有图标均从这里加载，方便管理
  */
-import bxAnaalyse from '@/assets/icons/bx-analyse.svg?inline' // path to your '*.svg?inline' file.
+import i18nIcon from '@/assets/icons/i18n.svg?inline' // path to your '*.svg?inline' file.
+import colorPicker from '@/assets/icons/colorPicker.svg?inline'
 
-export { bxAnaalyse }
+export { i18nIcon, colorPicker }

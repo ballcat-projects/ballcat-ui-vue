@@ -7,15 +7,17 @@
     @close="closeDrawer"
   >
     <div style="margin-bottom: 60px">
-      <a-tree
-        checkable
-        :tree-data="treeData"
-        :checked-keys="checkedKeys"
-        :expanded-keys="expandedKeys"
-        :half-checked-keys="halfCheckedKeys"
-        @check="onCheck"
-        @expand="onExpand"
-      />
+      <a-spin :spinning="submitLoading">
+        <a-tree
+          :checkable="true"
+          :tree-data="treeData"
+          :checked-keys="checkedKeys"
+          :expanded-keys="expandedKeys"
+          :half-checked-keys="halfCheckedKeys"
+          @check="onCheck"
+          @expand="onExpand"
+        />
+      </a-spin>
     </div>
 
     <div
@@ -44,9 +46,10 @@
   </a-drawer>
 </template>
 <script>
-import { list } from '@/api/system/menu'
+import { grantList } from '@/api/system/menu'
 import { getPermissionCode, putPermissionIds } from '@/api/system/role'
 import { listToTree } from '@/utils/treeUtil'
+import pick from 'lodash.pick'
 
 export default {
   name: 'RoleGrantDrawer',
@@ -64,7 +67,8 @@ export default {
   watch: {
     visible () {
       if (this.visible) {
-        list().then((res) => {
+        this.submitLoading = true
+        grantList().then((res) => {
           // 根据 id 作为 key, 将后台返回的 list 转换为 Tree
           let treeData = listToTree(res.data, 0)
           getPermissionCode(this.roleCode).then((res) => {
@@ -75,7 +79,13 @@ export default {
             // 默认的半选节点为全部权限，防止未作修改直接保存导致的权限丢失
             this.halfCheckedKeys = res.data
             this.expandedKeys = res.data
+            this.$nextTick(function () {
+              this.submitLoading = false
+            })
           })
+        }).catch(() => {
+          // 这里不能放在 finally 里面，否则会导致数据未勾选完，loading 动画就消失了
+          this.submitLoading = false
         })
       }
     }

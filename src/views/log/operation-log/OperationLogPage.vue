@@ -76,7 +76,7 @@
           @change="handleTableChange"
         >
           <template #type-slot="text">
-            <dict-slot dict-code="operation_type" :value="text" />
+            <dict-tag dict-code="operation_type" :value="text" />
           </template>
           <template #status-slot="text">
             <dict-text dict-code="log_status" :value="text" />

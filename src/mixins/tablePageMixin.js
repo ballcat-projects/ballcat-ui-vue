@@ -65,8 +65,8 @@ export default {
      * 默认排序规则
      */
     initDefaultSort () {
-      this.sortField = littleCamelToUnderline(this.rowKey)
-      this.sortOrder = 'desc'
+      !this.sortField && (this.sortField = littleCamelToUnderline(this.rowKey))
+      !this.sortOrder && (this.sortOrder = 'desc')
     },
     /**
      * 表格重新加载方法
@@ -82,7 +82,7 @@ export default {
      * @returns {{current: number, size: number} & {sortOrders: null, sortFields: null}}
      */
     pageParams: function () {
-      return Object.assign(this.queryParam, {
+      return Object.assign({}, this.queryParam, {
         current: this.pagination.current,
         size: this.pagination.pageSize
       }, {

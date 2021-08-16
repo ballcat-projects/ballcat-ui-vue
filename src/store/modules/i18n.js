@@ -1,8 +1,8 @@
-import { loadLanguageAsync } from '@/locales'
+import { defaultLanguage } from '@/config/projectConfig'
 
 const i18n = {
   state: {
-    lang: 'en-US'
+    lang: defaultLanguage
   },
   mutations: {
     SET_LANG: (state, lang) => {
@@ -11,16 +11,6 @@ const i18n = {
   },
   getters: {
     lang: state => state.lang
-  },
-  actions: {
-    // 设置界面语言
-    SetLang ({ commit }, lang) {
-      return new Promise(resolve => {
-        commit('SET_LANG', lang)
-        loadLanguageAsync(lang)
-        resolve()
-      })
-    }
   }
 }
 

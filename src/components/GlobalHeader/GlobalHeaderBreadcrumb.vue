@@ -18,8 +18,18 @@ export default {
   name: 'Breadcrumb',
   computed: {
     routeList () {
+      return this.buildRoutes(this.$route)
+    }
+  },
+  watch: {
+    router () {
+      this.buildRoutes(this.$route)
+    }
+  },
+  methods: {
+    buildRoutes: function (route) {
       let routes = []
-      this.$route.matched.forEach(item => {
+      route.matched.forEach(item => {
         routes.push(item)
       })
       return routes

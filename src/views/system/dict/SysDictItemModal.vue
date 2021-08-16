@@ -110,16 +110,19 @@ export default {
         {
           title: '创建时间',
           dataIndex: 'createTime',
-          width: '150px',
+          width: 150,
           sorter: true
         },
         {
           title: '操作',
           align: 'center',
-          width: '100px',
+          width: 100,
           scopedSlots: { customRender: 'action-slot' }
         }
-      ]
+      ],
+
+      sortField: 'sort',
+      sortOrder: 'asc'
     }
   },
   methods: {
@@ -159,5 +162,6 @@ export default {
 /** 保证切换时的高度不要相差太多 */
 /deep/ .ant-table-content {
   height: 400px;
+  overflow:auto;
 }
 </style>

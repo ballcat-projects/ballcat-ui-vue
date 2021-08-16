@@ -6,6 +6,8 @@ module.exports = {
   // 开启 websocket，开启此选项需要服务端同步支持 websocket 功能
   // 若服务端不支持，则本地启动时，抛出 socket 异常，导致 proxyServer 关闭
   enableWebsocket: true,
+  // 项目默认语言
+  defaultLanguage: 'zh-CN',
   // Vue ls 配置
   storageOptions: {
     namespace: 'ballcat/', // key prefix

@@ -68,22 +68,23 @@ export default {
   data () {
     return {
       production: process.env.NODE_ENV === 'production',
-      menus: [],
       enableWebsocket: projectConfig.enableWebsocket
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isSideMenu', 'isMixMenu','userRouters']),
+    ...mapGetters(['sidebarCollapsed', 'isSideMenu', 'isMixMenu', 'userRouters']),
     contentPaddingLeft () {
-      if (!this.fixSiderbar || !this.isSideMenu ) {
-         if(this.isMixMenu){return this.sidebarCollapsed ? '48px' : '208px'}
-         return '0'
+      if (!this.fixSiderbar || !this.isSideMenu) {
+        if (this.isMixMenu) {
+          return this.sidebarCollapsed ? '48px' : '208px'
+        }
+        return '0'
       }
       return this.sidebarCollapsed ? '48px' : '208px'
+    },
+    menus () {
+      return this.userRouters.find(item => item.path === '/').children
     }
-  },
-  created () {
-    this.menus = this.userRouters.find(item => item.path === '/').children
   },
   methods: {
     ...mapMutations([APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]),

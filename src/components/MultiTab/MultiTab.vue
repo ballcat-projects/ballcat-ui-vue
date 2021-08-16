@@ -1,6 +1,18 @@
 <script>
 import events from './events'
 import { APP_MUTATIONS } from '@/store/mutation-types'
+import { mapGetters } from 'vuex'
+
+function covertToPage (currentRoute) {
+  return {
+    fullPath: currentRoute.fullPath,
+    name: currentRoute.name,
+    params: currentRoute.params,
+    title: currentRoute.meta.title,
+    componentName: currentRoute.meta.componentName
+  }
+}
+
 export default {
   name: 'MultiTab',
   data () {
@@ -11,42 +23,43 @@ export default {
       newTabIndex: 0
     }
   },
+  computed: {
+    ...mapGetters(['lang', 'userRouters'])
+  },
   watch: {
-    '$route': function (newVal) {
-      const index = this.pages.findIndex(n=>n.fullPath === newVal.fullPath)
-      if(index < 0){
-        this.fullPathList.push(newVal.fullPath)
-        this.pages.push(newVal)
-      }else{
-        const data = this.pages[index]
-        if(newVal.params){
-          if(data.params !== newVal.params){
-            this.pages.splice(index,1,newVal)
+    '$route': function (currentRoute) {
+      const newPage = covertToPage(currentRoute)
+
+      const index = this.pages.findIndex(page => page.fullPath === newPage.fullPath)
+      if (index < 0) {
+        this.fullPathList.push(newPage.fullPath)
+        this.pages.push(newPage)
+      } else {
+        const oldPage = this.pages[index]
+        if (newPage.params) {
+          if (oldPage.params !== newPage.params) {
+            this.pages.splice(index, 1, newPage)
           }
         }
       }
-      this.activeKey = newVal.fullPath
+      this.activeKey = newPage.fullPath
       this.componentNameList()
-      // this.activeKey = newVal.fullPath
-      // this.componentNameList()
-      // if (this.fullPathList.indexOf(newVal.fullPath) < 0) {
-      //   this.fullPathList.push(newVal.fullPath)
-      //   this.pages.push(newVal)
-      // }
     },
     activeKey: function (newPathKey) {
       // this.$router.push({ path: newPathKey })
-      if(newPathKey === '/'){
-        this.$router.push({ name: '/'})
+      if (newPathKey === '/') {
+        this.$router.push({ name: '/' })
       }
-      let index = this.pages.findIndex(n=>n.path === newPathKey)
-      if(index >= 0){
-        const data = this.pages[index]
-        this.$router.push({ name: data.name, params: data.params })
+      let index = this.pages.findIndex(page => page.fullPath === newPathKey)
+      if (index >= 0) {
+        const page = this.pages[index]
+        this.$router.push({ name: page.name, params: page.params })
       }
     }
   },
   created () {
+    // 注册监听事件
+    this.$bus.$on('switch-language', this.switchTitle)
     // bind event
     events.$on('open', val => {
       if (!val) {
@@ -61,12 +74,25 @@ export default {
       this.closeThat(val)
     })
 
-    this.pages.push(this.$route)
-    this.fullPathList.push(this.$route.fullPath)
+    const page = covertToPage(this.$route)
+    this.pages.push(page)
+    this.fullPathList.push(page.fullPath)
     this.componentNameList()
     this.selectedLastPath()
   },
+  destroyed () {
+    // 销毁监听事件
+    this.$bus.$off('switch-language', this.switchTitle)
+  },
   methods: {
+    switchTitle () {
+      const routes = this.$router.getRoutes()
+      this.pages = this.pages.map(page => {
+        const meta = routes.find(r => r.path === page.fullPath).meta
+        page.title = meta.title
+        return page
+      })
+    },
     onEdit (targetKey, action) {
       this[action](targetKey)
     },
@@ -126,18 +152,18 @@ export default {
     },
     closeAll (key) {
       this.fullPathList.forEach((item, index) => {
-          this.remove(item)
+        this.remove(item)
       })
     },
     closeMenuClick (key) {
       this[key](this.activeKey)
     },
-    componentNameList(){
-       let componentList=[]
-       this.pages.forEach(item=>{
-          componentList.push(item.meta.componentName)
-       });
-       this.$store.commit(APP_MUTATIONS.TOGGLE_SET_KEEPALIVE,[...componentList]);
+    componentNameList () {
+      let componentList = []
+      this.pages.forEach(page => {
+        componentList.push(page.componentName)
+      })
+      this.$store.commit(APP_MUTATIONS.TOGGLE_SET_KEEPALIVE, [...componentList])
     }
   },
   render () {
@@ -146,7 +172,7 @@ export default {
       return (
         <a-tab-pane
           style={{ height: 0 }}
-          tab={page.meta.title}
+          tab={page.title}
           key={page.fullPath} closable={pages.length > 1}
         >
         </a-tab-pane>)

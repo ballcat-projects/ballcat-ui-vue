@@ -106,7 +106,7 @@
           <a-form-item extra="是否多选" label="多选">
             <dict-radio-group
               v-decorator="['multiple',decoratorOptions.multiple]"
-              dict-code="tf"
+              dict-code="yes_or_no"
             />
           </a-form-item>
         </a-col>
@@ -120,7 +120,7 @@
           <a-form-item label="返回数据" extra="是否需要返回数据,false则不会有确定按钮">
             <dict-radio-group
               v-decorator="['ret',decoratorOptions.ret]"
-              dict-code="tf"
+              dict-code="yes_or_no"
             />
           </a-form-item>
         </a-col>

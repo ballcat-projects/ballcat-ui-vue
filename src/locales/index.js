@@ -5,57 +5,90 @@
  */
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-// default language
-import enUS from './lang/en-US'
-// change default accept-language
-import request from '@/utils/request'
+import store from '@/store'
+import { APP_LANGUAGE } from '@/store/storage-types'
+// import { defaultLanguage } from '@/config/projectConfig'
 
-Vue.use(VueI18n)
-
-export const defaultLang = 'en-US'
-
-const messages = {
+// 支持的语言列表
+export const supportLanguage = {
+  'zh-CN': {
+    lang: 'zh-CN',
+    title: '简体中文',
+    symbol: '🇨🇳'
+  },
   'en-US': {
-    ...enUS
+    lang: 'en-US',
+    title: 'English',
+    symbol: '🇺🇸'
   }
 }
 
-const i18n = new VueI18n({
-  locale: defaultLang,
-  fallbackLocale: defaultLang,
-  messages
+// 加载 vueI18n
+Vue.use(VueI18n)
+
+// 已经加载的语言列表
+const loadedLanguages = []
+
+// 当找不到对应语言的配置时，是否需要回退
+const fallbackLocale = false;
+
+// 这里没有加载语言，语言加载交由 bootstrap.js 中处理，这样避免默认语言和设置语言不一样时，依然要先加载默认语言的问题
+export const i18n = new VueI18n({
+  locale: 'unKnow', // 设置语言环境，这里故意给定 unKnow，方便切换
+  fallbackLocale: fallbackLocale,
+  messages: {} // 设置语言环境信息
 })
 
-export default i18n
+// 当需要回退语言时，则需要预先加载默认语言的配置
+if(fallbackLocale !== false){
+  loadLanguageProperties(fallbackLocale)
+}
 
-const loadedLanguages = [defaultLang]
-
-// 从缓存設置中加载当前语言
-// if (Vue.ls.get('lang') !== null && defaultLang !== Vue.ls.get('lang')) {
-//   loadLanguageAsync(localStorage.lang)
-// }
-
-function setI18nLanguage (lang) {
-  i18n.locale = lang
-  request.defaults.headers.common['Accept-Language'] = lang
+/**
+ * 切换语言
+ * @param lang
+ * @returns {*}
+ */
+export function switchLanguage (lang) {
+  // 同步切换 vuex，ls, html 标识的语言，防止异常
+  store.commit('SET_LANG', lang)
+  Vue.ls.set(APP_LANGUAGE, lang)
   document.querySelector('html').setAttribute('lang', lang)
+  // 异步切换 i18n 的语言，方便做到懒加载
+  setI18nLanguageAsync(lang)
   return lang
 }
 
-export function loadLanguageAsync (lang = defaultLang) {
-  return new Promise(resolve => {
-    // 缓存语言设置
-    Vue.ls.set('lang', lang)
-    if (i18n.locale !== lang) {
-      if (!loadedLanguages.includes(lang)) {
-        return import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}`).then(msg => {
-          i18n.setLocaleMessage(lang, msg.default)
-          loadedLanguages.push(lang)
-          return setI18nLanguage(lang)
-        })
-      }
-      return resolve(setI18nLanguage(lang))
+/**
+ * 切换 vue-i18n.locale，如果语言文件未加载，则异步加载后切换
+ * @param lang
+ */
+function setI18nLanguageAsync (lang) {
+  // 如果语言相同
+  if (i18n.locale === lang) {
+    return
+  }
+
+  // 如果语言已经加载
+  if (loadedLanguages.includes(lang)) {
+    i18n.locale = lang
+  }
+
+  // 如果尚未加载语言
+  loadLanguageProperties(lang)
+}
+
+
+/**
+ * 加载语言配置文件
+ * @param lang
+ */
+function loadLanguageProperties (lang) {
+  import(/* webpackChunkName: "lang-[request]" */ `./lang/${lang}.js`).then(
+    messages => {
+      i18n.setLocaleMessage(lang, messages.default)
+      loadedLanguages.push(lang)
+      i18n.locale = lang
     }
-    return resolve(lang)
-  })
+  )
 }

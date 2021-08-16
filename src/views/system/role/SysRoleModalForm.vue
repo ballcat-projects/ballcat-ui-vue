@@ -36,17 +36,12 @@
       </a-form-item>
 
       <a-form-item label="角色类型">
-        <a-radio-group
+        <dict-radio-group
           v-decorator="['type', decoratorOptions.type]"
           :disabled="isUpdateForm"
-        >
-          <a-radio-button :value="1">
-            系统角色
-          </a-radio-button>
-          <a-radio-button :value="2">
-            业务角色
-          </a-radio-button>
-        </a-radio-group>
+          type="button"
+          dict-code="role_type"
+        />
       </a-form-item>
 
       <a-form-item label="备注">

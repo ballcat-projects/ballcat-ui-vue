@@ -1,8 +1,6 @@
-import Vue from 'vue'
 import axios from 'axios'
 import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
-import { ACCESS_TOKEN } from '@/store/storage-types'
 
 // 创建 axios 实例
 const service = axios.create({
@@ -39,20 +37,32 @@ const onRejected = (error) => {
 
 // request interceptor
 service.interceptors.request.use(config => {
-  // token
-  const token = Vue.ls.get(ACCESS_TOKEN)
-  // Authorization 请求头不存在再进行追加
   const headers = config.headers
-  if (token && headers && !headers['Authorization']) {
-    headers['Authorization'] = 'Bearer '+ token // 让每个请求携带自定义 token 请根据实际情况自行修改
+
+  // token
+  const token = store.getters.token
+  // Authorization 请求头不存在再进行追加
+  if (token && !headers['Authorization']) {
+    headers['Authorization'] = 'Bearer ' + token // 让每个请求携带自定义 token 请根据实际情况自行修改
   }
+
+  // i18n
+  const appLanguage = store.getters.lang
+  if (appLanguage) {
+    headers['Accept-Language'] = appLanguage
+  }
+
   return config
 }, onRejected)
 
 // response interceptor
 service.interceptors.response.use((response) => {
-  return response.data
+  const headers = response.headers
+  if (headers != null && headers['content-type'] && headers['content-type'].startsWith("application/json")) {
+    return response.data
+  }else {
+    return response
+  }
 }, onRejected)
-
 
 export default service

@@ -1,15 +1,18 @@
 import Vue from 'vue'
 import store from '@/store/'
 import {
+  SETTINGS_LS,
   ACCESS_TOKEN,
   USER_INFO,
   ROLES,
-  PERMISSIONS
+  PERMISSIONS,
+  APP_LANGUAGE
 } from '@/store/storage-types'
 
 import { appDefaultSetting } from '@/config/defaultSettings'
-import {SETTINGS_LS} from '@/store/storage-types'
 import { APP_MUTATIONS } from '@/store/mutation-types'
+import { switchLanguage } from '@/locales'
+import { defaultLanguage } from '@/config/projectConfig'
 
 export default function Initializer () {
   console.log(`API_URL: ${process.env.VUE_APP_API_BASE_URL}`)
@@ -25,9 +28,12 @@ export default function Initializer () {
 
   store.commit(APP_MUTATIONS.TOGGLE_MULTI_TAB, Vue.ls.get(SETTINGS_LS.MULTI_TAB, appDefaultSetting.multiTab))
 
+  // 用户权限
   store.commit('SET_TOKEN', Vue.ls.get(ACCESS_TOKEN))
   store.commit('SET_INFO', Vue.ls.get(USER_INFO))
   store.commit('SET_ROLES', Vue.ls.get(ROLES))
   store.commit('SET_PERMISSIONS', Vue.ls.get(PERMISSIONS))
-  // last step
+
+  // 国际化处理
+  switchLanguage(Vue.ls.get(APP_LANGUAGE, defaultLanguage))
 }
