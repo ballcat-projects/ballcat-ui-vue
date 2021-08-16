@@ -19,19 +19,21 @@
         >
           <a-button>
             <a-icon type="upload" />
-            选择文件
+            {{ $t('action.selectFile') }}
           </a-button>
-          <a href="javascript:" style="margin-left: 12px;" @click.stop="downloadTemplate">点击下载模板文件</a>
+          <a href="javascript:" style="margin-left: 12px;" @click.stop="downloadTemplate">
+            {{ $t('import.downloadTemplate') }}
+          </a>
         </a-upload>
       </a-form-model-item>
 
-      <a-form-model-item label="已存在数据的处理方式" prop="existingAction">
-        <a-radio-group v-model="formData.importAction">
+      <a-form-model-item :label="$t('import.whenDataExisting')" prop="existingAction">
+        <a-radio-group v-model="formData.importMode">
           <a-radio value="SKIP_EXISTING">
-            跳过已有配置
+            {{ $t('import.skipExisting') }}
           </a-radio>
           <a-radio value="OVERWRITE_EXISTING">
-            覆盖已有配置
+            {{ $t('import.overwriteExisting') }}
           </a-radio>
         </a-radio-group>
       </a-form-model-item>
@@ -48,24 +50,33 @@ export default {
   name: 'I18nDataImportModal',
   data () {
     return {
-      // 标题
-      title: '批量导入国际化信息',
       visible: false,
       submitLoading: false,
 
       value: 1,
-      formData: {
-        fileList: [],
-        importAction: "SKIP_EXISTING"
-      },
-      rules: {
+      formData: this.defaultFormData()
+    }
+  },
+  computed: {
+    // 标题
+    title () {
+      return this.$t('import.batchImport') + '：' + this.$t('i18n.i18nData.text')
+    },
+    rules () {
+      return {
         fileList: [
-          { type : 'array', required: true, len: 1, message: '请选择一个文件'},
-        ],
+          { type: 'array', required: true, len: 1, message: this.$t('message.pleaseSelectFile') }
+        ]
       }
     }
   },
   methods: {
+    defaultFormData () {
+      return {
+        fileList: [],
+        importMode: 'SKIP_EXISTING'
+      }
+    },
     show () {
       this.visible = true
       this.submitLoading = false
@@ -94,11 +105,12 @@ export default {
           // 构造 multipartFormData
           const formData = new FormData()
           formData.append('file', this.formData.fileList[0])
-          formData.append('importAction', this.formData.importAction)
+          formData.append('importMode', this.formData.importMode)
 
           importExcel(formData).then(res => {
-            this.$message.success("导入成功！")
+            this.$message.success(this.$t('import.importSuccess'))
             this.$emit('reload-page-table', false)
+            this.formData = this.defaultFormData()
             this.handleClose()
           }).finally(() => {
             this.submitLoading = false

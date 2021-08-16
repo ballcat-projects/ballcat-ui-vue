@@ -22,18 +22,29 @@ export default {
     export: 'Export',
     import: 'Import',
     details: 'Details',
+    selectFile: 'Select File'
   },
 
   common: {
     operation: 'Operation',
     createTime: 'Create Time',
     updateTime: 'Update Time',
-    remark: 'Remark',
+    remark: 'Remark'
   },
 
   message: {
     confirmDelete: 'Are you sure delete?',
     pleaseEnter: 'Please enter',
+    pleaseSelectFile: 'Please Select File'
+  },
+
+  import: {
+    batchImport: 'Batch Import',
+    downloadTemplate: 'Download Template',
+    whenDataExisting: 'When the data already exists',
+    skipExisting: 'Skip Existing',
+    overwriteExisting: 'Overwrite Existing',
+    importSuccess: 'Import Success'
   },
 
   i18n: {
@@ -50,7 +61,7 @@ export default {
         required: 'Please enter i18n data code！'
       },
       message: {
-        text:  'Message',
+        text: 'Message',
         tips: 'The text of the i18n data',
         required: 'Please enter i18n data message！！'
       }
