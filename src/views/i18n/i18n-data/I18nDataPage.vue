@@ -111,9 +111,10 @@
       </div>
     </a-card>
 
-    <!--表单弹窗-->
-    <i18n-data-modal-form ref="formModal" @reload-page-table="reloadTable" />
-
+    <!--新建弹窗-->
+    <i18n-data-create-modal ref="createModal" @reload-page-table="reloadTable" />
+    <!--修改弹窗-->
+    <i18n-data-update-modal ref="updateModal" @reload-page-table="reloadTable" />
     <!--导入弹窗-->
     <i18n-data-import-modal ref="importModal" @reload-page-table="reloadTable" />
   </div>
@@ -122,13 +123,14 @@
 <script>
 import { getPage, delObj, exportExcel } from '@/api/i18n/i18n-data'
 import { TablePageMixin } from '@/mixins'
-import I18nDataModalForm from '@/views/i18n/i18n-data/I18nDataModalForm'
+import I18nDataCreateModal from '@/views/i18n/i18n-data/I18nDataCreateModal'
+import I18nDataUpdateModal from '@/views/i18n/i18n-data/I18nDataUpdateModal'
 import I18nDataImportModal from '@/views/i18n/i18n-data/I18nDataImportModal'
 import { remoteFileDownload } from '@/utils/fileUtil'
 
 export default {
   name: 'I18nDataPage',
-  components: { I18nDataModalForm, I18nDataImportModal },
+  components: { I18nDataCreateModal, I18nDataUpdateModal, I18nDataImportModal },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -179,16 +181,16 @@ export default {
      * 新建国际化信息
      */
     handleAdd () {
-      const attributes = { title: this.$t('action.create') + ' ' + this.$t('i18n.i18nData.text') }
-      this.$refs.formModal.add(attributes)
+      const attributes = { title: this.$t('action.create') + '：' + this.$t('i18n.i18nData.text') }
+      this.$refs.createModal.add(attributes)
     },
     /**
      * 编辑国际化信息
      * @param record 当前国际化信息属性
      */
     handleEdit (record) {
-      const attributes = { title: this.$t('action.edit') + ' ' + this.$t('i18n.i18nData.text') }
-      this.$refs.formModal.update(record, attributes)
+      const attributes = { title: this.$t('action.edit') + '：' + this.$t('i18n.i18nData.text') }
+      this.$refs.updateModal.update(record, attributes)
     },
     // 删除
     handleDel (record) {
@@ -222,7 +224,7 @@ export default {
     handleImport () {
       const attributes = { title: this.$t('action.import') + ' ' + this.$t('i18n.i18nData.text') }
       this.$refs.importModal.show(attributes)
-    },
+    }
   }
 }
 </script>
