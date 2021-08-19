@@ -187,6 +187,12 @@ export default {
   },
   created () {
     this.loadData()
+    // 注册监听事件
+    this.$bus.$on('switch-language', this.reloadTable)
+  },
+  destroyed () {
+    // 销毁监听事件
+    this.$bus.$off('switch-language', this.reloadTable)
   },
   methods: {
     loadData () {
@@ -245,7 +251,7 @@ export default {
      * 当 i18nData 有修改时，刷新表格数据
      */
     handleI18nMessageUpdate() {
-      this.reloadTable(false)
+      this.reloadTable()
     }
   }
 }
