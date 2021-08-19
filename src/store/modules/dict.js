@@ -24,7 +24,11 @@ function convertValueType(value, valueType) {
   } else if (valueType === 2) {
     res = String(value)         // 字符串
   } else if (valueType === 3) {
-    res = Boolean(value)        // 布尔
+    // 布尔
+    // 字符串 ”false“ 也会被转换为 true，所以要额外判断下
+    // 参看 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Boolean
+    let b = Boolean(value)
+    res = b && value.toLowerCase() === 'false' ? false : b
   }
   return res
 }
