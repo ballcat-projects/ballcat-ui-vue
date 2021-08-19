@@ -330,7 +330,6 @@ export default {
   },
   created () {
     getTree().then(res => {
-      this.addTitleSlot(res.data)
       this.organizationTree = res.data
       // 默认展开一级组织
       this.organizationExpandedKeys = res.data.map(x => x.id)
@@ -341,14 +340,6 @@ export default {
     this.organizationColHeight = elt.clientHeight + 20 + 'px'
   },
   methods: {
-    addTitleSlot (treeList) {
-      if (treeList) {
-        treeList.forEach(node => {
-          node.scopedSlots = { title: 'title' }
-          this.addTitleSlot(node.children)
-        })
-      }
-    },
     /**
      * 新建用户
      */
