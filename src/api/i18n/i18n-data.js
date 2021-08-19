@@ -55,3 +55,11 @@ export function downloadTemplate () {
     responseType: 'blob'
   })
 }
+
+export function listByCode (code) {
+  return request({
+    url: '/i18n/i18n-data/list',
+    method: 'get',
+    params: { code: code },
+  })
+}

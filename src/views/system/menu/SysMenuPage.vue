@@ -73,7 +73,13 @@
         >
           <template #menu-title-slot="text, record">
             <a-icon v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
-            {{ record.title }}
+            {{ record.i18nTitle }}
+            <a-icon
+              v-if="record.type !== 2"
+              type="edit"
+              theme="twoTone"
+              @click="openI18nMessage(record.title)"
+            />
           </template>
           <template #hidden-slot="text">
             <dict-text dict-code="yes_or_no" :value="text? 0: 1" />
@@ -95,6 +101,8 @@
       </div>
     </a-card>
 
+    <!-- 菜单的标题国际化信息弹窗 -->
+    <i18n-message-modal ref="i18nMessageModal" @has-update="handleI18nMessageUpdate" />
     <!--表单弹窗-->
     <sys-menu-modal-form ref="formModal" :non-button-menu-tree="nonButtonMenuTree" @reload-page-table="reloadTable" />
   </div>
@@ -105,10 +113,12 @@ import { list, delObj } from '@/api/system/menu'
 import { TablePageMixin } from '@/mixins'
 import SysMenuModalForm from '@/views/system/menu/SysMenuModalForm'
 import { listToTree } from '@/utils/treeUtil'
+import I18nMessageModal from '@/views/i18n/I18nMessageModal'
+
 
 export default {
   name: 'SysMenuPage',
-  components: { SysMenuModalForm },
+  components: { SysMenuModalForm, I18nMessageModal },
   mixins: [TablePageMixin],
   data () {
     return {
@@ -187,7 +197,7 @@ export default {
         const onlyMenuTree = listToTree(data.filter(x => x.type !== 2), 0, (treeNode, item) => {
           // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
           // @see https://github.com/vueComponent/ant-design-vue/issues/2826
-          treeNode.titleName = treeNode.title
+          treeNode.titleName = treeNode.i18nTitle
           delete treeNode.title
           treeNode.scopedSlots = { title: 'title' }
         })
@@ -224,6 +234,18 @@ export default {
     handleEdit (record) {
       const attributes = { title: '编辑菜单权限' }
       this.$refs.formModal.update(record, attributes)
+    },
+    /**
+     * 打开 i18nMessage 弹窗
+     */
+    openI18nMessage(code) {
+      this.$refs.i18nMessageModal.show(code)
+    },
+    /**
+     * 当 i18nData 有修改时，刷新表格数据
+     */
+    handleI18nMessageUpdate() {
+      this.reloadTable(false)
     }
   }
 }

@@ -6,7 +6,7 @@
     :centered="true"
     :body-style="{padding: '24px 40px 8px 40px'}"
     :confirm-loading="submitLoading"
-    :width="600"
+    :width="650"
     @ok="handleSubmit"
     @cancel="handleClose"
   >
@@ -49,30 +49,48 @@
         />
       </a-form-item>
 
-      <a-form-item>
-        <span slot="label">
-          菜单ID&nbsp;
-          <a-tooltip
-            title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX"
-          >
-            <a-icon type="question-circle-o" />
-          </a-tooltip>
-        </span>
-        <a-input v-decorator="['id', decoratorOptions.id]" />
-      </a-form-item>
-
       <a-row :gutter="16">
         <a-col :xs="24" :sm="24" :md="12">
-          <a-form-item label="菜单名称" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
-            <a-input v-decorator="['title', decoratorOptions.title]" placeholder="菜单名称" />
+          <a-form-item :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
+            <span slot="label">
+              菜单ID
+              <a-tooltip
+                title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。
+                例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX"
+              >
+                <a-icon type="question-circle-o" />
+              </a-tooltip>
+            </span>
+            <a-input v-decorator="['id', decoratorOptions.id]" />
           </a-form-item>
         </a-col>
+
         <a-col :xs="24" :sm="24" :md="12">
           <a-form-item label="显示排序" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
             <a-input-number v-decorator="['sort', decoratorOptions.sort]" placeholder="排序值(升序)" style="width: 100%" />
           </a-form-item>
         </a-col>
       </a-row>
+
+      <a-form-item label="菜单名称">
+        <a-input v-decorator="['title', decoratorOptions.title]" placeholder="菜单名称" style="width: 65%" />
+        <a v-if="isCreateForm" style="margin-left: 8px" @click="toggleI18nAdvanced">
+          {{ i18nAdvanced ? '收起' : '展开' }}国际化名称
+          <a-icon :type="i18nAdvanced ? 'up' : 'down'" />
+        </a>
+      </a-form-item>
+
+      <a-form-item v-show="i18nAdvanced" v-if="isCreateForm">
+        <span slot="label">
+          名称国际化
+          <a-tooltip
+            title="菜单标题将作为国际化信息的标识"
+          >
+            <a-icon type="question-circle-o" />
+          </a-tooltip>
+        </span>
+        <language-text ref="languageText" />
+      </a-form-item>
 
       <template v-if="menuType !== 2">
         <a-row :gutter="16">
@@ -168,10 +186,11 @@
 import { PopUpFormMixin } from '@/mixins'
 import { addObj, putObj } from '@/api/system/menu'
 import { IconSelectorModal } from '@/components/IconSelector'
+import LanguageText from '@/views/i18n/LanguageText'
 
 export default {
   name: 'SysMenuModalForm',
-  components: { IconSelectorModal },
+  components: { IconSelectorModal, LanguageText },
   mixins: [PopUpFormMixin],
   props: {
     nonButtonMenuTree: {
@@ -206,6 +225,7 @@ export default {
 
       icon: '',
       menuType: 0,
+      i18nAdvanced: true,
 
       // 校验配置
       decoratorOptions: {
@@ -301,7 +321,29 @@ export default {
     chooseIcon (icon) {
       this.icon = icon
       this.form.setFieldsValue({ 'icon': icon })
-    }
+    },
+    /**
+     * 展开或收起国际化标题列表
+     */
+    toggleI18nAdvanced(){
+      this.i18nAdvanced = !this.i18nAdvanced
+    },
+    /**
+     * 表单提交数据处理函数
+     * 子组件可复写此方法，在这里进行偷梁换柱
+     * @param data 表单待提交数据
+     * @returns {*} 真正的提交数据
+     */
+    submitDataProcess (data) {
+      // 菜单标题即是：国际化数据的标识
+      let i18nMessages = this.$refs.languageText.data() || []
+      for (let i18nMessage of i18nMessages) {
+        i18nMessage.code = data.title
+      }
+
+      data.i18nMessages = i18nMessages
+      return data
+    },
   }
 }
 </script>
