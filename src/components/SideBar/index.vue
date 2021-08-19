@@ -4,6 +4,7 @@
       v-if="isDrawerMenu"
       placement="left"
       :wrap-class-name="`drawer-sider ${navTheme}`"
+      :drawer-style="drawerStyle"
       :closable="false"
       :visible="!sidebarCollapsed"
       :width="208"
@@ -33,7 +34,7 @@ import { APP_MUTATIONS } from '@/store/mutation-types'
 import { mixin } from '@/utils/mixin'
 
 export default {
-  name: "SideBar",
+  name: 'SideBar',
   components: { SideMenu },
   mixins: [mixin],
   props: {
@@ -43,7 +44,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isDrawerMenu', 'isSideMenu','isMixMenu']),
+    ...mapGetters(['sidebarCollapsed', 'isDrawerMenu', 'isSideMenu', 'isMixMenu']),
+    drawerStyle () {
+      if(this.navTheme ==='dark'){
+        return {
+          backgroundColor: '#001529'
+        }
+      }
+      return {}
+    }
   },
   methods: {
     ...mapMutations([APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]),
@@ -58,7 +67,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
