@@ -325,7 +325,7 @@ export default {
     /**
      * 展开或收起国际化标题列表
      */
-    toggleI18nAdvanced(){
+    toggleI18nAdvanced () {
       this.i18nAdvanced = !this.i18nAdvanced
     },
     /**
@@ -335,15 +335,18 @@ export default {
      * @returns {*} 真正的提交数据
      */
     submitDataProcess (data) {
-      // 菜单标题即是：国际化数据的标识
-      let i18nMessages = this.$refs.languageText.data() || []
-      for (let i18nMessage of i18nMessages) {
-        i18nMessage.code = data.title
+      // 填充国际化数据
+      let languageText = this.$refs.languageText
+      if (languageText) {
+        let i18nMessages = languageText.data() || []
+        // 菜单标题即是：国际化数据的标识
+        for (let i18nMessage of i18nMessages) {
+          i18nMessage.code = data.title
+        }
+        data.i18nMessages = i18nMessages
       }
-
-      data.i18nMessages = i18nMessages
       return data
-    },
+    }
   }
 }
 </script>
