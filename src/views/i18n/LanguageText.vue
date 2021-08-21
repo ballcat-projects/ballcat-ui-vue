@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { supportLanguage } from '@/locales'
+import { supportLanguage } from '@/config/projectConfig'
 
 const supportLanguageTags = Object.keys(supportLanguage)
 

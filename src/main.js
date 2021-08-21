@@ -4,12 +4,12 @@ import router from './router'
 import store from './store/'
 // mock
 // import './mock'
+import { enableI18n } from '@/config/projectConfig'
 
 import bootstrap from './core/bootstrap'
 import './core/use'
 import './permission' // permission control
 import './utils/filter' // global filter
-import { i18n } from './locales'
 
 // 文件相对路径转绝对路径
 Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
@@ -29,14 +29,26 @@ Vue.use(LovPlugin)
 
 Vue.config.productionTip = false
 
-new Vue({
+let vm = {
   beforeCreate () {
     // 全局事件总线
     Vue.prototype.$bus = this
   },
   router,
   store,
-  i18n,
   created: bootstrap,
   render: h => h(App)
-}).$mount('#app')
+}
+
+// 按需加载国际化
+if (enableI18n) {
+  import(/* webpackChunkName: "lang-[request]" */ '@/locales').then(res => {
+    vm.i18n = res.i18n
+    new Vue(vm).$mount('#app')
+  })
+} else {
+  new Vue(vm).$mount('#app')
+}
+
+
+

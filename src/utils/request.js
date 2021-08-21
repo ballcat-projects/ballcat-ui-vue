@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
+import { enableI18n } from '@/config/projectConfig'
 
 // 创建 axios 实例
 const service = axios.create({
@@ -47,9 +48,11 @@ service.interceptors.request.use(config => {
   }
 
   // i18n
-  const appLanguage = store.getters.lang
-  if (appLanguage) {
-    headers['Accept-Language'] = appLanguage
+  if (enableI18n) {
+    const appLanguage = store.getters.lang
+    if (appLanguage) {
+      headers['Accept-Language'] = appLanguage
+    }
   }
 
   return config
@@ -58,9 +61,9 @@ service.interceptors.request.use(config => {
 // response interceptor
 service.interceptors.response.use((response) => {
   const headers = response.headers
-  if (headers != null && headers['content-type'] && headers['content-type'].startsWith("application/json")) {
+  if (headers != null && headers['content-type'] && headers['content-type'].startsWith('application/json')) {
     return response.data
-  }else {
+  } else {
     return response
   }
 }, onRejected)

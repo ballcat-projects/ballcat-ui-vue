@@ -9,6 +9,7 @@
 <script>
 import { AppDeviceEnquire } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
+import { enableI18n } from '@/config/projectConfig'
 
 export default {
   mixins: [AppDeviceEnquire],
@@ -16,9 +17,9 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters(["lang"]),
+    ...mapGetters(['lang']),
     locale () {
-      return this.$i18n.getLocaleMessage(this.lang).antLocale
+      return enableI18n ? this.$i18n.getLocaleMessage(this.lang).antLocale : null
     }
   },
   mounted () {
@@ -27,7 +28,7 @@ export default {
 }
 </script>
 <style>
-  #app {
-    height: 100%;
-  }
+#app {
+  height: 100%;
+}
 </style>

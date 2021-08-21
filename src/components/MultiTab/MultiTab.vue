@@ -2,6 +2,7 @@
 import events from './events'
 import { APP_MUTATIONS } from '@/store/mutation-types'
 import { mapGetters } from 'vuex'
+import { enableI18n } from '@/config/projectConfig'
 
 function covertToPage (currentRoute) {
   return {
@@ -58,8 +59,10 @@ export default {
     }
   },
   created () {
-    // 注册监听事件
-    this.$bus.$on('switch-language', this.switchTitle)
+    // 开启国际化的清空下才需要监听事件变化
+    if (enableI18n) {
+      this.$bus.$on('switch-language', this.switchTitle)
+    }
     // bind event
     events.$on('open', val => {
       if (!val) {

@@ -7,40 +7,31 @@ import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import store from '@/store'
 import { APP_LANGUAGE } from '@/store/storage-types'
+import { enableI18n } from '@/config/projectConfig'
 // import { defaultLanguage } from '@/config/projectConfig'
-
-// 支持的语言列表
-export const supportLanguage = {
-  'zh-CN': {
-    lang: 'zh-CN',
-    title: '简体中文',
-    symbol: '🇨🇳'
-  },
-  'en-US': {
-    lang: 'en-US',
-    title: 'English',
-    symbol: '🇺🇸'
-  }
-}
-
-// 加载 vueI18n
-Vue.use(VueI18n)
 
 // 已经加载的语言列表
 const loadedLanguages = []
 
 // 当找不到对应语言的配置时，是否需要回退
-const fallbackLocale = false;
+const fallbackLocale = false
+
+let vueI18n = {}
+if (enableI18n) {
+  // 加载 vueI18n
+  Vue.use(VueI18n)
+  vueI18n = new VueI18n({
+    locale: 'unKnow', // 设置语言环境，这里故意给定 unKnow，方便切换
+    fallbackLocale: fallbackLocale,
+    messages: {} // 设置语言环境信息
+  })
+}
 
 // 这里没有加载语言，语言加载交由 bootstrap.js 中处理，这样避免默认语言和设置语言不一样时，依然要先加载默认语言的问题
-export const i18n = new VueI18n({
-  locale: 'unKnow', // 设置语言环境，这里故意给定 unKnow，方便切换
-  fallbackLocale: fallbackLocale,
-  messages: {} // 设置语言环境信息
-})
+export const i18n = vueI18n
 
 // 当需要回退语言时，则需要预先加载默认语言的配置
-if(fallbackLocale !== false){
+if (fallbackLocale !== false) {
   loadLanguageProperties(fallbackLocale)
 }
 
@@ -77,7 +68,6 @@ function setI18nLanguageAsync (lang) {
   // 如果尚未加载语言
   loadLanguageProperties(lang)
 }
-
 
 /**
  * 加载语言配置文件

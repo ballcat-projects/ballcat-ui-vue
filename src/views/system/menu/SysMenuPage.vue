@@ -73,9 +73,9 @@
         >
           <template #menu-title-slot="text, record">
             <a-icon v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
-            {{ record.i18nTitle }}
+            {{ enableI18n? record.i18nTitle: record.title }}
             <a-icon
-              v-if="record.type !== 2"
+              v-if="enableI18n && record.type !== 2"
               type="edit"
               theme="twoTone"
               @click="openI18nMessage(record.title)"
@@ -102,9 +102,9 @@
     </a-card>
 
     <!-- 菜单的标题国际化信息弹窗 -->
-    <i18n-message-modal ref="i18nMessageModal" @has-update="handleI18nMessageUpdate" />
+    <i18n-message-modal v-if="enableI18n" ref="i18nMessageModal" @has-update="handleI18nMessageUpdate" />
     <!--表单弹窗-->
-    <sys-menu-modal-form ref="formModal" :non-button-menu-tree="nonButtonMenuTree" @reload-page-table="reloadTable" />
+    <sys-menu-modal-form ref="formModal" :menu-list="menuList" @reload-page-table="reloadTable" />
   </div>
 </template>
 
@@ -114,6 +114,7 @@ import { TablePageMixin } from '@/mixins'
 import SysMenuModalForm from '@/views/system/menu/SysMenuModalForm'
 import { listToTree } from '@/utils/treeUtil'
 import I18nMessageModal from '@/views/i18n/I18nMessageModal'
+import projectConfig from '@/config/projectConfig'
 
 
 export default {
@@ -179,35 +180,30 @@ export default {
         }
       ],
 
+      // 是否开启了国际化
+      enableI18n: projectConfig.enableI18n,
       // 懒加载，取消mixin中的自动加载，第一次加载交由组件自己处理
       lazyLoad: true,
-      // 菜单树
-      nonButtonMenuTree: [{ id: 0, titleName: '根目录', children: [], scopedSlots: { title: 'title' } }]
+      // 菜单列表
+      menuList: [],
     }
   },
   created () {
     this.loadData()
-    // 注册监听事件
-    this.$bus.$on('switch-language', this.reloadTable)
+    // 开启国际化时，注册监听事件
+    this.enableI18n && this.$bus.$on('switch-language', this.reloadTable)
   },
   destroyed () {
     // 销毁监听事件
-    this.$bus.$off('switch-language', this.reloadTable)
+    this.enableI18n && this.$bus.$off('switch-language', this.reloadTable)
   },
   methods: {
     loadData () {
       this.loading = true
       list(this.queryParam).then(res => {
         const data = res.data
+        this.menuList = data
         this.dataSource = listToTree(data, 0)
-        const onlyMenuTree = listToTree(data.filter(x => x.type !== 2), 0, (treeNode, item) => {
-          // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
-          // @see https://github.com/vueComponent/ant-design-vue/issues/2826
-          treeNode.titleName = treeNode.i18nTitle
-          delete treeNode.title
-          treeNode.scopedSlots = { title: 'title' }
-        })
-        this.$set(this.nonButtonMenuTree[0], 'children', onlyMenuTree)
       }).finally(() => {
         this.loading = false
       })

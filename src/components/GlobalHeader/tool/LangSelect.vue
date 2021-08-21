@@ -21,7 +21,8 @@
 
 <script>
 import { i18nIcon } from '@/core/icons'
-import { switchLanguage, supportLanguage } from '@/locales'
+import { supportLanguage } from '@/config/projectConfig'
+import { switchLanguage } from '@/locales'
 import { mapActions, mapGetters } from 'vuex'
 import router, { resetRouter } from '@/router'
 

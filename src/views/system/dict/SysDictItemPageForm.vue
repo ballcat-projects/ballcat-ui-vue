@@ -76,7 +76,7 @@
 
 
 
-    <a-form-item label="国际化">
+    <a-form-item v-if="enableI18n" label="国际化">
       <a-input
         v-for="language in supportLanguage"
         :key="language.lang"
@@ -120,7 +120,7 @@
 <script>
 import { colorPicker } from '@/core/icons'
 import { PageFormMixin } from '@/mixins'
-import { supportLanguage } from '@/locales'
+import { enableI18n, supportLanguage } from '@/config/projectConfig'
 
 import { addObj, putObj } from '@/api/system/dict-item'
 
@@ -172,6 +172,8 @@ export default {
       textColorPicker: '',
       textColorAttribute: '',
 
+      // 是否开启国际化
+      enableI18n: enableI18n,
       // 支持的语言列表
       supportLanguage: supportLanguage,
       // 语言属性

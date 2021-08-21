@@ -13,7 +13,7 @@
 
     <user-account-dropdown class="ballcat-global-header-tool-action" />
 
-    <lang-select class="ballcat-global-header-tool-action" />
+    <lang-select v-if="enableI18n" class="ballcat-global-header-tool-action" />
 
     <!--    <lang-select class="ballcat-global-header-tool-action" />-->
     <span class="ballcat-global-header-tool-action" @click="showSettingDrawer">
@@ -29,6 +29,7 @@ import NoticeIcon from '@/components/GlobalHeader/tool/NoticeIcon'
 import UserAccountDropdown from '@/components/GlobalHeader/tool/AvatarDropdown'
 import LangSelect from '@/components/GlobalHeader/tool/LangSelect'
 import SettingDrawer from '@/components/SettingDrawer/SettingDrawer'
+import projectConfig from '@/config/projectConfig'
 
 export default {
   name: 'GlobalHeaderToolRight',
@@ -38,6 +39,11 @@ export default {
     Screenfull,
     UserAccountDropdown,
     LangSelect
+  },
+  data() {
+    return {
+      enableI18n: projectConfig.enableI18n
+    }
   },
   methods: {
     showSettingDrawer(){

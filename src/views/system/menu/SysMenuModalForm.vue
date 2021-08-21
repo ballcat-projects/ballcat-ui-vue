@@ -25,7 +25,7 @@
           v-decorator="['parentId', decoratorOptions.parentId]"
           placeholder="父菜单"
           :dropdown-style="{ maxHeight: '350px', overflow: 'auto' }"
-          :tree-data="nonButtonMenuTree"
+          :tree-data="parentMenuTree"
           :tree-default-expanded-keys="[0]"
           :replace-fields="{
             key: 'id',
@@ -74,13 +74,13 @@
 
       <a-form-item label="菜单名称">
         <a-input v-decorator="['title', decoratorOptions.title]" placeholder="菜单名称" style="width: 65%" />
-        <a v-if="isCreateForm" style="margin-left: 8px" @click="toggleI18nAdvanced">
+        <a v-if="enableI18n && isCreateForm" style="margin-left: 8px" @click="toggleI18nAdvanced">
           {{ i18nAdvanced ? '收起' : '展开' }}国际化名称
           <a-icon :type="i18nAdvanced ? 'up' : 'down'" />
         </a>
       </a-form-item>
 
-      <a-form-item v-show="i18nAdvanced" v-if="isCreateForm">
+      <a-form-item v-show="i18nAdvanced" v-if="enableI18n && isCreateForm">
         <span slot="label">
           名称国际化
           <a-tooltip
@@ -187,13 +187,15 @@ import { PopUpFormMixin } from '@/mixins'
 import { addObj, putObj } from '@/api/system/menu'
 import { IconSelectorModal } from '@/components/IconSelector'
 import LanguageText from '@/views/i18n/LanguageText'
+import projectConfig from '@/config/projectConfig'
+import { listToTree } from '@/utils/treeUtil'
 
 export default {
   name: 'SysMenuModalForm',
   components: { IconSelectorModal, LanguageText },
   mixins: [PopUpFormMixin],
   props: {
-    nonButtonMenuTree: {
+    menuList: {
       type: Array,
       required: true
     }
@@ -226,6 +228,9 @@ export default {
       icon: '',
       menuType: 0,
       i18nAdvanced: true,
+      enableI18n: projectConfig.enableI18n,
+      // 菜单树
+      parentMenuTree: [{ id: 0, titleName: '根目录', children: [], scopedSlots: { title: 'title' } }],
 
       // 校验配置
       decoratorOptions: {
@@ -271,6 +276,18 @@ export default {
         }
       }
     }
+  },
+  watch: {
+    menuList(newMenuList){
+      const onlyMenuTree = listToTree(newMenuList.filter(x => x.type !== 2), 0, (treeNode, item) => {
+        // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
+        // @see https://github.com/vueComponent/ant-design-vue/issues/2826
+        treeNode.titleName = this.enableI18n? treeNode.i18nTitle: treeNode.title
+        delete treeNode.title
+        treeNode.scopedSlots = { title: 'title' }
+      })
+      this.$set(this.parentMenuTree[0], 'children', onlyMenuTree)
+    },
   },
   methods: {
     /**
@@ -335,6 +352,10 @@ export default {
      * @returns {*} 真正的提交数据
      */
     submitDataProcess (data) {
+      // 未开启国际化直接返回
+      if (!this.enableI18n) {
+        return data
+      }
       // 填充国际化数据
       let languageText = this.$refs.languageText
       if (languageText) {
