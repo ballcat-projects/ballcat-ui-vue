@@ -374,6 +374,9 @@ export default {
       this.copyValue()
     }
   },
+  beforeCreate () {
+    console.error("[组件过期警告] Lov 组件已弃用，将于后续版本删除，请切换使用 LovLocal 组件")
+  },
   created() {
     if (!this.lazy) {
       this.load()

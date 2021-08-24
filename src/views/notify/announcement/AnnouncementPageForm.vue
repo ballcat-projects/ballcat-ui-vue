@@ -66,11 +66,10 @@
           mode="multiple"
           placeholder="请选择用户类型"
         />
-        <lov
+        <lov-local
           v-if="recipientFilterType === 5"
           v-decorator="['recipientFilterCondition', decoratorOptions.recipientFilterType]"
-          keyword="lov_user"
-          :show-handler-by-select-row="lovUserShowHandler"
+          v-bind="sysUserLov"
         />
       </a-form-item>
 
@@ -127,6 +126,7 @@ import { addObj, putObj, uploadImage } from '@/api/notify/announcement'
 import { getSelectData } from '@/api/system/role'
 import { getTree } from '@/api/system/organization'
 import WangEditor from '@/components/Editor/WangEditor'
+import { sysUserLov } from '@/components/Lov/lovOptions'
 
 export default {
   name: 'AnnouncementPageForm',
@@ -168,7 +168,9 @@ export default {
       // 角色选择框数据
       roleSelectData: [],
       // 组织树
-      organizationTree: []
+      organizationTree: [],
+      // 系统用户弹窗选择
+      sysUserLov
     }
   },
   created () {
@@ -188,9 +190,6 @@ export default {
       this.recipientFilterType = val
       // 筛选方式变更时，清空之前选中的条件数据
       this.form.setFieldsValue({ recipientFilterCondition: [] })
-    },
-    lovUserShowHandler (row) {
-      return row.nickname
     },
     preview () {
       this.$emit('preview-announcement', this.form.getFieldsValue())
