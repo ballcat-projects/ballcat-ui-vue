@@ -192,7 +192,7 @@ export default {
       // v-model 方式的表单值联动
       this.$emit('input', value)
       // 值修改时，对应选择的 Rows 也发射出去
-      this.$emit('row-change', selectedRows)
+      this.$emit('rowChange', this.multiple? selectedRows: selectedRows[0] )
     },
     showModal () {
       this.$refs.lovModal.show({
