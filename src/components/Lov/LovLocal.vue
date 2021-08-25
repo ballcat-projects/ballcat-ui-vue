@@ -159,7 +159,8 @@ export default {
   },
   mounted () {
     // 禁止 select 框输入
-    document.querySelector('.lov-select .ant-select-search__field').readOnly = true
+    let element = document.querySelector('.lov-select .ant-select-search__field')
+    element && ( element.readOnly = true )
   },
   methods: {
     convertValue (value) {

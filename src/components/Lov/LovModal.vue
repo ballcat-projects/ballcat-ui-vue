@@ -137,6 +137,7 @@
 <script>
 import tablePageMixin from '@/mixins/tablePageMixin'
 import { enableI18n } from '@/config/projectConfig'
+import { littleCamelToUnderline } from '@/utils/strUtil'
 
 export default {
   name: 'LovModal',
@@ -209,6 +210,8 @@ export default {
       modalVisible: false,
       // 表格行的唯一标识
       rowKey: '$' + this.dataKey,
+      // 默认排序字段
+      sortField: littleCamelToUnderline(this.dataKey),
       // 表格分页 load 方法
       getPage: this.getPageData
     }
@@ -258,7 +261,8 @@ export default {
   },
   mounted () {
     // 禁止 select 框输入
-    document.querySelector('.lov-select .ant-select-search__field').readOnly = true
+    let element = document.querySelector('.lov-select .ant-select-search__field')
+    element && ( element.readOnly = true )
   },
   methods: {
     /**
