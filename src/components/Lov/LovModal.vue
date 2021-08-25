@@ -4,7 +4,7 @@
     class="lov-model"
     :confirm-loading="loading"
     :centered="true"
-    :title="modalTitle"
+    :title="enableI18n? $t(modalTitle): modalTitle"
     :width="modalWidth"
     :visible="modalVisible"
     :body-style="modalStyle"
@@ -15,10 +15,10 @@
 
     <!-- 搜索表单部分渲染 -->
     <div v-if="searchOptions && searchOptions.length > 0" class="lov-search-wrapper">
-      <a-form>
+      <a-form-model>
         <a-row :gutter="8">
           <a-col
-            v-for="(item) in searchOptions"
+            v-for="(item) in searchComponents"
             :key="item.field"
             :md="8"
             :sm="16"
@@ -66,15 +66,15 @@
           >
             <div style="display:flex;">
               <a-button type="primary" style="margin-left:5%" @click="reloadTable">
-                查询
+                {{ enableI18n? $t('action.query'): '查询' }}
               </a-button>
               <a-button style="margin-left:8px" @click="resetSearchForm">
-                重置
+                {{ enableI18n? $t('action.reset'): '重置' }}
               </a-button>
             </div>
           </a-col>
         </a-row>
-      </a-form>
+      </a-form-model>
     </div>
 
     <!-- 已选数据展示 -->
@@ -86,7 +86,7 @@
         :open="false"
         :mode="multiple? 'tags' : 'default'"
         :options="selectOptions"
-        placeholder="已选数据"
+        :placeholder="enableI18n? $t('lov.selectedData') :'已选数据'"
         :show-search="false"
         @change="handleDeselect"
       />
@@ -125,10 +125,10 @@
       </div>
 
       <a-button @click="handleCancel">
-        Cancel
+        {{ enableI18n? $t('action.cancel'): '取消' }}
       </a-button>
       <a-button type="primary" :loading="loading" @click="handleChoose">
-        Choose
+        {{ enableI18n? $t('action.choose'): '选择' }}
       </a-button>
     </template>
   </a-modal>
@@ -136,6 +136,7 @@
 
 <script>
 import tablePageMixin from '@/mixins/tablePageMixin'
+import { enableI18n } from '@/config/projectConfig'
 
 export default {
   name: 'LovModal',
@@ -202,6 +203,8 @@ export default {
   },
   data () {
     return {
+      // 是否开启国际化
+      enableI18n: enableI18n,
       // 弹出框的展示控制标识
       modalVisible: false,
       // 表格行的唯一标识
@@ -228,6 +231,29 @@ export default {
     },
     selectedValue () {
       return this.multiple ? this.selectedRowKeys : this.selectedRowKeys[0]
+    },
+    columns() {
+      let columns = this.tableColumns
+      if(enableI18n){
+        columns = this.tableColumns.map(x => {
+          let column = { ...x }
+          column.title = this.$t(x.title)
+          return column
+        })
+      }
+      return columns
+    },
+    searchComponents() {
+      let searchComponents = this.searchOptions
+      if(enableI18n){
+        searchComponents = this.searchOptions.map(x => {
+          let components = { ...x }
+          components.label = this.$t(x.label)
+          components.placeholder = this.$t(x.placeholder)
+          return components
+        })
+      }
+      return searchComponents
     }
   },
   mounted () {

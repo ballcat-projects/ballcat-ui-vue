@@ -14,6 +14,10 @@ export default {
     pageInfo: '{rangeBegin}-{rangeEnd} 共 {total} 条',
   },
 
+  lov: {
+    selectedData: '已选数据'
+  },
+
   action: {
     query: '查询',
     reset: '重置',
@@ -26,7 +30,9 @@ export default {
     export: '导出',
     import: '导入',
     details: '详情',
-    selectFile: '选择文件'
+    selectFile: '选择文件',
+    choose: '选择',
+    cancel: '取消'
   },
 
   common: {

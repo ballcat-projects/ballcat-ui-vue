@@ -19,18 +19,18 @@ export const sysUserLov = {
   },
   getPageData: getUserPage,
   // 搜索配置
-  searchOption: [
+  searchOptions: [
     {
       label: '用户名',
       field: 'username',
-      tag: SEARCH_TYPE.input,
-      placeholder: '请输入'
+      type: SEARCH_TYPE.input,
+      placeholder: 'message.pleaseEnter'
     },
     {
       label: '昵称',
       field: 'name',
-      tag: SEARCH_TYPE.input,
-      placeholder: '请输入'
+      type: SEARCH_TYPE.input,
+      placeholder: 'message.pleaseEnter'
     }
   ],
   // 表格列

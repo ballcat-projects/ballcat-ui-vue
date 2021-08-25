@@ -14,6 +14,10 @@ export default {
     pageInfo: '{rangeBegin}-{rangeEnd} of {total} items',
   },
 
+  lov: {
+    selectedData: 'The selected data'
+  },
+
   action: {
     query: 'Query',
     reset: 'Reset',
@@ -26,7 +30,9 @@ export default {
     export: 'Export',
     import: 'Import',
     details: 'Details',
-    selectFile: 'Select File'
+    selectFile: 'Select File',
+    choose: 'Choose',
+    cancel: 'Cancel'
   },
 
   common: {

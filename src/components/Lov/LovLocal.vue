@@ -12,7 +12,7 @@
           :show-arrow="true"
           :mode="multiple? 'tags' : 'default'"
           :disabled="disabled"
-          :placeholder="placeholder"
+          :placeholder="enableI18n? $t(placeholder): placeholder"
           :options="selectOptions"
           :filter-option="false"
           :show-search="false"
@@ -42,6 +42,7 @@
 
 <script>
 import LovModal from '@/components/Lov/LovModal'
+import { enableI18n } from '@/config/projectConfig'
 
 export default {
   name: 'LovLocal',
@@ -130,6 +131,7 @@ export default {
   },
   data () {
     return {
+      enableI18n: enableI18n,
       // 加载控制
       loading: false,
       // 选中的值
