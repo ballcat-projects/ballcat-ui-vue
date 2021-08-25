@@ -1,4 +1,5 @@
 import { littleCamelToUnderline } from '@/utils/strUtil'
+import { enableI18n } from '@/config/projectConfig'
 
 export default {
   data () {
@@ -16,7 +17,13 @@ export default {
         pageSize: 10,
         showSizeChanger: true,
         showTotal: (total, range) => {
-          return range[0] + '-' + range[1] + ' 共' + total + '条'
+          let rangeBegin = range[0]
+          let rangeEnd = range[1]
+          if(enableI18n){
+            return this.$t('pagination.pageInfo', { rangeBegin: rangeBegin, rangeEnd: rangeEnd, total: total })
+          }else {
+            return rangeBegin + '-' + rangeEnd + ' ' + '共' + total + '条'
+          }
         }
       },
       // 查询参数

@@ -10,6 +10,10 @@ const components = {
 export default {
   ...components,
 
+  pagination: {
+    pageInfo: '{rangeBegin}-{rangeEnd} 共 {total} 条',
+  },
+
   action: {
     query: '查询',
     reset: '重置',

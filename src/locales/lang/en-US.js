@@ -10,6 +10,10 @@ const components = {
 export default {
   ...components,
 
+  pagination: {
+    pageInfo: '{rangeBegin}-{rangeEnd} of {total} items',
+  },
+
   action: {
     query: 'Query',
     reset: 'Reset',
