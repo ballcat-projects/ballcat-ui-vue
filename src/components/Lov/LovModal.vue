@@ -205,27 +205,29 @@ export default {
       // 弹出框的展示控制标识
       modalVisible: false,
       // 表格行的唯一标识
-      rowKey: this.dataKey,
+      rowKey: '$' + this.dataKey,
       // 表格分页 load 方法
       getPage: this.getPageData
     }
   },
   computed: {
+    dataField () {
+      return '$' + this.dataKey
+    },
+    selectOptions () {
+      return this.selectedRows.map(x => {
+        return {
+          key: x[this.dataField],
+          title: this.customOptionTitle(x)
+        }
+      })
+    },
     modalStyle () {
       let screenHeight = document.body.clientHeight * 0.75
       return { padding: '0', maxHeight: screenHeight + 'px', overflowY: 'scroll' }
     },
     selectedValue () {
       return this.multiple ? this.selectedRowKeys : this.selectedRowKeys[0]
-    },
-    selectOptions () {
-      return this.selectedRows.map(x => {
-        return {
-          key: x[this.dataKey],
-          value: x[this.dataKey],
-          title: this.customOptionTitle(x)
-        }
-      })
     }
   },
   mounted () {
@@ -233,6 +235,15 @@ export default {
     document.querySelector('.lov-select .ant-select-search__field').readOnly = true
   },
   methods: {
+    /**
+     * 分页查询成功回调
+     * @param page
+     */
+    onPageLoadSuccess (page) {
+      for (const record of page.records) {
+        record[this.dataField] = String(record[this.dataKey])
+      }
+    },
     // ============ 模态框使用方法 ===========
     show (data) {
       this.selectedRowKeys = data.selectedValue ? [...data.selectedValue] : []
@@ -260,7 +271,7 @@ export default {
       return {
         on: {
           click: () => {
-            this.selectedRowKeys = [record[this.dataKey]]
+            this.selectedRowKeys = [record[this.dataField]]
             this.selectedRows = [record]
           }
         }
@@ -271,7 +282,7 @@ export default {
         on: {
           click: () => {
             // 当前记录的 rowKey
-            let recordRowKey = record[this.dataKey]
+            let recordRowKey = record[this.dataField]
             let index = this.selectedRowKeys.indexOf(recordRowKey)
             // 是否已选中
             if (index === -1) {

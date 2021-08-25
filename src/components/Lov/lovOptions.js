@@ -10,6 +10,7 @@ import { getPage as getUserPage } from '@/api/system/user'
 
 export const sysUserLov = {
   multiple: true,
+  isNumberValue: true,
   modalTitle: '用户',
   dataKey: 'userId',
   // 自定义选择项的展示标题
