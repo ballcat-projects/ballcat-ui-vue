@@ -15,9 +15,9 @@
           <a-alert
             v-if="isLoginError"
             type="error"
-            show-icon
+            :show-icon="true"
             style="margin-bottom: 24px;"
-            message="账户或密码错误（admin/a123456 )"
+            :message="loginErrorMessage"
           />
           <a-form-item>
             <a-input
@@ -158,6 +158,7 @@ export default {
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
       isLoginError: false,
+      loginErrorMessage: "",
       requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
       form: this.$form.createForm(this),
@@ -268,9 +269,11 @@ export default {
     },
     requestFailed (err) {
       this.isLoginError = true
+      let errorMessage = ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试'
+      this.loginErrorMessage = errorMessage
       this.$notification['error']({
         message: '错误',
-        description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
+        description: errorMessage,
         duration: 4
       })
     }
