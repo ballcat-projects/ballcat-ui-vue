@@ -1,8 +1,8 @@
 <template>
   <a-result
     :status="status"
-    :title="types[status].title"
-    :sub-title="types[status].desc"
+    :title="type.title"
+    :sub-title="type.desc"
   >
     <template #extra>
       <a-button type="primary" @click="handleToHome">
@@ -33,8 +33,12 @@ export default {
     }
   },
   computed: {
-    status(){
-      return this.$route.name || 404
+    status () {
+      return this.$route.meta.exceptionStatus || '404'
+    },
+    type () {
+      let type = this.types[this.status]
+      return type || this.types[404]
     }
   },
   methods: {

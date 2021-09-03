@@ -10,7 +10,8 @@ function covertToPage (currentRoute) {
     name: currentRoute.name,
     params: currentRoute.params,
     title: currentRoute.meta.title,
-    componentName: currentRoute.meta.componentName
+    componentName: currentRoute.meta.componentName,
+    isExceptionPage: Boolean(currentRoute.meta.exceptionStatus)
   }
 }
 
@@ -30,6 +31,12 @@ export default {
   watch: {
     '$route': function (currentRoute) {
       const newPage = covertToPage(currentRoute)
+
+      // 删除异常页面
+      let exceptionPageIndex = this.pages.findIndex(item => item.isExceptionPage)
+      if(exceptionPageIndex !== -1){
+        this.pages.splice(exceptionPageIndex, 1)
+      }
 
       const index = this.pages.findIndex(page => page.fullPath === newPage.fullPath)
       if (index < 0) {

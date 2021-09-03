@@ -84,7 +84,7 @@ export const generator = (routerMap, parent) => {
       if (targetType === 1) {
         // 内置组件
         item.uri && (currentRouter.component = () => import(`@/views/${item.uri}`))
-        item.uri && (currentRouter.meta['componentName'] = item.uri.split("/").pop())
+        item.uri && (currentRouter.meta['componentName'] = item.uri.split('/').pop())
       } else if (targetType === 2) {
         // 内嵌iframe
         currentRouter.meta.url = item.uri
@@ -103,8 +103,17 @@ export const generator = (routerMap, parent) => {
 
     // 有子菜单则递归处理
     if (item.children && item.children.length > 0) {
-      // Recursion
-      currentRouter.children = generator(item.children, currentRouter)
+      // 给子节点添加一个默认的 404 页面，以便在 content 中显示 404
+      let children = generator(item.children, currentRouter)
+      const notFoundPath = `${currentRouter && currentRouter.path || ''}/*`
+      children.push({
+        path: notFoundPath,
+        name: notFoundPath,
+        hidden: true,
+        meta: { title: 404, exceptionStatus: "404" },
+        component: () => import(/* webpackChunkName: "fail" */ '@/views/exception')
+      })
+      currentRouter.children = children
       fillRedirect(currentRouter)
     }
     return currentRouter
