@@ -14,7 +14,7 @@
 <script>
 export default {
   name: 'IframePage',
-  data() {
+  data () {
     return {
       iframeLoading: false,
       id: '',
@@ -28,30 +28,34 @@ export default {
   },
   created () {
     this.iframeInit()
+    window.addEventListener('resize', this.iframeResize)
   },
   mounted () {
     this.iframeResize()
-    window.onresize = () => {
-      this.iframeResize()
-    }
+  },
+  destroyed () {
+    window.removeEventListener('resize', this.iframeResize)
   },
   methods: {
-    iframeInit() {
+    iframeInit () {
       this.iframeLoading = true
       this.id = this.$route.path
       this.url = this.$route.meta.url
     },
-    iframeResize() {
+    iframeResize () {
       const iframe = this.$refs.iframe
-      const clientHeight = document.getElementsByClassName('ant-layout-content')[0].clientHeight - 10
-      iframe.style.height = `${clientHeight}px`
-      if (iframe.attachEvent) {
-        iframe.attachEvent('onload', () => {
-          this.iframeLoading = false
-        })
-      } else {
-        iframe.onload = () => {
-          this.iframeLoading = false
+      console.log(iframe, 'resize')
+      if (iframe) {
+        const clientHeight = document.getElementsByClassName('ant-layout-content')[0].clientHeight - 10
+        iframe.style.height = `${clientHeight}px`
+        if (iframe.attachEvent) {
+          iframe.attachEvent('onload', () => {
+            this.iframeLoading = false
+          })
+        } else {
+          iframe.onload = () => {
+            this.iframeLoading = false
+          }
         }
       }
     }
@@ -66,5 +70,6 @@ export default {
   border: 0;
   overflow: hidden;
   box-sizing: border-box;
+  padding: 16px;
 }
 </style>
