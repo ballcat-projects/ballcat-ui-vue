@@ -80,7 +80,8 @@
         </a>
       </a-form-item>
 
-      <a-form-item v-show="i18nAdvanced" v-if="enableI18n && isCreateForm">
+      <!-- 开启国际化 && 新建菜单 && 不是按钮时 -->
+      <a-form-item v-show="i18nAdvanced" v-if="enableI18n && isCreateForm && menuType !== 2">
         <span slot="label">
           名称国际化
           <a-tooltip
