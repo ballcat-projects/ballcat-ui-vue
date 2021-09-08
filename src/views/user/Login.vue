@@ -140,13 +140,13 @@
       <div class="user-login-other">
         <span>其他登录方式</span>
         <a>
-          <icon-font class="item-icon" type="alipay-circle" />
+          <icon-font class="item-icon" type="alipay" />
         </a>
         <a>
-          <icon-font class="item-icon" type="taobao-circle" />
+          <icon-font class="item-icon" type="taobao" />
         </a>
         <a>
-          <icon-font class="item-icon" type="weibo-circle" />
+          <icon-font class="item-icon" type="weibo" />
         </a>
         <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
       </div>
