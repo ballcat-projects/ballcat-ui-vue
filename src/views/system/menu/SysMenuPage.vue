@@ -33,7 +33,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
+                <icon-font :type="advanced ? 'up' : 'down'"/>
               </a>-->
             </div>
           </a-col>
@@ -41,7 +41,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :body-style="{paddingTop: '0'}">
+    <a-card :bordered="false" :body-style="{ paddingTop: '0' }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">菜单权限</div>
@@ -51,8 +51,7 @@
             type="primary"
             icon="plus"
             @click="handleAdd()"
-          >新建
-          </a-button>
+          >新建 </a-button>
         </div>
       </div>
 
@@ -68,13 +67,13 @@
           :loading="loading"
           :expand-icon-column-index="1"
           :pagination="false"
-          :scroll="{x : 1100}"
+          :scroll="{ x: 1100 }"
           @change="handleTableChange"
         >
           <template #menu-title-slot="text, record">
-            <a-icon v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
-            {{ enableI18n? record.i18nTitle: record.title }}
-            <a-icon
+            <icon-font v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
+            {{ enableI18n ? record.i18nTitle : record.title }}
+            <icon-font
               v-if="enableI18n && record.type !== 2"
               type="edit"
               theme="twoTone"
@@ -82,18 +81,14 @@
             />
           </template>
           <template #hidden-slot="text">
-            <dict-text dict-code="yes_or_no" :value="text? 0: 1" />
+            <dict-text dict-code="yes_or_no" :value="text ? 0 : 1" />
           </template>
           <template #action-slot="text, record">
             <a v-has="'system:menu:add'" @click="handleAdd(record)">添加</a>
             <a-divider type="vertical" />
             <a v-has="'system:menu:edit'" @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical" />
-            <a-popconfirm
-              v-has="'system:menu:del'"
-              title="确认要删除吗？"
-              @confirm="() => handleDel(record)"
-            >
+            <a-popconfirm v-has="'system:menu:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>
@@ -116,12 +111,11 @@ import { listToTree } from '@/utils/treeUtil'
 import I18nMessageModal from '@/views/i18n/I18nMessageModal'
 import projectConfig from '@/config/projectConfig'
 
-
 export default {
   name: 'SysMenuPage',
   components: { SysMenuModalForm, I18nMessageModal },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       delObj: delObj,
 
@@ -185,36 +179,38 @@ export default {
       // 懒加载，取消mixin中的自动加载，第一次加载交由组件自己处理
       lazyLoad: true,
       // 菜单列表
-      menuList: [],
+      menuList: []
     }
   },
-  created () {
+  created() {
     this.loadData()
     // 开启国际化时，注册监听事件
     this.enableI18n && this.$bus.$on('switch-language', this.reloadTable)
   },
-  destroyed () {
+  destroyed() {
     // 销毁监听事件
     this.enableI18n && this.$bus.$off('switch-language', this.reloadTable)
   },
   methods: {
-    loadData () {
+    loadData() {
       this.loading = true
-      list(this.queryParam).then(res => {
-        const data = res.data
-        this.menuList = data
-        this.dataSource = listToTree(data, 0)
-      }).finally(() => {
-        this.loading = false
-      })
+      list(this.queryParam)
+        .then(res => {
+          const data = res.data
+          this.menuList = data
+          this.dataSource = listToTree(data, 0)
+        })
+        .finally(() => {
+          this.loading = false
+        })
     },
-    reloadTable () {
+    reloadTable() {
       this.loadData()
     },
     /**
      * 新建菜单权限
      */
-    handleAdd (record) {
+    handleAdd(record) {
       const attributes = { title: '新建菜单权限' }
       // 按钮类型不允许有子级，所以默认变成创建平级
       if (record) {
@@ -233,7 +229,7 @@ export default {
      * 编辑菜单权限
      * @param record 当前菜单权限属性
      */
-    handleEdit (record) {
+    handleEdit(record) {
       const attributes = { title: '编辑菜单权限' }
       this.$refs.formModal.update(record, attributes)
     },
@@ -258,6 +254,6 @@ export default {
 }
 
 .ant-tag.single-tag {
-  margin-right: 0
+  margin-right: 0;
 }
 </style>

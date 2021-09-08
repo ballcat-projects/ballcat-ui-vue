@@ -35,7 +35,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
               <!--                {{ advanced ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+              <!--                <icon-font :type="advanced ? 'up' : 'down'"/>-->
               <!--              </a>-->
             </div>
           </a-col>
@@ -43,8 +43,7 @@
       </a-form>
     </div>
 
-
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">配置信息</div>
@@ -54,8 +53,7 @@
             type="primary"
             icon="plus"
             @click="handleAdd()"
-          >新建
-          </a-button>
+          >新建 </a-button>
         </div>
       </div>
       <div class="ant-pro-table-wrapper">
@@ -68,17 +66,13 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :scroll="{x : 1000}"
+          :scroll="{ x: 1000 }"
           @change="handleTableChange"
         >
           <template #action-slot="text, record">
             <a v-has="'system:config:edit'" @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical" />
-            <a-popconfirm
-              v-has="'system:config:del'"
-              title="确认要删除吗？"
-              @confirm="() => handleDel(record)"
-            >
+            <a-popconfirm v-has="'system:config:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>
@@ -87,10 +81,7 @@
     </a-card>
 
     <!--表单弹窗-->
-    <sys-config-modal-form
-      ref="formModal"
-      @reload-page-table="reloadTable"
-    />
+    <sys-config-modal-form ref="formModal" @reload-page-table="reloadTable" />
   </div>
 </template>
 
@@ -103,7 +94,7 @@ export default {
   name: 'SysConfigPage',
   components: { SysConfigModalForm },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj,
@@ -127,7 +118,6 @@ export default {
           dataIndex: 'confValue',
           width: 100,
           ellipsis: true
-
         },
         {
           title: '分类',
@@ -165,14 +155,14 @@ export default {
     /**
      * 新建配置
      */
-    handleAdd () {
+    handleAdd() {
       this.$refs.formModal.add({ title: '新建配置' })
     },
     /**
      * 编辑配置
      * @param record 当前配置属性
      */
-    handleEdit (record) {
+    handleEdit(record) {
       this.$refs.formModal.update(record, { title: '编辑配置' })
     }
   }

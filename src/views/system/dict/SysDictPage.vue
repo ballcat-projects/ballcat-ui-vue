@@ -22,7 +22,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
               <!--                {{ advanced ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+              <!--                <icon-font :type="advanced ? 'up' : 'down'"/>-->
               <!--              </a>-->
             </div>
           </a-col>
@@ -30,8 +30,7 @@
       </a-form>
     </div>
 
-
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">数据字典</div>
@@ -55,7 +54,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :scroll="{x : 800}"
+          :scroll="{ x: 800 }"
           @change="handleTableChange"
         >
           <template #type-slot="text">
@@ -67,11 +66,7 @@
             <a-divider type="vertical" />
             <a @click="handleShowItem(record)">字典项</a>
             <a-divider type="vertical" />
-            <a-popconfirm
-              v-has="'system:dict:del'"
-              title="确认要删除吗？"
-              @confirm="() => handleDel(record)"
-            >
+            <a-popconfirm v-has="'system:dict:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>
@@ -80,10 +75,7 @@
     </a-card>
 
     <!--表单弹窗-->
-    <sys-dict-modal-form
-      ref="formModal"
-      @reload-page-table="reloadTable"
-    />
+    <sys-dict-modal-form ref="formModal" @reload-page-table="reloadTable" />
 
     <!--字典项-->
     <dict-item-modal ref="dictItemModal" />
@@ -100,7 +92,7 @@ export default {
   name: 'SysDictPage',
   components: { SysDictModalForm, DictItemModal },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj,
@@ -152,21 +144,21 @@ export default {
     /**
      * 新建字典
      */
-    handleAdd () {
+    handleAdd() {
       this.$refs.formModal.add({ title: '新建字典' })
     },
     /**
      * 编辑字典
      * @param record 当前组织属性
      */
-    handleEdit (record) {
+    handleEdit(record) {
       this.$refs.formModal.update(record, { title: '编辑字典' })
     },
     /**
      * 字典项表格弹窗
      * @param record
      */
-    handleShowItem (record) {
+    handleShowItem(record) {
       this.$refs.dictItemModal.show(record)
     }
   }

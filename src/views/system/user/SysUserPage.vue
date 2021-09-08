@@ -1,10 +1,9 @@
 <template>
   <div class="ant-pro-page-container-children-content">
-
     <a-row :gutter="14">
       <a-col :md="5">
         <a-card
-          :body-style="{padding: '24px 18px'}"
+          :body-style="{ padding: '24px 18px' }"
           :bordered="false"
           style="min-width: 200px; margin-bottom: 16px; min-height: calc(100vh - 122px);"
         >
@@ -74,14 +73,14 @@
                   <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                   <a style="margin-left: 8px" @click="toggleAdvanced">
                     {{ advanced ? '收起' : '展开' }}
-                    <a-icon :type="advanced ? 'up' : 'down'" />
+                    <icon-font :type="advanced ? 'up' : 'down'" />
                   </a>
                 </div>
               </a-col>
             </a-row>
           </a-form>
         </div>
-        <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+        <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
           <!-- 操作按钮区域 -->
           <div class="ant-pro-table-toolbar">
             <div class="ant-pro-table-toolbar-title">系统用户</div>
@@ -90,19 +89,19 @@
                 <template #overlay>
                   <a-menu @click="handleUpdateStatus">
                     <a-menu-item key="1">
-                      <a-icon type="delete" />
+                      <icon-font type="delete" />
                       开启
                     </a-menu-item>
                     <!-- lock | unlock -->
                     <a-menu-item key="0">
-                      <a-icon type="lock" />
+                      <icon-font type="lock" />
                       锁定
                     </a-menu-item>
                   </a-menu>
                 </template>
                 <a-button style="margin-left: 8px">
                   批量操作
-                  <a-icon type="down" />
+                  <icon-font type="down" />
                 </a-button>
               </a-dropdown>
               <a-button
@@ -117,7 +116,9 @@
           <div class="ant-pro-table-wrapper">
             <a-alert :show-icon="true" style="margin-bottom: 16px">
               <template #message>
-                <span style="margin-right: 12px">已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>
+                <span
+                  style="margin-right: 12px"
+                >已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>
                 <a v-show="selectedRows.length > 0" style="margin-left: 24px" @click="onClearSelected">清空</a>
               </template>
             </a-alert>
@@ -131,9 +132,9 @@
               :data-source="dataSource"
               :pagination="pagination"
               :loading="loading"
-              :alert="{show: true, clear: true}"
-              :row-selection="{onChange: onSelectChange, selectedRowKeys: selectedRowKeys}"
-              :scroll="{x : 800}"
+              :alert="{ show: true, clear: true }"
+              :row-selection="{ onChange: onSelectChange, selectedRowKeys: selectedRowKeys }"
+              :scroll="{ x: 800 }"
               @change="handleTableChange"
             >
               <!--数据表格-->
@@ -170,10 +171,7 @@
                         <a @click="changePass(record)">改密</a>
                       </a-menu-item>
                       <a-menu-item v-has="'system:user:del'">
-                        <a-popconfirm
-                          title="确认要删除吗？"
-                          @confirm="() => handleDel(record)"
-                        >
+                        <a-popconfirm title="确认要删除吗？" @confirm="() => handleDel(record)">
                           <a href="javascript:;">删除</a>
                         </a-popconfirm>
                       </a-menu-item>
@@ -188,11 +186,7 @@
     </a-row>
 
     <!-- 用户表单弹窗 -->
-    <sys-user-modal-form
-      ref="formModal"
-      :organization-tree="organizationTree"
-      @reload-page-table="reloadTable"
-    />
+    <sys-user-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadTable" />
 
     <!--头像弹框-->
     <cropper-modal ref="avatarModal" />
@@ -206,8 +200,6 @@
     <div v-if="passInited">
       <password-modal ref="passwordModal" />
     </div>
-
-
   </div>
 </template>
 
@@ -241,15 +233,15 @@ export default {
     SysUserModalForm
   },
   filters: {
-    statusFilter (type) {
+    statusFilter(type) {
       return statusMap[type].text
     },
-    statusTypeFilter (type) {
+    statusTypeFilter(type) {
       return statusMap[type].status
     }
   },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj,
@@ -328,14 +320,14 @@ export default {
   computed: {
     ...mapGetters(['userInfo'])
   },
-  created () {
+  created() {
     getTree().then(res => {
       this.organizationTree = res.data
       // 默认展开一级组织
       this.organizationExpandedKeys = res.data.map(x => x.id)
     })
   },
-  mounted () {
+  mounted() {
     const elt = this.$refs.sysUserCol.$el
     this.organizationColHeight = elt.clientHeight + 20 + 'px'
   },
@@ -343,33 +335,33 @@ export default {
     /**
      * 新建用户
      */
-    handleAdd () {
-      this.$refs.formModal.add({title: '新建用户'})
+    handleAdd() {
+      this.$refs.formModal.add({ title: '新建用户' })
     },
     // 编辑用户
-    handleEdit (record) {
-      this.$refs.formModal.update(record, {title: '编辑用户'})
+    handleEdit(record) {
+      this.$refs.formModal.update(record, { title: '编辑用户' })
     },
     // 授权
-    handleGrant (record) {
+    handleGrant(record) {
       if (!this.scopeInited) {
         this.scopeInited = true
       }
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.$refs.scopeModal.show(record)
       })
     },
     // 修改密码
-    changePass (record) {
+    changePass(record) {
       if (!this.passInited) {
         this.passInited = true
       }
-      this.$nextTick(function () {
+      this.$nextTick(function() {
         this.$refs.passwordModal.show(record)
       })
     },
     // 修改状态
-    handleUpdateStatus (e) {
+    handleUpdateStatus(e) {
       updateStatus(this.selectedRowKeys, e.key).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
@@ -379,17 +371,17 @@ export default {
         }
       })
     },
-    beforeUpdateAvatar (userId) {
+    beforeUpdateAvatar(userId) {
       const _this = this
       _this.avatarUserId = userId
-      _this.$refs.avatarModal.edit((fileObj) => {
+      _this.$refs.avatarModal.edit(fileObj => {
         return updateAvatar(userId, fileObj).then(res => {
           _this.handleUpdateAvatar(res.data)
           return res
         })
       })
     },
-    handleUpdateAvatar (avatar) {
+    handleUpdateAvatar(avatar) {
       const userId = this.avatarUserId
       // 更新表格头像
       const newData = [...this.dataSource]
@@ -403,7 +395,7 @@ export default {
         this.userInfo.avatar = avatar
       }
     },
-    searchOrganization (e) {
+    searchOrganization(e) {
       const value = e.target.value
       let expandedKeys = []
       if (value) {
@@ -417,7 +409,7 @@ export default {
         autoExpandParent: true
       })
     },
-    matchParentKey (pId, treeList, result) {
+    matchParentKey(pId, treeList, result) {
       if (treeList) {
         let matched = false
         treeList.forEach(node => {
@@ -435,7 +427,7 @@ export default {
      * 选择组织机构
      * 被选择时，立刻进行查询操作
      */
-    selectOrganization (selectedKeys, e) {
+    selectOrganization(selectedKeys, e) {
       this.organizationSelectedKeys = selectedKeys
       this.queryParam.organizationId = selectedKeys.join(',')
       this.loadData()
@@ -444,11 +436,11 @@ export default {
      * 展开组织机构树
      * @param expandedKeys
      */
-    expandOrganization (expandedKeys) {
+    expandOrganization(expandedKeys) {
       this.organizationExpandedKeys = expandedKeys
     },
     // 清空选项
-    resetSearchForm () {
+    resetSearchForm() {
       this.queryParam = {
         organizationId: this.queryParam.organizationId
       }

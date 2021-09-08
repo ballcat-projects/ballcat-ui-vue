@@ -49,7 +49,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <a style="margin-left: 8px" @click="toggleAdvanced">
                 {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'" />
+                <icon-font :type="advanced ? 'up' : 'down'" />
               </a>
             </div>
           </a-col>
@@ -57,7 +57,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">操作日志</div>
@@ -72,7 +72,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :scroll="{x : 1100}"
+          :scroll="{ x: 1100 }"
           @change="handleTableChange"
         >
           <template #type-slot="text">
@@ -101,7 +101,7 @@ import { TablePageMixin } from '@/mixins'
 export default {
   name: 'OperationLogPage',
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
 
@@ -109,13 +109,13 @@ export default {
         {
           title: '追踪ID',
           dataIndex: 'traceId',
-          width: '205px',
+          width: '205px'
         },
         {
           title: '日志消息',
           dataIndex: 'msg',
           ellipsis: true,
-          width: '120px',
+          width: '120px'
         },
         {
           title: '类型',
@@ -140,7 +140,7 @@ export default {
         {
           title: '耗时',
           dataIndex: 'time',
-          customRender: function (text) {
+          customRender: function(text) {
             return text + ' ms'
           }
         },
@@ -166,13 +166,13 @@ export default {
     }
   },
   methods: {
-    onTimeChange (dates, dateStrings) {
+    onTimeChange(dates, dateStrings) {
       this.searchTimeValue = dateStrings
       this.queryParam.startTime = dateStrings[0]
       this.queryParam.endTime = dateStrings[1]
     },
     // 清空搜索条件
-    resetSearchForm () {
+    resetSearchForm() {
       this.queryParam = {}
       this.searchTimeValue = []
     }
@@ -180,5 +180,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

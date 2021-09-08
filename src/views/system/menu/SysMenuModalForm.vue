@@ -4,17 +4,13 @@
     :visible="visible"
     :mask-closable="false"
     :centered="true"
-    :body-style="{padding: '24px 40px 8px 40px'}"
+    :body-style="{ padding: '24px 40px 8px 40px' }"
     :confirm-loading="submitLoading"
     :width="650"
     @ok="handleSubmit"
     @cancel="handleClose"
   >
-    <a-form
-      :form="form"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
+    <a-form :form="form" :label-col="labelCol" :wrapper-col="wrapperCol">
       <!-- 原始的菜单ID 用于支持菜单ID 的修改功能-->
       <a-form-item v-if="isUpdateForm" style="display: none">
         <a-input v-decorator="['originalId']" />
@@ -33,9 +29,7 @@
           }"
         >
           <template #title="treeNode">
-            <span>
-              【{{ treeNode.titleName }}】{{ treeNode.id }}
-            </span>
+            <span> 【{{ treeNode.titleName }}】{{ treeNode.id }} </span>
           </template>
         </a-tree-select>
       </a-form-item>
@@ -58,7 +52,7 @@
                 title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。
                 例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX"
               >
-                <a-icon type="question-circle-o" />
+                <icon-font type="question-circle-o" />
               </a-tooltip>
             </span>
             <a-input v-decorator="['id', decoratorOptions.id]" />
@@ -67,7 +61,11 @@
 
         <a-col :xs="24" :sm="24" :md="12">
           <a-form-item label="显示排序" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
-            <a-input-number v-decorator="['sort', decoratorOptions.sort]" placeholder="排序值(升序)" style="width: 100%" />
+            <a-input-number
+              v-decorator="['sort', decoratorOptions.sort]"
+              placeholder="排序值(升序)"
+              style="width: 100%"
+            />
           </a-form-item>
         </a-col>
       </a-row>
@@ -76,7 +74,7 @@
         <a-input v-decorator="['title', decoratorOptions.title]" placeholder="菜单名称" style="width: 65%" />
         <a v-if="enableI18n && isCreateForm" style="margin-left: 8px" @click="toggleI18nAdvanced">
           {{ i18nAdvanced ? '收起' : '展开' }}国际化名称
-          <a-icon :type="i18nAdvanced ? 'up' : 'down'" />
+          <icon-font :type="i18nAdvanced ? 'up' : 'down'" />
         </a>
       </a-form-item>
 
@@ -84,10 +82,8 @@
       <a-form-item v-show="i18nAdvanced" v-if="enableI18n && isCreateForm && menuType !== 2">
         <span slot="label">
           名称国际化
-          <a-tooltip
-            title="菜单标题将作为国际化信息的标识"
-          >
-            <a-icon type="question-circle-o" />
+          <a-tooltip title="菜单标题将作为国际化信息的标识">
+            <icon-font type="question-circle-o" />
           </a-tooltip>
         </span>
         <language-text ref="languageText" />
@@ -99,10 +95,10 @@
             <a-form-item label="菜单图标" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
               <a-input v-decorator="['icon']" placeholder="请选择">
                 <template #prefix>
-                  <a-icon v-if="icon" :type="icon" />
+                  <icon-font v-if="icon" :type="icon" />
                 </template>
                 <template #addonAfter>
-                  <a-icon type="setting" @click="selectIcons" />
+                  <icon-font type="setting" @click.native="selectIcons" />
                 </template>
               </a-input>
             </a-form-item>
@@ -151,7 +147,6 @@
         </a-form-item>
       </template>
 
-
       <!-- 按钮没有显示隐藏一说 -->
       <template v-if="menuType !== 2">
         <a-form-item label="是否可见">
@@ -174,9 +169,12 @@
       </template>
 
       <a-form-item label="备注信息">
-        <a-textarea v-decorator="['remarks']" placeholder="最多输入 50 个字符" :auto-size="{minRows: 3, maxRows: 6}" />
+        <a-textarea
+          v-decorator="['remarks']"
+          placeholder="最多输入 50 个字符"
+          :auto-size="{ minRows: 3, maxRows: 6 }"
+        />
       </a-form-item>
-
     </a-form>
 
     <icon-selector-modal ref="iconSelectModal" @choose="chooseIcon" />
@@ -201,7 +199,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       reqFunctions: {
         create: addObj,
@@ -236,10 +234,7 @@ export default {
       // 校验配置
       decoratorOptions: {
         id: {
-          rules: [
-            { required: true, message: '请输入菜单ID!' },
-            { validator: this.checkMenuId }
-          ]
+          rules: [{ required: true, message: '请输入菜单ID!' }, { validator: this.checkMenuId }]
         },
         parentId: {
           initialValue: 0
@@ -279,22 +274,26 @@ export default {
     }
   },
   watch: {
-    menuList(newMenuList){
-      const onlyMenuTree = listToTree(newMenuList.filter(x => x.type !== 2), 0, (treeNode, item) => {
-        // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
-        // @see https://github.com/vueComponent/ant-design-vue/issues/2826
-        treeNode.titleName = this.enableI18n? treeNode.i18nTitle: treeNode.title
-        delete treeNode.title
-        treeNode.scopedSlots = { title: 'title' }
-      })
+    menuList(newMenuList) {
+      const onlyMenuTree = listToTree(
+        newMenuList.filter(x => x.type !== 2),
+        0,
+        (treeNode, item) => {
+          // 为了使用 treeSelect 的自定义 titleSlot，这里必须删除掉 title 属性
+          // @see https://github.com/vueComponent/ant-design-vue/issues/2826
+          treeNode.titleName = this.enableI18n ? treeNode.i18nTitle : treeNode.title
+          delete treeNode.title
+          treeNode.scopedSlots = { title: 'title' }
+        }
+      )
       this.$set(this.parentMenuTree[0], 'children', onlyMenuTree)
-    },
+    }
   },
   methods: {
     /**
      * 菜单ID 的规则校验
      */
-    checkMenuId (rule, value, callback) {
+    checkMenuId(rule, value, callback) {
       let errorMsg = null
 
       const idStr = String(value)
@@ -317,33 +316,33 @@ export default {
     /**
      * 新建表单的回调
      */
-    createdFormCallback (attributes) {
+    createdFormCallback(attributes) {
       if (attributes && attributes.formData) {
         this.menuType = attributes.formData.type
-        this.$nextTick(function () {
+        this.$nextTick(function() {
           this.form.setFieldsValue(attributes.formData)
         })
       }
     },
-    echoDataProcess (record) {
+    echoDataProcess(record) {
       this.icon = record.icon
       this.menuType = record.type
       record.originalId = record.id
     },
-    onTypeChange (menuType) {
+    onTypeChange(menuType) {
       this.menuType = menuType
     },
-    selectIcons () {
+    selectIcons() {
       this.$refs.iconSelectModal.show()
     },
-    chooseIcon (icon) {
+    chooseIcon(icon) {
       this.icon = icon
-      this.form.setFieldsValue({ 'icon': icon })
+      this.form.setFieldsValue({ icon: icon })
     },
     /**
      * 展开或收起国际化标题列表
      */
-    toggleI18nAdvanced () {
+    toggleI18nAdvanced() {
       this.i18nAdvanced = !this.i18nAdvanced
     },
     /**
@@ -352,7 +351,7 @@ export default {
      * @param data 表单待提交数据
      * @returns {*} 真正的提交数据
      */
-    submitDataProcess (data) {
+    submitDataProcess(data) {
       // 未开启国际化直接返回
       if (!this.enableI18n) {
         return data

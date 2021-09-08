@@ -3,12 +3,11 @@
     :title="title"
     :visible="visible"
     :mask-closable="false"
-    :body-style="{paddingBottom: '8px'}"
+    :body-style="{ paddingBottom: '8px' }"
     :confirm-loading="submitLoading"
     @ok="handleSubmit"
     @cancel="handleClose"
   >
-
     <a-form-model ref="form" :model="formData" :rules="rules">
       <a-form-model-item prop="fileList">
         <a-upload
@@ -18,7 +17,7 @@
           :before-upload="beforeUpload"
         >
           <a-button>
-            <a-icon type="upload" />
+            <icon-font type="upload" />
             {{ $t('action.selectFile') }}
           </a-button>
           <a href="javascript:" style="margin-left: 12px;" @click.stop="downloadTemplate">
@@ -38,7 +37,6 @@
         </a-radio-group>
       </a-form-model-item>
     </a-form-model>
-
   </a-modal>
 </template>
 
@@ -48,7 +46,7 @@ import { remoteFileDownload } from '@/utils/fileUtil'
 
 export default {
   name: 'I18nDataImportModal',
-  data () {
+  data() {
     return {
       visible: false,
       submitLoading: false,
@@ -59,45 +57,43 @@ export default {
   },
   computed: {
     // 标题
-    title () {
+    title() {
       return this.$t('import.batchImport') + '：' + this.$t('i18n.i18nData.text')
     },
-    rules () {
+    rules() {
       return {
-        fileList: [
-          { type: 'array', required: true, len: 1, message: this.$t('message.pleaseSelectFile') }
-        ]
+        fileList: [{ type: 'array', required: true, len: 1, message: this.$t('message.pleaseSelectFile') }]
       }
     }
   },
   methods: {
-    defaultFormData () {
+    defaultFormData() {
       return {
         fileList: [],
         importMode: 'SKIP_EXISTING'
       }
     },
-    show () {
+    show() {
       this.visible = true
       this.submitLoading = false
     },
-    handleClose () {
+    handleClose() {
       this.visible = false
       this.submitLoading = false
     },
-    beforeUpload (file) {
+    beforeUpload(file) {
       this.formData.fileList = [file]
       return false
     },
-    handleRemove () {
+    handleRemove() {
       this.formData.fileList = []
     },
-    downloadTemplate () {
+    downloadTemplate() {
       downloadTemplate().then(response => {
         remoteFileDownload(response)
       })
     },
-    handleSubmit () {
+    handleSubmit() {
       this.$refs['form'].validate(valid => {
         if (valid) {
           this.submitLoading = true
@@ -107,14 +103,16 @@ export default {
           formData.append('file', this.formData.fileList[0])
           formData.append('importMode', this.formData.importMode)
 
-          importExcel(formData).then(res => {
-            this.$message.success(this.$t('import.importSuccess'))
-            this.$emit('reload-page-table', false)
-            this.formData = this.defaultFormData()
-            this.handleClose()
-          }).finally(() => {
-            this.submitLoading = false
-          })
+          importExcel(formData)
+            .then(res => {
+              this.$message.success(this.$t('import.importSuccess'))
+              this.$emit('reload-page-table', false)
+              this.formData = this.defaultFormData()
+              this.handleClose()
+            })
+            .finally(() => {
+              this.submitLoading = false
+            })
         }
       })
     }
@@ -122,6 +120,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

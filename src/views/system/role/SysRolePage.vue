@@ -23,7 +23,7 @@
                 <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                 <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
                 <!--                {{ advanced ? '收起' : '展开' }}-->
-                <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+                <!--                <icon-font :type="advanced ? 'up' : 'down'"/>-->
                 <!--              </a>-->
               </div>
             </a-col>
@@ -31,8 +31,7 @@
         </a-form>
       </div>
 
-
-      <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+      <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
         <!-- 操作按钮区域 -->
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">角色管理</div>
@@ -56,7 +55,7 @@
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
-            :scroll="{x : 1100}"
+            :scroll="{ x: 1100 }"
             @change="handleTableChange"
           >
             <template #type-slot="text">
@@ -69,11 +68,7 @@
               <a-divider type="vertical" />
               <a v-has="'system:role:grant'" @click="handleBind(record)">绑定</a>
               <a-divider type="vertical" />
-              <a-popconfirm
-                v-has="'system:role:del'"
-                title="确认要删除吗？"
-                @confirm="() => handleDel(record)"
-              >
+              <a-popconfirm v-has="'system:role:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
                 <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>
@@ -83,10 +78,7 @@
     </div>
 
     <!-- 表单弹窗 -->
-    <role-modal-form
-      ref="formModal"
-      @reload-page-table="reloadTable"
-    />
+    <role-modal-form ref="formModal" @reload-page-table="reloadTable" />
 
     <!-- 角色授权弹窗 -->
     <role-grant-drawer ref="roleGrantDrawer" />
@@ -111,7 +103,7 @@ export default {
     RoleModalForm
   },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj,
@@ -168,19 +160,19 @@ export default {
   },
   methods: {
     // 新建角色
-    handleAdd () {
-      this.$refs.formModal.add({title: '新建角色'})
+    handleAdd() {
+      this.$refs.formModal.add({ title: '新建角色' })
     },
     // 编辑角色
-    handleEdit (record) {
-      this.$refs.formModal.update(record, {title: '编辑角色'})
+    handleEdit(record) {
+      this.$refs.formModal.update(record, { title: '编辑角色' })
     },
     // 对角色授权
-    handleGrant (record) {
+    handleGrant(record) {
       this.$refs.roleGrantDrawer.showDrawer(record)
     },
     // 为角色做用户绑定
-    handleBind (record) {
+    handleBind(record) {
       this.$refs.roleUserModal.show(record)
     }
   }

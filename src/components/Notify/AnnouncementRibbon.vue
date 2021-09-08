@@ -2,7 +2,7 @@
   <div v-if="announcementNum > 0" class="text-container">
     <transition class="" name="slide" mode="out-in">
       <span :key="announcement.id" class="announcement-content">
-        <a-icon type="sound" theme="filled" />
+        <icon-font type="sound" theme="filled" />
         <a href="javascript:" class="text" @click="readAnnouncement">{{ announcement.title }}</a>
       </span>
     </transition>
@@ -17,7 +17,7 @@ import { getUserAnnouncements } from '@/api/notify/announcement'
 export default {
   name: 'AnnouncementRibbon',
   components: { AnnouncementModal },
-  data () {
+  data() {
     return {
       activeIndex: 0, // 当前索引
       intervalId: null, // 定时器ID
@@ -26,14 +26,14 @@ export default {
     }
   },
   computed: {
-    announcementNum () {
+    announcementNum() {
       return this.announcements.length
     },
-    announcement () {
+    announcement() {
       return this.announcements[this.activeIndex]
     }
   },
-  created () {
+  created() {
     // 获取公告信息
     getUserAnnouncements().then(res => {
       this.announcements = res.data
@@ -49,9 +49,8 @@ export default {
     // 注册监听事件
     this.$bus.$on('announcement-push', this.onAnnouncementPush)
     this.$bus.$on('announcement-close', this.onAnnouncementClose)
-
   },
-  destroyed () {
+  destroyed() {
     // 清除定时器
     clearInterval(this.intervalId)
     // 删除事件监听
@@ -59,11 +58,11 @@ export default {
     this.$bus.$off('announcement-close', this.onAnnouncementClose)
   },
   methods: {
-    readAnnouncement () {
+    readAnnouncement() {
       // 展示公告
       this.$refs.announcementModal.show(this.announcement)
     },
-    onAnnouncementPush: function (data) {
+    onAnnouncementPush: function(data) {
       // 添加公告
       let announcement = {
         id: data.id,
@@ -72,15 +71,17 @@ export default {
       }
       this.announcements.push(announcement)
     },
-    onAnnouncementClose: function (data){
-      this.announcements.splice( this.announcements.findIndex(item => item.id === data.id), 1)
+    onAnnouncementClose: function(data) {
+      this.announcements.splice(
+        this.announcements.findIndex(item => item.id === data.id),
+        1
+      )
     }
   }
 }
 </script>
 
 <style scoped>
-
 .text-container {
   font-size: 14px;
   color: #f56b6b;
@@ -96,7 +97,7 @@ export default {
 .text {
   color: #f56b6b;
   display: inline;
-  padding-left: 12px
+  padding-left: 12px;
 }
 
 .announcement-content {
@@ -106,7 +107,8 @@ export default {
   line-height: 32px;
 }
 
-.slide-enter-active, .slide-leave-active {
+.slide-enter-active,
+.slide-leave-active {
   transition: all 0.8s linear;
 }
 
@@ -120,4 +122,3 @@ export default {
   opacity: 0;
 }
 </style>
-

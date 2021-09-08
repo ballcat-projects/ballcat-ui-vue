@@ -49,7 +49,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <a style="margin-left: 8px" @click="toggleAdvanced">
                 {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'" />
+                <icon-font :type="advanced ? 'up' : 'down'" />
               </a>
             </div>
           </a-col>
@@ -57,7 +57,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">登陆日志</div>
@@ -72,7 +72,7 @@
           :data-source="dataSource"
           :pagination="pagination"
           :loading="loading"
-          :scroll="{x : 1100}"
+          :scroll="{ x: 1100 }"
           @change="handleTableChange"
         >
           <template #status-slot="text">
@@ -85,11 +85,7 @@
           <template slot="action-slot" slot-scope="text, record">
             <a v-has="'log:loginlog:edit'" @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical" />
-            <a-popconfirm
-              v-has="'log:loginlog:del'"
-              title="确认要删除吗？"
-              @confirm="() => handleDel(record)"
-            >
+            <a-popconfirm v-has="'log:loginlog:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
               <a href="javascript:">删除</a>
             </a-popconfirm>
           </template>
@@ -106,7 +102,7 @@ import { TablePageMixin } from '@/mixins'
 export default {
   name: 'LoginLogPage',
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
 
@@ -114,7 +110,7 @@ export default {
         {
           title: '追踪ID',
           dataIndex: 'traceId',
-          width: 205,
+          width: 205
         },
         {
           title: '用户名',
@@ -127,7 +123,7 @@ export default {
           dataIndex: 'eventType',
           align: 'center',
           width: 60,
-          scopedSlots: { customRender: 'event-type-slot' },
+          scopedSlots: { customRender: 'event-type-slot' }
         },
         {
           title: '登陆IP',
@@ -171,13 +167,13 @@ export default {
     }
   },
   methods: {
-    onTimeChange (dates, dateStrings) {
+    onTimeChange(dates, dateStrings) {
       this.searchTimeValue = dateStrings
       this.queryParam.startTime = dateStrings[0]
       this.queryParam.endTime = dateStrings[1]
     },
     // 清空搜索条件
-    resetSearchForm () {
+    resetSearchForm() {
       this.queryParam = {}
       this.searchTimeValue = []
     }

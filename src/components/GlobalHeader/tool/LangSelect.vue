@@ -1,14 +1,10 @@
 <template>
   <a-dropdown>
     <span style="font-size: 16px">
-      <a-icon :component="i18nIcon" />
+      <icon-font :component="i18nIcon" />
     </span>
     <template #overlay>
-      <a-menu
-        style="width: 150px;"
-        :selected-keys="selectedKeys"
-        @click="switchLang"
-      >
+      <a-menu style="width: 150px;" :selected-keys="selectedKeys" @click="switchLang">
         <template v-for="language in supportLanguage">
           <a-menu-item :key="language.lang">
             <span role="img" :aria-label="language.title">{{ language.symbol }}</span> {{ language.title }}
@@ -28,7 +24,7 @@ import router, { resetRouter } from '@/router'
 
 export default {
   name: 'LangSelect',
-  data () {
+  data() {
     return {
       i18nIcon,
       supportLanguage
@@ -36,13 +32,13 @@ export default {
   },
   computed: {
     ...mapGetters(['lang', 'userRouters']),
-    selectedKeys () {
+    selectedKeys() {
       return [this.lang]
     }
   },
   methods: {
     ...mapActions(['GenerateRoutes']),
-    switchLang (row) {
+    switchLang(row) {
       const newLang = row.key
       if (this.lang !== newLang) {
         // 切换国际化配置

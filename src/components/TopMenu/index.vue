@@ -1,8 +1,10 @@
 <template>
   <div style="width:65%">
     <a-menu v-model="currentNav" mode="horizontal">
-      <template v-for="(item) in menus">
-        <a-menu-item v-if="!item.hidden" :key="item.name" @click="selectItem"><a-icon :type="item.meta.icon" />{{ item.meta.title }}</a-menu-item>
+      <template v-for="item in menus">
+        <a-menu-item v-if="!item.hidden" :key="item.name" @click="selectItem"
+          ><icon-font :type="item.meta.icon" />{{ item.meta.title }}</a-menu-item
+        >
       </template>
     </a-menu>
   </div>
@@ -16,25 +18,25 @@ export default {
       required: true
     }
   },
-  data(){
+  data() {
     return {
-      currentNav:[]
+      currentNav: []
     }
   },
-  watch:{
-      $route(to){
-        this.firstToUpper(to);
-      }
+  watch: {
+    $route(to) {
+      this.firstToUpper(to)
+    }
   },
-  created(){
-    this.firstToUpper(this.$route);
+  created() {
+    this.firstToUpper(this.$route)
   },
   methods: {
     firstToUpper(path) {
-       return this.currentNav=[path.matched[1].name]
+      return (this.currentNav = [path.matched[1].name])
     },
-    selectItem(item){
-        this.$router.push({name:item.key});
+    selectItem(item) {
+      this.$router.push({ name: item.key })
     }
   }
 }

@@ -12,7 +12,7 @@ import './permission' // permission control
 import './utils/filter' // global filter
 
 // 文件相对路径转绝对路径
-Vue.prototype.fileAbsoluteUrl = function (relativeUrl) {
+Vue.prototype.fileAbsoluteUrl = function(relativeUrl) {
   if (relativeUrl) {
     return 'https://hccake-img.oss-cn-shanghai.aliyuncs.com/' + relativeUrl
   }
@@ -27,10 +27,14 @@ import LovPlugin from '@/components/Lov/lovPlugin'
 
 Vue.use(LovPlugin)
 
+// icon 注册
+import IconPlugin from '@/components/IconFont/plugin'
+Vue.use(IconPlugin)
+
 Vue.config.productionTip = false
 
 let vm = {
-  beforeCreate () {
+  beforeCreate() {
     // 全局事件总线
     Vue.prototype.$bus = this
   },
@@ -49,6 +53,3 @@ if (enableI18n) {
 } else {
   new Vue(vm).$mount('#app')
 }
-
-
-
