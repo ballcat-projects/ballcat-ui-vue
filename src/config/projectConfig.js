@@ -33,6 +33,6 @@ module.exports = {
       symbol: '🇺🇸'
     }
   },
-  iconFontUrl: '//at.alicdn.com/t/font_2663734_n2opxzn2qcq.js',
+  iconFontUrl: '//at.alicdn.com/t/font_2663734_0a4brhm1yko6.js',
   iconPrefix: 'ballcat-icon-'
 }
