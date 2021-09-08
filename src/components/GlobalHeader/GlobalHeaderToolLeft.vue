@@ -1,10 +1,10 @@
 <template>
   <div class="ballcat-global-header-tool-left">
     <span class="ballcat-global-header-tool-action" @click="toggle">
-      <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);" />
+      <icon-font :type="collapsedButtonIconType" style="transform: scale(1.15);" />
     </span>
     <span class="ballcat-global-header-tool-action" @click="refreshContent">
-      <a-icon type="reload" />
+      <icon-font type="reload" />
     </span>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   name: 'GlobalHeaderToolLeft',
   computed: {
     ...mapGetters(['sidebarCollapsed', 'device']),
-    collapsedButtonIconType () {
+    collapsedButtonIconType() {
       if (this.sidebarCollapsed) {
         return 'menu-unfold'
       } else {
@@ -27,16 +27,14 @@ export default {
   },
   methods: {
     ...mapMutations([APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]),
-    toggle(){
+    toggle() {
       this[APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED](!this.sidebarCollapsed)
     },
-    refreshContent () {
+    refreshContent() {
       this.$bus.$emit('refresh-content')
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -23,14 +23,17 @@
             <a-input
               v-decorator="[
                 'username',
-                {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
+                {
+                  rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }],
+                  validateTrigger: 'change'
+                }
               ]"
               size="large"
               type="text"
               placeholder="账户: admin"
             >
               <template #prefix>
-                <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <icon-font type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -39,7 +42,7 @@
             <a-input
               v-decorator="[
                 'password',
-                {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}
+                { rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur' }
               ]"
               size="large"
               type="password"
@@ -48,7 +51,7 @@
               @pressEnter="showCaptchaBox"
             >
               <template #prefix>
-                <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <icon-font type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -56,13 +59,19 @@
         <a-tab-pane key="tab2" tab="手机号登录">
           <a-form-item>
             <a-input
-              v-decorator="['mobile', {rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }], validateTrigger: 'change'}]"
+              v-decorator="[
+                'mobile',
+                {
+                  rules: [{ required: true, pattern: /^1[34578]\d{9}$/, message: '请输入正确的手机号' }],
+                  validateTrigger: 'change'
+                }
+              ]"
               size="large"
               type="text"
               placeholder="手机号"
             >
               <template #prefix>
-                <a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <icon-font type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -71,13 +80,16 @@
             <a-col class="gutter-row" :span="16">
               <a-form-item>
                 <a-input
-                  v-decorator="['captcha', {rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur'}]"
+                  v-decorator="[
+                    'captcha',
+                    { rules: [{ required: true, message: '请输入验证码' }], validateTrigger: 'blur' }
+                  ]"
                   size="large"
                   type="text"
                   placeholder="验证码"
                 >
                   <template #prefix>
-                    <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                    <icon-font type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                   </template>
                 </a-input>
               </a-form-item>
@@ -88,7 +100,7 @@
                 tabindex="-1"
                 :disabled="state.smsSendBtn"
                 @click.stop.prevent="getCaptcha"
-                v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
+                v-text="(!state.smsSendBtn && '获取验证码') || state.time + ' s'"
               />
             </a-col>
           </a-row>
@@ -98,7 +110,7 @@
       <a-form-item>
         <a-checkbox v-decorator="['rememberMe']">自动登录</a-checkbox>
         <router-link
-          :to="{ name: 'recover', params: { user: 'aaa'} }"
+          :to="{ name: 'recover', params: { user: 'aaa' } }"
           class="forge-password"
           style="float: right;"
         >忘记密码
@@ -128,18 +140,17 @@
       <div class="user-login-other">
         <span>其他登录方式</span>
         <a>
-          <a-icon class="item-icon" type="alipay-circle" />
+          <icon-font class="item-icon" type="alipay-circle" />
         </a>
         <a>
-          <a-icon class="item-icon" type="taobao-circle" />
+          <icon-font class="item-icon" type="taobao-circle" />
         </a>
         <a>
-          <a-icon class="item-icon" type="weibo-circle" />
+          <icon-font class="item-icon" type="weibo-circle" />
         </a>
         <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
       </div>
     </a-form>
-
   </div>
 </template>
 
@@ -151,14 +162,14 @@ import Verify from '@/components/Verifition/Verify'
 
 export default {
   components: { Verify },
-  data () {
+  data() {
     return {
       customActiveKey: 'tab1',
       loginBtn: false,
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
       isLoginError: false,
-      loginErrorMessage: "",
+      loginErrorMessage: '',
       requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
       form: this.$form.createForm(this),
@@ -171,12 +182,11 @@ export default {
       }
     }
   },
-  created () {
-  },
+  created() {},
   methods: {
-    ...mapActions(['Login', 'Logout', 'checkDictStatus','checkLov','delLovInfo']),
+    ...mapActions(['Login', 'Logout', 'checkDictStatus', 'checkLov', 'delLovInfo']),
     // handler
-    handleUsernameOrEmail (rule, value, callback) {
+    handleUsernameOrEmail(rule, value, callback) {
       const { state } = this
       const regex = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/
       if (regex.test(value)) {
@@ -186,26 +196,26 @@ export default {
       }
       callback()
     },
-    handleTabClick (key) {
+    handleTabClick(key) {
       this.customActiveKey = key
       // this.form.resetFields()
     },
-    showCaptchaBox(){
+    showCaptchaBox() {
       const {
         form: { validateFields },
-        customActiveKey,
+        customActiveKey
       } = this
       const validateFieldsKey = customActiveKey === 'tab1' ? ['username', 'password'] : ['mobile', 'captcha']
       validateFields(validateFieldsKey, { force: true }, (err, values) => {
-          if(!err){
-            this.$refs.verify.show();
-          }
+        if (!err) {
+          this.$refs.verify.show()
+        }
       })
     },
-    captchaVerifySuccess(verifyParams){
+    captchaVerifySuccess(verifyParams) {
       this.handleSubmit(verifyParams)
     },
-    handleSubmit (verifyParams) {
+    handleSubmit(verifyParams) {
       const {
         form: { validateFields },
         state,
@@ -224,7 +234,7 @@ export default {
           loginParams[!state.loginType ? 'email' : 'username'] = values.username
           loginParams.password = passEncrypt(loginParams.password)
           Login(Object.assign(loginParams, verifyParams))
-            .then((res) => this.loginSuccess(res))
+            .then(res => this.loginSuccess(res))
             .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
@@ -236,20 +246,23 @@ export default {
         }
       })
     },
-    getCaptcha (e) {
+    getCaptcha(e) {
       e.preventDefault()
-      const { form: { validateFields }, state } = this
+      const {
+        form: { validateFields },
+        state
+      } = this
     },
-    stepCaptchaSuccess () {
+    stepCaptchaSuccess() {
       this.loginSuccess()
     },
-    stepCaptchaCancel () {
+    stepCaptchaCancel() {
       this.Logout().then(() => {
         this.loginBtn = false
         this.stepCaptchaVisible = false
       })
     },
-    loginSuccess (res) {
+    loginSuccess(res) {
       // 校验并删除过期字典数据
       this.checkDictStatus()
       // 校验lov数据
@@ -267,7 +280,7 @@ export default {
       })
       this.isLoginError = false
     },
-    requestFailed (err) {
+    requestFailed(err) {
       this.isLoginError = true
       let errorMessage = ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试'
       this.loginErrorMessage = errorMessage

@@ -7,12 +7,8 @@
         style="width: 25%; margin-right: 8px"
         :disabled="true"
       />
-      <a-input
-        v-model="language.message"
-        placeholder="文本值"
-        style="width: 60%; margin-right: 8px"
-      />
-      <a-icon
+      <a-input v-model="language.message" placeholder="文本值" style="width: 60%; margin-right: 8px" />
+      <icon-font
         v-if="languageList.length > 1"
         class="dynamic-delete-button"
         type="minus-circle-o"
@@ -33,7 +29,7 @@
         />
       </template>
       <a-button type="dashed" style="width: 60%">
-        <a-icon type="plus" />
+        <icon-font type="plus" />
         Add field
       </a-button>
     </a-popover>
@@ -47,7 +43,7 @@ const supportLanguageTags = Object.keys(supportLanguage)
 
 export default {
   name: 'I18nDataList',
-  data () {
+  data() {
     return {
       allLanguageList: [],
       langTags: [],
@@ -56,13 +52,11 @@ export default {
   },
   watch: {
     langTags() {
-      let languageList = this.allLanguageList.filter(
-        x => this.langTags.findIndex(key => key === x.languageTag) !== -1
-      )
+      let languageList = this.allLanguageList.filter(x => this.langTags.findIndex(key => key === x.languageTag) !== -1)
       this.$set(this, 'languageList', languageList)
     }
   },
-  created () {
+  created() {
     this.resetData()
   },
   methods: {
@@ -82,7 +76,7 @@ export default {
     langTagChange(nextTargetKeys) {
       this.$set(this, 'langTags', nextTargetKeys)
     },
-    remove (language) {
+    remove(language) {
       let index = this.langTags.findIndex(key => key === language.languageTag)
       this.langTags.splice(index, 1)
     }

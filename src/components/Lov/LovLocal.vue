@@ -10,15 +10,15 @@
           :open="false"
           :allow-clear="true"
           :show-arrow="true"
-          :mode="multiple? 'tags' : 'default'"
+          :mode="multiple ? 'tags' : 'default'"
           :disabled="disabled"
-          :placeholder="enableI18n? $t(placeholder): placeholder"
+          :placeholder="enableI18n ? $t(placeholder) : placeholder"
           :options="selectOptions"
           :filter-option="false"
           :show-search="false"
           @change="handleChange"
         >
-          <a-icon slot="suffixIcon" type="ellipsis" />
+          <icon-font slot="suffixIcon" type="ellipsis" />
         </a-select>
       </div>
     </a-spin>
@@ -36,7 +36,6 @@
       :table-size="tableSize"
       @lov-choose="handleLovChoose"
     />
-
   </div>
 </template>
 
@@ -86,7 +85,7 @@ export default {
     // 自定义选择项的展示标题
     customOptionTitle: {
       type: Function,
-      default (record) {
+      default(record) {
         return record[this.dataKey]
       }
     },
@@ -106,7 +105,7 @@ export default {
     // 搜索组件
     searchOptions: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -129,7 +128,7 @@ export default {
       default: 'middle'
     }
   },
-  data () {
+  data() {
     return {
       enableI18n: enableI18n,
       // 加载控制
@@ -140,10 +139,10 @@ export default {
     }
   },
   computed: {
-    dataField () {
+    dataField() {
       return '$' + this.dataKey
     },
-    selectOptions () {
+    selectOptions() {
       return this.selectedRows.map(x => {
         return {
           key: x[this.dataField],
@@ -153,30 +152,30 @@ export default {
     }
   },
   watch: {
-    value () {
+    value() {
       this.selectedValue = this.convertValue(this.value)
     }
   },
-  mounted () {
+  mounted() {
     // 禁止 select 框输入
     let element = document.querySelector('.lov-select .ant-select-search__field')
-    element && ( element.readOnly = true )
+    element && (element.readOnly = true)
   },
   methods: {
-    convertValue (value) {
+    convertValue(value) {
       let selectedValue = value
-      if(this.isNumberValue && value){
-          if (this.multiple) {
-            selectedValue = value.map(x => x.toString())
-          } else {
-            selectedValue = String(value)
-          }
+      if (this.isNumberValue && value) {
+        if (this.multiple) {
+          selectedValue = value.map(x => x.toString())
+        } else {
+          selectedValue = String(value)
+        }
       }
       return selectedValue
     },
     convertSelectedValue(selectedValue) {
       let value = selectedValue
-      if(this.isNumberValue && selectedValue){
+      if (this.isNumberValue && selectedValue) {
         if (this.multiple) {
           value = selectedValue.map(x => Number(x))
         } else {
@@ -185,16 +184,16 @@ export default {
       }
       return value
     },
-    emitValue ({ selectedValue, selectedRows }) {
+    emitValue({ selectedValue, selectedRows }) {
       let value = this.convertSelectedValue(selectedValue)
       // v-decorator 方式的表单值联动
       this.$emit('change', value)
       // v-model 方式的表单值联动
       this.$emit('input', value)
       // 值修改时，对应选择的 Rows 也发射出去
-      this.$emit('rowChange', this.multiple? selectedRows: selectedRows[0] )
+      this.$emit('rowChange', this.multiple ? selectedRows : selectedRows[0])
     },
-    showModal () {
+    showModal() {
       this.$refs.lovModal.show({
         selectedValue: this.selectedValue,
         selectedRows: this.selectedRows
@@ -203,7 +202,7 @@ export default {
     /**
      * select 框删除 tag，clear 都会触发
      */
-    handleChange (selectedValue) {
+    handleChange(selectedValue) {
       let newSelectedRows = []
       let newSelectedValue = undefined
       if (this.multiple) {
@@ -215,7 +214,9 @@ export default {
 
       // 剔除掉无效的输入值
       if (newSelectedRows.length > 0) {
-        newSelectedValue = selectedValue.filter(value => newSelectedRows.findIndex(row => row[this.dataField] === value) !== -1)
+        newSelectedValue = selectedValue.filter(
+          value => newSelectedRows.findIndex(row => row[this.dataField] === value) !== -1
+        )
       }
 
       // 更新
@@ -223,13 +224,12 @@ export default {
         selectedValue: newSelectedValue,
         selectedRows: newSelectedRows
       })
-
     },
     /**
      * modal 确认选择时，或者 select 框属性变更时
      * @param data
      */
-    handleLovChoose (data) {
+    handleLovChoose(data) {
       this.selectedValue = data.selectedValue
       this.selectedRows = data.selectedRows
       this.emitValue(data)
@@ -237,5 +237,3 @@ export default {
   }
 }
 </script>
-
-

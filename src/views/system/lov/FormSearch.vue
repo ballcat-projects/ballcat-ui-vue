@@ -1,8 +1,8 @@
 <template>
   <a-card style="margin-top: 5px" title="搜索组件配置">
-    <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible=true">新增搜索组件</a-button>
+    <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible = true">新增搜索组件</a-button>
 
-    <div v-for="(item,index) in searchItems" :key="item.field" style="margin-bottom: 5px;">
+    <div v-for="(item, index) in searchItems" :key="item.field" style="margin-bottom: 5px;">
       <a-input-group compact>
         <a-input
           :value="item.label"
@@ -23,31 +23,39 @@
           style="width: 200px"
         />
         <a-input
-          v-if="item.tag==='INPUT_NUMBER'"
+          v-if="item.tag === 'INPUT_NUMBER'"
           :value="item.min"
           addon-before="min"
           read-only
           style="width: 100px"
         />
         <a-input
-          v-if="item.tag==='INPUT_NUMBER'"
+          v-if="item.tag === 'INPUT_NUMBER'"
           :value="item.max"
           addon-before="max"
           read-only
           style="width: 100px"
         />
         <a-input
-          v-if="item.tag==='DICT_SELECT'"
+          v-if="item.tag === 'DICT_SELECT'"
           :value="item.dictCode"
           addon-before="dictCode"
           read-only
           style="width: 200px"
         />
-        <a-button style="color: blue;margin-top: -1px;" title="编辑" @click="json=item;editIndex=index;visible=true">
-          <a-icon type="edit" />
+        <a-button
+          style="color: blue;margin-top: -1px;"
+          title="编辑"
+          @click="
+            json = item
+            editIndex = index
+            visible = true
+          "
+        >
+          <icon-font type="edit" />
         </a-button>
         <a-button style="color: red;margin-top: -1px;" title="删除" @click="delSearchItem(index)">
-          <a-icon type="minus-circle" />
+          <icon-font type="minus-circle" />
         </a-button>
       </a-input-group>
     </div>
@@ -59,23 +67,23 @@
       :visible="visible"
       :width="800"
       title="新增搜索组件"
-      @cancel="visible=false"
+      @cancel="visible = false"
       @ok="createSearch"
     >
       <a-row :gutter="4" class="form-row">
         <a-col :span="4">
           <a-form-item label="标签" required>
-            <a-input v-model="json.label" :class="json.le?'validator-error':''" />
+            <a-input v-model="json.label" :class="json.le ? 'validator-error' : ''" />
           </a-form-item>
         </a-col>
         <a-col :span="4">
           <a-form-item extra="字段" label="字段" required>
-            <a-input v-model="json.field" :class="json.fe?'validator-error':''" />
+            <a-input v-model="json.field" :class="json.fe ? 'validator-error' : ''" />
           </a-form-item>
         </a-col>
         <a-col :span="8">
           <a-form-item extra="html 标签" label="html 标签" required>
-            <dict-select v-model="json.tag" :class="json.te?'validator-error':''" dict-code="lov_search_tag" />
+            <dict-select v-model="json.tag" :class="json.te ? 'validator-error' : ''" dict-code="lov_search_tag" />
           </a-form-item>
         </a-col>
         <a-col :span="8">
@@ -85,35 +93,38 @@
         </a-col>
       </a-row>
 
-      <a-row v-if="json.tag!=='INPUT_TEXT'" :gutter="4" class="form-row">
-        <a-col v-if="json.tag==='INPUT_NUMBER'" :span="8">
+      <a-row v-if="json.tag !== 'INPUT_TEXT'" :gutter="4" class="form-row">
+        <a-col v-if="json.tag === 'INPUT_NUMBER'" :span="8">
           <a-form-item extra="最小值" label="最小值">
             <a-input v-model="json.min" />
           </a-form-item>
         </a-col>
-        <a-col v-if="json.tag==='INPUT_NUMBER'" :span="8">
+        <a-col v-if="json.tag === 'INPUT_NUMBER'" :span="8">
           <a-form-item extra="最大值" label="最大值">
             <a-input v-model="json.max" />
           </a-form-item>
         </a-col>
-        <a-col v-if="json.tag==='DICT_SELECT'" :span="12">
+        <a-col v-if="json.tag === 'DICT_SELECT'" :span="12">
           <a-form-item extra="dictCode" label="dictCode" required>
-            <a-input v-model="json.dictCode" :class="json.de?'validator-error':''" />
+            <a-input v-model="json.dictCode" :class="json.de ? 'validator-error' : ''" />
           </a-form-item>
         </a-col>
-        <a-col v-if="json.tag==='SELECT'" :span="24">
+        <a-col v-if="json.tag === 'SELECT'" :span="24">
           <a-form-item extra="select所有选项" label="options" required>
             <a-button
-              @click="optionsCheck(json.options)&&json.options.push({key:`${json.options.length+1}`,value:undefined, label: undefined})"
+              @click="
+                optionsCheck(json.options) &&
+                  json.options.push({ key: `${json.options.length + 1}`, value: undefined, label: undefined })
+              "
             >
               新增选项
             </a-button>
-            <a-input-group v-for="(option,index) in json.options" :key="option.key" compact>
+            <a-input-group v-for="(option, index) in json.options" :key="option.key" compact>
               <a-input v-model="option.key" addon-before="key" style="width: 150px" />
               <a-input v-model="option.label" addon-before="label" style="width: 150px" />
               <a-input v-model="option.value" addon-before="value" style="width: 150px" />
-              <a-button style="color: red;" title="删除" @click="json.options.splice(index,1)">
-                <a-icon type="minus-circle" />
+              <a-button style="color: red;" title="删除" @click="json.options.splice(index, 1)">
+                <icon-font type="minus-circle" />
               </a-button>
             </a-input-group>
           </a-form-item>
@@ -124,7 +135,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'FormSearch',
   props: {
@@ -135,9 +145,9 @@ export default {
     form: {
       type: Object,
       required: true
-    },
+    }
   },
-  data () {
+  data() {
     return {
       searchItems: [],
       visible: false,
@@ -155,11 +165,11 @@ export default {
     }
   },
   methods: {
-    reset(value){
+    reset(value) {
       this.searchItems = value
       this.$emit('input', this.searchItems)
     },
-    optionsCheck (options) {
+    optionsCheck(options) {
       for (let i = 0; i < options.length; i++) {
         let item = options[i]
         if (!item.key || item.key.trim().length === 0) {
@@ -177,7 +187,7 @@ export default {
       }
       return true
     },
-    createSearch () {
+    createSearch() {
       const json = { ...this.json }
       json.le = !json.label || json.label.trim().length === 0
       json.fe = !json.field || json.field.trim().length === 0
@@ -214,14 +224,14 @@ export default {
       this.visible = false
     },
     delSearchItem(index) {
-      this.searchItems.splice(index,1)
+      this.searchItems.splice(index, 1)
       this.$emit('input', this.searchItems)
     }
   }
 }
 </script>
 
-<style lang='less' scoped>
+<style lang="less" scoped>
 .validator-error {
   border-color: red;
 }

@@ -3,14 +3,8 @@
     <a-input-group compact>
       <a-spin :spinning="loading" size="small" style="width: 100%">
         <div v-if="!multiple" style="display:flex;position:relative">
-          <a-input
-            v-if="!multiple"
-            class="lov-data"
-            :value="selectValue"
-            :placeholder="placeholder"
-            read-only
-          >
-            <a-icon slot="addonAfter" type="ellipsis" @click="showModal" />
+          <a-input v-if="!multiple" class="lov-data" :value="selectValue" :placeholder="placeholder" read-only>
+            <icon-font slot="addonAfter" type="ellipsis" @click.native="showModal" />
           </a-input>
           <div
             v-show="selectValue"
@@ -28,7 +22,13 @@
               p-id="2618"
               width="14"
               height="14"
-            ><path d="M512 85.333333C276.48 85.333333 85.333333 276.48 85.333333 512S276.48 938.666667 512 938.666667 938.666667 747.52 938.666667 512 747.52 85.333333 512 85.333333z m136.533333 531.342223c11.377778 11.377778 11.377778 29.582222 0 39.822222-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444L512 559.786667l-96.711111 96.711111c-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444c-11.377778-11.377778-11.377778-29.582222 0-39.822222l96.711111-96.711112-104.675556-104.675555c-11.377778-11.377778-11.377778-29.582222 0-39.822222 11.377778-11.377778 29.582222-11.377778 39.822223 0l104.675555 104.675555 104.675556-104.675555c11.377778-11.377778 29.582222-11.377778 39.822222 0 11.377778 11.377778 11.377778 29.582222 0 39.822222l-104.675556 104.675555 97.848889 96.711112z" p-id="2619" fill="#bfbfbf" /></svg>
+            >
+              <path
+                d="M512 85.333333C276.48 85.333333 85.333333 276.48 85.333333 512S276.48 938.666667 512 938.666667 938.666667 747.52 938.666667 512 747.52 85.333333 512 85.333333z m136.533333 531.342223c11.377778 11.377778 11.377778 29.582222 0 39.822222-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444L512 559.786667l-96.711111 96.711111c-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444c-11.377778-11.377778-11.377778-29.582222 0-39.822222l96.711111-96.711112-104.675556-104.675555c-11.377778-11.377778-11.377778-29.582222 0-39.822222 11.377778-11.377778 29.582222-11.377778 39.822223 0l104.675555 104.675555 104.675556-104.675555c11.377778-11.377778 29.582222-11.377778 39.822222 0 11.377778 11.377778 11.377778 29.582222 0 39.822222l-104.675556 104.675555 97.848889 96.711112z"
+                p-id="2619"
+                fill="#bfbfbf"
+              />
+            </svg>
           </div>
         </div>
         <div v-else style="display:flex;position:relative">
@@ -42,16 +42,8 @@
             :open="false"
             @deselect="multipleDeselect"
           />
-          <div
-            class="ballcat-select-btn"
-            title="单击以选择数据"
-            @click="showModal"
-          ><a-icon type="ellipsis" /></div>
-          <div
-            v-show="selectValue"
-            class="ballcat-select-clear"
-            @click="cleanAll"
-          >
+          <div class="ballcat-select-btn" title="单击以选择数据" @click="showModal"><icon-font type="ellipsis" /></div>
+          <div v-show="selectValue" class="ballcat-select-clear" @click="cleanAll">
             <svg
               t="1619765878911"
               class="icon"
@@ -62,7 +54,13 @@
               p-id="2618"
               width="14"
               height="14"
-            ><path d="M512 85.333333C276.48 85.333333 85.333333 276.48 85.333333 512S276.48 938.666667 512 938.666667 938.666667 747.52 938.666667 512 747.52 85.333333 512 85.333333z m136.533333 531.342223c11.377778 11.377778 11.377778 29.582222 0 39.822222-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444L512 559.786667l-96.711111 96.711111c-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444c-11.377778-11.377778-11.377778-29.582222 0-39.822222l96.711111-96.711112-104.675556-104.675555c-11.377778-11.377778-11.377778-29.582222 0-39.822222 11.377778-11.377778 29.582222-11.377778 39.822223 0l104.675555 104.675555 104.675556-104.675555c11.377778-11.377778 29.582222-11.377778 39.822222 0 11.377778 11.377778 11.377778 29.582222 0 39.822222l-104.675556 104.675555 97.848889 96.711112z" p-id="2619" fill="#bfbfbf" /></svg>
+            >
+              <path
+                d="M512 85.333333C276.48 85.333333 85.333333 276.48 85.333333 512S276.48 938.666667 512 938.666667 938.666667 747.52 938.666667 512 747.52 85.333333 512 85.333333z m136.533333 531.342223c11.377778 11.377778 11.377778 29.582222 0 39.822222-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444L512 559.786667l-96.711111 96.711111c-5.688889 5.688889-12.515556 7.964444-20.48 7.964444s-14.791111-2.275556-20.48-7.964444c-11.377778-11.377778-11.377778-29.582222 0-39.822222l96.711111-96.711112-104.675556-104.675555c-11.377778-11.377778-11.377778-29.582222 0-39.822222 11.377778-11.377778 29.582222-11.377778 39.822223 0l104.675555 104.675555 104.675556-104.675555c11.377778-11.377778 29.582222-11.377778 39.822222 0 11.377778 11.377778 11.377778 29.582222 0 39.822222l-104.675556 104.675555 97.848889 96.711112z"
+                p-id="2619"
+                fill="#bfbfbf"
+              />
+            </svg>
           </div>
         </div>
       </a-spin>
@@ -76,28 +74,23 @@
       :centered="true"
       :confirm-loading="loading"
       :body-style="computedStyle"
-      :closable="title.length>0"
+      :closable="title.length > 0"
       @cancel="cancel"
       @ok="selectData"
     >
       <!-- <a-spin :spinning="loading"> -->
       <div v-if="search" class="table-page-search-wrapper" style="margin-top:15px;">
-        <a-form :label-col="{ span:8 }" :wrapper-col="{ span: 16 }">
+        <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
           <a-row :gutter="8">
-            <a-col
-              v-for="item in searchList"
-              :key="item.id"
-              :md="8"
-              :sm="16"
-            >
+            <a-col v-for="item in searchList" :key="item.id" :md="8" :sm="16">
               <a-form-item :label="item.label" style="height:20px">
                 <a-input
-                  v-if="item.tag==='INPUT_TEXT'"
+                  v-if="item.tag === 'INPUT_TEXT'"
                   v-model="queryParam[item.field]"
                   :placeholder="item.placeholder"
                 />
                 <a-input-number
-                  v-if="item.tag==='INPUT_NUMBER'"
+                  v-if="item.tag === 'INPUT_NUMBER'"
                   v-model="queryParam[item.field]"
                   style="width: 100%"
                   :placeholder="item.placeholder"
@@ -105,14 +98,14 @@
                   :max="item.max"
                 />
                 <a-select
-                  v-if="item.tag==='SELECT'"
+                  v-if="item.tag === 'SELECT'"
                   v-model="queryParam[item.field]"
                   allow-clear
                   :placeholder="item.placeholder"
                   :options="item.options"
                 />
                 <dict-select
-                  v-if="item.tag==='DICT_SELECT'"
+                  v-if="item.tag === 'DICT_SELECT'"
                   v-model="queryParam[item.field]"
                   :placeholder="item.placeholder"
                   :dict-code="item.dictCode"
@@ -120,12 +113,7 @@
               </a-form-item>
             </a-col>
             <!-- 搜索控制按钮 -->
-            <a-col
-              :xs="8"
-              :sm="8"
-              :md="8"
-              style="margin-top:2px"
-            >
+            <a-col :xs="8" :sm="8" :md="8" style="margin-top:2px">
               <div style="display:flex;">
                 <a-button type="primary" style="margin-left:5%" @click="reloadTable">查询</a-button>
                 <a-button style="margin-left:8px" @click="resetSearchForm">重置</a-button>
@@ -146,15 +134,8 @@
               placeholder="已选数据"
               @deselect="multipleDeselect"
             />
-            <a-input
-              v-if="!multiple"
-              :value="selectValue"
-              :open="false"
-              read-only
-              mode="tags"
-              placeholder="已选数据"
-            >
-              <a-icon slot="addonAfter" type="close" @click="singleDeselect" />
+            <a-input v-if="!multiple" :value="selectValue" :open="false" read-only mode="tags" placeholder="已选数据">
+              <icon-font slot="addonAfter" type="close" @click.native="singleDeselect" />
             </a-input>
           </a-form-item>
         </a-form>
@@ -169,7 +150,11 @@
         :data-source="dataSource"
         :pagination="false"
         :loading="loading"
-        :row-selection="ret?{onSelect,onSelectAll,selectedRows,selectedRowKeys, type: multiple?'checkbox':'radio'}:undefined"
+        :row-selection="
+          ret
+            ? { onSelect, onSelectAll, selectedRows, selectedRowKeys, type: multiple ? 'checkbox' : 'radio' }
+            : undefined
+        "
         :custom-row="customRow"
         @change="handleTableChange"
       />
@@ -207,13 +192,13 @@ export default {
     },
     width: {
       type: String,
-      default: function(){
+      default: function() {
         return '800px'
       }
     },
     tableSize: {
       type: String,
-      default: function(){
+      default: function() {
         return 'middle'
       }
     },
@@ -239,11 +224,11 @@ export default {
         return false
       }
     },
-    placeholder:{
+    placeholder: {
       type: String,
       default: ''
     },
-    sourceLov:{
+    sourceLov: {
       type: Number,
       default: 0
     },
@@ -325,15 +310,15 @@ export default {
   },
   data() {
     return {
-      customRow: (record) => {
+      customRow: record => {
         return {
           on: {
-            click: (event) => {
+            click: event => {
               // 是否已选中
               let index = this.selectedRowKeys.indexOf(record[this.rowKey])
               if (index === -1) {
                 // 单击未选中的列, 插入数据
-                this.multiple ? this.selectedRows.push(record) : this.selectedRows = [].concat(record)
+                this.multiple ? this.selectedRows.push(record) : (this.selectedRows = [].concat(record))
                 this.selectRow(record, this.selectedRows)
               } else {
                 // 单击已选中的列, 删除选中数据
@@ -365,17 +350,17 @@ export default {
   },
   computed: {
     computedStyle() {
-        let screenHeight = document.body.clientHeight * 0.75;
-        return {padding:'0', maxHeight: screenHeight + 'px',overflowY: 'scroll' }
-      }
+      let screenHeight = document.body.clientHeight * 0.75
+      return { padding: '0', maxHeight: screenHeight + 'px', overflowY: 'scroll' }
+    }
   },
   watch: {
     value() {
       this.copyValue()
     }
   },
-  beforeCreate () {
-    console.error("[组件过期警告] Lov 组件已弃用，将于后续版本删除，请切换使用 LovLocal 组件")
+  beforeCreate() {
+    console.error('[组件过期警告] Lov 组件已弃用，将于后续版本删除，请切换使用 LovLocal 组件')
   },
   created() {
     if (!this.lazy) {
@@ -385,14 +370,14 @@ export default {
   methods: {
     ...mapActions(['getLovInfoByKeyword']),
     showModal() {
-      this.multiple ? this.backVal = [...this.value] : this.backVal = this.value
+      this.multiple ? (this.backVal = [...this.value]) : (this.backVal = this.value)
       this.selectedRows = []
       this.selectedRowKeys = []
-      if(this.sourceLov==1){
-           this.$emit('preview')
-      }else{
-           this.reloadTable()
-           this.visible=true;
+      if (this.sourceLov == 1) {
+        this.$emit('preview')
+      } else {
+        this.reloadTable()
+        this.visible = true
       }
     },
     load() {
@@ -433,7 +418,7 @@ export default {
         this.ret = Boolean(json.ret)
 
         // 设置获取数据方法
-        this.getPage = (query) => {
+        this.getPage = query => {
           const req = {
             url: json.url,
             method: json.method
@@ -495,12 +480,15 @@ export default {
       this.visible = false
     },
     // 接收数据处理
-    onPageLoadSuccess({records: rows}) {
+    onPageLoadSuccess({ records: rows }) {
       for (let i = 0; i < rows.length; i++) {
         let row = rows[i]
         if (this.multiple) {
           // 多选时，加载了一个被选中的数据
-          if (this.backValIndexOfRow(this.backVal, row) !== -1 && this.selectedRowKeys.indexOf(row[this.rowKey]) === -1) {
+          if (
+            this.backValIndexOfRow(this.backVal, row) !== -1 &&
+            this.selectedRowKeys.indexOf(row[this.rowKey]) === -1
+          ) {
             this.selectedRows = this.selectedRows.concat(row)
             this.selectedRowKeys = this.selectedRowKeys.concat(row[this.rowKey])
           }
@@ -535,11 +523,11 @@ export default {
         this.backVal = [...backVal]
       } else {
         // 单选处理
-        let inputVal=''
-        if(Object.prototype.toString.call(this.value) === '[object Array]'){
-           inputVal=this.value.length ? this.value[0] : ''
-        }else{
-           inputVal=this.value;
+        let inputVal = ''
+        if (Object.prototype.toString.call(this.value) === '[object Array]') {
+          inputVal = this.value.length ? this.value[0] : ''
+        } else {
+          inputVal = this.value
         }
         this.selectValue = inputVal
         this.backVal = inputVal
@@ -589,7 +577,7 @@ export default {
       this.loading = false
     },
     cleanAll() {
-      this.dataSource=[];
+      this.dataSource = []
       this.emit(this.multiple ? [] : '')
       this.multiple || this.$emit('clear', this.multiple ? [] : '')
       this.selectedRows = []
@@ -603,25 +591,37 @@ export default {
 .lov-data {
   width: 100%;
 }
-.ballcat-select-btn{
-  position:absolute;right:0;top:0;
+.ballcat-select-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
   padding: 4px 11px;
-  color: rgba(0,0,0,.65);
+  color: rgba(0, 0, 0, 0.65);
   font-weight: 400;
   font-size: 15px;
   text-align: center;
   background-color: #fafafa;
   border: 1px solid #d9d9d9;
   border-radius: 1px;
-  transition: all .3s;
+  transition: all 0.3s;
 }
-.ballcat-select-clear{
- position:absolute;right:45px;top:7px;z-index:1;cursor:pointer;width:18px;height:18px
+.ballcat-select-clear {
+  position: absolute;
+  right: 45px;
+  top: 7px;
+  z-index: 1;
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
 }
-.ballcat-model-bottom{
-  width:100%;
-  background:#fff;
-  display:flex;justify-content:space-between;
-  position:absolute;bottom:0;left:0;padding-bottom:15px
+.ballcat-model-bottom {
+  width: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding-bottom: 15px;
 }
 </style>

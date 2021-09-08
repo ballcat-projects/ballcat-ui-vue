@@ -4,7 +4,7 @@ import { APP_MUTATIONS } from '@/store/mutation-types'
 import { mapGetters } from 'vuex'
 import { enableI18n } from '@/config/projectConfig'
 
-function covertToPage (currentRoute) {
+function covertToPage(currentRoute) {
   return {
     fullPath: currentRoute.fullPath,
     name: currentRoute.name,
@@ -17,7 +17,7 @@ function covertToPage (currentRoute) {
 
 export default {
   name: 'MultiTab',
-  data () {
+  data() {
     return {
       fullPathList: [],
       pages: [],
@@ -29,12 +29,12 @@ export default {
     ...mapGetters(['lang', 'userRouters'])
   },
   watch: {
-    '$route': function (currentRoute) {
+    $route: function(currentRoute) {
       const newPage = covertToPage(currentRoute)
 
       // 删除异常页面
       let exceptionPageIndex = this.pages.findIndex(item => item.isExceptionPage)
-      if(exceptionPageIndex !== -1){
+      if (exceptionPageIndex !== -1) {
         this.pages.splice(exceptionPageIndex, 1)
       }
 
@@ -53,7 +53,7 @@ export default {
       this.activeKey = newPage.fullPath
       this.componentNameList()
     },
-    activeKey: function (newPathKey) {
+    activeKey: function(newPathKey) {
       // this.$router.push({ path: newPathKey })
       if (newPathKey === '/') {
         this.$router.push({ name: '/' })
@@ -65,24 +65,26 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     // 开启国际化的清空下才需要监听事件变化
     if (enableI18n) {
       this.$bus.$on('switch-language', this.switchTitle)
     }
     // bind event
-    events.$on('open', val => {
-      if (!val) {
-        throw new Error(`multi-tab: open tab ${val} err`)
-      }
-      this.activeKey = val
-    }).$on('close', val => {
-      if (!val) {
-        this.closeThat(this.activeKey)
-        return
-      }
-      this.closeThat(val)
-    })
+    events
+      .$on('open', val => {
+        if (!val) {
+          throw new Error(`multi-tab: open tab ${val} err`)
+        }
+        this.activeKey = val
+      })
+      .$on('close', val => {
+        if (!val) {
+          this.closeThat(this.activeKey)
+          return
+        }
+        this.closeThat(val)
+      })
 
     const page = covertToPage(this.$route)
     this.pages.push(page)
@@ -90,12 +92,12 @@ export default {
     this.componentNameList()
     this.selectedLastPath()
   },
-  destroyed () {
+  destroyed() {
     // 销毁监听事件
     this.$bus.$off('switch-language', this.switchTitle)
   },
   methods: {
-    switchTitle () {
+    switchTitle() {
       const routes = this.$router.getRoutes()
       this.pages = this.pages.map(page => {
         const meta = routes.find(r => r.path === page.fullPath).meta
@@ -103,10 +105,10 @@ export default {
         return page
       })
     },
-    onEdit (targetKey, action) {
+    onEdit(targetKey, action) {
       this[action](targetKey)
     },
-    remove (targetKey) {
+    remove(targetKey) {
       this.pages = this.pages.filter(page => page.fullPath !== targetKey)
       this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
       this.componentNameList()
@@ -115,12 +117,12 @@ export default {
         this.selectedLastPath()
       }
     },
-    selectedLastPath () {
+    selectedLastPath() {
       this.activeKey = this.fullPathList[this.fullPathList.length - 1]
     },
 
     // content menu
-    closeThat (key) {
+    closeThat(key) {
       // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
       if (this.fullPathList.length > 1) {
         this.remove(key)
@@ -128,7 +130,7 @@ export default {
         this.$message.info('这是最后一个标签了, 无法被关闭')
       }
     },
-    closeLeft (key) {
+    closeLeft(key) {
       const currentIndex = this.fullPathList.indexOf(key)
       if (currentIndex > 0) {
         this.fullPathList.forEach((item, index) => {
@@ -140,9 +142,9 @@ export default {
         this.$message.info('左侧没有标签')
       }
     },
-    closeRight (key) {
+    closeRight(key) {
       const currentIndex = this.fullPathList.indexOf(key)
-      if (currentIndex < (this.fullPathList.length - 1)) {
+      if (currentIndex < this.fullPathList.length - 1) {
         this.fullPathList.forEach((item, index) => {
           if (index > currentIndex) {
             this.remove(item)
@@ -152,7 +154,7 @@ export default {
         this.$message.info('右侧没有标签')
       }
     },
-    closeOther (key) {
+    closeOther(key) {
       const currentIndex = this.fullPathList.indexOf(key)
       this.fullPathList.forEach((item, index) => {
         if (index !== currentIndex) {
@@ -160,15 +162,15 @@ export default {
         }
       })
     },
-    closeAll (key) {
+    closeAll(key) {
       this.fullPathList.forEach((item, index) => {
         this.remove(item)
       })
     },
-    closeMenuClick (key) {
+    closeMenuClick(key) {
       this[key](this.activeKey)
     },
-    componentNameList () {
+    componentNameList() {
       let componentList = []
       this.pages.forEach(page => {
         componentList.push(page.componentName)
@@ -176,16 +178,15 @@ export default {
       this.$store.commit(APP_MUTATIONS.TOGGLE_SET_KEEPALIVE, [...componentList])
     }
   },
-  render () {
-    const { onEdit, $data: { pages } } = this
+  render() {
+    const {
+      onEdit,
+      $data: { pages }
+    } = this
     const panes = pages.map(page => {
       return (
-        <a-tab-pane
-          style={{ height: 0 }}
-          tab={page.title}
-          key={page.fullPath} closable={pages.length > 1}
-        >
-        </a-tab-pane>)
+        <a-tab-pane style={{ height: 0 }} tab={page.title} key={page.fullPath} closable={pages.length > 1}></a-tab-pane>
+      )
     })
 
     return (
@@ -200,25 +201,28 @@ export default {
           {panes}
           <a-dropdown slot="tabBarExtraContent" class="multi-tab-drop">
             <div>
-              <a-icon type="down"/>
+              <icon-font type="down" />
             </div>
-            <a-menu slot="overlay" {...{
-              on: {
-                click: ({ key }) => {
-                  this.closeMenuClick(key)
+            <a-menu
+              slot="overlay"
+              {...{
+                on: {
+                  click: ({ key }) => {
+                    this.closeMenuClick(key)
+                  }
                 }
-              }
-            }}>
+              }}
+            >
               <a-menu-item key="closeLeft">
-                <a-icon type="arrow-left"/>
+                <icon-font type="arrow-left" />
                 关闭左侧
               </a-menu-item>
               <a-menu-item key="closeRight">
-                <a-icon type="arrow-right"/>
+                <icon-font type="arrow-right" />
                 关闭右侧
               </a-menu-item>
               <a-menu-item key="closeOther">
-                <a-icon type="close"/>
+                <icon-font type="close" />
                 关闭其他
               </a-menu-item>
             </a-menu>
@@ -229,4 +233,4 @@ export default {
   }
 }
 </script>
-<!-- <a-menu-item key="closeAll"><a-icon type="close-circle"/>关闭全部</a-menu-item> -->
+<!-- <a-menu-item key="closeAll"><icon-font type="close-circle"/>关闭全部</a-menu-item> -->

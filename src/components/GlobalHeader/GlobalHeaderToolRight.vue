@@ -1,9 +1,8 @@
 <template>
   <div class="ballcat-global-header-tool-right">
-
     <a href="http://www.ballcat.cn" target="_blank" style="color: inherit;">
       <span class="ballcat-global-header-tool-action">
-        <a-icon type="question-circle-o" />
+        <icon-font type="question-circle-o" />
       </span>
     </a>
 
@@ -17,7 +16,7 @@
 
     <!--    <lang-select class="ballcat-global-header-tool-action" />-->
     <span class="ballcat-global-header-tool-action" @click="showSettingDrawer">
-      <a-icon type="more" style="font-size: 16px; font-weight: bolder" />
+      <icon-font type="more" style="font-size: 16px; font-weight: bolder" />
       <setting-drawer ref="settingDrawer" :show-handle="false" />
     </span>
   </div>
@@ -46,8 +45,8 @@ export default {
     }
   },
   methods: {
-    showSettingDrawer(){
-      this.$refs.settingDrawer.showDrawer();
+    showSettingDrawer() {
+      this.$refs.settingDrawer.showDrawer()
     }
   }
 }

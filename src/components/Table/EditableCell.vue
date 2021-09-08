@@ -3,14 +3,14 @@ z<template>
     <div v-if="editable" class="editable-cell-input-wrapper">
       <a-input :value="value" @change="handleChange" />
       <span class="editable-cell-icon-box">
-        <a-icon type="check" class="editable-cell-icon" @click="check" />
-        <a-icon type="close" class="editable-cell-icon" @click="close" />
+        <icon-font type="check" class="editable-cell-icon" @click.native="check" />
+        <icon-font type="close" class="editable-cell-icon" @click.native="close" />
       </span>
     </div>
     <div v-else class="editable-cell-text-wrapper">
       {{ value || ' ' }}
       <span class="editable-cell-icon-box">
-        <a-icon type="edit" class="editable-cell-icon" @click="edit" />
+        <icon-font type="edit" class="editable-cell-icon" @click.native="edit" />
       </span>
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
       default: ''
     }
   },
-  data () {
+  data() {
     return {
       value: this.text,
       originValue: this.text,
@@ -33,25 +33,25 @@ export default {
     }
   },
   watch: {
-    text (val) {
+    text(val) {
       this.value = val
       this.originValue = val
     }
   },
   methods: {
-    handleChange (e) {
+    handleChange(e) {
       this.value = e.target.value
     },
-    check () {
+    check() {
       this.editable = false
       this.originValue = this.value
       this.$emit('change', this.value)
     },
-    close () {
+    close() {
       this.editable = false
       this.value = this.originValue
     },
-    edit () {
+    edit() {
       this.editable = true
     }
   }

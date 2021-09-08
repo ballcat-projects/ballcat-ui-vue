@@ -3,7 +3,7 @@
     <template #itemRender="{ route, routes }">
       <template v-if="route.path === '' || route.path === '/'">
         <router-link to="/">
-          <a-icon type="home" />
+          <icon-font type="home" />
         </router-link>
       </template>
       <span v-if="routes.indexOf(route) !== 0">
@@ -17,17 +17,17 @@
 export default {
   name: 'Breadcrumb',
   computed: {
-    routeList () {
+    routeList() {
       return this.buildRoutes(this.$route)
     }
   },
   watch: {
-    router () {
+    router() {
       this.buildRoutes(this.$route)
     }
   },
   methods: {
-    buildRoutes: function (route) {
+    buildRoutes: function(route) {
       let routes = []
       route.matched.forEach(item => {
         routes.push(item)
@@ -38,6 +38,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

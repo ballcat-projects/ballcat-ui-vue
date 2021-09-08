@@ -20,7 +20,7 @@
                 <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                 <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
                 <!--                {{ advanced ? '收起' : '展开' }}-->
-                <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+                <!--                <icon-font :type="advanced ? 'up' : 'down'"/>-->
                 <!--              </a>-->
               </div>
             </a-col>
@@ -28,7 +28,7 @@
         </a-form>
       </div>
 
-      <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+      <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
         <!-- 操作按钮区域 -->
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">弹窗选择器</div>
@@ -52,17 +52,13 @@
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
-            :scroll="{x : 800}"
+            :scroll="{ x: 800 }"
             @change="handleTableChange"
           >
             <template #action-slot="text, record">
               <a v-has="'system:lov:edit'" @click="handleEdit(record)">编辑</a>
               <a-divider type="vertical" />
-              <a-popconfirm
-                v-has="'system:lov:del'"
-                title="确认要删除吗？"
-                @confirm="() => handleDel(record)"
-              >
+              <a-popconfirm v-has="'system:lov:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
                 <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>
@@ -84,7 +80,7 @@ export default {
   name: 'SysLovPage',
   components: { LovPageForm },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj,
@@ -149,12 +145,12 @@ export default {
   },
   methods: {
     // 新增
-    handleAdd () {
+    handleAdd() {
       this.switchPage()
       this.$refs.pageForm.add({ title: '新建弹窗选择器' })
     },
     // 编辑
-    handleEdit (record) {
+    handleEdit(record) {
       this.switchPage()
       this.$refs.pageForm.update(record, { title: '编辑弹窗选择器' })
     }

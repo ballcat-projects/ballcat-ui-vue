@@ -7,8 +7,8 @@
           <a-col :xl="6" :md="12" :sm="24">
             <a-form-item
               :label="$t('i18n.i18nData.code')"
-              :label-col="{ xl: {span: 8}, md: {span: 6}}"
-              :wrapper-col=" { xl: {span: 16}, md: {span: 18} }"
+              :label-col="{ xl: { span: 8 }, md: { span: 6 } }"
+              :wrapper-col="{ xl: { span: 16 }, md: { span: 18 } }"
             >
               <a-input v-model="queryParam.code" :placeholder="$t('message.pleaseEnter')" />
             </a-form-item>
@@ -18,15 +18,11 @@
               <a-input v-model="queryParam.message" :placeholder="$t('message.pleaseEnter')" />
             </a-form-item>
           </a-col>
-          <a-col
-            :xl="8"
-            :md="12"
-            :sm="24"
-          >
+          <a-col :xl="8" :md="12" :sm="24">
             <a-form-item
               :label="$t('i18n.i18nData.languageTag')"
-              :label-col="{ xl: {span: 7}, md: {span: 6}}"
-              :wrapper-col=" { xl: {span: 17}, md: {span: 18} }"
+              :label-col="{ xl: { span: 7 }, md: { span: 6 } }"
+              :wrapper-col="{ xl: { span: 17 }, md: { span: 18 } }"
             >
               <a-input v-model="queryParam.languageTag" :placeholder="$t('message.pleaseEnter')" />
             </a-form-item>
@@ -44,7 +40,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">{{ $t('action.reset') }}</a-button>
               <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? $t('action.expand') : $t('action.collapse') }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
+                <icon-font :type="advanced ? 'up' : 'down'"/>
               </a>-->
             </div>
           </a-col>
@@ -52,7 +48,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">
@@ -132,14 +128,14 @@ export default {
   name: 'I18nDataPage',
   components: { I18nDataCreateModal, I18nDataUpdateModal, I18nDataImportModal },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj
     }
   },
   computed: {
-    columns () {
+    columns() {
       return [
         {
           title: '#',
@@ -180,7 +176,7 @@ export default {
     /**
      * 新建国际化信息
      */
-    handleAdd () {
+    handleAdd() {
       const attributes = { title: this.$t('action.create') + '：' + this.$t('i18n.i18nData.text') }
       this.$refs.createModal.add(attributes)
     },
@@ -188,40 +184,43 @@ export default {
      * 编辑国际化信息
      * @param record 当前国际化信息属性
      */
-    handleEdit (record) {
+    handleEdit(record) {
       const attributes = { title: this.$t('action.edit') + '：' + this.$t('i18n.i18nData.text') }
       this.$refs.updateModal.update(record, attributes)
     },
     // 删除
-    handleDel (record) {
-      this.delObj(record.code, record.languageTag).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
-        }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
-      })
+    handleDel(record) {
+      this.delObj(record.code, record.languageTag)
+        .then(res => {
+          if (res.code === 200) {
+            this.$message.success(res.message)
+            this.reloadTable(false)
+          } else {
+            this.$message.error(res.message)
+          }
+        })
+        .catch(e => {
+          // 未被 axios拦截器处理过，则在这里继续处理
+          !e.resolved && this.$message.error(e.message || 'error request')
+        })
     },
     /**
      * 导出国际化信息
      */
-    handleExport () {
+    handleExport() {
       this.loading = true
-      exportExcel(this.queryParam).then(response => {
-        remoteFileDownload(response)
-      }).finally(() => {
+      exportExcel(this.queryParam)
+        .then(response => {
+          remoteFileDownload(response)
+        })
+        .finally(() => {
           this.loading = false
-        }
-      )
+        })
     },
     /**
      * 导入国际化信息
      */
-    handleImport () {
+    handleImport() {
       const attributes = { title: this.$t('action.import') + ' ' + this.$t('i18n.i18nData.text') }
       this.$refs.importModal.show(attributes)
     }

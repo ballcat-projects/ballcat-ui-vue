@@ -15,7 +15,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
               <!--                {{ advanced ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
+              <!--                <icon-font :type="advanced ? 'up' : 'down'"/>-->
               <!--              </a>-->
             </div>
           </a-col>
@@ -23,7 +23,7 @@
       </a-form>
     </div>
 
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
       <div class="ant-pro-table-toolbar">
         <div class="ant-pro-table-toolbar-title">组织架构</div>
@@ -43,8 +43,7 @@
             type="primary"
             icon="plus"
             @click="handleAdd()"
-          >新建
-          </a-button>
+          >新建 </a-button>
         </div>
       </div>
 
@@ -58,21 +57,17 @@
           :data-source="dataSource"
           :loading="loading"
           :expand-icon="expandIconRender"
-          :scroll="{x : 800}"
+          :scroll="{ x: 800 }"
           @change="handleTableChange"
         >
           <template slot="expandIcon">
-            <a-icon type="caret-down" />
+            <icon-font type="caret-down" />
           </template>
 
           <template slot="action-slot" slot-scope="text, record">
             <a v-has="'system:organization:edit'" @click="handleEdit(record)">编辑</a>
             <a-divider type="vertical" />
-            <a-popconfirm
-              v-has="'system:organization:del'"
-              title="确认要删除吗？"
-              @confirm="() => handleDel(record)"
-            >
+            <a-popconfirm v-has="'system:organization:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
               <a href="javascript:" class="ballcat-text-danger">删除</a>
             </a-popconfirm>
           </template>
@@ -81,11 +76,7 @@
     </a-card>
 
     <!--表单页面-->
-    <organization-modal-form
-      ref="formModal"
-      :organization-tree="organizationTree"
-      @reload-page-table="reloadTable"
-    />
+    <organization-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadTable" />
   </div>
 </template>
 
@@ -98,7 +89,7 @@ export default {
   name: 'SysOrganizationPage',
   components: { OrganizationModalForm },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       delObj: delObj,
 
@@ -134,34 +125,44 @@ export default {
     }
   },
   computed: {
-    organizationTree () {
+    organizationTree() {
       return [{ id: 0, name: '根目录', children: this.dataSource }]
     }
   },
   methods: {
-    expandIconRender (props) {
+    expandIconRender(props) {
       if (props.record.children.length > 0) {
         if (props.expanded) {
-          return (<span class="expandIcon" onClick={e => {
-            props.onExpand(props.record, e)
-          }}>
-            <a-icon type="caret-down"/>
-          </span>)
+          return (
+            <span
+              class="expandIcon"
+              onClick={e => {
+                props.onExpand(props.record, e)
+              }}
+            >
+              <icon-font type="caret-down" />
+            </span>
+          )
         } else {
-          return (<span class="expandIcon" onClick={e => {
-            props.onExpand(props.record, e)
-          }}>
-            <a-icon type="caret-right"/>
-          </span>)
+          return (
+            <span
+              class="expandIcon"
+              onClick={e => {
+                props.onExpand(props.record, e)
+              }}
+            >
+              <icon-font type="caret-right" />
+            </span>
+          )
         }
       } else {
-        return (<span class="expandIcon leafNode"></span>)
+        return <span class="expandIcon leafNode"></span>
       }
     },
     /**
      * 表格数据加载方法
      */
-    loadData () {
+    loadData() {
       this.loading = true
       getTree(this.queryParam)
         .then(res => {
@@ -171,7 +172,7 @@ export default {
             this.$message.warning(res.message || 'error request')
           }
         })
-        .catch((e) => {
+        .catch(e => {
           this.$message.error(e.message || 'error request')
         })
         .finally(() => {
@@ -181,20 +182,20 @@ export default {
     /**
      * 新建组织
      */
-    handleAdd () {
+    handleAdd() {
       this.$refs.formModal.add({ title: '新建组织' })
     },
     /**
      * 编辑组织
      * @param record 当前组织属性
      */
-    handleEdit (record) {
+    handleEdit(record) {
       this.$refs.formModal.update(record, { title: '编辑组织' })
     },
     /**
      * 校正层级深度
      */
-    handleRevised () {
+    handleRevised() {
       revised().then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
@@ -210,7 +211,7 @@ export default {
 
 <style scoped lang="less">
 .expandIcon {
-  margin-right: 8px
+  margin-right: 8px;
 }
 
 .leafNode {

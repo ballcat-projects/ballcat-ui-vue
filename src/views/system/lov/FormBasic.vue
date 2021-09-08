@@ -8,20 +8,20 @@
       <a-row :gutter="4" class="form-row">
         <a-col :span="4">
           <a-form-item label="标题" extra="标题不能为纯空白字符">
-            <a-input v-decorator="['title',decoratorOptions.title]" />
+            <a-input v-decorator="['title', decoratorOptions.title]" />
           </a-form-item>
         </a-col>
         <a-col :span="4">
           <a-form-item extra="关键字,唯一,加载lov数据时通过关键字加载" label="关键字">
             <a-input
-              v-decorator="['keyword',decoratorOptions.keyword]"
+              v-decorator="['keyword', decoratorOptions.keyword]"
               placeholder="关键字,唯一,加载lov数据时通过关键字加载"
             />
           </a-form-item>
         </a-col>
         <a-col :span="4">
           <a-form-item extra="请保证字段值是唯一" label="唯一字段">
-            <a-input v-decorator="['key',decoratorOptions.key]" placeholder="数据的主键或唯一键" />
+            <a-input v-decorator="['key', decoratorOptions.key]" placeholder="数据的主键或唯一键" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -31,13 +31,13 @@
       <a-row :gutter="4" class="form-row">
         <a-col :span="16">
           <a-form-item extra="获取数据时请求路径" label="请求路径">
-            <a-input v-decorator="['url',decoratorOptions.url]" placeholder="获取数据时请求路径" />
+            <a-input v-decorator="['url', decoratorOptions.url]" placeholder="获取数据时请求路径" />
           </a-form-item>
         </a-col>
         <a-col :span="4">
           <a-form-item extra="http请求方式" label="请求方式">
             <dict-select
-              v-decorator="['method',decoratorOptions.method]"
+              v-decorator="['method', decoratorOptions.method]"
               :allow-clear="false"
               dict-code="lov_http_method"
               placeholder="请求方式"
@@ -47,7 +47,7 @@
         <a-col :span="4">
           <a-form-item extra="http请求参数位置" label="参数位置">
             <dict-radio-group
-              v-decorator="['position',decoratorOptions.position]"
+              v-decorator="['position', decoratorOptions.position]"
               dict-code="lov_http_params_position"
               placeholder="http请求参数位置"
             />
@@ -63,7 +63,7 @@
                 @click="showFixedParams"
               />
               <a-input
-                v-decorator="['fixedParams',decoratorOptions.fixedParams]"
+                v-decorator="['fixedParams', decoratorOptions.fixedParams]"
                 disabled
                 placeholder="固定请求参数"
                 style="width: calc(100% - 50px)"
@@ -76,25 +76,25 @@
       <a-modal
         :visible="visible"
         title="配置固定请求参数"
-        @cancel="visible=false"
+        @cancel="visible = false"
         @ok="configFixedParams"
       >
         <a-button style="margin-bottom: 5px;" @click="addFixedParams">新增</a-button>
-        <a-input-group v-for="(item,index) in fp" :key="`${index}`" compact>
+        <a-input-group v-for="(item, index) in fp" :key="`${index}`" compact>
           <a-input
             v-model="item.key"
-            :class="item.ke?'validator-error':''"
+            :class="item.ke ? 'validator-error' : ''"
             addon-before="key"
             style="width: 150px"
           />
           <a-input
             v-model="item.val"
-            :class="item.ve?'validator-error':''"
+            :class="item.ve ? 'validator-error' : ''"
             addon-before="value"
             style="width: calc(100% - 200px)"
           />
-          <a-button style="color: red" title="删除" @click="fp.splice(index,1)">
-            <a-icon type="minus-circle" />
+          <a-button style="color: red" title="删除" @click="fp.splice(index, 1)">
+            <icon-font type="minus-circle" />
           </a-button>
         </a-input-group>
       </a-modal>
@@ -104,24 +104,18 @@
       <a-row :gutter="4" class="form-row">
         <a-col :span="4">
           <a-form-item extra="是否多选" label="多选">
-            <dict-radio-group
-              v-decorator="['multiple',decoratorOptions.multiple]"
-              dict-code="yes_or_no"
-            />
+            <dict-radio-group v-decorator="['multiple', decoratorOptions.multiple]" dict-code="yes_or_no" />
           </a-form-item>
         </a-col>
 
         <a-col :span="4">
           <a-form-item label="retField" extra="返回字段">
-            <a-input v-decorator="['retField',decoratorOptions.retField]" />
+            <a-input v-decorator="['retField', decoratorOptions.retField]" />
           </a-form-item>
         </a-col>
         <a-col :span="4">
           <a-form-item label="返回数据" extra="是否需要返回数据,false则不会有确定按钮">
-            <dict-radio-group
-              v-decorator="['ret',decoratorOptions.ret]"
-              dict-code="yes_or_no"
-            />
+            <dict-radio-group v-decorator="['ret', decoratorOptions.ret]" dict-code="yes_or_no" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -130,7 +124,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'FormBasic',
   props: {
@@ -141,7 +134,7 @@ export default {
     form: {
       type: Object,
       required: true
-    },
+    }
   },
   data() {
     return {
@@ -230,5 +223,4 @@ export default {
 }
 </script>
 
-<style lang="less">
-</style>
+<style lang="less"></style>

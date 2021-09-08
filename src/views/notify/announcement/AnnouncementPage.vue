@@ -12,10 +12,7 @@
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="接收人范围">
-                <dict-select
-                  v-model="queryParam.recipientFilterType"
-                  dict-code="recipient_filter_type"
-                />
+                <dict-select v-model="queryParam.recipientFilterType" dict-code="recipient_filter_type" />
               </a-form-item>
             </a-col>
 
@@ -27,7 +24,7 @@
                 <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                 <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                   {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'"/>
+                  <icon-font :type="advanced ? 'up' : 'down'"/>
                 </a>-->
               </div>
             </a-col>
@@ -35,7 +32,7 @@
         </a-form>
       </div>
 
-      <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
+      <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
         <!-- 操作按钮区域 -->
         <div class="ant-pro-table-toolbar">
           <div class="ant-pro-table-toolbar-title">公告信息</div>
@@ -59,7 +56,7 @@
             :data-source="dataSource"
             :pagination="pagination"
             :loading="loading"
-            :scroll="{x : 1000}"
+            :scroll="{ x: 1000 }"
             @change="handleTableChange"
           >
             <template #status-slot="status">
@@ -88,26 +85,16 @@
               <span v-has="'notify:announcement:edit'">
                 <a :disabled="record.status !== 2" @click="handleEdit(record)">编辑</a>
                 <a-divider type="vertical" />
-                <a-popconfirm
-                  title="确认要发布吗？"
-                  @confirm="() => handlePublish(record)"
-                >
+                <a-popconfirm title="确认要发布吗？" @confirm="() => handlePublish(record)">
                   <a href="javascript:" :disabled="record.status !== 2">发布</a>
                 </a-popconfirm>
                 <a-divider type="vertical" />
-                <a-popconfirm
-                  title="确认要关闭吗？"
-                  @confirm="() => handleClose(record)"
-                >
+                <a-popconfirm title="确认要关闭吗？" @confirm="() => handleClose(record)">
                   <a href="javascript:" :disabled="record.status === 0">关闭</a>
                 </a-popconfirm>
               </span>
               <a-divider v-if="$has('notify:announcement:edit') || $has('notify:announcement:del')" type="vertical" />
-              <a-popconfirm
-                v-has="'notify:announcement:del'"
-                title="确认要删除吗？"
-                @confirm="() => handleDel(record)"
-              >
+              <a-popconfirm v-has="'notify:announcement:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
                 <a href="javascript:" class="ballcat-text-danger">删除</a>
               </a-popconfirm>
             </template>
@@ -157,15 +144,15 @@ export default {
   name: 'AnnouncementPage',
   components: { AnnouncementPageForm, AnnouncementModal },
   filters: {
-    statusFilter (status) {
+    statusFilter(status) {
       return statusFilterArr[status].text
     },
-    statusTypeFilter (status) {
+    statusTypeFilter(status) {
       return statusFilterArr[status].state
     }
   },
   mixins: [TablePageMixin],
-  data () {
+  data() {
     return {
       getPage: getPage,
       delObj: delObj,
@@ -203,7 +190,7 @@ export default {
         {
           title: '失效时间',
           dataIndex: 'deadline',
-          customRender: function (text, record) {
+          customRender: function(text, record) {
             return record.immortal ? '永久有效' : text
           }
         },
@@ -228,12 +215,12 @@ export default {
   },
   methods: {
     // 新增
-    handleAdd () {
+    handleAdd() {
       this.switchPage()
       this.$refs.pageForm.add({ title: '新建公告' })
     },
     // 编辑
-    handleEdit (record) {
+    handleEdit(record) {
       this.switchPage()
       this.$refs.pageForm.update(record, { title: '编辑公告' })
     },
@@ -241,7 +228,7 @@ export default {
      * 发布公告
      * @param record 公告对象
      */
-    handlePublish (record) {
+    handlePublish(record) {
       publish(record.id).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
@@ -255,7 +242,7 @@ export default {
      * 关闭公告
      * @param record 公告对象
      */
-    handleClose (record) {
+    handleClose(record) {
       close(record.id).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
@@ -268,7 +255,7 @@ export default {
     /**
      * 预览公告
      */
-    previewAnnouncement (record) {
+    previewAnnouncement(record) {
       this.$refs.announcementModal.show(record, true)
     }
   }

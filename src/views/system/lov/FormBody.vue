@@ -1,8 +1,8 @@
 <template>
   <a-card title="表格列配置" class="antd-pro-pages-form-advanced-form-style-card">
-    <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible=true">新增表格列</a-button>
+    <a-button style="margin-bottom: 5px;margin-top: 5px;" @click="visible = true">新增表格列</a-button>
 
-    <div v-for="(item,index) in columnItems" :key="item.field" style="margin-bottom: 5px;">
+    <div v-for="(item, index) in columnItems" :key="item.field" style="margin-bottom: 5px;">
       <a-input-group compact>
         <a-input
           :value="item.title"
@@ -22,11 +22,19 @@
           read-only
           style="width: 100px"
         />
-        <a-button style="color: blue;margin-top: -1px;" title="编辑" @click="json=item;editIndex=index;visible=true">
-          <a-icon type="edit" />
+        <a-button
+          style="color: blue;margin-top: -1px;"
+          title="编辑"
+          @click="
+            json = item
+            editIndex = index
+            visible = true
+          "
+        >
+          <icon-font type="edit" />
         </a-button>
         <a-button style="color: red;margin-top: -1px;" title="删除" @click="delColumn(index)">
-          <a-icon type="minus-circle" />
+          <icon-font type="minus-circle" />
         </a-button>
       </a-input-group>
     </div>
@@ -38,7 +46,7 @@
       :visible="visible"
       :width="800"
       title="新增表格列"
-      @cancel="visible=false"
+      @cancel="visible = false"
       @ok="createBody"
     >
       <a-row :gutter="4" class="form-row">
@@ -59,10 +67,7 @@
         </a-col>
 
         <a-col :span="24">
-          <a-form-item
-            extra="请保证内容为可用的json"
-            label="自定义属性"
-          >
+          <a-form-item extra="请保证内容为可用的json" label="自定义属性">
             <codemirror
               v-model="json.property"
               :options="cmOptions"
@@ -77,7 +82,6 @@
 </template>
 
 <script>
-
 // codemirror
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/lib/codemirror.css'
@@ -86,7 +90,7 @@ import 'codemirror/mode/javascript/javascript'
 
 export default {
   name: 'FormBody',
-  components: {  codemirror },
+  components: { codemirror },
   props: {
     formAction: {
       type: String,
@@ -95,7 +99,7 @@ export default {
     form: {
       type: Object,
       required: true
-    },
+    }
   },
   data() {
     return {
@@ -121,7 +125,7 @@ export default {
     }
   },
   methods: {
-    reset(value){
+    reset(value) {
       this.columnItems = value
       this.$emit('input', this.columnItems)
     },
@@ -166,7 +170,7 @@ export default {
       }
     },
     delColumn(index) {
-      this.columnItems.splice(index,1)
+      this.columnItems.splice(index, 1)
       this.$emit('input', this.columnItems)
     }
   }

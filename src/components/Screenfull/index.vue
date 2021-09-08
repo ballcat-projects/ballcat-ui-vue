@@ -1,6 +1,6 @@
 <template>
   <div @click="click">
-    <a-icon :type="isFullscreen?'fullscreen-exit':'fullscreen'" />
+    <icon-font :type="isFullscreen ? 'fullscreen-exit' : 'fullscreen'" />
   </div>
 </template>
 
@@ -23,7 +23,7 @@ export default {
   methods: {
     click() {
       if (!screenfull.isEnabled) {
-        this.$message.warning( 'you browser can not work')
+        this.$message.warning('you browser can not work')
         return false
       }
       screenfull.toggle()
@@ -49,7 +49,7 @@ export default {
 .screenfull-svg {
   display: inline-block;
   cursor: pointer;
-  fill: #5a5e66;;
+  fill: #5a5e66;
   width: 20px;
   height: 20px;
   vertical-align: 10px;
