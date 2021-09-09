@@ -2,7 +2,7 @@
   <div class="ballcat-global-header-tool-right">
     <a href="http://www.ballcat.cn" target="_blank" style="color: inherit;">
       <span class="ballcat-global-header-tool-action">
-        <icon-font type="question-circle-o" />
+        <icon-font type="question-circle" />
       </span>
     </a>
 

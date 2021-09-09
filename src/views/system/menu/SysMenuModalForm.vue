@@ -52,7 +52,7 @@
                 title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。
                 例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX"
               >
-                <icon-font type="question-circle-o" />
+                <icon-font type="question-circle" />
               </a-tooltip>
             </span>
             <a-input v-decorator="['id', decoratorOptions.id]" />
@@ -83,7 +83,7 @@
         <span slot="label">
           名称国际化
           <a-tooltip title="菜单标题将作为国际化信息的标识">
-            <icon-font type="question-circle-o" />
+            <icon-font type="question-circle" />
           </a-tooltip>
         </span>
         <language-text ref="languageText" />
