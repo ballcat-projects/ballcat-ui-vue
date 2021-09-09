@@ -37,7 +37,7 @@
             <template slot="content">
               <sketch-picker v-model="tagColorPicker" @input="onTagColorPicker" />
             </template>
-            <a href="javascript:" style="margin-left: 5px"><icon-font :component="colorPicker" /></a>
+            <a href="javascript:" style="margin-left: 5px"><a-icon :component="colorPicker" /></a>
           </a-popover>
 
           <a
@@ -58,7 +58,7 @@
             <template slot="content">
               <sketch-picker v-model="textColorPicker" @input="onTextColorPicker" />
             </template>
-            <a href="javascript:" style="margin-left: 5px"><icon-font :component="colorPicker" /></a>
+            <a href="javascript:" style="margin-left: 5px"><a-icon :component="colorPicker" /></a>
           </a-popover>
           <a
             v-if="textColorAttribute"

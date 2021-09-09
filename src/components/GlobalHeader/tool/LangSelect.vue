@@ -1,7 +1,7 @@
 <template>
   <a-dropdown>
     <span style="font-size: 16px">
-      <icon-font :component="i18nIcon" />
+      <a-icon :component="i18nIcon" />
     </span>
     <template #overlay>
       <a-menu style="width: 150px;" :selected-keys="selectedKeys" @click="switchLang">
