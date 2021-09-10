@@ -73,7 +73,7 @@
           <template #menu-title-slot="text, record">
             <icon-font v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
             {{ enableI18n ? record.i18nTitle : record.title }}
-            <icon-font
+            <a-icon
               v-if="enableI18n && record.type !== 2"
               type="edit"
               theme="twoTone"
