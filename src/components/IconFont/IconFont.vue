@@ -1,5 +1,10 @@
 <template>
-  <icon-dom :type="type && type.startsWith(iconPrefix) ? type : `${iconPrefix}${type}`" />
+  <icon-dom
+    :type="type && type.startsWith(iconPrefix) ? type : `${iconPrefix}${type}`"
+    :spin="spin"
+    :rotate="rotate"
+    :component="component"
+  />
 </template>
 
 <script>
@@ -19,6 +24,18 @@ export default {
       default: () => {
         return ''
       }
+    },
+    spin: {
+      type: Boolean,
+      default: () => false
+    },
+    rotate: {
+      type: Number,
+      default: () => undefined
+    },
+    component: {
+      type: Object,
+      default: () => undefined
     }
   },
   data() {
