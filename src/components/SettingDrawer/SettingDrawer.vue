@@ -112,7 +112,12 @@
                 </a-list-item-meta>
               </a-list-item>
               <a-list-item>
-                <a-switch slot="actions" size="small" :default-checked="fixedHeader" @change="handleFixedHeader" />
+                <a-switch
+                  slot="actions"
+                  size="small"
+                  :default-checked="fixedHeader"
+                  @change="handleFixedHeader"
+                />
                 <a-list-item-meta>
                   <div slot="title">固定 Header</div>
                 </a-list-item-meta>
@@ -139,13 +144,23 @@
           <div>
             <a-list :split="false">
               <a-list-item>
-                <a-switch slot="actions" size="small" :default-checked="colorWeak" @change="onColorWeak" />
+                <a-switch
+                  slot="actions"
+                  size="small"
+                  :default-checked="colorWeak"
+                  @change="onColorWeak"
+                />
                 <a-list-item-meta>
                   <div slot="title">色弱模式</div>
                 </a-list-item-meta>
               </a-list-item>
               <a-list-item>
-                <a-switch slot="actions" size="small" :default-checked="multiTab" @change="onMultiTab" />
+                <a-switch
+                  slot="actions"
+                  size="small"
+                  :default-checked="multiTab"
+                  @change="onMultiTab"
+                />
                 <a-list-item-meta>
                   <div slot="title">多页签模式</div>
                 </a-list-item-meta>
@@ -162,13 +177,17 @@
               <a
                 href="https://github.com/sendya/ant-design-pro-vue/blob/master/src/config/defaultSettings.js"
                 target="_blank"
-                >src/config/defaultSettings.js</a
-              >
+              >src/config/defaultSettings.js</a>
             </span>
           </a-alert>
         </div>
       </div>
-      <div v-if="showHandle" slot="handle" class="setting-drawer-index-handle" @click="toggle">
+      <div
+        v-if="showHandle"
+        slot="handle"
+        class="setting-drawer-index-handle"
+        @click="toggle"
+      >
         <icon-font v-if="!visible" type="setting" />
         <icon-font v-else type="close" />
       </div>

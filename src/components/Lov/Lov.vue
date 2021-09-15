@@ -3,7 +3,13 @@
     <a-input-group compact>
       <a-spin :spinning="loading" size="small" style="width: 100%">
         <div v-if="!multiple" style="display:flex;position:relative">
-          <a-input v-if="!multiple" class="lov-data" :value="selectValue" :placeholder="placeholder" read-only>
+          <a-input
+            v-if="!multiple"
+            class="lov-data"
+            :value="selectValue"
+            :placeholder="placeholder"
+            read-only
+          >
             <icon-font slot="addonAfter" type="ellipsis" @click.native="showModal" />
           </a-input>
           <div
@@ -82,7 +88,12 @@
       <div v-if="search" class="table-page-search-wrapper" style="margin-top:15px;">
         <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 16 }">
           <a-row :gutter="8">
-            <a-col v-for="item in searchList" :key="item.id" :md="8" :sm="16">
+            <a-col
+              v-for="item in searchList"
+              :key="item.id"
+              :md="8"
+              :sm="16"
+            >
               <a-form-item :label="item.label" style="height:20px">
                 <a-input
                   v-if="item.tag === 'INPUT_TEXT'"
@@ -113,7 +124,12 @@
               </a-form-item>
             </a-col>
             <!-- 搜索控制按钮 -->
-            <a-col :xs="8" :sm="8" :md="8" style="margin-top:2px">
+            <a-col
+              :xs="8"
+              :sm="8"
+              :md="8"
+              style="margin-top:2px"
+            >
               <div style="display:flex;">
                 <a-button type="primary" style="margin-left:5%" @click="reloadTable">查询</a-button>
                 <a-button style="margin-left:8px" @click="resetSearchForm">重置</a-button>
@@ -134,7 +150,14 @@
               placeholder="已选数据"
               @deselect="multipleDeselect"
             />
-            <a-input v-if="!multiple" :value="selectValue" :open="false" read-only mode="tags" placeholder="已选数据">
+            <a-input
+              v-if="!multiple"
+              :value="selectValue"
+              :open="false"
+              read-only
+              mode="tags"
+              placeholder="已选数据"
+            >
               <icon-font slot="addonAfter" type="close" @click.native="singleDeselect" />
             </a-input>
           </a-form-item>
