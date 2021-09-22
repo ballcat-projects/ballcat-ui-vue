@@ -51,7 +51,7 @@ const user = {
 
           const attributes = res.attributes || {}
           const permissions = attributes.permissions
-          const roles = attributes.roles
+          const roleCodes = attributes.roleCodes
 
           if (permissions.length < 0) {
             reject(new Error('getInfo: roles must be a non-null array !'))
@@ -59,8 +59,8 @@ const user = {
 
           Vue.ls.set(USER_INFO, info, ttl)
           commit('SET_INFO', info)
-          Vue.ls.set(ROLES, roles, ttl)
-          commit('SET_ROLES', roles)
+          Vue.ls.set(ROLES, roleCodes, ttl)
+          commit('SET_ROLES', roleCodes)
           Vue.ls.set(PERMISSIONS, permissions, ttl)
           commit('SET_PERMISSIONS', permissions)
           Vue.ls.set(ACCESS_TOKEN, accessToken, ttl)
