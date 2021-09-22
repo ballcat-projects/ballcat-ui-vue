@@ -51,7 +51,8 @@
             type="primary"
             icon="plus"
             @click="handleAdd()"
-          >新建 </a-button>
+          >新建
+          </a-button>
         </div>
       </div>
 
@@ -72,7 +73,12 @@
         >
           <template #menu-title-slot="text, record">
             <icon-font v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
-            {{ enableI18n ? record.i18nTitle : record.title }}
+            <a-tooltip placement="top">
+              <template slot="title">
+                <span>{{ enableI18n ? record.i18nTitle : record.title }}</span>
+              </template>
+              {{ enableI18n ? record.i18nTitle : record.title }}
+            </a-tooltip>
             <a-icon
               v-if="enableI18n && record.type !== 2"
               type="edit"
@@ -115,7 +121,7 @@ export default {
   name: 'SysMenuPage',
   components: { SysMenuModalForm, I18nMessageModal },
   mixins: [TablePageMixin],
-  data() {
+  data () {
     return {
       delObj: delObj,
 
@@ -129,6 +135,7 @@ export default {
           title: '菜单名称',
           dataIndex: 'title',
           width: 200,
+          ellipsis: true,
           scopedSlots: { customRender: 'menu-title-slot' }
         },
         {
@@ -182,17 +189,17 @@ export default {
       menuList: []
     }
   },
-  created() {
+  created () {
     this.loadData()
     // 开启国际化时，注册监听事件
     this.enableI18n && this.$bus.$on('switch-language', this.reloadTable)
   },
-  destroyed() {
+  destroyed () {
     // 销毁监听事件
     this.enableI18n && this.$bus.$off('switch-language', this.reloadTable)
   },
   methods: {
-    loadData() {
+    loadData () {
       this.loading = true
       list(this.queryParam)
         .then(res => {
@@ -204,13 +211,13 @@ export default {
           this.loading = false
         })
     },
-    reloadTable() {
+    reloadTable () {
       this.loadData()
     },
     /**
      * 新建菜单权限
      */
-    handleAdd(record) {
+    handleAdd (record) {
       const attributes = { title: '新建菜单权限' }
       // 按钮类型不允许有子级，所以默认变成创建平级
       if (record) {
@@ -229,20 +236,20 @@ export default {
      * 编辑菜单权限
      * @param record 当前菜单权限属性
      */
-    handleEdit(record) {
+    handleEdit (record) {
       const attributes = { title: '编辑菜单权限' }
       this.$refs.formModal.update(record, attributes)
     },
     /**
      * 打开 i18nMessage 弹窗
      */
-    openI18nMessage(code) {
+    openI18nMessage (code) {
       this.$refs.i18nMessageModal.show(code)
     },
     /**
      * 当 i18nData 有修改时，刷新表格数据
      */
-    handleI18nMessageUpdate() {
+    handleI18nMessageUpdate () {
       this.reloadTable()
     }
   }
