@@ -34,22 +34,11 @@
           </a-form-item>
 
           <a-form-item label="组织">
-            <a-tree-select
+            <sys-organization-tree-select
               v-decorator="['organizationId']"
-              placeholder="请选择"
-              style="width: 100%"
-              :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-              :tree-data="organizationTree"
-              tree-default-expand-all
-              allow-clear
-              :replace-fields="{
-                title: 'name',
-                key: 'id',
-                value: 'id'
-              }"
+              :organization-tree="organizationTree"
             />
           </a-form-item>
-
 
           <a-form-item label="状态">
             <a-radio-group v-decorator="['status', decoratorOptions.status]">
@@ -86,10 +75,11 @@ import { addObj, putObj } from '@/api/system/user'
 import { PopUpFormMixin } from '@/mixins'
 import { passEncrypt } from '@/utils/password'
 import SysRoleSelect from '@/views/system/role/SysRoleSelect'
+import SysOrganizationTreeSelect from '@/views/system/organization/SysOrganizationTreeSelect'
 
 export default {
   name: 'SysUserModalForm',
-  components: { SysRoleSelect },
+  components: { SysOrganizationTreeSelect, SysRoleSelect },
   mixins: [PopUpFormMixin],
   props: {
     organizationTree: {

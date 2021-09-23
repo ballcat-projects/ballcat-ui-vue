@@ -78,7 +78,7 @@
     </div>
 
     <!-- 表单弹窗 -->
-    <role-modal-form ref="formModal" @reload-page-table="reloadTable" />
+    <role-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadTable" />
 
     <!-- 角色授权弹窗 -->
     <role-grant-drawer ref="roleGrantDrawer" />
@@ -94,6 +94,7 @@ import RoleModalForm from './SysRoleModalForm'
 import RoleGrantDrawer from './SysRoleGrantDrawer'
 import { TablePageMixin } from '@/mixins'
 import RoleUserModal from '@/views/system/role/SysRoleUserModal'
+import { getTree } from '@/api/system/organization'
 
 export default {
   name: 'SysRolePage',
@@ -155,8 +156,15 @@ export default {
           width: 180,
           scopedSlots: { customRender: 'action-slot' }
         }
-      ]
+      ],
+
+      organizationTree: []
     }
+  },
+  created () {
+    getTree().then(res => {
+      this.organizationTree = res.data
+    })
   },
   methods: {
     // 新建角色
