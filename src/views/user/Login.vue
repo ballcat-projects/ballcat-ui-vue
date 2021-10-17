@@ -33,7 +33,7 @@
               placeholder="账户: admin"
             >
               <template #prefix>
-                <icon-font type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -51,7 +51,7 @@
               @pressEnter="showCaptchaBox"
             >
               <template #prefix>
-                <icon-font type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -71,7 +71,7 @@
               placeholder="手机号"
             >
               <template #prefix>
-                <icon-font type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <a-icon type="mobile" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>
@@ -89,7 +89,7 @@
                   placeholder="验证码"
                 >
                   <template #prefix>
-                    <icon-font type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                    <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
                   </template>
                 </a-input>
               </a-form-item>
@@ -140,13 +140,13 @@
       <div class="user-login-other">
         <span>其他登录方式</span>
         <a>
-          <icon-font class="item-icon" type="alipay" />
+          <a-icon class="item-icon" type="alipay" />
         </a>
         <a>
-          <icon-font class="item-icon" type="taobao" />
+          <a-icon class="item-icon" type="taobao" />
         </a>
         <a>
-          <icon-font class="item-icon" type="weibo" />
+          <a-icon class="item-icon" type="weibo" />
         </a>
         <router-link class="register" :to="{ name: 'register' }">注册账户</router-link>
       </div>

@@ -94,7 +94,7 @@
             style="width: calc(100% - 200px)"
           />
           <a-button style="color: red" title="删除" @click="fp.splice(index, 1)">
-            <icon-font type="minus-circle" />
+            <a-icon type="minus-circle" />
           </a-button>
         </a-input-group>
       </a-modal>

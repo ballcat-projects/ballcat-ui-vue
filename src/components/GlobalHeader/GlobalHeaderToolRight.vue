@@ -2,7 +2,7 @@
   <div class="ballcat-global-header-tool-right">
     <a href="http://www.ballcat.cn" target="_blank" style="color: inherit;">
       <span class="ballcat-global-header-tool-action">
-        <icon-font type="question-circle" />
+        <a-icon type="question-circle" />
       </span>
     </a>
 
@@ -16,7 +16,7 @@
 
     <!--    <lang-select class="ballcat-global-header-tool-action" />-->
     <span class="ballcat-global-header-tool-action" @click="showSettingDrawer">
-      <icon-font type="more" style="font-size: 16px; font-weight: bolder" />
+      <a-icon type="more" style="font-size: 16px; font-weight: bolder" />
       <setting-drawer ref="settingDrawer" :show-handle="false" />
     </span>
   </div>

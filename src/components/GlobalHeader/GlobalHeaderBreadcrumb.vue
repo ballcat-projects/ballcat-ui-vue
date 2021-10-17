@@ -3,7 +3,7 @@
     <template #itemRender="{ route, routes }">
       <template v-if="route.path === '' || route.path === '/'">
         <router-link to="/">
-          <icon-font type="home" />
+          <a-icon type="home" />
         </router-link>
       </template>
       <span v-if="routes.indexOf(route) !== 0">

@@ -33,8 +33,4 @@ module.exports = {
       symbol: '🇺🇸'
     }
   },
-
-  // icon 使用 iconFont 方式引用，此处为对应配置
-  iconFontUrl: '//at.alicdn.com/t/font_2663734_ac285tyx19.js',
-  iconPrefix: 'ballcat-icon-'
 }

@@ -40,7 +40,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">{{ $t('action.reset') }}</a-button>
               <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? $t('action.expand') : $t('action.collapse') }}
-                <icon-font :type="advanced ? 'up' : 'down'"/>
+                <a-icon :type="advanced ? 'up' : 'down'"/>
               </a>-->
             </div>
           </a-col>

@@ -112,7 +112,7 @@
               placeholder="验证码"
             >
               <template #prefix>
-                <icon-font type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
+                <a-icon type="mail" :style="{ color: 'rgba(0,0,0,.25)' }" />
               </template>
             </a-input>
           </a-form-item>

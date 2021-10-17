@@ -10,7 +10,7 @@
             :placeholder="placeholder"
             read-only
           >
-            <icon-font slot="addonAfter" type="ellipsis" @click.native="showModal" />
+            <a-icon slot="addonAfter" type="ellipsis" @click.native="showModal" />
           </a-input>
           <div
             v-show="selectValue"
@@ -48,7 +48,7 @@
             :open="false"
             @deselect="multipleDeselect"
           />
-          <div class="ballcat-select-btn" title="单击以选择数据" @click="showModal"><icon-font type="ellipsis" /></div>
+          <div class="ballcat-select-btn" title="单击以选择数据" @click="showModal"><a-icon type="ellipsis" /></div>
           <div v-show="selectValue" class="ballcat-select-clear" @click="cleanAll">
             <svg
               t="1619765878911"
@@ -158,7 +158,7 @@
               mode="tags"
               placeholder="已选数据"
             >
-              <icon-font slot="addonAfter" type="close" @click.native="singleDeselect" />
+              <a-icon slot="addonAfter" type="close" @click.native="singleDeselect" />
             </a-input>
           </a-form-item>
         </a-form>
