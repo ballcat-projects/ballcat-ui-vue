@@ -2,7 +2,7 @@
   <div v-if="announcementNum > 0" class="text-container">
     <transition class="" name="slide" mode="out-in">
       <span :key="announcement.id" class="announcement-content">
-        <icon-font type="sound" theme="filled" />
+        <a-icon type="sound" theme="filled" />
         <a href="javascript:" class="text" @click="readAnnouncement">{{ announcement.title }}</a>
       </span>
     </transition>

@@ -73,7 +73,7 @@
                   <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
                   <a style="margin-left: 8px" @click="toggleAdvanced">
                     {{ advanced ? '收起' : '展开' }}
-                    <icon-font :type="advanced ? 'up' : 'down'" />
+                    <a-icon :type="advanced ? 'up' : 'down'" />
                   </a>
                 </div>
               </a-col>
@@ -89,19 +89,19 @@
                 <template #overlay>
                   <a-menu @click="handleUpdateStatus">
                     <a-menu-item key="1">
-                      <icon-font type="delete" />
+                      <a-icon type="delete" />
                       开启
                     </a-menu-item>
                     <!-- lock | unlock -->
                     <a-menu-item key="0">
-                      <icon-font type="lock" />
+                      <a-icon type="lock" />
                       锁定
                     </a-menu-item>
                   </a-menu>
                 </template>
                 <a-button style="margin-left: 8px">
                   批量操作
-                  <icon-font type="down" />
+                  <a-icon type="down" />
                 </a-button>
               </a-dropdown>
               <a-button

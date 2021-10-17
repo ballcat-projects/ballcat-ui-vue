@@ -57,7 +57,7 @@
     </template>
     <span ref="noticeRef" class="header-notice" @click="fetchNotice">
       <a-badge count="12">
-        <icon-font style="font-size: 16px; padding: 4px" type="bell" />
+        <a-icon style="font-size: 16px; padding: 4px" type="bell" />
       </a-badge>
     </span>
   </a-popover>

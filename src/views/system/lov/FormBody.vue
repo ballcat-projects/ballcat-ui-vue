@@ -31,10 +31,10 @@
             visible = true
           "
         >
-          <icon-font type="edit" />
+          <a-icon type="edit" />
         </a-button>
         <a-button style="color: red;margin-top: -1px;" title="删除" @click="delColumn(index)">
-          <icon-font type="minus-circle" />
+          <a-icon type="minus-circle" />
         </a-button>
       </a-input-group>
     </div>

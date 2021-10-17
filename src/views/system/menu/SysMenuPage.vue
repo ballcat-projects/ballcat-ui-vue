@@ -33,7 +33,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
-                <icon-font :type="advanced ? 'up' : 'down'"/>
+                <a-icon :type="advanced ? 'up' : 'down'"/>
               </a>-->
             </div>
           </a-col>
@@ -72,7 +72,7 @@
           @change="handleTableChange"
         >
           <template #menu-title-slot="text, record">
-            <icon-font v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
+            <a-icon v-if="record.icon" :type="record.icon" style="margin-right: 6px" />
             <a-tooltip placement="top">
               <template slot="title">
                 <span>{{ enableI18n ? record.i18nTitle : record.title }}</span>

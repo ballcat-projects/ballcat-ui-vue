@@ -201,7 +201,7 @@ export default {
           {panes}
           <a-dropdown slot="tabBarExtraContent" class="multi-tab-drop">
             <div>
-              <icon-font type="down" />
+              <a-icon type="down" />
             </div>
             <a-menu
               slot="overlay"
@@ -214,15 +214,15 @@ export default {
               }}
             >
               <a-menu-item key="closeLeft">
-                <icon-font type="arrow-left" />
+                <a-icon type="arrow-left" />
                 关闭左侧
               </a-menu-item>
               <a-menu-item key="closeRight">
-                <icon-font type="arrow-right" />
+                <a-icon type="arrow-right" />
                 关闭右侧
               </a-menu-item>
               <a-menu-item key="closeOther">
-                <icon-font type="close" />
+                <a-icon type="close" />
                 关闭其他
               </a-menu-item>
             </a-menu>
@@ -233,4 +233,4 @@ export default {
   }
 }
 </script>
-<!-- <a-menu-item key="closeAll"><icon-font type="close-circle"/>关闭全部</a-menu-item> -->
+<!-- <a-menu-item key="closeAll"><a-icon type="close-circle"/>关闭全部</a-menu-item> -->

@@ -46,7 +46,7 @@
             style="margin-left: 5px; display: inline-block"
             @click="clearTagColor"
           >
-            <icon-font type="delete" />
+            <a-icon type="delete" />
           </a>
         </a-form-item>
       </a-col>
@@ -66,7 +66,7 @@
             style="margin-left: 5px; display: inline-block"
             @click="clearTextColor"
           >
-            <icon-font type="delete" />
+            <a-icon type="delete" />
           </a>
         </a-form-item>
       </a-col>
@@ -86,7 +86,7 @@
         <span>
           排序
           <a-tooltip title="升序，数值越小优先级越高">
-            <icon-font type="exclamation-circle" />
+            <a-icon type="exclamation-circle" />
           </a-tooltip>
         </span>
       </template>

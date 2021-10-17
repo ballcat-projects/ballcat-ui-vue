@@ -27,10 +27,6 @@ import LovPlugin from '@/components/Lov/lovPlugin'
 
 Vue.use(LovPlugin)
 
-// icon 注册
-import IconPlugin from '@/components/IconFont/plugin'
-Vue.use(IconPlugin)
-
 Vue.config.productionTip = false
 
 let vm = {

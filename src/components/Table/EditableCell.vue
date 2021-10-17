@@ -3,14 +3,14 @@ z<template>
     <div v-if="editable" class="editable-cell-input-wrapper">
       <a-input :value="value" @change="handleChange" />
       <span class="editable-cell-icon-box">
-        <icon-font type="check" class="editable-cell-icon" @click.native="check" />
-        <icon-font type="close" class="editable-cell-icon" @click.native="close" />
+        <a-icon type="check" class="editable-cell-icon" @click.native="check" />
+        <a-icon type="close" class="editable-cell-icon" @click.native="close" />
       </span>
     </div>
     <div v-else class="editable-cell-text-wrapper">
       {{ value || ' ' }}
       <span class="editable-cell-icon-box">
-        <icon-font type="edit" class="editable-cell-icon" @click.native="edit" />
+        <a-icon type="edit" class="editable-cell-icon" @click.native="edit" />
       </span>
     </div>
   </div>

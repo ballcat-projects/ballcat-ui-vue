@@ -20,7 +20,7 @@
               <div class="setting-drawer-index-item" @click="handleNavTheme('dark')">
                 <div class="setting-drawer-index-item-side setting-drawer-index-item-com-style" />
                 <div v-if="navTheme === 'dark'" class="setting-drawer-index-selectIcon">
-                  <icon-font type="check" />
+                  <a-icon type="check" />
                 </div>
               </div>
             </a-tooltip>
@@ -32,7 +32,7 @@
               <div class="setting-drawer-index-item" @click="handleNavTheme('light')">
                 <div class="setting-drawer-index-item-light setting-drawer-index-item-com-style" />
                 <div v-if="navTheme !== 'dark'" class="setting-drawer-index-selectIcon">
-                  <icon-font type="check" />
+                  <a-icon type="check" />
                 </div>
               </div>
             </a-tooltip>
@@ -48,7 +48,7 @@
                 {{ item.key }}
               </template>
               <a-tag :color="item.color" @click="changeColor(item.color)">
-                <icon-font v-if="item.color === primaryColor" type="check" />
+                <a-icon v-if="item.color === primaryColor" type="check" />
               </a-tag>
             </a-tooltip>
           </div>
@@ -66,7 +66,7 @@
               <div class="setting-drawer-index-item" @click="handleLayout('side')">
                 <div class="setting-drawer-index-item-side setting-drawer-index-item-com-style" />
                 <div v-if="layout === 'side'" class="setting-drawer-index-selectIcon">
-                  <icon-font type="check" />
+                  <a-icon type="check" />
                 </div>
               </div>
             </a-tooltip>
@@ -78,7 +78,7 @@
               <div class="setting-drawer-index-item" @click="handleLayout('top')">
                 <div class="setting-drawer-index-item-top setting-drawer-index-item-com-style" />
                 <div v-if="layout === 'top'" class="setting-drawer-index-selectIcon">
-                  <icon-font type="check" />
+                  <a-icon type="check" />
                 </div>
               </div>
             </a-tooltip>
@@ -89,7 +89,7 @@
               <div class="setting-drawer-index-item" @click="handleLayout('mix')">
                 <div class="setting-drawer-index-item-mix setting-drawer-index-item-com-style" />
                 <div v-if="layout === 'mix'" class="setting-drawer-index-selectIcon">
-                  <icon-font type="check" />
+                  <a-icon type="check" />
                 </div>
               </div>
             </a-tooltip>
@@ -188,8 +188,8 @@
         class="setting-drawer-index-handle"
         @click="toggle"
       >
-        <icon-font v-if="!visible" type="setting" />
-        <icon-font v-else type="close" />
+        <a-icon v-if="!visible" type="setting" />
+        <a-icon v-else type="close" />
       </div>
     </a-drawer>
   </div>

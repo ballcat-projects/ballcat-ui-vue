@@ -9,7 +9,7 @@
             :class="{ 'active': selectedIcon==icon }"
             @click="handleSelectedIcon(icon)"
           >
-            <icon-font :type="icon" :style="{ fontSize: '36px' }" />
+            <a-icon :type="icon" :style="{ fontSize: '36px' }" />
           </li>
         </ul>
       </a-tab-pane>

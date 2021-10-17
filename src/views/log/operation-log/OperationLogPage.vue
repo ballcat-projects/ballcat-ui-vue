@@ -49,7 +49,7 @@
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <a style="margin-left: 8px" @click="toggleAdvanced">
                 {{ advanced ? '收起' : '展开' }}
-                <icon-font :type="advanced ? 'up' : 'down'" />
+                <a-icon :type="advanced ? 'up' : 'down'" />
               </a>
             </div>
           </a-col>

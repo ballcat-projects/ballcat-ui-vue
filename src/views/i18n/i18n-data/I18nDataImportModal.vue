@@ -17,7 +17,7 @@
           :before-upload="beforeUpload"
         >
           <a-button>
-            <icon-font type="upload" />
+            <a-icon type="upload" />
             {{ $t('action.selectFile') }}
           </a-button>
           <a href="javascript:" style="margin-left: 12px;" @click.stop="downloadTemplate">

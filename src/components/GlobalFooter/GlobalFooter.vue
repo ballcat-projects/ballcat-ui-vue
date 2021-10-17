@@ -3,7 +3,7 @@
     <div class="links">
       <a href="https://www.ball.cn/" target="_blank">BallCat 首页</a>
       <a href="https://github.com/hccake/ballcat-ui-vue" target="_blank">
-        <icon-font type="github-fill" />
+        <a-icon type="github-fill" />
       </a>
       <a href="https://ant.design/">Ant Design</a>
       <a href="https://vue.ant.design/">Vue Antd</a>
@@ -11,7 +11,7 @@
     </div>
     <div class="copyright">
       Copyright
-      <icon-font type="copyright" /> 2019 <span>云吸🐱 出品</span>
+      <a-icon type="copyright" /> 2019 <span>云吸🐱 出品</span>
     </div>
   </div>
 </template>

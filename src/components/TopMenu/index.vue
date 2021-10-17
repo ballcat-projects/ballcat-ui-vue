@@ -7,7 +7,7 @@
           :key="item.name"
           @click="selectItem"
         >
-          <icon-font :type="item.meta.icon" />{{ item.meta.title }}
+          <a-icon :type="item.meta.icon" />{{ item.meta.title }}
         </a-menu-item>
       </template>
     </a-menu>

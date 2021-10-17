@@ -11,7 +11,7 @@ export default {
         width: 800,
         // JSX support
         icon: function() {
-          return <icon-font type="notification" theme="filled" />
+          return <a-icon type="notification" theme="filled" />
         },
         content: <div domPropsInnerHTML={announcement.content} />,
         onOk: function() {

@@ -18,7 +18,7 @@
           :show-search="false"
           @change="handleChange"
         >
-          <icon-font slot="suffixIcon" type="ellipsis" />
+          <a-icon slot="suffixIcon" type="ellipsis" />
         </a-select>
       </div>
     </a-spin>

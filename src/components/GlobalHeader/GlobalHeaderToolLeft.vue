@@ -1,10 +1,10 @@
 <template>
   <div class="ballcat-global-header-tool-left">
     <span class="ballcat-global-header-tool-action" @click="toggle">
-      <icon-font :type="collapsedButtonIconType" style="transform: scale(1.15);" />
+      <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);" />
     </span>
     <span class="ballcat-global-header-tool-action" @click="refreshContent">
-      <icon-font type="reload" />
+      <a-icon type="reload" />
     </span>
   </div>
 </template>

@@ -52,10 +52,10 @@
             visible = true
           "
         >
-          <icon-font type="edit" />
+          <a-icon type="edit" />
         </a-button>
         <a-button style="color: red;margin-top: -1px;" title="删除" @click="delSearchItem(index)">
-          <icon-font type="minus-circle" />
+          <a-icon type="minus-circle" />
         </a-button>
       </a-input-group>
     </div>
@@ -124,7 +124,7 @@
               <a-input v-model="option.label" addon-before="label" style="width: 150px" />
               <a-input v-model="option.value" addon-before="value" style="width: 150px" />
               <a-button style="color: red;" title="删除" @click="json.options.splice(index, 1)">
-                <icon-font type="minus-circle" />
+                <a-icon type="minus-circle" />
               </a-button>
             </a-input-group>
           </a-form-item>

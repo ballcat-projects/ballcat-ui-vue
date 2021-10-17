@@ -52,7 +52,7 @@
                 title="菜单ID的长度固定为 6，由三部分构成。前两位是目录序号，中间两位是菜单序号，最后两位是按钮序号。
                 例如目录的ID结构应为：XX0000，菜单结构为 XXXX00，按钮ID结构为 XXXXXX"
               >
-                <icon-font type="question-circle" />
+                <a-icon type="question-circle" />
               </a-tooltip>
             </span>
             <a-input v-decorator="['id', decoratorOptions.id]" />
@@ -74,7 +74,7 @@
         <a-input v-decorator="['title', decoratorOptions.title]" placeholder="菜单名称" style="width: 65%" />
         <a v-if="enableI18n && isCreateForm" style="margin-left: 8px" @click="toggleI18nAdvanced">
           {{ i18nAdvanced ? '收起' : '展开' }}国际化名称
-          <icon-font :type="i18nAdvanced ? 'up' : 'down'" />
+          <a-icon :type="i18nAdvanced ? 'up' : 'down'" />
         </a>
       </a-form-item>
 
@@ -83,7 +83,7 @@
         <span slot="label">
           名称国际化
           <a-tooltip title="菜单标题将作为国际化信息的标识">
-            <icon-font type="question-circle" />
+            <a-icon type="question-circle" />
           </a-tooltip>
         </span>
         <language-text ref="languageText" />
@@ -95,10 +95,10 @@
             <a-form-item label="菜单图标" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
               <a-input v-decorator="['icon']" placeholder="请选择">
                 <template #prefix>
-                  <icon-font v-if="icon" :type="icon" />
+                  <a-icon v-if="icon" :type="icon" />
                 </template>
                 <template #addonAfter>
-                  <icon-font type="setting" @click.native="selectIcons" />
+                  <a-icon type="setting" @click.native="selectIcons" />
                 </template>
               </a-input>
             </a-form-item>

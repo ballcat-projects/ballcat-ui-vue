@@ -8,18 +8,18 @@
       <a-menu class="ballcat-global-header-tool-avatar-dropdown-menu">
         <a-menu-item key="1">
           <router-link :to="{ name: 'AccountSettings' }">
-            <icon-font type="setting" />
+            <a-icon type="setting" />
             <span>账户设置</span>
           </router-link>
         </a-menu-item>
         <a-menu-item key="2" disabled>
-          <icon-font type="setting" />
+          <a-icon type="setting" />
           <span>测试</span>
         </a-menu-item>
         <a-menu-divider />
         <a-menu-item key="3">
           <a href="javascript:;" @click="handleLogout">
-            <icon-font type="logout" />
+            <a-icon type="logout" />
             <span>退出登录</span>
           </a>
         </a-menu-item>

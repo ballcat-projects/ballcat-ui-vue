@@ -8,7 +8,7 @@
         :disabled="true"
       />
       <a-input v-model="language.message" placeholder="文本值" style="width: 60%; margin-right: 8px" />
-      <icon-font
+      <a-icon
         v-if="languageList.length > 1"
         class="dynamic-delete-button"
         type="minus-circle-o"
@@ -29,7 +29,7 @@
         />
       </template>
       <a-button type="dashed" style="width: 60%">
-        <icon-font type="plus" />
+        <a-icon type="plus" />
         Add field
       </a-button>
     </a-popover>

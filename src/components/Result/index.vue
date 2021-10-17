@@ -1,7 +1,7 @@
 <template>
   <div class="result">
     <div>
-      <icon-font :class="{ icon: true, [`${type}`]: true }" :type="localIsSuccess ? 'check-circle' : 'close-circle'" />
+      <a-icon :class="{ icon: true, [`${type}`]: true }" :type="localIsSuccess ? 'check-circle' : 'close-circle'" />
     </div>
     <div class="title">
       <slot name="title">
