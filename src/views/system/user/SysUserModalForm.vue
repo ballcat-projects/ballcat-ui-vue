@@ -3,7 +3,7 @@
     :title="title"
     :visible="visible"
     :mask-closable="false"
-    :body-style="{paddingBottom: '8px'}"
+    :body-style="{ paddingBottom: '8px' }"
     :confirm-loading="submitLoading"
     :width="650"
     @ok="handleSubmit"
@@ -34,17 +34,11 @@
           </a-form-item>
 
           <a-form-item label="组织">
-            <sys-organization-tree-select
-              v-decorator="['organizationId']"
-              :organization-tree="organizationTree"
-            />
+            <sys-organization-tree-select v-decorator="['organizationId']" :organization-tree="organizationTree" />
           </a-form-item>
 
           <a-form-item label="状态">
-            <a-radio-group v-decorator="['status', decoratorOptions.status]">
-              <a-radio :value="1">开启</a-radio>
-              <a-radio :value="0">锁定</a-radio>
-            </a-radio-group>
+            <dict-radio-group v-decorator="['status', decoratorOptions.status]" type="button" dict-code="user_status" />
           </a-form-item>
         </a-col>
 
@@ -89,7 +83,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       reqFunctions: {
         create: addObj,
@@ -129,7 +123,7 @@ export default {
   },
   methods: {
     // 密码加密提交
-    submitDataProcess (data) {
+    submitDataProcess(data) {
       data.pass = passEncrypt(data.pass)
       return data
     }
