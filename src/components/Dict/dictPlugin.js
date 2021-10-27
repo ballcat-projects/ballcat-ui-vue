@@ -1,8 +1,10 @@
 // 字典相关组件
 import DictTag from '@/components/Dict/display/DictTag'
+import DictText from '@/components/Dict/display/DictText'
+import DictBadge from '@/components/Dict/display/DictBadge'
+
 import DictRadioGroup from '@/components/Dict/group/DictRadioGroup'
 import DictSelect from '@/components/Dict/group/DictSelect'
-import DictText from '@/components/Dict/display/DictText'
 import DictCheckBoxGroup from '@/components/Dict/group/DictCheckBoxGroup'
 
 export default {
@@ -13,5 +15,6 @@ export default {
     Vue.component('DictSelect', DictSelect)
     Vue.component('DictTag', DictTag)
     Vue.component('DictText', DictText)
+    Vue.component('DictBadge', DictBadge)
   }
 }
