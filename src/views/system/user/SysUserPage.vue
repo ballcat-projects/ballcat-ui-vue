@@ -43,11 +43,7 @@
               </a-col>
               <a-col :md="8" :sm="24">
                 <a-form-item label="状态">
-                  <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
-                    <a-select-option value="">全部</a-select-option>
-                    <a-select-option value="0">关闭</a-select-option>
-                    <a-select-option value="1">运行中</a-select-option>
-                  </a-select>
+                  <dict-select v-model="queryParam.status" allow-clear dict-code="user_status" />
                 </a-form-item>
               </a-col>
               <template v-if="advanced">
@@ -139,7 +135,7 @@
             >
               <!--数据表格-->
               <template #status-slot="text">
-                <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
+                <dict-badge dict-code="user_status" :value="text" />
               </template>
               <template #gender-slot="text">
                 <dict-text dict-code="gender" :value="text" />
@@ -213,17 +209,6 @@ import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
 import SysUserModalForm from '@/views/system/user/SysUserModalForm'
 
-const statusMap = {
-  0: {
-    status: 'default',
-    text: '关闭'
-  },
-  1: {
-    status: 'processing',
-    text: '正常'
-  }
-}
-
 export default {
   name: 'SysUserPage',
   components: {
@@ -231,14 +216,6 @@ export default {
     ScopeModal,
     PasswordModal,
     SysUserModalForm
-  },
-  filters: {
-    statusFilter(type) {
-      return statusMap[type].text
-    },
-    statusTypeFilter(type) {
-      return statusMap[type].status
-    }
   },
   mixins: [TablePageMixin],
   data() {
