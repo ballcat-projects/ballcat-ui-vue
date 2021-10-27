@@ -72,6 +72,57 @@
       </a-col>
     </a-row>
 
+    <a-row :gutter="16">
+      <a-col :xs="12" :sm="24" :md="12">
+        <a-form-item label="徽标颜色" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
+          <a-popover trigger="click" placement="top">
+            <template slot="content">
+              <template v-for="badgeColor in antdBadgeColor">
+                <a :key="badgeColor" @click="presetBadgeColor(badgeColor)">
+                  <a-badge :color="badgeColor" :text="badgeColor" style="margin: 0 0 0 5px" />
+                </a>
+              </template>
+            </template>
+            <a-badge
+              :status="badgeStatus"
+              :color="badgeColorAttribute"
+              text="点我换色"
+              style="margin: 0 0 0 5px"
+            />
+          </a-popover>
+
+          <a-popover trigger="click" placement="right">
+            <template slot="content">
+              <sketch-picker v-model="badgeColorPicker" @input="onBadgeColorPicker" />
+            </template>
+            <a href="javascript:" style="margin-left: 5px"><a-icon :component="colorPicker" /></a>
+          </a-popover>
+
+          <a
+            v-if="badgeColorAttribute"
+            href="javascript:"
+            style="margin-left: 5px; display: inline-block"
+            @click="clearBadgeColor"
+          >
+            <a-icon type="delete" />
+          </a>
+        </a-form-item>
+      </a-col>
+      <a-col :xs="12" :sm="24" :md="12">
+        <a-form-item label="徽标状态" :label-col="rowLabelCol" :wrapper-col="rowWrapperCol">
+          <a-select v-model="badgeStatus">
+            <a-select-option
+              v-for="optionBadgeStatus in antdBadgeStatus"
+              :key="optionBadgeStatus"
+              :value="optionBadgeStatus"
+            >
+              <a-badge :status="optionBadgeStatus" :text="optionBadgeStatus" />
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+      </a-col>
+    </a-row>
+
     <a-form-item v-if="enableI18n" label="国际化">
       <a-input
         v-for="language in supportLanguage"
@@ -153,12 +204,34 @@ export default {
       decoratorOptions: {},
 
       antdTagColor: ['pink', 'red', 'orange', 'green', 'cyan', 'blue', 'purple'],
+      antdBadgeStatus: ['success', 'processing', 'default', 'error', 'warning'],
+      antdBadgeColor: [
+        'pink',
+        'red',
+        'yellow',
+        'orange',
+        'cyan',
+        'green',
+        'blue',
+        'purple',
+        'geekblue',
+        'magenta',
+        'volcano',
+        'gold',
+        'lime'
+      ],
 
       // dict-tag 的颜色
       // 拾色器绑定对象
       tagColorPicker: '',
       // 颜色属性
       tagColorAttribute: '',
+      // dict-badge 的颜色
+      // 拾色器绑定对象
+      badgeColorPicker: '',
+      // 颜色属性
+      badgeColorAttribute: '',
+      badgeStatus: 'default',
 
       // dict-text 的颜色
       textColorPicker: '',
@@ -193,11 +266,20 @@ export default {
     onTagColorPicker(tagColorPicker) {
       this.tagColorAttribute = tagColorPicker.hex
     },
-    onTextColorPicker(textColorPicker) {
-      this.textColorAttribute = textColorPicker.hex
-    },
     clearTagColor() {
       this.tagColorAttribute = ''
+    },
+    presetBadgeColor(badgeColor) {
+      this.badgeColorAttribute = badgeColor
+    },
+    onBadgeColorPicker(badgeColorPicker) {
+      this.badgeColorAttribute = badgeColorPicker.hex
+    },
+    clearBadgeColor() {
+      this.badgeColorAttribute = ''
+    },
+    onTextColorPicker(textColorPicker) {
+      this.textColorAttribute = textColorPicker.hex
     },
     clearTextColor() {
       this.textColorAttribute = ''
@@ -228,6 +310,8 @@ export default {
     submitDataProcess(submitData) {
       submitData.attributes = {
         tagColor: this.tagColorAttribute,
+        badgeColor: this.badgeColorAttribute,
+        badgeStatus: this.badgeStatus,
         textColor: this.textColorAttribute,
         languages: this.languagesAttribute
       }
