@@ -20,6 +20,7 @@
           fixedHeader && 'ant-header-fixedHeader',
           (isSideMenu || isMixMenu) ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
         ]"
+        :style="{top: '48px', zIndex: 16}"
       >
         <multi-tab :class="fixedHeader && 'ballcat-multi-tab-fixed'" />
       </div>
