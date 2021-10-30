@@ -39,7 +39,7 @@ export default {
     operation: 'Operation',
     createTime: 'Create Time',
     updateTime: 'Update Time',
-    remark: 'Remark'
+    remarks: 'Remarks'
   },
 
   message: {

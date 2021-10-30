@@ -38,10 +38,10 @@
         <a-input-number v-decorator="['sort']" style="width: 60%" placeholder="按数值由小到大升序" />
       </a-form-item>
 
-      <a-form-item label="描述信息">
+      <a-form-item label="备注信息">
         <a-textarea
-          v-decorator="['description', decoratorOptions.description]"
-          placeholder="描述信息"
+          v-decorator="['remarks', decoratorOptions.remarks]"
+          placeholder="备注信息"
           rows="3"
           :max-length="512"
         />
@@ -93,7 +93,7 @@ export default {
         name: {
           rules: [{ required: true, message: '请输入组织名称!' }]
         },
-        description: {
+        remarks: {
           rules: [{ max: 512 }]
         }
       }

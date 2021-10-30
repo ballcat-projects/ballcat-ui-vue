@@ -133,7 +133,7 @@ export default {
         },
         {
           title: '备注',
-          dataIndex: 'note',
+          dataIndex: 'remarks',
           sorter: true,
           width: 150,
           ellipsis: true

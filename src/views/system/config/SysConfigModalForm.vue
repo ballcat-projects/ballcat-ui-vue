@@ -27,7 +27,7 @@
       </a-form-item>
 
       <a-form-item label="备注">
-        <a-textarea v-decorator="['description']" rows="3" placeholder="请输入" />
+        <a-textarea v-decorator="['remarks']" rows="3" placeholder="请输入" />
       </a-form-item>
     </a-form>
   </a-modal>

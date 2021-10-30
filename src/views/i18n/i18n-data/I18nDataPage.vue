@@ -154,8 +154,8 @@ export default {
           dataIndex: 'message'
         },
         {
-          title: this.$t('common.remark'),
-          dataIndex: 'remark'
+          title: this.$t('common.remarks'),
+          dataIndex: 'remarks'
         },
         {
           title: this.$t('common.createTime'),

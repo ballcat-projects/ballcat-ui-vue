@@ -126,7 +126,7 @@ export default {
         },
         {
           title: '备注信息',
-          dataIndex: 'description',
+          dataIndex: 'remarks',
           width: 200,
           ellipsis: true
         },

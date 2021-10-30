@@ -71,7 +71,7 @@
 
       <a-form-item label="备注">
         <a-textarea
-          v-decorator="['note']"
+          v-decorator="['remarks']"
           :auto-size="{ minRows: 4, maxRows: 8 }"
           placeholder="备注信息"
         />

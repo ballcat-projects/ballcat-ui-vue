@@ -30,8 +30,8 @@
       <a-form-item :label="$t('i18n.i18nData.message')">
         <a-input v-decorator="['message', decoratorOptions.message]" :placeholder="$t('i18n.i18nData.message.tips')" />
       </a-form-item>
-      <a-form-item :label="$t('common.remark')">
-        <a-textarea v-decorator="['remark']" :placeholder="$t('message.pleaseEnter')" />
+      <a-form-item :label="$t('common.remarks')">
+        <a-textarea v-decorator="['remarks']" :placeholder="$t('message.pleaseEnter')" />
       </a-form-item>
     </a-form>
   </a-modal>

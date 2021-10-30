@@ -39,7 +39,7 @@ export default {
     operation: '操作',
     createTime: '创建时间',
     updateTime: '更新时间',
-    remark: '备注'
+    remarks: '备注'
   },
 
   message: {

@@ -105,8 +105,8 @@ export default {
           dataIndex: 'sort'
         },
         {
-          title: '描述信息',
-          dataIndex: 'description',
+          title: '备注信息',
+          dataIndex: 'remarks',
           width: 200,
           ellipsis: true
         },

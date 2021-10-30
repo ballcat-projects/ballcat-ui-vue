@@ -171,7 +171,7 @@
       <a-form-item label="备注信息">
         <a-textarea
           v-decorator="['remarks']"
-          placeholder="最多输入 50 个字符"
+          placeholder="最多输入 200 个字符"
           :auto-size="{ minRows: 3, maxRows: 6 }"
         />
       </a-form-item>

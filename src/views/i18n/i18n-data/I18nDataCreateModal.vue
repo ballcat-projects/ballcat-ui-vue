@@ -26,8 +26,8 @@
         <language-text ref="languageText" />
       </a-form-item>
 
-      <a-form-item :label="$t('common.remark')">
-        <a-textarea v-decorator="['remark']" :placeholder="$t('message.pleaseEnter')" />
+      <a-form-item :label="$t('common.remarks')">
+        <a-textarea v-decorator="['remarks']" :placeholder="$t('message.pleaseEnter')" />
       </a-form-item>
 
     </a-form>
