@@ -34,11 +34,11 @@
           </a-form-item>
 
           <a-form-item label="组织">
-            <sys-organization-tree-select v-decorator="['organizationId']" :organization-tree="organizationTree" />
+            <sys-organization-tree-select v-decorator="['organizationId', decoratorOptions.organizationId]" :organization-tree="organizationTree" />
           </a-form-item>
 
           <a-form-item label="状态">
-            <dict-radio-group v-decorator="['status', decoratorOptions.status]" type="button" dict-code="user_status" />
+            <dict-radio-group v-decorator="['status', decoratorOptions.status]" dict-code="user_status" />
           </a-form-item>
         </a-col>
 
@@ -117,6 +117,9 @@ export default {
         },
         roleCodes: {
           initialValue: []
+        },
+        organizationId: {
+          initialValue: null
         }
       }
     }
