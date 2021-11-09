@@ -6,9 +6,10 @@ import { enableI18n } from '@/config/projectConfig'
 
 function covertToPage(currentRoute) {
   return {
-    fullPath: currentRoute.fullPath,
+    path: currentRoute.path,
     name: currentRoute.name,
     params: currentRoute.params,
+    query: currentRoute.query,
     title: currentRoute.meta.title,
     componentName: currentRoute.meta.componentName,
     isExceptionPage: Boolean(currentRoute.meta.exceptionStatus)
@@ -19,7 +20,7 @@ export default {
   name: 'MultiTab',
   data() {
     return {
-      fullPathList: [],
+      pathList: [],
       pages: [],
       activeKey: '',
       newTabIndex: 0
@@ -30,17 +31,18 @@ export default {
   },
   watch: {
     $route: function(currentRoute) {
+      console.log(currentRoute)
       const newPage = covertToPage(currentRoute)
-
+      console.log(newPage)
       // 删除异常页面
       let exceptionPageIndex = this.pages.findIndex(item => item.isExceptionPage)
       if (exceptionPageIndex !== -1) {
         this.pages.splice(exceptionPageIndex, 1)
       }
 
-      const index = this.pages.findIndex(page => page.fullPath === newPage.fullPath)
+      const index = this.pages.findIndex(page => page.path === newPage.path)
       if (index < 0) {
-        this.fullPathList.push(newPage.fullPath)
+        this.pathList.push(newPage.path)
         this.pages.push(newPage)
       } else {
         const oldPage = this.pages[index]
@@ -50,7 +52,7 @@ export default {
           }
         }
       }
-      this.activeKey = newPage.fullPath
+      this.activeKey = newPage.path
       this.componentNameList()
     },
     activeKey: function(newPathKey) {
@@ -58,10 +60,10 @@ export default {
       if (newPathKey === '/') {
         this.$router.push({ name: '/' })
       }
-      let index = this.pages.findIndex(page => page.fullPath === newPathKey)
+      let index = this.pages.findIndex(page => page.path === newPathKey)
       if (index >= 0) {
         const page = this.pages[index]
-        this.$router.push({ name: page.name, params: page.params })
+        this.$router.push({ name: page.name, params: page.params, query: page.query })
       }
     }
   },
@@ -88,7 +90,7 @@ export default {
 
     const page = covertToPage(this.$route)
     this.pages.push(page)
-    this.fullPathList.push(page.fullPath)
+    this.pathList.push(page.path)
     this.componentNameList()
     this.selectedLastPath()
   },
@@ -100,7 +102,7 @@ export default {
     switchTitle() {
       const routes = this.$router.getRoutes()
       this.pages = this.pages.map(page => {
-        const meta = routes.find(r => r.path === page.fullPath).meta
+        const meta = routes.find(r => r.path === page.path).meta
         page.title = meta.title
         return page
       })
@@ -109,31 +111,31 @@ export default {
       this[action](targetKey)
     },
     remove(targetKey) {
-      this.pages = this.pages.filter(page => page.fullPath !== targetKey)
-      this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
+      this.pages = this.pages.filter(page => page.path !== targetKey)
+      this.pathList = this.pathList.filter(path => path !== targetKey)
       this.componentNameList()
       // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
-      if (!this.fullPathList.includes(this.activeKey)) {
+      if (!this.pathList.includes(this.activeKey)) {
         this.selectedLastPath()
       }
     },
     selectedLastPath() {
-      this.activeKey = this.fullPathList[this.fullPathList.length - 1]
+      this.activeKey = this.pathList[this.pathList.length - 1]
     },
 
     // content menu
     closeThat(key) {
       // 判断是否为最后一个标签页，如果是最后一个，则无法被关闭
-      if (this.fullPathList.length > 1) {
+      if (this.pathList.length > 1) {
         this.remove(key)
       } else {
         this.$message.info('这是最后一个标签了, 无法被关闭')
       }
     },
     closeLeft(key) {
-      const currentIndex = this.fullPathList.indexOf(key)
+      const currentIndex = this.pathList.indexOf(key)
       if (currentIndex > 0) {
-        this.fullPathList.forEach((item, index) => {
+        this.pathList.forEach((item, index) => {
           if (index < currentIndex) {
             this.remove(item)
           }
@@ -143,9 +145,9 @@ export default {
       }
     },
     closeRight(key) {
-      const currentIndex = this.fullPathList.indexOf(key)
-      if (currentIndex < this.fullPathList.length - 1) {
-        this.fullPathList.forEach((item, index) => {
+      const currentIndex = this.pathList.indexOf(key)
+      if (currentIndex < this.pathList.length - 1) {
+        this.pathList.forEach((item, index) => {
           if (index > currentIndex) {
             this.remove(item)
           }
@@ -155,15 +157,15 @@ export default {
       }
     },
     closeOther(key) {
-      const currentIndex = this.fullPathList.indexOf(key)
-      this.fullPathList.forEach((item, index) => {
+      const currentIndex = this.pathList.indexOf(key)
+      this.pathList.forEach((item, index) => {
         if (index !== currentIndex) {
           this.remove(item)
         }
       })
     },
     closeAll(key) {
-      this.fullPathList.forEach((item, index) => {
+      this.pathList.forEach((item, index) => {
         this.remove(item)
       })
     },
@@ -185,7 +187,7 @@ export default {
     } = this
     const panes = pages.map(page => {
       return (
-        <a-tab-pane style={{ height: 0 }} tab={page.title} key={page.fullPath} closable={pages.length > 1}></a-tab-pane>
+        <a-tab-pane style={{ height: 0 }} tab={page.title} key={page.path} closable={pages.length > 1}></a-tab-pane>
       )
     })
 
