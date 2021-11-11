@@ -1,50 +1,41 @@
 <template>
-  <div>
-    <a-drawer
-      v-if="isDrawerMenu"
-      placement="left"
-      :wrap-class-name="`drawer-sider ${navTheme}`"
-      :drawer-style="drawerStyle"
-      :closable="false"
-      :visible="!sidebarCollapsed"
-      :width="208"
-      @close="drawerClose"
-    >
-      <side-menu
-        mode="inline"
-        :menus="menus"
-        :collapsible="false"
-        @menuSelect="menuSelect"
-      />
-    </a-drawer>
-    <side-menu
-      v-if="isSideMenu || isMixMenu"
-      mode="inline"
-      :menus="menus"
-      :collapsed="sidebarCollapsed"
-      :collapsible="true"
-    />
-  </div>
+  <a-drawer
+    v-if="isDrawerMenu"
+    placement="left"
+    :wrap-class-name="`drawer-sider ${navTheme}`"
+    :drawer-style="drawerStyle"
+    :body-style="{ padding: '0px'}"
+    :closable="false"
+    :visible="!sidebarCollapsed"
+    :width="208"
+    @close="drawerClose"
+  >
+    <sider :menus="menus" />
+  </a-drawer>
+  <sider v-else-if="isSideMenu || isMixMenu" :menus="menus" />
 </template>
 
 <script>
-import SideMenu from '@/components/Menu/SideMenu'
-import { mapGetters, mapMutations, mapState } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { APP_MUTATIONS } from '@/store/mutation-types'
-import { mixin } from '@/utils/mixin'
+import { mixinDevice } from '@/utils/mixin'
+import Sider from '@/components/SideBar/Sider'
 
 export default {
   name: 'SideBar',
-  components: { SideMenu },
-  mixins: [mixin],
+  components: {Sider},
+  mixins: [mixinDevice],
   props: {
     menus: {
       type: Array,
       required: true
     }
   },
+  updated () {
+    console.log(this.isSideMenu, this.isMixMenu)
+  },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isDrawerMenu', 'isSideMenu', 'isMixMenu']),
+    ...mapGetters(['sidebarCollapsed', 'navTheme', 'isDrawerMenu', 'isSideMenu', 'isMixMenu']),
     drawerStyle () {
       if(this.navTheme ==='dark'){
         return {

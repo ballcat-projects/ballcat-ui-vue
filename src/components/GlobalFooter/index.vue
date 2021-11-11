@@ -11,7 +11,7 @@
     </div>
     <div class="copyright">
       Copyright
-      <a-icon type="copyright" /> 2019 <span>云吸🐱 出品</span>
+      <a-icon type="copyright" /> 2021 <span>🐱 Ballcat 团队出品</span>
     </div>
   </div>
 </template>

@@ -1,42 +1,21 @@
 <template>
-  <!-- eslint-disable vue/no-mutating-props-->
-  <a-layout-sider
-    :class="['sider',
-             isDesktop ? null : 'shadow',
-             navTheme === 'light' ? 'sider-light': null,
-             fixSiderbar ? 'sider-fixed' : null ]"
-    width="208px"
+  <!-- eslint-enable-->
+  <s-menu
     :collapsed="sidebarCollapsed"
-    :collapsible="true"
-    :style="style"
+    :menu="currentMenus"
     :theme="navTheme"
-    :trigger="null"
-  >
-    <!-- eslint-enable-->
-    <project-logo />
-    <div style="flex: 1; overflow-y: auto; overflow-x: hidden;">
-      <s-menu
-        :collapsed="sidebarCollapsed"
-        :menu="currentMenus"
-        :theme="navTheme"
-        :mode="mode"
-        @select="onSelect"
-      />
-    </div>
-  </a-layout-sider>
-
+    :mode="mode"
+    @select="onSelect"
+  />
 </template>
 
 <script>
 import SMenu from './index'
-import { mixin, mixinDevice } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
-import ProjectLogo from '@/components/ProjectLogo'
 
 export default {
   name: 'SideMenu',
-  components: { ProjectLogo, SMenu },
-  mixins: [mixin, mixinDevice],
+  components: { SMenu },
   props: {
     mode: {
       type: String,
@@ -54,7 +33,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed']),
+    ...mapGetters(['sidebarCollapsed', 'navTheme', 'layout']),
     style () {
       const width = this.sidebarCollapsed ? '48px' : '208px'
       return {
@@ -86,6 +65,11 @@ export default {
     this.firstToUpper(this.$route)
   },
   methods: {
+    /**
+     * 混合布局的时候，需要根据顶部菜单自动切割当前菜单
+     * @param path
+     * @returns {*[]}
+     */
     firstToUpper (path) {
       if (this.isMobile || this.layout === 'side') {
         return this.currentMenus = this.menus
@@ -108,5 +92,5 @@ export default {
 </script>
 
 <style lang="less">
-@import url('./SideMenu');
+@import url('SideMenu');
 </style>

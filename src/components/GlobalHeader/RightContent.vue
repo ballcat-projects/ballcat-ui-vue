@@ -24,9 +24,9 @@
 
 <script>
 import Screenfull from '@/components/Screenfull'
-import NoticeIcon from '@/components/GlobalHeader/tool/NoticeIcon'
-import UserAccountDropdown from '@/components/GlobalHeader/tool/AvatarDropdown'
-import LangSelect from '@/components/GlobalHeader/tool/LangSelect'
+import NoticeIcon from '@/components/GlobalHeader/NoticeIcon'
+import UserAccountDropdown from '@/components/GlobalHeader/AvatarDropdown'
+import LangSelect from '@/components/GlobalHeader/LangSelect'
 import SettingDrawer from '@/components/SettingDrawer/SettingDrawer'
 import projectConfig from '@/config/projectConfig'
 

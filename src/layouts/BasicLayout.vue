@@ -47,15 +47,13 @@
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
+import { APP_MUTATIONS } from '@/store/mutation-types'
 import { mixin, mixinDevice } from '@/utils/mixin'
-
+import projectConfig from '@/config/projectConfig'
+import SideBar from '@/components/SideBar'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
-import SideBar from '@/components/SideBar'
-import projectConfig from '@/config/projectConfig'
-
-import { APP_MUTATIONS } from '@/store/mutation-types'
 
 export default {
   name: 'BasicLayout',

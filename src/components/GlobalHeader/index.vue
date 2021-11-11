@@ -9,20 +9,20 @@
           ]"
         >
           <div v-if="mode === 'side'" class="header">
-            <global-header-tool-left />
-            <global-header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
+            <header-left-content />
+            <header-breadcrumb v-if="!isMobile" style="padding-left: 12px" />
             <div style="flex: 1 1 0" />
-            <global-header-tool-right />
+            <header-right-content />
           </div>
           <div v-else-if="mode === 'mix'" class="header">
-            <global-header-tool-left />
+            <header-left-content />
             <top-menu v-if="device !== 'mobile'" :menus="menus" />
-            <global-header-tool-right />
+            <header-right-content />
           </div>
           <div v-else :class="['top-nav-header-index', theme]">
             <div class="header-index-wide">
               <template v-if="isMobile">
-                <global-header-tool-left />
+                <header-left-content />
                 <div style="flex: 1 1 0" />
               </template>
               <template v-else>
@@ -36,7 +36,7 @@
                   style="flex: 1 1 0"
                 />
               </template>
-              <global-header-tool-right />
+              <header-right-content />
             </div>
           </div>
         </div>
@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import SMenu from '../Menu/'
-import GlobalHeaderBreadcrumb from '@/components/GlobalHeader/GlobalHeaderBreadcrumb'
-import GlobalHeaderToolLeft from '@/components/GlobalHeader/GlobalHeaderToolLeft'
-import GlobalHeaderToolRight from '@/components/GlobalHeader/GlobalHeaderToolRight'
-import TopMenu from '@/components/TopMenu/index'
+import SMenu from '@/components/Menu'
+import HeaderBreadcrumb from '@/components/Breadcrumb/Breadcrumb'
+import HeaderLeftContent from '@/components/GlobalHeader/LeftContent'
+import HeaderRightContent from '@/components/GlobalHeader/RightContent'
+import TopMenu from '@/components/Menu/TopMenu'
 import ProjectLogo from '@/components/ProjectLogo'
 import { mixin, mixinDevice } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
@@ -60,11 +60,11 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'GlobalHeader',
   components: {
+    HeaderBreadcrumb,
+    HeaderLeftContent,
+    HeaderRightContent,
     ProjectLogo,
-    GlobalHeaderToolRight,
-    GlobalHeaderToolLeft,
     SMenu,
-    GlobalHeaderBreadcrumb,
     TopMenu
   },
   mixins: [mixin, mixinDevice],
@@ -91,7 +91,7 @@ export default {
 </script>
 
 <style lang="less">
-@import url('./GlobalHeader');
+@import url('index');
 
 .showHeader-enter-active {
   transition: all 0.25s ease;

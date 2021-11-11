@@ -1,6 +1,6 @@
 // import Vue from 'vue'
 import { deviceEnquire, DEVICE_TYPE } from '@/utils/device'
-import { mapMutations, mapState, mapGetters } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import { APP_MUTATIONS } from '@/store/mutation-types'
 
 // const mixinsComputed = Vue.config.optionMergeStrategies.computed
