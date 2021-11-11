@@ -2,7 +2,7 @@
 import { APP_MUTATIONS } from '@/store/mutation-types'
 import { mapGetters } from 'vuex'
 import { enableI18n } from '@/config/projectConfig'
-import { expend } from '@/core/icons'
+import { expend, compress } from '@/core/icons'
 
 function covertToPage(currentRoute) {
   return {
@@ -18,13 +18,15 @@ function covertToPage(currentRoute) {
 
 export default {
   name: 'MultiTab',
-  components: { expend },
+  components: { expend, compress },
   data() {
     return {
       pathList: [],
       pages: [],
       activeKey: '',
-      newTabIndex: 0
+      newTabIndex: 0,
+      // 全屏标识
+      fullscreen: false
     }
   },
   computed: {
@@ -164,6 +166,10 @@ export default {
     },
     refreshContent() {
       this.$bus.$emit('refresh-content')
+    },
+    doit(){
+      this.fullscreen = !this.fullscreen
+      this.$bus.$emit('content-full-screen')
     }
   },
   render() {
@@ -219,6 +225,9 @@ export default {
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
+            <span class="multi-tab-tool" {...{ on: { click: () => this.doit() } }}>
+                <a-icon component={this.fullscreen ? compress: expend}/>
+            </span>
           </div>
         </a-tabs>
       </div>

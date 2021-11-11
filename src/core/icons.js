@@ -8,5 +8,7 @@
  */
 import i18nIcon from '@/assets/icons/i18n.svg?inline' // path to your '*.svg?inline' file.
 import colorPicker from '@/assets/icons/colorPicker.svg?inline'
+import compress from '@/assets/icons/compress.svg?inline'
+import expend from '@/assets/icons/expend.svg?inline'
 
-export { i18nIcon, colorPicker }
+export { i18nIcon, colorPicker, compress, expend }

@@ -83,13 +83,31 @@ export default {
       default: 'dark'
     }
   },
+  data() {
+    return {
+      hidden: false,
+    }
+  },
   computed: {
     ...mapGetters(['sidebarCollapsed', 'isSideMenu','isMixMenu']),
     headerStyle() {
-      return {
+      let style = {
         padding: '0px',
         zIndex: 19
       }
+      this.hidden && (style.display = 'none')
+      return style
+    }
+  },
+  created () {
+    this.$bus.$on('content-full-screen', this.switchShowHidden)
+  },
+  destroyed () {
+    this.$bus.$off('content-full-screen', this.switchShowHidden)
+  },
+  methods: {
+    switchShowHidden(){
+      this.hidden = !this.hidden
     }
   }
 }

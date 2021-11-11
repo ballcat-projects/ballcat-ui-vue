@@ -7,7 +7,7 @@
     width="208px"
     :collapsed="sidebarCollapsed"
     :collapsible="true"
-    :style="style"
+    :style="layoutSiderStyle"
     :theme="navTheme"
     :trigger="null"
   >
@@ -48,7 +48,7 @@ export default {
       'fixSiderbar',
       'navTheme'
     ]),
-    style () {
+    layoutSiderStyle () {
       const width = this.sidebarCollapsed ? '48px' : '208px'
       return {
         overflow: 'hidden',
