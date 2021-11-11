@@ -1,6 +1,6 @@
 <script>
 import { APP_MUTATIONS } from '@/store/mutation-types'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { enableI18n } from '@/config/projectConfig'
 import { expend, compress } from '@/core/icons'
 
@@ -24,13 +24,11 @@ export default {
       pathList: [],
       pages: [],
       activeKey: '',
-      newTabIndex: 0,
-      // 全屏标识
-      fullscreen: false
+      newTabIndex: 0
     }
   },
   computed: {
-    ...mapGetters(['lang', 'userRouters'])
+    ...mapGetters(['lang', 'userRouters', 'contentFullScreen'])
   },
   watch: {
     $route: function(currentRoute) {
@@ -84,6 +82,7 @@ export default {
     this.$bus.$off('switch-language', this.switchTitle)
   },
   methods: {
+    ...mapMutations([APP_MUTATIONS.TOGGLE_CONTENT_FULL_SCREEN]),
     switchTitle() {
       const routes = this.$router.getRoutes()
       this.pages = this.pages.map(page => {
@@ -167,9 +166,8 @@ export default {
     refreshContent() {
       this.$bus.$emit('refresh-content')
     },
-    doit(){
-      this.fullscreen = !this.fullscreen
-      this.$bus.$emit('content-full-screen')
+    switchContentFullScreen(){
+      this[APP_MUTATIONS.TOGGLE_CONTENT_FULL_SCREEN]()
     }
   },
   render() {
@@ -225,8 +223,8 @@ export default {
                 </a-menu-item>
               </a-menu>
             </a-dropdown>
-            <span class="multi-tab-tool" {...{ on: { click: () => this.doit() } }}>
-                <a-icon component={this.fullscreen ? compress: expend}/>
+            <span class="multi-tab-tool" {...{ on: { click: () => this.switchContentFullScreen() } }}>
+                <a-icon component={this.contentFullScreen ? compress: expend}/>
             </span>
           </div>
         </a-tabs>

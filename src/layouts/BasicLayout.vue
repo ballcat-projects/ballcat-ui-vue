@@ -14,14 +14,7 @@
       <!--      <announcement-ribbon />-->
 
       <!-- 多页签 -->
-      <div
-        v-if="multiTab"
-        :class="[
-          fixedHeader && 'ant-header-fixedHeader',
-          (isSideMenu || isMixMenu) ? (sidebarCollapsed ? 'ant-header-side-closed': 'ant-header-side-opened') : null,
-        ]"
-        :style="{top: '48px', zIndex: 16}"
-      >
+      <div v-if="multiTab" :style="multiTabWrapperStyle">
         <multi-tab :class="fixedHeader && 'ballcat-multi-tab-fixed'" />
       </div>
       <!-- 固定头部时进行 占位使用 -->
@@ -69,7 +62,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isSideMenu', 'isMixMenu', 'userRouters']),
+    ...mapGetters(['sidebarCollapsed', 'contentFullScreen', 'isSideMenu', 'isMixMenu', 'userRouters']),
     contentPaddingLeft () {
       if (!this.fixSiderbar || !this.isSideMenu) {
         if (this.isMixMenu) {
@@ -78,6 +71,26 @@ export default {
         return '0'
       }
       return this.sidebarCollapsed ? '48px' : '208px'
+    },
+    multiTabWrapperStyle () {
+      let style = {
+        top: '48px',
+        width: '100%',
+        zIndex: 16,
+        right: 0,
+        transition: 'width 0.3s',
+      }
+      // 固定头部时，宽度需要减掉侧边菜单的宽度
+      if(this.fixedHeader){
+        style.position = 'fixed'
+        style.width = `calc(100% - ${this.contentPaddingLeft})`
+      }
+      // 当内容全屏时，不需考虑侧标栏，直接 100% 展开，且没有 header 占位，top 修改为 0
+      if(this.contentFullScreen){
+        style.top = '0px'
+        style.width = '100%'
+      }
+      return style
     },
     menus () {
       return this.userRouters.find(item => item.path === '/').children

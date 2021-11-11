@@ -40,9 +40,9 @@
           </div>
         </div>
       </div>
-      <!-- 固定头部时进行 占位使用 -->
-      <div v-if="fixedHeader" style="visibility:hidden;" class="header" />
     </transition>
+    <!-- 固定头部时进行 占位使用 -->
+    <div v-if="fixedHeader" style="visibility:hidden;" class="header" />
   </a-layout-header>
 </template>
 
@@ -83,31 +83,15 @@ export default {
       default: 'dark'
     }
   },
-  data() {
-    return {
-      hidden: false,
-    }
-  },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'isSideMenu','isMixMenu']),
+    ...mapGetters(['sidebarCollapsed', 'contentFullScreen', 'isSideMenu','isMixMenu']),
     headerStyle() {
       let style = {
         padding: '0px',
         zIndex: 19
       }
-      this.hidden && (style.display = 'none')
+      this.contentFullScreen && (style.display = 'none')
       return style
-    }
-  },
-  created () {
-    this.$bus.$on('content-full-screen', this.switchShowHidden)
-  },
-  destroyed () {
-    this.$bus.$off('content-full-screen', this.switchShowHidden)
-  },
-  methods: {
-    switchShowHidden(){
-      this.hidden = !this.hidden
     }
   }
 }

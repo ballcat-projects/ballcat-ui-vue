@@ -17,6 +17,8 @@ const app = {
     navTheme: '',
     layout: 'side',
     contentWidth: 'Fluid',
+    // 内容全屏
+    contentFullScreen: false,
     fixedHeader: false,
     fixSiderbar: false,
     primaryColor: null,
@@ -46,6 +48,7 @@ const app = {
     isSideMenu: state => state.sidebarType === SIDEBAR_TYPE.SIDE_MENU,
     isMixMenu:state => state.sidebarType === SIDEBAR_TYPE.MIX_MENU,
     sidebarCollapsed: state => state.sidebarCollapsed,
+    contentFullScreen: state => state.contentFullScreen,
     keepAliveList:state => state.keepAliveList
   },
   mutations: {
@@ -132,7 +135,11 @@ const app = {
     [APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]: (state, sidebarCollapsed) => {
       state.sidebarCollapsed = sidebarCollapsed
     },
-    // 多页签
+    // 是否内容全屏
+    [APP_MUTATIONS.TOGGLE_CONTENT_FULL_SCREEN]: (state) => {
+      state.contentFullScreen = !state.contentFullScreen
+    },
+    // 多页签 keepAlive 的组件列表
     [APP_MUTATIONS.TOGGLE_SET_KEEPALIVE]:(state,keepAliveList)=>{
       state.keepAliveList=keepAliveList
     }

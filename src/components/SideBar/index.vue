@@ -35,13 +35,8 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      hidden: false,
-    }
-  },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'navTheme', 'isDrawerMenu', 'isSideMenu', 'isMixMenu']),
+    ...mapGetters(['sidebarCollapsed', 'contentFullScreen','navTheme', 'isDrawerMenu', 'isSideMenu', 'isMixMenu']),
     drawerStyle () {
       if(this.navTheme ==='dark'){
         return {
@@ -62,14 +57,8 @@ export default {
       }
     },
     sideMenuWrapperStyle () {
-      return this.hidden ? { display : 'none'} : {}
+      return this.contentFullScreen ? { display : 'none'} : {}
     }
-  },
-  created () {
-    this.$bus.$on('content-full-screen', this.switchShowHidden)
-  },
-  destroyed () {
-    this.$bus.$off('content-full-screen', this.switchShowHidden)
   },
   methods: {
     ...mapMutations([APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED]),
@@ -81,9 +70,6 @@ export default {
     drawerClose () {
       this[APP_MUTATIONS.TOGGLE_SIDE_BAR_COLLAPSED](true)
     },
-    switchShowHidden(){
-      this.hidden = !this.hidden
-    }
   }
 }
 </script>
