@@ -3,7 +3,8 @@
     <span class="ballcat-global-header-tool-action" @click="toggle">
       <a-icon :type="collapsedButtonIconType" style="transform: scale(1.15);" />
     </span>
-    <span class="ballcat-global-header-tool-action" @click="refreshContent">
+    <!-- 关闭多页签时显示 -->
+    <span v-if="!multiTab" class="ballcat-global-header-tool-action" @click="refreshContent">
       <a-icon type="reload" />
     </span>
   </div>
@@ -16,7 +17,7 @@ import { APP_MUTATIONS } from '@/store/mutation-types'
 export default {
   name: 'GlobalHeaderToolLeft',
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'device']),
+    ...mapGetters(['sidebarCollapsed', 'device', 'multiTab']),
     collapsedButtonIconType() {
       if (this.sidebarCollapsed) {
         return 'menu-unfold'

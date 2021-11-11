@@ -1,8 +1,8 @@
 <script>
-import events from './events'
 import { APP_MUTATIONS } from '@/store/mutation-types'
 import { mapGetters } from 'vuex'
 import { enableI18n } from '@/config/projectConfig'
+import { expend } from '@/core/icons'
 
 function covertToPage(currentRoute) {
   return {
@@ -18,6 +18,7 @@ function covertToPage(currentRoute) {
 
 export default {
   name: 'MultiTab',
+  components: { expend },
   data() {
     return {
       pathList: [],
@@ -31,9 +32,7 @@ export default {
   },
   watch: {
     $route: function(currentRoute) {
-      console.log(currentRoute)
       const newPage = covertToPage(currentRoute)
-      console.log(newPage)
       // 删除异常页面
       let exceptionPageIndex = this.pages.findIndex(item => item.isExceptionPage)
       if (exceptionPageIndex !== -1) {
@@ -72,22 +71,6 @@ export default {
     if (enableI18n) {
       this.$bus.$on('switch-language', this.switchTitle)
     }
-    // bind event
-    events
-      .$on('open', val => {
-        if (!val) {
-          throw new Error(`multi-tab: open tab ${val} err`)
-        }
-        this.activeKey = val
-      })
-      .$on('close', val => {
-        if (!val) {
-          this.closeThat(this.activeKey)
-          return
-        }
-        this.closeThat(val)
-      })
-
     const page = covertToPage(this.$route)
     this.pages.push(page)
     this.pathList.push(page.path)
@@ -178,6 +161,9 @@ export default {
         componentList.push(page.componentName)
       })
       this.$store.commit(APP_MUTATIONS.TOGGLE_SET_KEEPALIVE, [...componentList])
+    },
+    refreshContent() {
+      this.$bus.$emit('refresh-content')
     }
   },
   render() {
@@ -201,34 +187,39 @@ export default {
           {...{ on: { edit: onEdit } }}
         >
           {panes}
-          <a-dropdown slot="tabBarExtraContent" class="multi-tab-drop">
-            <div>
-              <a-icon type="down" />
-            </div>
-            <a-menu
-              slot="overlay"
-              {...{
-                on: {
-                  click: ({ key }) => {
-                    this.closeMenuClick(key)
+          <div slot="tabBarExtraContent" >
+            <span class="multi-tab-tool" {...{ on: { click: () => this.refreshContent() } }}>
+                <a-icon type="reload" style={{ fontSize: '12px' }}/>
+            </span>
+            <a-dropdown class="multi-tab-tool">
+              <span>
+                <a-icon type="down"/>
+              </span>
+              <a-menu
+                slot="overlay"
+                {...{
+                  on: {
+                    click: ({ key }) => {
+                      this.closeMenuClick(key)
+                    }
                   }
-                }
-              }}
-            >
-              <a-menu-item key="closeLeft">
-                <a-icon type="arrow-left" />
-                关闭左侧
-              </a-menu-item>
-              <a-menu-item key="closeRight">
-                <a-icon type="arrow-right" />
-                关闭右侧
-              </a-menu-item>
-              <a-menu-item key="closeOther">
-                <a-icon type="close" />
-                关闭其他
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+                }}
+              >
+                <a-menu-item key="closeLeft">
+                  <a-icon type="arrow-left" />
+                  关闭左侧
+                </a-menu-item>
+                <a-menu-item key="closeRight">
+                  <a-icon type="arrow-right" />
+                  关闭右侧
+                </a-menu-item>
+                <a-menu-item key="closeOther">
+                  <a-icon type="close"/>
+                  关闭其他
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </div>
         </a-tabs>
       </div>
     )
