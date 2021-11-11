@@ -5,7 +5,7 @@
 
     <a-layout
       :class="[layout, `content-width-${contentWidth}`]"
-      :style="{ paddingLeft: contentPaddingLeft, minHeight: '100vh' }"
+      :style="{ position: 'relative' }"
     >
       <!-- layout header -->
       <global-header :mode="layout" :menus="menus" :theme="navTheme" />
@@ -111,7 +111,6 @@ export default {
  * You can easily play with the page transition by editing
  * these styles.
  */
-
 .page-transition-enter {
   opacity: 0;
 }

@@ -12,7 +12,11 @@
   >
     <sider :menus="menus" />
   </a-drawer>
-  <sider v-else-if="isSideMenu || isMixMenu" :menus="menus" />
+  <div v-else-if="isSideMenu || isMixMenu">
+    <!-- 用来占位用的 -->
+    <div :style="menuFixedPositionStyle" />
+    <sider :menus="menus" />
+  </div>
 </template>
 
 <script>
@@ -31,9 +35,6 @@ export default {
       required: true
     }
   },
-  updated () {
-    console.log(this.isSideMenu, this.isMixMenu)
-  },
   computed: {
     ...mapGetters(['sidebarCollapsed', 'navTheme', 'isDrawerMenu', 'isSideMenu', 'isMixMenu']),
     drawerStyle () {
@@ -43,6 +44,17 @@ export default {
         }
       }
       return {}
+    },
+    menuFixedPositionStyle () {
+      const width = this.sidebarCollapsed? '48px': '208px'
+      return {
+        width: `${width}`,
+        overflow: "hidden",
+        flex: `0 0 ${width}`,
+        maxWidth: `${width}`,
+        minWidth: `${width}`,
+        transition: "background-color 0.3s ease 0s, min-width 0.3s ease 0s, max-width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) 0s"
+      }
     }
   },
   methods: {

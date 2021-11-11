@@ -14,6 +14,10 @@ body {
   }
 }
 
+.ant-layout{
+  min-height: 100vh !important;
+}
+
 .layout.ant-layout {
   height: auto;
   overflow-x: hidden;
@@ -36,84 +40,12 @@ body {
     }
   }
 
-  &.mobile {
-    .side {
-      .ant-header-fixedHeader {
-        &.ant-header-side-opened,
-        &.ant-header-side-closed {
-          width: 100%;
-        }
-      }
-    }
+  .ant-layout-sider{
+    transition: all 0.3s;
   }
 
   &.ant-layout-has-sider {
     flex-direction: row;
-  }
-
-  .top {
-    .ant-header-fixedHeader {
-      position: fixed;
-      top: 0;
-      right: 0;
-      z-index: 9;
-      width: 100%;
-      transition: width 0.2s;
-
-      &.ant-header-side-opened {
-        width: 100%;
-      }
-
-      &.ant-header-side-closed {
-        width: 100%;
-      }
-    }
-    /* 必须为 top  才能启用流式布局 */
-    &.content-width-Fluid {
-      .header-index-wide {
-        max-width: unset;
-      }
-      .page-header-index-wide {
-        max-width: unset;
-      }
-    }
-  }
-
-  .side {
-    .ant-header-fixedHeader {
-      position: fixed;
-      top: 0;
-      right: 0;
-      z-index: 19;
-      width: 100%;
-      transition: width 0.2s;
-
-      &.ant-header-side-opened {
-        width: calc(100% - 208px);
-      }
-
-      &.ant-header-side-closed {
-        width: calc(100% - 48px);
-      }
-    }
-  }
-  .mix {
-    .ant-header-fixedHeader {
-      position: fixed;
-      top: 0;
-      right: 0;
-      z-index: 19;
-      width: 100%;
-      transition: width 0.2s;
-
-      &.ant-header-side-opened {
-        width: calc(100% - 208px);
-      }
-
-      &.ant-header-side-closed {
-        width: calc(100% - 48px);
-      }
-    }
   }
 
   .header {
