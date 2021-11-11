@@ -2,7 +2,10 @@ const path = require('path')
 const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 const projectConfig = require('./src/config/projectConfig')
-const serverAddress = 'http://admin.ballcat.cn/'
+
+// 预览环境的服务端地址，没有启动后端时，可以通过此地址进行前端查看
+// const serverAddress = 'http://admin.ballcat.cn'
+const serverAddress = 'http://ballcat-admin:8080'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
