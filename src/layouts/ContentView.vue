@@ -1,10 +1,12 @@
 <template>
-  <div v-if="isShowRouter">
-    <keep-alive v-if="shouldKeepAlive" :include="keepAliveList">
-      <router-view />
-    </keep-alive>
-    <router-view v-else />
-  </div>
+  <transition name="slide-fade">
+    <div v-if="isShowRouter">
+      <keep-alive v-if="shouldKeepAlive" :include="keepAliveList">
+        <router-view />
+      </keep-alive>
+      <router-view v-else />
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -52,3 +54,9 @@ export default {
   }
 }
 </script>
+<style>
+.slide-fade-leave-active {
+  transition-delay: 1s;
+  -webkit-transition-delay: 1s;
+}
+</style>
