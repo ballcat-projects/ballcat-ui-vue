@@ -65,7 +65,12 @@
             style="margin-top: 2px"
           >
             <div style="display:flex;">
-              <a-button type="primary" style="margin-left:5%" @click="reloadTable">
+              <a-button
+                type="primary"
+                style="margin-left:5%"
+                :loading="loading"
+                @click="reloadTable"
+              >
                 {{ enableI18n? $t('action.query'): '查询' }}
               </a-button>
               <a-button style="margin-left:8px" @click="resetSearchForm">

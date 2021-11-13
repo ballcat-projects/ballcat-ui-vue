@@ -43,7 +43,7 @@
           </a-col>
           <a-col :md="5" :sm="24" class="table-page-search-wrapper">
             <div class="table-page-search-submitButtons">
-              <a-button type="primary" @click="reloadTable">查询</a-button>
+              <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
             </div>
           </a-col>

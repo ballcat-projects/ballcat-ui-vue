@@ -29,7 +29,7 @@
             class="table-page-search-wrapper"
           >
             <div class="table-page-search-submitButtons">
-              <a-button type="primary" @click="reloadTable">查询</a-button>
+              <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
               <!--<a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
