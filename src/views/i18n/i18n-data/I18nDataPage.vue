@@ -49,7 +49,7 @@
       <template #toolbar-action>
         <a-button
           v-has="'i18n:i18n-data:export'"
-          :loading="$refs.table.localLoading"
+          :loading="$refs.table ? $refs.table.localLoading : false"
           style="margin-left: 8px"
           icon="download"
           @click="handleExport()"
