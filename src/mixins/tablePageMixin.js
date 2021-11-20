@@ -63,6 +63,9 @@ export default {
       }
     }
   },
+  beforeCreate() {
+    console.error('[组件过期警告] TableMixin 组件已弃用，将于后续版本删除，请切换使用 ProTable 组件')
+  },
   created () {
     this.initDefaultSort()
     !this.lazyLoad && this.reloadTable()
