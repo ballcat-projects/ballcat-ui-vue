@@ -24,7 +24,9 @@
           <a-col :md="8" :sm="24">
             <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
               <a-space>
-                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">
+                  查询
+                </a-button>
                 <a-button @click="searchFormState.resetSearchForm">重置</a-button>
               </a-space>
             </a-form-item>
@@ -39,7 +41,8 @@
           type="primary"
           icon="plus"
           @click="handleAdd()"
-        >新建</a-button>
+        >新建
+        </a-button>
       </template>
 
       <!-- 表格展示相关插槽 -->
@@ -77,6 +80,7 @@ import RoleModalForm from './SysRoleModalForm'
 import RoleGrantDrawer from './SysRoleGrantDrawer'
 import RoleUserModal from '@/views/system/role/SysRoleUserModal'
 import { getTree } from '@/api/system/organization'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'SysRolePage',
@@ -86,7 +90,7 @@ export default {
     RoleGrantDrawer,
     RoleModalForm
   },
-  data() {
+  data () {
     return {
       rowKey: 'id',
       tableRequest: getPage,
@@ -150,39 +154,33 @@ export default {
   },
   methods: {
     // 刷新表格
-    reloadPageTable(withFirstPage = true) {
+    reloadPageTable (withFirstPage = true) {
       this.$refs.table.reloadTable(withFirstPage)
     },
     // 新建角色
-    handleAdd() {
+    handleAdd () {
       this.$refs.formModal.add({ title: '新建角色' })
     },
     // 编辑角色
-    handleEdit(record) {
+    handleEdit (record) {
       this.$refs.formModal.update(record, { title: '编辑角色' })
     },
     // 对角色授权
-    handleGrant(record) {
+    handleGrant (record) {
       this.$refs.roleGrantDrawer.showDrawer(record)
     },
     // 为角色做用户绑定
-    handleBind(record) {
+    handleBind (record) {
       this.$refs.roleUserModal.show(record)
     },
     // 删除
     handleDel (record) {
-      delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
-    },
+    }
   }
 }
 </script>

@@ -1,4 +1,6 @@
 import pick from 'lodash.pick'
+import { doRequest } from '@/utils/request'
+import { delObj } from '@/api/system/role'
 
 // 表单行为类型，标识当前表单是用来新建的还是更新的
 const FORM_ACTION = {
@@ -127,21 +129,17 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           this.submitLoading = true
-          reqFunction(this.submitDataProcess(values))
-            .then(res => {
-              if (res.code === 200) {
-                this.$message.success(res.message)
-                this.submitSuccess(res)
-              } else {
-                this.submitError(res)
-              }
-            })
-            .catch(error => {
-              this.$message.error(error.response.data.message)
-            })
-            .finally(() => {
+          doRequest(reqFunction(this.submitDataProcess(values)), {
+            onSuccess: (res) => {
+              this.submitSuccess(res)
+            },
+            onFail: (res) => {
+              this.submitError(res)
+            },
+            onFinally: () => {
               this.submitLoading = false
-            })
+            }
+          })
         }
       })
     },

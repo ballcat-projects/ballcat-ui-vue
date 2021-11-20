@@ -21,6 +21,8 @@
 <script>
 import { getUserScope, putUserScope } from '@/api/system/user'
 import SysRoleSelect from '@/views/system/role/SysRoleSelect'
+import { doRequest } from '@/utils/request'
+import { delObj } from '@/api/system/role'
 
 export default {
   name: 'ScopeModal',
@@ -66,17 +68,14 @@ export default {
       const userScope = {
         roleCodes: this.roleCodes
       }
-      putUserScope(this.userId, userScope).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
+      doRequest(putUserScope(this.userId, userScope), {
+        onSuccess: () => {
           this.handleClose()
-        } else {
-          this.$message.warning(res.message)
+        },
+        onFinally: () => {
+          this.confirmLoading = false
         }
       })
-        .finally(() => {
-          this.confirmLoading = false
-        })
     },
     handleClose (e) {
       this.visible = false

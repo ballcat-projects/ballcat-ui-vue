@@ -102,6 +102,7 @@ import { listToTree } from '@/utils/treeUtil'
 import I18nMessageModal from '@/views/i18n/I18nMessageModal'
 import projectConfig from '@/config/projectConfig'
 import ProTable from '@/components/Table/ProTable'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'SysMenuPage',
@@ -216,16 +217,10 @@ export default {
     },
     // 删除
     handleDel (record) {
-      delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
     // 打开 i18nMessage 弹窗

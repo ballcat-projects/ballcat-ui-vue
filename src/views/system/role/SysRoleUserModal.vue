@@ -84,8 +84,9 @@
 
 <script>
 import ProTable from '@/components/Table/ProTable'
-import { getRoleUserPage, unbindRoleUser } from '@/api/system/role'
+import { delObj, getRoleUserPage, unbindRoleUser } from '@/api/system/role'
 import { getTree } from '@/api/system/organization'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'RoleUserModal',
@@ -153,11 +154,15 @@ export default {
     })
   },
   methods: {
+    // 刷新表格
+    reloadPageTable (withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
     show (record) {
       this.visible = true
       this.roleCode = record.code
-      // this.resetSearchForm()
-      this.$refs.table.reloadTable()
+      this.$refs.table.resetSearchForm()
+      this.reloadPageTable()
     },
     handleOk (e) {
       this.confirmLoading = true
@@ -167,16 +172,12 @@ export default {
       this.confirmLoading = false
     },
     handleUnbind (record) {
-      unbindRoleUser(record.userId, this.roleCode).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable()
-        } else {
-          this.$message.error(res.message)
+      doRequest(unbindRoleUser(record.userId, this.roleCode), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
         }
       })
     }
-
   }
 }
 </script>

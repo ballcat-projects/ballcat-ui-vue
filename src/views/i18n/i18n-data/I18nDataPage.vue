@@ -101,6 +101,7 @@ import I18nDataUpdateModal from '@/views/i18n/i18n-data/I18nDataUpdateModal'
 import I18nDataImportModal from '@/views/i18n/i18n-data/I18nDataImportModal'
 import { remoteFileDownload } from '@/utils/fileUtil'
 import ProTable from '@/components/Table/ProTable'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'I18nDataPage',
@@ -171,19 +172,11 @@ export default {
     },
     // 删除
     handleDel(record) {
-      delObj(record.code, record.languageTag)
-        .then(res => {
-          if (res.code === 200) {
-            this.$message.success(res.message)
-            this.reloadPageTable(false)
-          } else {
-            this.$message.error(res.message)
-          }
-        })
-        .catch(e => {
-          // 未被 axios拦截器处理过，则在这里继续处理
-          !e.resolved && this.$message.error(e.message || 'error request')
-        })
+      doRequest(delObj(record.code, record.languageTag), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
+        }
+      })
     },
     /**
      * 导出国际化信息

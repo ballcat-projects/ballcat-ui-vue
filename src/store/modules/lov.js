@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { LOV } from '@/store/mutation-types'
 import { check, getData } from '@/api/system/lov'
+import { checkRequestSuccess } from '@/utils/request'
 
 // 缓存过期时间
 const TTL = 7 * 24 * 60 * 60 * 1000
@@ -60,7 +61,7 @@ const lov = {
         const res = await getData(keyword)
 
         // 解析
-        if (res.code === 200 && res.data) {
+        if (checkRequestSuccess(res) && res.data) {
           Vue.ls.set(getKey(keyword), JSON.stringify(res.data), TTL)
           commit(LOV.SET_CACHE, { keyword, lovInfo: res.data })
           cacheUpdateTime(res.data)
@@ -90,11 +91,10 @@ const lov = {
       const cache = getCache()
       if (cache && Object.getOwnPropertyNames(cache).length > 0) {
         const res = await check(cache)
-        if (res.code === 200 && res.data) {
+        if (checkRequestSuccess(res) && res.data) {
           return res.data
         }
       }
-
       return []
     }
   }

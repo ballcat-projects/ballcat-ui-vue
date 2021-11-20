@@ -102,6 +102,7 @@ import { getPage, delObj, publish, close } from '@/api/notify/announcement'
 import AnnouncementPageForm from './AnnouncementPageForm'
 import AnnouncementModal from '@/components/Notify/AnnouncementModal'
 import ProTable from '@/components/Table/ProTable'
+import { doRequest } from '@/utils/request'
 
 const statusFilterArr = [
   {
@@ -212,16 +213,10 @@ export default {
     },
     // 删除
     handleDel (record) {
-      delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
           this.reloadPageTable(false)
-        } else {
-          this.$message.error(res.message)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
     // 切换表格/表单
@@ -239,12 +234,9 @@ export default {
      * @param record 公告对象
      */
     handlePublish(record) {
-      publish(record.id).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
+      doRequest(publish(record.id), {
+        onSuccess: () => {
           this.reloadPageTable(false)
-        } else {
-          this.$message.error(res.message)
         }
       })
     },
@@ -253,12 +245,9 @@ export default {
      * @param record 公告对象
      */
     handleClose(record) {
-      close(record.id).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
+      doRequest(close(record.id), {
+        onSuccess: () => {
           this.reloadPageTable(false)
-        } else {
-          this.$message.error(res.message)
         }
       })
     },

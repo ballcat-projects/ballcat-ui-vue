@@ -6,6 +6,7 @@ import './listToolBar.less'
 import './toolbar.less'
 import './alert.less'
 import './proTable.less'
+import { doRequest } from '@/utils/request'
 
 const SearchConfig = {
   searchText: {
@@ -271,10 +272,11 @@ export default {
      */
     loadData () {
       const params = this.pageParams()
-
       this.localLoading = true
-      this.request(params).then(res => {
-        if (res.code === 200) {
+
+      doRequest(this.request(params), {
+        successMessage: false,
+        onSuccess: (res) => {
           const data = res.data
 
           if(this.enablePagination){
@@ -292,14 +294,10 @@ export default {
           this.localDataSource = this.responseDataProcess(data)
           // 当分页加载成功时执行
           this.onPageLoadSuccess(data)
-        } else {
-          this.$message.warning(res.message || 'error request')
+        },
+        onFinally: () => {
+          this.localLoading = false
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
-      }).finally(() => {
-        this.localLoading = false
       })
     },
     /**

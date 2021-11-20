@@ -71,6 +71,7 @@ import { getPage, delObj } from '@/api/system/dict'
 import DictItemModal from './SysDictItemModal'
 import SysDictModalForm from '@/views/system/dict/SysDictModalForm'
 import ProTable from '@/components/Table/ProTable'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'SysDictPage',
@@ -138,16 +139,10 @@ export default {
     },
     // 删除
     handleDel (record) {
-      delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
     // 字典项表格弹窗

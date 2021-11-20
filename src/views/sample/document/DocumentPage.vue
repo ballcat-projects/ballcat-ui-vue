@@ -60,6 +60,7 @@
 import { getPage, delObj } from '@/api/sample/document'
 import DocumentModalForm from '@/views/sample/document/DocumentModalForm'
 import ProTable from '@/components/Table/ProTable'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'DocumentPage',
@@ -125,16 +126,10 @@ export default {
     },
     // 删除
     handleDel (record) {
-      delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
   }

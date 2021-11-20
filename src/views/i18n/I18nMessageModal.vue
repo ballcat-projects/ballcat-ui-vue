@@ -24,6 +24,8 @@
 <script>
 import { listByCode, putObj } from '@/api/i18n/i18n-data'
 import EditableCell from '@/components/Table/EditableCell'
+import { doRequest } from '@/utils/request'
+import { delObj } from '@/api/system/role'
 
 export default {
   name: 'I18nMessageModal',
@@ -90,18 +92,16 @@ export default {
       this.hasUpdate = true
       // 值变更，则请求后台更新 i18nData 数据
       this.dataLoading = true
-      putObj({
+
+      let obj = {
         code: record.code,
         languageTag: record.languageTag,
         message: value
-      }).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-        } else {
-          this.$message.error(res.message)
+      }
+      doRequest(putObj(obj), {
+        onFinally: () => {
+          this.dataLoading = false
         }
-      }).finally(() => {
-        this.dataLoading = false
       })
     }
   }

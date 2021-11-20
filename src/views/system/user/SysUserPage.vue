@@ -200,6 +200,7 @@ import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
 import SysUserModalForm from '@/views/system/user/SysUserModalForm'
 import ProTable from '@/components/Table/ProTable'
+import { doRequest } from '@/utils/request'
 
 export default {
   name: 'SysUserPage',
@@ -322,16 +323,10 @@ export default {
     },
     // 删除
     handleDel (record) {
-      delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
     // 授权
@@ -354,12 +349,9 @@ export default {
     },
     // 修改状态
     handleUpdateStatus (selectedRowKeys, status) {
-      updateStatus(selectedRowKeys, status).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
-          this.$refs.table.reloadTable()
-        } else {
-          this.$message.warning(res.message)
+      doRequest(updateStatus(selectedRowKeys, status), {
+        onSuccess: () => {
+          this.$refs.table.reloadTable(false)
         }
       })
     },

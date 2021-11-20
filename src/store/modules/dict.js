@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { DICT } from '@/store/mutation-types'
 import { getDictData, invalidDictHash } from '@/api/system/dict'
+import { checkRequestSuccess } from '@/utils/request'
 
 // 字典项hash列表的Key
 const DICT_HASH_KEY = 'dict-hashes'
@@ -80,7 +81,7 @@ export default {
         }
         commit(DICT.SET_DICT_REQUEST_FLAG, requestFlagKey)
         const res = await getDictData(noDataList)
-        if (res.code === 200 && res.data) {
+        if (checkRequestSuccess(res) && res.data) {
           res.data.forEach(dictData => {
             const dictCode = dictData.dictCode
             const hashCode = dictData.hashCode
@@ -113,7 +114,7 @@ export default {
       // 如果有属性，则去后台查询是否过期
       if (map && Object.getOwnPropertyNames(map).length > 0) {
         const res = await invalidDictHash(map)
-        if (res.code === 200) {
+        if (checkRequestSuccess(res)) {
           // 删除对应过期数据
           for (let dictCode of res.data) {
             Vue.ls.remove(DICT_DATA_KEY_PREFIX + dictCode)

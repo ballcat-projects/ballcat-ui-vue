@@ -41,6 +41,8 @@
 <script>
 import { passEncrypt } from '@/utils/password'
 import { changePassword } from '@/api/system/user'
+import { doRequest } from '@/utils/request'
+import { delObj } from '@/api/system/role'
 
 export default {
   name: 'PasswordModal',
@@ -99,12 +101,10 @@ export default {
           values.pass = passEncrypt(values.pass)
           values.confirmPass = passEncrypt(values.confirmPass)
 
-          changePassword(this.userId, values).then(res => {
-            res.code === 200 ? this.$message.success(res.message): this.$message.warning(res.message)
-          }).catch((e) => {
-            this.$message.error(e.message)
-          }).finally(() => {
-            this.handleClose()
+          doRequest(changePassword(this.userId, values), {
+            onFinally: () => {
+              this.handleClose()
+            }
           })
         }
       })

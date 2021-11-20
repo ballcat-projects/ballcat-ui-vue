@@ -1,5 +1,7 @@
 import { littleCamelToUnderline } from '@/utils/strUtil'
 import { enableI18n } from '@/config/projectConfig'
+import { doRequest } from '@/utils/request'
+import { delObj } from '@/api/system/role'
 
 export default {
   data () {
@@ -106,29 +108,24 @@ export default {
      */
     loadData () {
       const params = this.pageParams()
-
       this.loading = true
-      this.getPage(params)
-        .then(res => {
-          if (res.code === 200) {
-            const page = res.data
-            // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
-            if (page.records.length === 0 && this.pagination.current > 1) {
-              this.pagination.current--
-              this.loadData()
-              return
-            }
-            this.dataSource = page.records
-            this.pagination.total = page.total
-            this.onPageLoadSuccess(page)
-          } else {
-            this.$message.warning(res.message || 'error request')
+      doRequest(this.getPage(params), {
+        successMessage: false,
+        onSuccess: (res) => {
+          const page = res.data
+          // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
+          if (page.records.length === 0 && this.pagination.current > 1) {
+            this.pagination.current--
+            this.loadData()
+            return
           }
-        }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
-      }).finally(() => {
-        this.loading = false
+          this.dataSource = page.records
+          this.pagination.total = page.total
+          this.onPageLoadSuccess(page)
+        },
+        onFinally: () => {
+          this.loading = false
+        }
       })
     },
     /**
@@ -178,16 +175,10 @@ export default {
 
     // 删除
     handleDel (record) {
-      this.delObj(record[this.rowKey]).then(res => {
-        if (res.code === 200) {
-          this.$message.success(res.message)
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
           this.reloadTable(false)
-        } else {
-          this.$message.error(res.message)
         }
-      }).catch((e) => {
-        // 未被 axios拦截器处理过，则在这里继续处理
-        !e.resolved && this.$message.error(e.message || 'error request')
       })
     },
 
