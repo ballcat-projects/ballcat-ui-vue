@@ -3,33 +3,35 @@
     <a-row :gutter="14">
       <a-col :md="5">
         <a-card
-          :body-style="{ padding: '24px 18px' }"
+          :body-style="{padding: 0}"
           :bordered="false"
-          :style="{minWidth: '200px', height: organizationColHeight}"
+          :style="{minWidth: '200px'}"
         >
-          <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization" />
-          <a-tree
-            :block-node="true"
-            :tree-data="organizationTree"
-            :expanded-keys="organizationExpandedKeys"
-            :selected-keys="organizationSelectedKeys"
-            :multiple="true"
-            :replace-fields="{
-              title: 'name',
-              key: 'id'
-            }"
-            @select="selectOrganization"
-            @expand="expandOrganization"
-          >
-            <template #title="{ name }">
-              <span v-if="name.indexOf(searchValue) > -1">
-                {{ name.substr(0, name.indexOf(searchValue)) }}
-                <span style="color: #f50">{{ searchValue }}</span>
-                {{ name.substr(name.indexOf(searchValue) + searchValue.length) }}
-              </span>
-              <span v-else>{{ name }}</span>
-            </template>
-          </a-tree>
+          <div class="organization-tree-wrapper" :style="organizationTreeWrapperStyle">
+            <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization" />
+            <a-tree
+              :block-node="true"
+              :tree-data="organizationTree"
+              :expanded-keys="organizationExpandedKeys"
+              :selected-keys="organizationSelectedKeys"
+              :multiple="true"
+              :replace-fields="{
+                title: 'name',
+                key: 'id'
+              }"
+              @select="selectOrganization"
+              @expand="expandOrganization"
+            >
+              <template #title="{ name }">
+                <span v-if="name.indexOf(searchValue) > -1">
+                  {{ name.substr(0, name.indexOf(searchValue)) }}
+                  <span style="color: #f50">{{ searchValue }}</span>
+                  {{ name.substr(name.indexOf(searchValue) + searchValue.length) }}
+                </span>
+                <span v-else>{{ name }}</span>
+              </template>
+            </a-tree>
+          </div>
         </a-card>
       </a-col>
       <a-col ref="sysUserCol" :md="19">
@@ -76,11 +78,16 @@
                 <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
                   <a-space size="middle">
                     <a-space>
-                      <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                      <a-button
+                        type="primary"
+                        :loading="searchFormState.loading"
+                        @click="searchFormState.reloadTable(true)"
+                      >查询
+                      </a-button>
                       <a-button @click="searchFormState.resetSearchForm">重置</a-button>
                     </a-space>
                     <a @click="searchFormState.toggleSearchCollapsed">
-                      {{ searchFormState.collapsed ? '展开': '收起' }}
+                      {{ searchFormState.collapsed ? '展开' : '收起' }}
                       <a-icon :type="searchFormState.collapsed ? 'down': 'up'" />
                     </a>
                   </a-space>
@@ -225,7 +232,9 @@ export default {
       organizationTree: [],
       organizationExpandedKeys: [],
       organizationSelectedKeys: [],
-      organizationColHeight: '100%',
+      organizationTreeWrapperStyle: {
+        height: '100%'
+      },
 
       // 表头
       columns: [
@@ -303,8 +312,8 @@ export default {
   },
   mounted () {
     // 利用 ResizeObserver，监听 dom size 修改
-    const resizeObserver = new ResizeObserver ( (mutations) => {
-      this.organizationColHeight = mutations[0].contentRect.height + 'px'
+    const resizeObserver = new ResizeObserver((mutations) => {
+      this.organizationTreeWrapperStyle.height = mutations[0].contentRect.height + 'px'
     })
     resizeObserver.observe(this.$refs.sysUserCol.$el)
   },
@@ -425,3 +434,21 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.organization-tree-wrapper {
+  padding: 24px 18px;
+  overflow: auto;
+}
+
+.organization-tree-wrapper::-webkit-scrollbar {
+  width: 5px;
+  height: 6px;
+}
+
+.organization-tree-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(31, 31, 31, 0.2);
+  border-radius: 3px;
+  box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.05);
+}
+
+</style>
