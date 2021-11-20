@@ -111,6 +111,7 @@ export default {
 </script>
 
 <style lang="less">
+@import url('~@/styles/index.less');
 @import url('~@/styles/global.less');
 @import url('~@/styles/ballcat.less');
 </style>
