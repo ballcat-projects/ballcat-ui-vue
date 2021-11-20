@@ -1,106 +1,87 @@
 <template>
   <div class="ant-pro-page-container-children-content">
     <div v-show="tableShow">
-      <!-- 查询条件 -->
-      <div class="ant-pro-table-search">
-        <a-form v-bind="searchFormLayout">
+
+      <pro-table
+        ref="table"
+        toolbar-title="公告信息"
+        :row-key="rowKey"
+        :request="tableRequest"
+        :columns="columns"
+        :scroll="{ x: 1000 }"
+      >
+
+        <template #search-form="searchFormState">
           <a-row :gutter="16">
             <a-col :md="8" :sm="24">
               <a-form-item label="标题">
-                <a-input v-model="queryParam.title" placeholder="支持模糊查询" />
+                <a-input v-model="searchFormState.queryParam.title" placeholder="支持模糊查询" />
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
               <a-form-item label="接收人范围">
-                <dict-select v-model="queryParam.recipientFilterType" dict-code="recipient_filter_type" />
+                <dict-select v-model="searchFormState.queryParam.recipientFilterType" dict-code="recipient_filter_type" />
               </a-form-item>
             </a-col>
-
-            <!-- <template v-if="advanced">
-             </template>-->
             <a-col :md="8" :sm="24" class="table-page-search-wrapper">
-              <div class="table-page-search-submitButtons">
-                <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-                <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                <!--<a @click="toggleAdvanced" style="margin-left: 8px">
-                  {{ advanced ? '收起' : '展开' }}
-                  <a-icon :type="advanced ? 'up' : 'down'"/>
-                </a>-->
-              </div>
+              <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+                <a-space>
+                  <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                  <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+                </a-space>
+              </a-form-item>
             </a-col>
           </a-row>
-        </a-form>
-      </div>
+        </template>
 
-      <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
         <!-- 操作按钮区域 -->
-        <div class="ant-pro-table-toolbar">
-          <div class="ant-pro-table-toolbar-title">公告信息</div>
-          <div class="ant-pro-table-toolbar-option">
-            <a-button
-              v-has="'notify:announcement:add'"
-              type="primary"
-              icon="plus"
-              @click="handleAdd()"
-            >新建</a-button>
-          </div>
-        </div>
+        <template>
+          <a-button
+            v-has="'notify:announcement:add'"
+            type="primary"
+            icon="plus"
+            @click="handleAdd()"
+          >新建</a-button>
+        </template>
+
 
         <!--数据表格区域-->
-        <div class="ant-pro-table-wrapper">
-          <a-table
-            ref="table"
-            size="middle"
-            :row-key="rowKey"
-            :columns="columns"
-            :data-source="dataSource"
-            :pagination="pagination"
-            :loading="loading"
-            :scroll="{ x: 1000 }"
-            @change="handleTableChange"
-          >
-            <template #status-slot="status">
-              <a-badge :status="status | statusTypeFilter" :text="status | statusFilter" />
-            </template>
-
-            <template #content-slot="content, record">
-              <a href="javascript:;" @click="previewAnnouncement(record)">预览</a>
-            </template>
-
-            <template #recipient-slot="type">
-              <dict-text dict-code="recipient_filter_type" :value="type" />
-            </template>
-
-            <template #receive-mode-slot="modes">
-              <dict-tag
-                v-for="mode in modes"
-                :key="mode"
-                dict-code="notify_channel"
-                :value="mode"
-                style="margin-right: 5px"
-              />
-            </template>
-
-            <template #action-slot="text, record">
-              <span v-has="'notify:announcement:edit'">
-                <a :disabled="record.status !== 2" @click="handleEdit(record)">编辑</a>
-                <a-divider type="vertical" />
-                <a-popconfirm title="确认要发布吗？" @confirm="() => handlePublish(record)">
-                  <a href="javascript:" :disabled="record.status !== 2">发布</a>
-                </a-popconfirm>
-                <a-divider type="vertical" />
-                <a-popconfirm title="确认要关闭吗？" @confirm="() => handleClose(record)">
-                  <a href="javascript:" :disabled="record.status === 0">关闭</a>
-                </a-popconfirm>
-              </span>
-              <a-divider v-if="$has('notify:announcement:edit') || $has('notify:announcement:del')" type="vertical" />
-              <a-popconfirm v-has="'notify:announcement:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
-                <a href="javascript:" class="ballcat-text-danger">删除</a>
-              </a-popconfirm>
-            </template>
-          </a-table>
-        </div>
-      </a-card>
+        <template #status-slot="status">
+          <a-badge :status="status | statusTypeFilter" :text="status | statusFilter" />
+        </template>
+        <template #content-slot="content, record">
+          <a href="javascript:;" @click="previewAnnouncement(record)">预览</a>
+        </template>
+        <template #recipient-slot="type">
+          <dict-text dict-code="recipient_filter_type" :value="type" />
+        </template>
+        <template #receive-mode-slot="modes">
+          <dict-tag
+            v-for="mode in modes"
+            :key="mode"
+            dict-code="notify_channel"
+            :value="mode"
+            style="margin-right: 5px"
+          />
+        </template>
+        <template #action-slot="text, record">
+          <span v-has="'notify:announcement:edit'">
+            <a :disabled="record.status !== 2" @click="handleEdit(record)">编辑</a>
+            <a-divider type="vertical" />
+            <a-popconfirm title="确认要发布吗？" @confirm="() => handlePublish(record)">
+              <a href="javascript:" :disabled="record.status !== 2">发布</a>
+            </a-popconfirm>
+            <a-divider type="vertical" />
+            <a-popconfirm title="确认要关闭吗？" @confirm="() => handleClose(record)">
+              <a href="javascript:" :disabled="record.status === 0">关闭</a>
+            </a-popconfirm>
+          </span>
+          <a-divider v-if="$has('notify:announcement:edit') || $has('notify:announcement:del')" type="vertical" />
+          <a-popconfirm v-has="'notify:announcement:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
+            <a href="javascript:" class="ballcat-text-danger">删除</a>
+          </a-popconfirm>
+        </template>
+      </pro-table>
     </div>
 
     <!--表单页面-->
@@ -119,8 +100,8 @@
 <script>
 import { getPage, delObj, publish, close } from '@/api/notify/announcement'
 import AnnouncementPageForm from './AnnouncementPageForm'
-import { TablePageMixin } from '@/mixins'
 import AnnouncementModal from '@/components/Notify/AnnouncementModal'
+import ProTable from '@/components/Table/ProTable'
 
 const statusFilterArr = [
   {
@@ -142,7 +123,7 @@ const statusFilterArr = [
 
 export default {
   name: 'AnnouncementPage',
-  components: { AnnouncementPageForm, AnnouncementModal },
+  components: { ProTable, AnnouncementPageForm, AnnouncementModal },
   filters: {
     statusFilter(status) {
       return statusFilterArr[status].text
@@ -151,11 +132,12 @@ export default {
       return statusFilterArr[status].state
     }
   },
-  mixins: [TablePageMixin],
   data() {
     return {
-      getPage: getPage,
-      delObj: delObj,
+      tableShow: true,
+
+      rowKey: 'id',
+      tableRequest: getPage,
 
       columns: [
         {
@@ -214,6 +196,10 @@ export default {
     }
   },
   methods: {
+    // 刷新表格
+    reloadPageTable (withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
     // 新增
     handleAdd() {
       this.switchPage()
@@ -224,6 +210,30 @@ export default {
       this.switchPage()
       this.$refs.pageForm.update(record, { title: '编辑公告' })
     },
+    // 删除
+    handleDel (record) {
+      delObj(record[this.rowKey]).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.reloadPageTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
+    // 切换表格/表单
+    switchPage () {
+      window.scrollTo(0, 0)
+      this.tableShow = !this.tableShow
+    },
+    // 返回表格
+    backToPage (needRefresh) {
+      this.switchPage()
+      needRefresh && this.reloadPageTable(false)
+    },
     /**
      * 发布公告
      * @param record 公告对象
@@ -232,7 +242,7 @@ export default {
       publish(record.id).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
-          this.reloadTable()
+          this.reloadPageTable(false)
         } else {
           this.$message.error(res.message)
         }
@@ -246,7 +256,7 @@ export default {
       close(record.id).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
-          this.reloadTable()
+          this.reloadPageTable(false)
         } else {
           this.$message.error(res.message)
         }

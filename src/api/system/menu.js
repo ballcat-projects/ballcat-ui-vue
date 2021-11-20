@@ -7,7 +7,7 @@ export function getLoginUserMenu () {
   })
 }
 
-export function list(query) {
+export function listMenu(query) {
   return request({
     url: '/system/menu/list',
     method: 'get',

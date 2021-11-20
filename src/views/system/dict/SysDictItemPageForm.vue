@@ -124,12 +124,15 @@
     </a-row>
 
     <a-form-item v-if="enableI18n" label="国际化">
-      <a-input
-        v-for="language in supportLanguage"
-        :key="language.lang"
-        v-model="languagesAttribute[language.lang]"
-        :addon-before="language.title"
-      />
+      <a-space direction="vertical" style="width: 100%">
+        <a-input
+          v-for="language in supportLanguage"
+          :key="language.lang"
+          v-model="languagesAttribute[language.lang]"
+          :addon-before="language.title"
+        />
+      </a-space>
+
     </a-form-item>
 
     <a-form-item>
@@ -323,7 +326,7 @@ export default {
 
 <style scoped lang="less">
 .ant-form-item {
-  margin-bottom: 8px;
+  margin-bottom: 14px;
 }
 </style>
 

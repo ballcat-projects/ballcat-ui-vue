@@ -1,90 +1,73 @@
 <template>
   <div class="ant-pro-page-container-children-content">
-    <!-- 查询条件 -->
-    <div class="ant-pro-table-search">
-      <a-form v-bind="searchFormLayout">
+
+    <pro-table
+      ref="table"
+      toolbar-title="文档表，用于演示数据权限，可切换不同用户并授予不同角色体验效果（需退出重新登录）"
+      :row-key="rowKey"
+      :request="tableRequest"
+      :columns="columns"
+    >
+
+      <!-- 查询表单 -->
+      <template #search-form="searchFormState">
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="ID">
-              <a-input v-model="queryParam.id" placeholder="" />
+              <a-input v-model="searchFormState.queryParam.id" placeholder="" />
             </a-form-item>
           </a-col>
-
-          <!-- <template v-if="advanced">
-           </template>-->
-          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
-            <div class="table-page-search-submitButtons">
-              <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-              <!--<a @click="toggleAdvanced" style="margin-left: 8px">
-                {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
-              </a>-->
-            </div>
+          <a-col :md="8" :sm="24">
+            <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+              <a-space>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+              </a-space>
+            </a-form-item>
           </a-col>
         </a-row>
-      </a-form>
-    </div>
+      </template>
 
-    <a-card :bordered="false" :body-style="{paddingTop: 0, paddingBottom: 0}">
       <!-- 操作按钮区域 -->
-      <div class="ant-pro-table-toolbar">
-        <div class="ant-pro-table-toolbar-title">文档表，用于演示数据权限，可切换不同用户并授予不同角色体验效果（需退出重新登录）</div>
-        <div class="ant-pro-table-toolbar-option">
-          <a-button
-            v-has="'sample:document:add'"
-            type="primary"
-            icon="plus"
-            @click="handleAdd()"
-          >新建
-          </a-button>
-        </div>
-      </div>
+      <template #toolbar-action>
+        <a-button
+          v-has="'sample:document:add'"
+          type="primary"
+          icon="plus"
+          @click="handleAdd()"
+        >新建
+        </a-button>
+      </template>
 
       <!--数据表格区域-->
-      <div class="ant-pro-table-wrapper">
-        <a-table
-          ref="table"
-          size="middle"
-          :row-key="rowKey"
-          :columns="columns"
-          :data-source="dataSource"
-          :pagination="pagination"
-          :loading="loading"
-          @change="handleTableChange"
+      <template #action-slot="text, record">
+        <a-popconfirm
+          v-has="'sample:document:del'"
+          title="确认要删除吗？"
+          @confirm="() => handleDel(record)"
         >
-          <template #action-slot="text, record">
-            <a-popconfirm
-              v-has="'sample:document:del'"
-              title="确认要删除吗？"
-              @confirm="() => handleDel(record)"
-            >
-              <a href="javascript:" class="ballcat-text-danger">删除</a>
-            </a-popconfirm>
-          </template>
-        </a-table>
-      </div>
-    </a-card>
+          <a href="javascript:" class="ballcat-text-danger">删除</a>
+        </a-popconfirm>
+      </template>
+    </pro-table>
 
     <!--表单弹窗-->
-    <document-modal-form ref="formModal" @reload-page-table="reloadTable" />
+    <document-modal-form ref="formModal" @reload-page-table="reloadPageTable" />
   </div>
 </template>
 
 <script>
 import { getPage, delObj } from '@/api/sample/document'
-import { TablePageMixin } from '@/mixins'
 import DocumentModalForm from '@/views/sample/document/DocumentModalForm'
+import ProTable from '@/components/Table/ProTable'
 
 export default {
   name: 'DocumentPage',
-  components: { DocumentModalForm },
-  mixins: [TablePageMixin],
+  components: { ProTable, DocumentModalForm },
   data () {
     return {
-      getPage: getPage,
-      delObj: delObj,
-
+      rowKey: 'id',
+      tableRequest: getPage,
       columns: [
         {
           title: '#',
@@ -126,21 +109,34 @@ export default {
     }
   },
   methods: {
-    /**
-     * 新建文档表，用于演示数据权限
-     */
+    // 刷新表格
+    reloadPageTable(withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
+    // 新建文档表，用于演示数据权限
     handleAdd () {
       const attributes = { title: '新建用户文档' }
       this.$refs.formModal.add(attributes)
     },
-    /**
-     * 编辑文档表，用于演示数据权限
-     * @param record 当前文档表，用于演示数据权限属性
-     */
+    //  编辑文档表，用于演示数据权限
     handleEdit (record) {
       const attributes = { title: '编辑用户文档' }
       this.$refs.formModal.update(record, attributes)
-    }
+    },
+    // 删除
+    handleDel (record) {
+      delObj(record[this.rowKey]).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.$refs.table.reloadTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
   }
 }
 </script>

@@ -1,97 +1,82 @@
 <template>
   <div class="ant-pro-page-container-children-content">
-    <!-- 查询条件 -->
-    <div class="ant-pro-table-search">
-      <a-form v-bind="searchFormLayout">
+
+    <pro-table
+      ref="table"
+      toolbar-title="组织架构"
+      :row-key="rowKey"
+      :request="tableRequest"
+      :response-data-process="responseDataProcess"
+      :columns="columns"
+      :pagination="false"
+      :expand-icon="expandIconRender"
+      :scroll="{ x: 800 }"
+    >
+      <!-- 查询条件 -->
+      <template #search-form="searchFormState">
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="组织名称">
-              <a-input v-model="queryParam.name" placeholder="请输入" />
+              <a-input v-model="searchFormState.queryParam.name" placeholder="请输入" />
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24" class="table-page-search-wrapper">
-            <div class="table-page-search-submitButtons">
-              <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-              <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
-              <!--                {{ advanced ? '收起' : '展开' }}-->
-              <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
-              <!--              </a>-->
-            </div>
+          <a-col :md="8" :sm="24">
+            <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+              <a-space>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable">查询</a-button>
+                <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+              </a-space>
+            </a-form-item>
           </a-col>
         </a-row>
-      </a-form>
-    </div>
+      </template>
 
-    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
       <!-- 操作按钮区域 -->
-      <div class="ant-pro-table-toolbar">
-        <div class="ant-pro-table-toolbar-title">组织架构</div>
-        <div class="ant-pro-table-toolbar-option">
-          <a-popconfirm
-            v-has="'system:organization:revised'"
-            title="是否确认进行校正操作?"
-            ok-text="Yes"
-            cancel-text="No"
-            @confirm="handleRevised"
-          >
-            <a-button type="danger" icon="interaction">校正层级深度</a-button>
-          </a-popconfirm>
-
-          <a-button
-            v-has="'system:organization:add'"
-            type="primary"
-            icon="plus"
-            @click="handleAdd()"
-          >新建 </a-button>
-        </div>
-      </div>
+      <template #toolbar-action>
+        <a-popconfirm
+          v-has="'system:organization:revised'"
+          title="是否确认进行校正操作?"
+          ok-text="Yes"
+          cancel-text="No"
+          @confirm="handleRevised"
+        >
+          <a-button type="danger" icon="interaction">校正层级深度</a-button>
+        </a-popconfirm>
+        <a-button
+          v-has="'system:organization:add'"
+          type="primary"
+          icon="plus"
+          @click="handleAdd()"
+        >新建 </a-button>
+      </template>
 
       <!--数据表格区域-->
-      <div class="ant-pro-table-wrapper">
-        <a-table
-          ref="table"
-          size="middle"
-          :row-key="rowKey"
-          :columns="columns"
-          :data-source="dataSource"
-          :loading="loading"
-          :expand-icon="expandIconRender"
-          :scroll="{ x: 800 }"
-          @change="handleTableChange"
-        >
-          <template slot="expandIcon">
-            <a-icon type="caret-down" />
-          </template>
-
-          <template slot="action-slot" slot-scope="text, record">
-            <a v-has="'system:organization:edit'" @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical" />
-            <a-popconfirm v-has="'system:organization:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
-              <a href="javascript:" class="ballcat-text-danger">删除</a>
-            </a-popconfirm>
-          </template>
-        </a-table>
-      </div>
-    </a-card>
+      <template slot="action-slot" slot-scope="text, record">
+        <a v-has="'system:organization:edit'" @click="handleEdit(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a-popconfirm v-has="'system:organization:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
+          <a href="javascript:" class="ballcat-text-danger">删除</a>
+        </a-popconfirm>
+      </template>
+    </pro-table>
 
     <!--表单页面-->
-    <organization-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadTable" />
+    <organization-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadPageTable" />
   </div>
 </template>
 
 <script>
 import { getTree, delObj, revised } from '@/api/system/organization'
 import OrganizationModalForm from './SysOrganizationModalForm'
-import { TablePageMixin } from '@/mixins'
+import ProTable from '@/components/Table/ProTable'
 
 export default {
   name: 'SysOrganizationPage',
-  components: { OrganizationModalForm },
-  mixins: [TablePageMixin],
+  components: { ProTable, OrganizationModalForm },
   data() {
     return {
-      delObj: delObj,
+      rowKey: 'id',
+      tableRequest: getTree,
 
       columns: [
         {
@@ -121,15 +106,22 @@ export default {
           width: 120,
           scopedSlots: { customRender: 'action-slot' }
         }
-      ]
-    }
-  },
-  computed: {
-    organizationTree() {
-      return [{ id: 0, name: '根目录', children: this.dataSource }]
+      ],
+
+      organizationTree: []
     }
   },
   methods: {
+    // 刷新表格
+    reloadPageTable(withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
+    // 自定义表格响应的数据处理
+    responseDataProcess(data) {
+      this.organizationTree = [{ id: 0, name: '根目录', children: data }]
+      return data
+    },
+    // 折叠 icon 自定义渲染
     expandIconRender(props) {
       if (props.record.children.length > 0) {
         if (props.expanded) {
@@ -159,26 +151,7 @@ export default {
         return <span class="expandIcon leafNode"></span>
       }
     },
-    /**
-     * 表格数据加载方法
-     */
-    loadData() {
-      this.loading = true
-      getTree(this.queryParam)
-        .then(res => {
-          if (res.code === 200) {
-            this.dataSource = res.data
-          } else {
-            this.$message.warning(res.message || 'error request')
-          }
-        })
-        .catch(e => {
-          this.$message.error(e.message || 'error request')
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
+
     /**
      * 新建组织
      */
@@ -192,6 +165,20 @@ export default {
     handleEdit(record) {
       this.$refs.formModal.update(record, { title: '编辑组织' })
     },
+    // 删除
+    handleDel (record) {
+      delObj(record[this.rowKey]).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.$refs.table.reloadTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
     /**
      * 校正层级深度
      */
@@ -199,7 +186,7 @@ export default {
       revised().then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
-          this.reloadTable()
+          this.$refs.table.reloadTable(false)
         } else {
           this.$message.error(res.message)
         }

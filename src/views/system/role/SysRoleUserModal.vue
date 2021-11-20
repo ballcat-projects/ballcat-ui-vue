@@ -3,7 +3,7 @@
     title="角色用户绑定"
     :visible="visible"
     :mask-closable="false"
-    :body-style="{padding:'12px 18px'}"
+    :body-style="{padding:'15px 18px'}"
     :confirm-loading="confirmLoading"
     :footer="null"
     :width="800"
@@ -11,24 +11,40 @@
     @ok="handleOk"
     @cancel="handleClose"
   >
-    <!-- 查询条件 -->
-    <div>
-      <a-form v-bind="searchFormLayout">
+
+    <pro-table
+      ref="table"
+      toolbar-title="角色管理"
+      :row-key="rowKey"
+      :request="tableRequest"
+      :columns="columns"
+      :lazy-load="true"
+      :toolbar-enabled="false"
+      search-form-class-name="ballcat-pro-table-search-unwrap"
+    >
+
+      <!-- 查询条件 -->
+      <template #search-form="searchFormState">
         <a-row :gutter="16">
           <a-col :md="6" :sm="24">
             <a-form-item label="用户ID">
-              <a-input-number v-model="queryParam.userId" type="number" placeholder="" />
+              <a-input-number
+                v-model="searchFormState.queryParam.userId"
+                type="number"
+                placeholder="请输入"
+                style="width: 100%"
+              />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="用户名">
-              <a-input v-model="queryParam.username" placeholder="" />
+              <a-input v-model="searchFormState.queryParam.username" placeholder="请输入" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="组织">
               <a-tree-select
-                v-model="queryParam.organizationId"
+                v-model="searchFormState.queryParam.organizationId"
                 style="width: 100%"
                 :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                 :tree-data="organizationTree"
@@ -41,26 +57,18 @@
               />
             </a-form-item>
           </a-col>
-          <a-col :md="5" :sm="24" class="table-page-search-wrapper">
-            <div class="table-page-search-submitButtons">
-              <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-            </div>
+          <a-col :md="5" :sm="24">
+            <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+              <a-space>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                <a-button style="margin-left: 8px" @click="searchFormState.resetSearchForm">重置</a-button>
+              </a-space>
+            </a-form-item>
           </a-col>
         </a-row>
-      </a-form>
-    </div>
-    <!--数据表格区域-->
-    <a-table
-      ref="table"
-      size="middle"
-      :row-key="rowKey"
-      :columns="columns"
-      :data-source="dataSource"
-      :pagination="pagination"
-      :loading="loading"
-      @change="handleTableChange"
-    >
+      </template>
+
+      <!--数据表格区域-->
       <template #action-slot="text, record">
         <a-popconfirm
           v-has="'system:user:grant'"
@@ -70,29 +78,27 @@
           <a href="javascript:" class="ballcat-text-danger">解绑</a>
         </a-popconfirm>
       </template>
-    </a-table>
+    </pro-table>
   </a-modal>
 </template>
 
 <script>
+import ProTable from '@/components/Table/ProTable'
 import { getRoleUserPage, unbindRoleUser } from '@/api/system/role'
-import { TablePageMixin } from '@/mixins'
 import { getTree } from '@/api/system/organization'
-
 
 export default {
   name: 'RoleUserModal',
-  mixins: [TablePageMixin],
+  components: { ProTable },
   data () {
     return {
       confirmLoading: false,
       visible: false,
 
-      queryParam: {},
-      lazyLoad: true,
       rowKey: 'userId',
-
-      getPage: getRoleUserPage,
+      tableRequest: (queryParam) => {
+        return getRoleUserPage(Object.assign({}, queryParam, {roleCode: this.roleCode}))
+      },
 
       columns: [
         {
@@ -118,7 +124,7 @@ export default {
         {
           title: '操作',
           align: 'center',
-          width: '100px',
+          width: 100,
           scopedSlots: { customRender: 'action-slot' }
         }
       ],
@@ -130,13 +136,13 @@ export default {
         },
         wrapperCol: {
           md: { span: 17 }
-        },
+        }
       },
 
       // 角色标识
       roleCode: null,
       // 组织树
-      organizationTree: [],
+      organizationTree: []
     }
   },
   created () {
@@ -147,20 +153,11 @@ export default {
     })
   },
   methods: {
-    // 由于服务端不支持排序，这里重写此方法，便于取消 Mixin 的初始化排序字段设置
-    initDefaultSort(){
-    },
-    // 重置搜索条件
-    resetSearchForm () {
-      this.queryParam = {
-        roleCode: this.roleCode
-      }
-    },
     show (record) {
       this.visible = true
       this.roleCode = record.code
-      this.resetSearchForm()
-      this.loadData()
+      // this.resetSearchForm()
+      this.$refs.table.reloadTable()
     },
     handleOk (e) {
       this.confirmLoading = true
@@ -173,7 +170,7 @@ export default {
       unbindRoleUser(record.userId, this.roleCode).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
-          this.reloadTable()
+          this.$refs.table.reloadTable()
         } else {
           this.$message.error(res.message)
         }

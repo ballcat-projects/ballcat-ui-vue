@@ -1,84 +1,66 @@
 <template>
   <div class="ant-pro-page-container-children-content">
-    <div v-show="tableShow">
-      <!-- 查询条件 -->
-      <div class="ant-pro-table-search">
-        <a-form v-bind="searchFormLayout">
-          <a-row :gutter="16">
-            <a-col :md="8" :sm="24">
-              <a-form-item label="角色">
-                <a-input v-model="queryParam.name" placeholder="请输入" />
-              </a-form-item>
-            </a-col>
-            <a-col :md="8" :sm="24">
-              <a-form-item label="标识">
-                <a-input v-model="queryParam.code" placeholder="请输入" />
-              </a-form-item>
-            </a-col>
-            <!-- <template v-if="advanced">
-             </template>-->
-            <a-col :md="8" :sm="24" class="table-page-search-wrapper">
-              <div class="table-page-search-submitButtons">
-                <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-                <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                <!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
-                <!--                {{ advanced ? '收起' : '展开' }}-->
-                <!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
-                <!--              </a>-->
-              </div>
-            </a-col>
-          </a-row>
-        </a-form>
-      </div>
+    <pro-table
+      ref="table"
+      toolbar-title="角色管理"
+      :row-key="rowKey"
+      :request="tableRequest"
+      :columns="columns"
+      :scroll="{ x: 1100 }"
+    >
+      <!-- 查询表单 -->
+      <template #search-form="searchFormState">
+        <a-row :gutter="16">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="角色">
+              <a-input v-model="searchFormState.queryParam.name" placeholder="请输入" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="标识">
+              <a-input v-model="searchFormState.queryParam.code" placeholder="请输入" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+              <a-space>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+              </a-space>
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </template>
 
-      <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
-        <!-- 操作按钮区域 -->
-        <div class="ant-pro-table-toolbar">
-          <div class="ant-pro-table-toolbar-title">角色管理</div>
-          <div class="ant-pro-table-toolbar-option">
-            <a-button
-              v-has="'system:role:add'"
-              type="primary"
-              icon="plus"
-              @click="handleAdd()"
-            >新建</a-button>
-          </div>
-        </div>
+      <!-- 操作按钮区域 -->
+      <template #toolbar-action>
+        <a-button
+          v-has="'system:role:add'"
+          type="primary"
+          icon="plus"
+          @click="handleAdd()"
+        >新建</a-button>
+      </template>
 
-        <div class="ant-pro-table-wrapper">
-          <!--数据表格-->
-          <a-table
-            ref="table"
-            size="middle"
-            :row-key="rowKey"
-            :columns="columns"
-            :data-source="dataSource"
-            :pagination="pagination"
-            :loading="loading"
-            :scroll="{ x: 1100 }"
-            @change="handleTableChange"
-          >
-            <template #type-slot="text">
-              <dict-tag dict-code="role_type" :value="text" />
-            </template>
-            <template #action-slot="text, record">
-              <a v-has="'system:role:edit'" @click="handleEdit(record)">编辑</a>
-              <a-divider type="vertical" />
-              <a v-has="'system:role:grant'" @click="handleGrant(record)">授权</a>
-              <a-divider type="vertical" />
-              <a v-has="'system:role:grant'" @click="handleBind(record)">绑定</a>
-              <a-divider type="vertical" />
-              <a-popconfirm v-has="'system:role:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
-                <a href="javascript:" class="ballcat-text-danger">删除</a>
-              </a-popconfirm>
-            </template>
-          </a-table>
-        </div>
-      </a-card>
-    </div>
+      <!-- 表格展示相关插槽 -->
+      <template #type-slot="text">
+        <dict-tag dict-code="role_type" :value="text" />
+      </template>
+      <template #action-slot="text, record">
+        <a v-has="'system:role:edit'" @click="handleEdit(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a v-has="'system:role:grant'" @click="handleGrant(record)">授权</a>
+        <a-divider type="vertical" />
+        <a v-has="'system:role:grant'" @click="handleBind(record)">绑定</a>
+        <a-divider type="vertical" />
+        <a-popconfirm v-has="'system:role:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
+          <a href="javascript:" class="ballcat-text-danger">删除</a>
+        </a-popconfirm>
+      </template>
+    </pro-table>
 
     <!-- 表单弹窗 -->
-    <role-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadTable" />
+    <role-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadPageTable" />
 
     <!-- 角色授权弹窗 -->
     <role-grant-drawer ref="roleGrantDrawer" />
@@ -89,25 +71,25 @@
 </template>
 
 <script>
+import ProTable from '@/components/Table/ProTable.js'
 import { getPage, delObj } from '@/api/system/role'
 import RoleModalForm from './SysRoleModalForm'
 import RoleGrantDrawer from './SysRoleGrantDrawer'
-import { TablePageMixin } from '@/mixins'
 import RoleUserModal from '@/views/system/role/SysRoleUserModal'
 import { getTree } from '@/api/system/organization'
 
 export default {
   name: 'SysRolePage',
   components: {
+    ProTable,
     RoleUserModal,
     RoleGrantDrawer,
     RoleModalForm
   },
-  mixins: [TablePageMixin],
   data() {
     return {
-      getPage: getPage,
-      delObj: delObj,
+      rowKey: 'id',
+      tableRequest: getPage,
 
       columns: [
         {
@@ -167,6 +149,10 @@ export default {
     })
   },
   methods: {
+    // 刷新表格
+    reloadPageTable(withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
     // 新建角色
     handleAdd() {
       this.$refs.formModal.add({ title: '新建角色' })
@@ -182,7 +168,21 @@ export default {
     // 为角色做用户绑定
     handleBind(record) {
       this.$refs.roleUserModal.show(record)
-    }
+    },
+    // 删除
+    handleDel (record) {
+      delObj(record[this.rowKey]).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.$refs.table.reloadTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
   }
 }
 </script>

@@ -1,110 +1,100 @@
 <template>
   <div class="ant-pro-page-container-children-content">
-    <!-- 查询条件 -->
-    <div class="ant-pro-table-search">
-      <a-form v-bind="searchFormLayout">
+
+    <pro-table
+      ref="table"
+      toolbar-title="登陆日志"
+      :row-key="rowKey"
+      :request="tableRequest"
+      :columns="columns"
+      :scroll="{ x: 1000 }"
+    >
+      <!-- 查询表单 -->
+      <template #search-form="searchFormState">
         <a-row :gutter="16">
           <a-col :xl="8" :md="12" :sm="24">
             <a-form-item label="用户名">
-              <a-input v-model="queryParam.username" placeholder="用户名" />
+              <a-input v-model="searchFormState.queryParam.username" placeholder="请输入" />
             </a-form-item>
           </a-col>
           <a-col :xl="8" :md="12" :sm="24">
             <a-form-item label="登陆IP">
-              <a-input v-model="queryParam.ip" placeholder="登陆IP" />
+              <a-input v-model="searchFormState.queryParam.ip" placeholder="请输入" />
             </a-form-item>
           </a-col>
-          <template v-if="advanced">
+          <template v-if="!searchFormState.collapsed">
             <a-col :xl="8" :md="12" :sm="24">
               <a-form-item label="事件类型">
-                <dict-select v-model="queryParam.eventType" dict-code="login_event_type" />
+                <dict-select v-model="searchFormState.queryParam.eventType" dict-code="login_event_type" />
               </a-form-item>
             </a-col>
             <a-col :xl="8" :md="12" :sm="24">
               <a-form-item label="事件状态">
-                <dict-select v-model="queryParam.status" dict-code="log_status" />
+                <dict-select v-model="searchFormState.queryParam.status" dict-code="log_status" />
               </a-form-item>
             </a-col>
-            <a-col :xl="10" :md="12" :sm="24">
+            <a-col :xl="8" :md="12" :sm="24">
               <a-form-item label="登陆时间">
                 <a-range-picker
-                  :value="searchTimeValue"
+                  v-model="searchTimeValue"
                   show-time
                   :placeholder="['Start Time', 'End Time']"
                   format="YYYY-MM-DD HH:mm:ss"
+                  style="width: 100%"
                   @change="onTimeChange"
                 />
               </a-form-item>
             </a-col>
           </template>
-
-          <a-col
-            :xl="6"
-            :md="12"
-            :sm="24"
-            class="table-page-search-wrapper"
-          >
-            <div class="table-page-search-submitButtons">
-              <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-              <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-              <a style="margin-left: 8px" @click="toggleAdvanced">
-                {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'" />
-              </a>
-            </div>
+          <a-col :xl="8" :md="12" :sm="24">
+            <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+              <a-space size="middle">
+                <a-space>
+                  <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                  <a-button @click="searchFormState.resetSearchForm && resetSearchTime()">重置</a-button>
+                </a-space>
+                <a @click="searchFormState.toggleSearchCollapsed">
+                  {{ searchFormState.collapsed ? '展开': '收起' }}
+                  <a-icon :type="searchFormState.collapsed ? 'down': 'up'" />
+                </a>
+              </a-space>
+            </a-form-item>
           </a-col>
         </a-row>
-      </a-form>
-    </div>
+      </template>
 
-    <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
-      <!-- 操作按钮区域 -->
-      <div class="ant-pro-table-toolbar">
-        <div class="ant-pro-table-toolbar-title">登陆日志</div>
-      </div>
-      <!--数据表格区域-->
-      <div class="ant-pro-table-wrapper">
-        <a-table
-          ref="table"
-          size="middle"
-          :row-key="rowKey"
-          :columns="columns"
-          :data-source="dataSource"
-          :pagination="pagination"
-          :loading="loading"
-          :scroll="{ x: 1100 }"
-          @change="handleTableChange"
-        >
-          <template #status-slot="text">
-            <dict-text dict-code="log_status" :value="text" />
-          </template>
-          <template #event-type-slot="text">
-            <dict-tag dict-code="login_event_type" :value="text" />
-          </template>
+      <!-- 数据表格区域 -->
+      <template #status-slot="text">
+        <dict-text dict-code="log_status" :value="text" />
+      </template>
+      <template #event-type-slot="text">
+        <dict-tag dict-code="login_event_type" :value="text" />
+      </template>
+    </pro-table>
 
-          <template slot="action-slot" slot-scope="text, record">
-            <a v-has="'log:loginlog:edit'" @click="handleEdit(record)">编辑</a>
-            <a-divider type="vertical" />
-            <a-popconfirm v-has="'log:loginlog:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
-              <a href="javascript:">删除</a>
-            </a-popconfirm>
-          </template>
-        </a-table>
-      </div>
-    </a-card>
+
   </div>
 </template>
 
 <script>
 import { getPage } from '@/api/log/login-log'
-import { TablePageMixin } from '@/mixins'
+import ProTable from '@/components/Table/ProTable'
 
 export default {
   name: 'LoginLogPage',
-  mixins: [TablePageMixin],
+  components: { ProTable },
   data() {
     return {
-      getPage: getPage,
+      rowKey: 'id',
+      tableRequest: (queryParam) => {
+        if (this.searchTimeValue && this.searchTimeValue.length === 2){
+          queryParam = Object.assign({}, queryParam, {
+            startTime: this.searchTimeValue[0],
+            endTime: this.searchTimeValue[1]
+          })
+        }
+        return getPage(queryParam)
+      },
 
       columns: [
         {
@@ -169,12 +159,8 @@ export default {
   methods: {
     onTimeChange(dates, dateStrings) {
       this.searchTimeValue = dateStrings
-      this.queryParam.startTime = dateStrings[0]
-      this.queryParam.endTime = dateStrings[1]
     },
-    // 清空搜索条件
-    resetSearchForm() {
-      this.queryParam = {}
+    resetSearchTime(){
       this.searchTimeValue = []
     }
   }

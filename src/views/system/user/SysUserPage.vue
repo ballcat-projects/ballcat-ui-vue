@@ -5,7 +5,7 @@
         <a-card
           :body-style="{ padding: '24px 18px' }"
           :bordered="false"
-          style="min-width: 200px; margin-bottom: 16px; min-height: calc(100vh - 122px);"
+          :style="{minWidth: '200px', height: organizationColHeight}"
         >
           <a-input-search style="margin-bottom: 8px" placeholder="Search" @change="searchOrganization" />
           <a-tree
@@ -33,156 +33,148 @@
         </a-card>
       </a-col>
       <a-col ref="sysUserCol" :md="19">
-        <div class="ant-pro-table-search">
-          <a-form v-bind="searchFormLayout">
+        <pro-table
+          ref="table"
+          toolbar-title="系统用户"
+          :row-key="rowKey"
+          :request="tableRequest"
+          :columns="columns"
+          :row-selection="{}"
+          table-alert-option-render="alert-option"
+          :scroll="{ x: 800 }"
+        >
+          <template #search-form="searchFormState">
             <a-row :gutter="16">
               <a-col :md="8" :sm="24">
                 <a-form-item label="用户名">
-                  <a-input v-model="queryParam.username" placeholder="" />
+                  <a-input v-model="searchFormState.queryParam.username" placeholder="请输入" />
                 </a-form-item>
               </a-col>
               <a-col :md="8" :sm="24">
                 <a-form-item label="状态">
-                  <dict-select v-model="queryParam.status" allow-clear dict-code="user_status" />
+                  <dict-select v-model="searchFormState.queryParam.status" allow-clear dict-code="user_status" />
                 </a-form-item>
               </a-col>
-              <template v-if="advanced">
+              <template v-if="!searchFormState.collapsed">
                 <a-col :md="8" :sm="24">
                   <a-form-item label="昵称">
-                    <a-input v-model="queryParam.nickname" style="width: 100%" />
+                    <a-input v-model="searchFormState.queryParam.nickname" placeholder="请输入" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="8" :sm="24">
                   <a-form-item label="邮箱">
-                    <a-input v-model="queryParam.email" style="width: 100%" />
+                    <a-input v-model="searchFormState.queryParam.email" placeholder="请输入" />
                   </a-form-item>
                 </a-col>
                 <a-col :md="8" :sm="24">
                   <a-form-item label="电话">
-                    <a-input-number v-model="queryParam.phone" style="width: 100%" />
+                    <a-input-number v-model="searchFormState.queryParam.phone" placeholder="请输入" style="width: 100%" />
                   </a-form-item>
                 </a-col>
               </template>
-              <a-col :md="8" :sm="24" class="table-page-search-wrapper">
-                <div class="table-page-search-submitButtons">
-                  <a-button type="primary" :loading="loading" @click="reloadTable">查询</a-button>
-                  <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-                  <a style="margin-left: 8px" @click="toggleAdvanced">
-                    {{ advanced ? '收起' : '展开' }}
-                    <a-icon :type="advanced ? 'up' : 'down'" />
-                  </a>
-                </div>
+              <a-col :xl="8" :md="12" :sm="24">
+                <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+                  <a-space size="middle">
+                    <a-space>
+                      <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                      <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+                    </a-space>
+                    <a @click="searchFormState.toggleSearchCollapsed">
+                      {{ searchFormState.collapsed ? '展开': '收起' }}
+                      <a-icon :type="searchFormState.collapsed ? 'down': 'up'" />
+                    </a>
+                  </a-space>
+                </a-form-item>
               </a-col>
+
             </a-row>
-          </a-form>
-        </div>
-        <a-card :bordered="false" :body-style="{ paddingTop: 0, paddingBottom: 0 }">
-          <!-- 操作按钮区域 -->
-          <div class="ant-pro-table-toolbar">
-            <div class="ant-pro-table-toolbar-title">系统用户</div>
-            <div class="ant-pro-table-toolbar-option">
-              <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'system:user:edit'">
-                <template #overlay>
-                  <a-menu @click="handleUpdateStatus">
-                    <a-menu-item key="1">
-                      <a-icon type="delete" />
-                      开启
-                    </a-menu-item>
-                    <!-- lock | unlock -->
-                    <a-menu-item key="0">
-                      <a-icon type="lock" />
-                      锁定
-                    </a-menu-item>
-                  </a-menu>
-                </template>
-                <a-button style="margin-left: 8px">
-                  批量操作
-                  <a-icon type="down" />
-                </a-button>
-              </a-dropdown>
-              <a-button
-                v-has="'system:user:add'"
-                type="primary"
-                icon="plus"
-                @click="handleAdd()"
-              >新建</a-button>
-            </div>
-          </div>
+          </template>
 
-          <div class="ant-pro-table-wrapper">
-            <a-alert :show-icon="true" style="margin-bottom: 16px">
-              <template #message>
-                <span
-                  style="margin-right: 12px"
-                >已选择: <a style="font-weight: 600">{{ selectedRows.length }}</a></span>
-                <a v-show="selectedRows.length > 0" style="margin-left: 24px" @click="onClearSelected">清空</a>
-              </template>
-            </a-alert>
 
-            <!--数据表格-->
-            <a-table
-              ref="table"
-              size="middle"
-              :row-key="rowKey"
-              :columns="columns"
-              :data-source="dataSource"
-              :pagination="pagination"
-              :loading="loading"
-              :alert="{ show: true, clear: true }"
-              :row-selection="{ onChange: onSelectChange, selectedRowKeys: selectedRowKeys }"
-              :scroll="{ x: 800 }"
-              @change="handleTableChange"
-            >
-              <!--数据表格-->
-              <template #status-slot="text">
-                <dict-badge dict-code="user_status" :value="text" />
-              </template>
-              <template #gender-slot="text">
-                <dict-text dict-code="gender" :value="text" />
-              </template>
-              <template #avatar-slot="text, record">
-                <a-avatar
-                  shape="square"
-                  :src="fileAbsoluteUrl(record.avatar)"
-                  icon="user"
-                  size="large"
-                  @click="beforeUpdateAvatar(record.userId)"
-                />
-              </template>
-
-              <template #action-slot="text, record">
-                <a-dropdown v-if="$has('system:user:pass') || $has('system:user:del')">
-                  <a class="ant-dropdown-link" href="#">
-                    操作
-                  </a>
+          <!-- alert 操作区域 -->
+          <template #alert-option="alertState">
+            <div v-show="alertState.selectedRows.length > 0">
+              <a-space size="middle">
+                <a-dropdown v-has="'system:user:edit'">
                   <template #overlay>
                     <a-menu>
-                      <a-menu-item v-has="'system:user:edit'">
-                        <a @click="handleEdit(record)">编辑</a>
+                      <a-menu-item key="1" @click="handleUpdateStatus(alertState.selectedRowKeys, 1)">
+                        <a-icon type="delete" />
+                        开启
                       </a-menu-item>
-                      <a-menu-item v-has="'system:user:grant'">
-                        <a @click="handleGrant(record)">授权</a>
-                      </a-menu-item>
-                      <a-menu-item v-has="'system:user:pass'">
-                        <a @click="changePass(record)">改密</a>
-                      </a-menu-item>
-                      <a-menu-item v-has="'system:user:del'">
-                        <a-popconfirm title="确认要删除吗？" @confirm="() => handleDel(record)">
-                          <a href="javascript:;">删除</a>
-                        </a-popconfirm>
+                      <a-menu-item key="0" @click="handleUpdateStatus(alertState.selectedRowKeys, 0)">
+                        <a-icon type="lock" />
+                        锁定
                       </a-menu-item>
                     </a-menu>
                   </template>
+                  <a @click="e => e.preventDefault()">
+                    批量操作&nbsp;<a-icon type="down" />
+                  </a>
                 </a-dropdown>
+                <a @click="alertState.onCleanSelected">清空</a>
+              </a-space>
+            </div>
+          </template>
+
+          <!-- 操作按钮区域 -->
+          <template #toolbar-action>
+            <a-button
+              v-has="'system:user:add'"
+              type="primary"
+              icon="plus"
+              @click="handleAdd()"
+            >新建
+            </a-button>
+          </template>
+
+          <!-- 表格展示相关插槽 -->
+          <template #status-slot="text">
+            <dict-badge dict-code="user_status" :value="text" />
+          </template>
+          <template #gender-slot="text">
+            <dict-text dict-code="gender" :value="text" />
+          </template>
+          <template #avatar-slot="text, record">
+            <a-avatar
+              shape="square"
+              :src="fileAbsoluteUrl(record.avatar)"
+              icon="user"
+              size="large"
+              @click="beforeUpdateAvatar(record.userId)"
+            />
+          </template>
+          <template #action-slot="text, record">
+            <a-dropdown v-if="$has('system:user:pass') || $has('system:user:del')">
+              <a class="ant-dropdown-link" href="#">
+                操作
+              </a>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item v-has="'system:user:edit'">
+                    <a @click="handleEdit(record)">编辑</a>
+                  </a-menu-item>
+                  <a-menu-item v-has="'system:user:grant'">
+                    <a @click="handleGrant(record)">授权</a>
+                  </a-menu-item>
+                  <a-menu-item v-has="'system:user:pass'">
+                    <a @click="changePass(record)">改密</a>
+                  </a-menu-item>
+                  <a-menu-item v-has="'system:user:del'">
+                    <a-popconfirm title="确认要删除吗？" @confirm="() => handleDel(record)">
+                      <a href="javascript:;">删除</a>
+                    </a-popconfirm>
+                  </a-menu-item>
+                </a-menu>
               </template>
-            </a-table>
-          </div>
-        </a-card>
+            </a-dropdown>
+          </template>
+        </pro-table>
       </a-col>
     </a-row>
 
     <!-- 用户表单弹窗 -->
-    <sys-user-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadTable" />
+    <sys-user-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadPageTable" />
 
     <!--头像弹框-->
     <cropper-modal ref="avatarModal" />
@@ -200,7 +192,6 @@
 </template>
 
 <script>
-import { TablePageMixin } from '@/mixins'
 import { getPage, delObj, updateStatus, updateAvatar } from '@/api/system/user'
 import { getTree } from '@/api/system/organization'
 import ScopeModal from './ScopeModal'
@@ -208,21 +199,26 @@ import PasswordModal from './PasswordModal'
 import CropperModal from '@/components/CropperModal'
 import { mapGetters } from 'vuex'
 import SysUserModalForm from '@/views/system/user/SysUserModalForm'
+import ProTable from '@/components/Table/ProTable'
 
 export default {
   name: 'SysUserPage',
   components: {
+    ProTable,
     CropperModal,
     ScopeModal,
     PasswordModal,
     SysUserModalForm
   },
-  mixins: [TablePageMixin],
-  data() {
+  data () {
     return {
-      getPage: getPage,
-      delObj: delObj,
       rowKey: 'userId',
+      tableRequest: (queryParam) => {
+        const extraParam = {
+          organizationId: this.organizationSelectedKeys.join(',')
+        }
+        return getPage(Object.assign({}, queryParam, extraParam))
+      },
 
       searchValue: '',
       organizationTree: [],
@@ -297,58 +293,77 @@ export default {
   computed: {
     ...mapGetters(['userInfo'])
   },
-  created() {
+  created () {
     getTree().then(res => {
       this.organizationTree = res.data
       // 默认展开一级组织
       this.organizationExpandedKeys = res.data.map(x => x.id)
     })
   },
-  mounted() {
-    const elt = this.$refs.sysUserCol.$el
-    this.organizationColHeight = elt.clientHeight + 20 + 'px'
+  mounted () {
+    // 利用 ResizeObserver，监听 dom size 修改
+    const resizeObserver = new ResizeObserver ( (mutations) => {
+      this.organizationColHeight = mutations[0].contentRect.height + 'px'
+    })
+    resizeObserver.observe(this.$refs.sysUserCol.$el)
   },
   methods: {
-    /**
-     * 新建用户
-     */
-    handleAdd() {
+    // 刷新表格
+    reloadPageTable (withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
+    // 新建用户
+    handleAdd () {
       this.$refs.formModal.add({ title: '新建用户' })
     },
     // 编辑用户
-    handleEdit(record) {
+    handleEdit (record) {
       this.$refs.formModal.update(record, { title: '编辑用户' })
     },
+    // 删除
+    handleDel (record) {
+      delObj(record[this.rowKey]).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.$refs.table.reloadTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
     // 授权
-    handleGrant(record) {
+    handleGrant (record) {
       if (!this.scopeInited) {
         this.scopeInited = true
       }
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.$refs.scopeModal.show(record)
       })
     },
     // 修改密码
-    changePass(record) {
+    changePass (record) {
       if (!this.passInited) {
         this.passInited = true
       }
-      this.$nextTick(function() {
+      this.$nextTick(function () {
         this.$refs.passwordModal.show(record)
       })
     },
     // 修改状态
-    handleUpdateStatus(e) {
-      updateStatus(this.selectedRowKeys, e.key).then(res => {
+    handleUpdateStatus (selectedRowKeys, status) {
+      updateStatus(selectedRowKeys, status).then(res => {
         if (res.code === 200) {
           this.$message.success(res.message)
-          this.reloadTable()
+          this.$refs.table.reloadTable()
         } else {
           this.$message.warning(res.message)
         }
       })
     },
-    beforeUpdateAvatar(userId) {
+    beforeUpdateAvatar (userId) {
       const _this = this
       _this.avatarUserId = userId
       _this.$refs.avatarModal.edit(fileObj => {
@@ -358,7 +373,7 @@ export default {
         })
       })
     },
-    handleUpdateAvatar(avatar) {
+    handleUpdateAvatar (avatar) {
       const userId = this.avatarUserId
       // 更新表格头像
       const newData = [...this.dataSource]
@@ -372,7 +387,7 @@ export default {
         this.userInfo.avatar = avatar
       }
     },
-    searchOrganization(e) {
+    searchOrganization (e) {
       const value = e.target.value
       let expandedKeys = []
       if (value) {
@@ -386,7 +401,7 @@ export default {
         autoExpandParent: true
       })
     },
-    matchParentKey(pId, treeList, result) {
+    matchParentKey (pId, treeList, result) {
       if (treeList) {
         let matched = false
         treeList.forEach(node => {
@@ -404,23 +419,16 @@ export default {
      * 选择组织机构
      * 被选择时，立刻进行查询操作
      */
-    selectOrganization(selectedKeys, e) {
+    selectOrganization (selectedKeys, e) {
       this.organizationSelectedKeys = selectedKeys
-      this.queryParam.organizationId = selectedKeys.join(',')
-      this.loadData()
+      this.$refs.table.loadData()
     },
     /**
      * 展开组织机构树
      * @param expandedKeys
      */
-    expandOrganization(expandedKeys) {
+    expandOrganization (expandedKeys) {
       this.organizationExpandedKeys = expandedKeys
-    },
-    // 清空选项
-    resetSearchForm() {
-      this.queryParam = {
-        organizationId: this.queryParam.organizationId
-      }
     }
   }
 }

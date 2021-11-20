@@ -3,7 +3,7 @@
     :title="'字典项：'+dictName"
     :visible="visible"
     :mask-closable="false"
-    :body-style="{padding:'12px 18px'}"
+    :body-style="{padding:'15px 18px'}"
     :confirm-loading="confirmLoading"
     :footer="null"
     :width="800"
@@ -12,27 +12,27 @@
     @cancel="handleClose"
   >
     <div v-show="tableShow">
-      <!-- 操作按钮区域 -->
-      <div style="padding-bottom: 10px">
-        <a-button
-          v-has="'system:dict:add'"
-          type="primary"
-          icon="plus"
-          @click="handleAdd(dictCode)"
-        >新建</a-button>
-      </div>
-
-      <!--数据表格区域-->
-      <a-table
+      <pro-table
         ref="table"
-        size="middle"
         :row-key="rowKey"
+        :request="tableRequest"
         :columns="columns"
-        :data-source="dataSource"
-        :pagination="pagination"
-        :loading="loading"
-        @change="handleTableChange"
+        default-sort-field="sort"
+        default-sort-order="asc"
+        :card-props="{bodyStyle : {padding: 0}}"
       >
+        <!-- 操作按钮区域 -->
+        <template #toolbar-title>
+          <a-button
+            v-has="'system:dict:add'"
+            type="primary"
+            icon="plus"
+            @click="handleAdd(dictCode)"
+          >新建
+          </a-button>
+        </template>
+
+        <!--数据表格区域-->
         <template #action-slot="text, record">
           <a v-has="'system:dict:edit'" @click="handleEdit(record)">编辑</a>
           <a-divider type="vertical" />
@@ -44,7 +44,7 @@
             <a href="javascript:" class="ballcat-text-danger">删除</a>
           </a-popconfirm>
         </template>
-      </a-table>
+      </pro-table>
     </div>
 
     <!--表单页面-->
@@ -59,12 +59,11 @@
 <script>
 import { getPage, delObj } from '@/api/system/dict-item'
 import SysDictItemPageForm from '@/views/system/dict/SysDictItemPageForm'
-import { TablePageMixin } from '@/mixins'
+import ProTable from '@/components/Table/ProTable'
 
 export default {
   name: 'DictItemModal',
-  components: { SysDictItemPageForm },
-  mixins: [TablePageMixin],
+  components: { ProTable, SysDictItemPageForm },
   data () {
     return {
       confirmLoading: false,
@@ -72,11 +71,12 @@ export default {
 
       dictName: '',
       dictCode: '',
-      queryParam: {},
-      lazyLoad: true,
+      tableShow: true,
 
-      getPage: getPage,
-      delObj: delObj,
+      rowKey: 'id',
+      tableRequest: (queryParam) => {
+        return getPage(Object.assign({}, queryParam, { dictCode: this.dictCode }))
+      },
 
       columns: [
         {
@@ -126,15 +126,18 @@ export default {
     }
   },
   methods: {
+    // 刷新表格
+    reloadPageTable (withFirstPage = true) {
+      this.$refs.table.reloadTable(withFirstPage)
+    },
     show (record) {
       this.tableShow = true
       this.visible = true
       this.dictName = record.title
       this.dictCode = record.code
-      this.queryParam = {
-        'dictCode': this.dictCode
-      }
-      this.loadData()
+      this.$nextTick(() => {
+        this.reloadPageTable()
+      })
     },
     handleOk (e) {
       this.confirmLoading = true
@@ -153,6 +156,30 @@ export default {
     handleEdit (record) {
       this.switchPage()
       this.$refs.pageForm.update(record, { title: '编辑字典项：' + this.dictName })
+    },
+    // 删除
+    handleDel (record) {
+      delObj(record[this.rowKey]).then(res => {
+        if (res.code === 200) {
+          this.$message.success(res.message)
+          this.$refs.table.reloadTable(false)
+        } else {
+          this.$message.error(res.message)
+        }
+      }).catch((e) => {
+        // 未被 axios拦截器处理过，则在这里继续处理
+        !e.resolved && this.$message.error(e.message || 'error request')
+      })
+    },
+    // 切换表格/表单
+    switchPage () {
+      window.scrollTo(0, 0)
+      this.tableShow = !this.tableShow
+    },
+    // 返回表格
+    backToPage (needRefresh) {
+      this.switchPage()
+      needRefresh && this.reloadPageTable(false)
     }
   }
 }
@@ -162,6 +189,6 @@ export default {
 /** 保证切换时的高度不要相差太多 */
 /deep/ .ant-table-content {
   height: 400px;
-  overflow:auto;
+  overflow: auto;
 }
 </style>
