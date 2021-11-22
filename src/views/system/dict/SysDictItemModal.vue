@@ -75,8 +75,8 @@ export default {
       tableShow: true,
 
       rowKey: 'id',
-      tableRequest: (queryParam) => {
-        return getPage(Object.assign({}, queryParam, { dictCode: this.dictCode }))
+      tableRequest: (requestParam) => {
+        return getPage(Object.assign({}, requestParam, { dictCode: this.dictCode }))
       },
 
       columns: [

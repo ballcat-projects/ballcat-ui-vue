@@ -8,21 +8,6 @@ import './alert.less'
 import './proTable.less'
 import { doRequest } from '@/utils/request'
 
-const SearchConfig = {
-  searchText: {
-    type: String,
-    default: '查询'
-  },
-  resetText: {
-    type: String,
-    default: '重置'
-  },
-  span: {
-    type: Object,
-    default: {}
-  }
-}
-
 export default {
   name: 'ProTable',
   props: Object.assign({}, AntTable.props, {
@@ -44,6 +29,7 @@ export default {
       type: String,
       default: ''
     },
+    // toolbar 选项区的控制
     toolbarOptions: {
       type: [Object, Boolean],
       default: () => {
@@ -52,12 +38,12 @@ export default {
     },
 
     // ================ alert ============================
-    // 自定义批量操作工具栏左侧信息区域, false 时整个 alert 都不显示
+    // 自定义批量操作工具栏左侧信息区域的 scopedSlotName, false 时整个 alert 都不显示
     tableAlertRender: {
       type: [String, Boolean],
       default: null
     },
-    // 自定义批量操作工具栏右侧选项区域, false 时不显示
+    // 自定义批量操作工具栏右侧选项区域的 scopedSlotName, false 时不显示
     tableAlertOptionRender: {
       type: [String, Boolean],
       default: null
@@ -68,7 +54,7 @@ export default {
       default: false
     },
 
-    // tableCard 属性
+    // ================= 包裹表格的 tableCard 属性 ==================
     cardProps: {
       type: [Object, Boolean],
       default: () => {
@@ -100,11 +86,6 @@ export default {
       type: String,
       default: 'middle'
     },
-    // 表格列
-    columns: {
-      type: Array,
-      required: true
-    },
     // 主键 默认id
     rowKey: {
       type: [String, Function],
@@ -117,7 +98,7 @@ export default {
     },
     // 默认排序字段
     defaultSortField: {
-      type: String,
+      type: [String, Boolean],
       default: null
     },
     // 默认排序字段的排序规则，升序 asc/降序 desc
@@ -228,7 +209,7 @@ export default {
      * 默认排序规则
      */
     initDefaultSort () {
-      if (this.defaultSortField !== '') {
+      if (this.defaultSortField !== false) {
         this.sortField = this.defaultSortField ? this.defaultSortField : littleCamelToUnderline(this.rowKey)
         this.sortOrder = this.sortOrder ? this.defaultSortField : 'desc'
       } else {

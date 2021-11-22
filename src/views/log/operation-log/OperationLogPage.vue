@@ -91,14 +91,14 @@ export default {
   data() {
     return {
       rowKey: 'id',
-      tableRequest: (queryParam) => {
+      tableRequest: (requestParam) => {
         if (this.searchTimeValue && this.searchTimeValue.length === 2){
-          queryParam = Object.assign({}, queryParam, {
+          requestParam = Object.assign({}, requestParam, {
             startTime: this.searchTimeValue[0],
             endTime: this.searchTimeValue[1]
           })
         }
-        return getPage(queryParam)
+        return getPage(requestParam)
       },
 
       columns: [
