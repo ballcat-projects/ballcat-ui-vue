@@ -35,7 +35,7 @@
         </template>
 
         <!-- 操作按钮区域 -->
-        <template>
+        <template #toolbar-action>
           <a-button
             v-has="'notify:announcement:add'"
             type="primary"
