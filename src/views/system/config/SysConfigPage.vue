@@ -120,7 +120,9 @@ export default {
           sorter: true
         },
         {
+          key: 'operate',
           title: '操作',
+          dataIndex: 'action',
           align: 'center',
           width: 100,
           scopedSlots: { customRender: 'action-slot' }

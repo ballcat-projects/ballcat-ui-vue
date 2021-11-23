@@ -113,6 +113,7 @@ export default {
           sorter: true
         },
         {
+          key: 'operate',
           title: '操作',
           align: 'center',
           width: 160,

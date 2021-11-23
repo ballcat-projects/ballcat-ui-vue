@@ -101,7 +101,7 @@ export default {
           dataIndex: 'name',
           sorter: true,
           width: 150,
-          ellipsis: true
+          ellipsis: true,
         },
         {
           title: '角色标识',
@@ -137,6 +137,7 @@ export default {
           sorter: true
         },
         {
+          key: 'operate',
           title: '操作',
           align: 'center',
           width: 180,

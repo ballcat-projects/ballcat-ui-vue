@@ -160,6 +160,7 @@ export default {
           width: 150
         },
         {
+          key: 'operate',
           title: '操作',
           align: 'center',
           width: 150,
