@@ -7,6 +7,7 @@ import './toolbar.less'
 import './alert.less'
 import './proTable.less'
 import { doRequest } from '@/utils/request'
+import TableColumnSetting from './ColumnSetting'
 
 export default {
   name: 'ProTable',
@@ -78,7 +79,8 @@ export default {
     // 分页数据加载成功钩子函数
     onPageLoadSuccess: {
       type: Function,
-      default: () => {
+      default: function (){
+
       }
     },
     // 表格密度
@@ -95,6 +97,13 @@ export default {
     lazyLoad: {
       type: Boolean,
       default: false
+    },
+    // 默认的 column 状态
+    defaultColumnState: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     },
     // 默认排序字段
     defaultSortField: {
@@ -128,6 +137,7 @@ export default {
       }
     }
   }),
+  components: { TableColumnSetting },
   data () {
     return {
       // 查询参数
@@ -176,6 +186,10 @@ export default {
       localSize: this.size,
       // 数据数组
       localDataSource: this.dataSource,
+      // 列设置，根据 hideInTable 属性，过滤掉当前不可见的元素
+      localColumns: this.loopColumn(this.columns, (x) => x.hideIntable),
+      // 字段的排序和显示属性, key: dataIndex, value（boolean）: 是否显示在表格中
+      tableColumns: this.localColumns,
       // 本地分页器
       localPagination: this.pagination instanceof Object ? Object.assign({}, this.pagination) : this.pagination
     }
@@ -193,6 +207,23 @@ export default {
     !this.lazyLoad && this.reloadTable()
   },
   methods: {
+    loopColumn (columns, excluder) {
+      const result = []
+      for (let column of columns) {
+        if (excluder(column)) {
+          continue
+        }
+        if (!column.children) {
+          result.push(column)
+        } else if (column.children.length > 0) {
+          let data = this.loopColumn(column.children, excluder)
+          if (data.length > 0) {
+            result.push(Object.assign({}, column, { children: data }))
+          }
+        }
+      }
+      return result
+    },
     /**
      * 切换表格的 size
      */
@@ -223,7 +254,7 @@ export default {
      * @param withFirstPage
      */
     reloadTable (withFirstPage = true) {
-      if(withFirstPage && this.enablePagination){
+      if (withFirstPage && this.enablePagination) {
         this.localPagination.current = 1
       }
       this.loadData()
@@ -260,13 +291,13 @@ export default {
         onSuccess: (res) => {
           const data = res.data
 
-          if(this.enablePagination){
+          if (this.enablePagination) {
             // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
             if (data.records.length === 0 && this.localPagination.current > 1) {
               this.localPagination.current--
               this.loadData()
               return
-            }else{
+            } else {
               this.localPagination.total = data.total
             }
           }
@@ -409,17 +440,21 @@ export default {
 
           if (finalToolbarOptions.reload) {
             reloadOption = (
-              <a-icon
-                type="reload"
-                class="ballcat-pro-table-list-toolbar-setting-item"
-                onClick={() => this.reloadTable(false)}/>
+              <a-tooltip title="刷新">
+                <a-icon
+                  type="reload"
+                  class="ballcat-pro-table-list-toolbar-setting-item"
+                  onClick={() => this.reloadTable(false)}/>
+              </a-tooltip>
             )
           }
 
           if (finalToolbarOptions.density) {
             densityOption = (
               <a-dropdown class="ballcat-pro-table-list-toolbar-setting-item" trigger={['click']}>
-                <a-icon type="column-height"/>
+                <a-tooltip title="密度">
+                  <a-icon type="column-height"/>
+                </a-tooltip>
                 <a-menu slot="overlay" selectedKeys={this.tableSizeKeys}
                         onClick={(e) => this.switchTableSize(e)}>
                   <a-menu-item key="default">
@@ -438,39 +473,30 @@ export default {
 
           if (finalToolbarOptions.setting) {
             settingOption = (
-              <a-popover
-                placement="bottomRight"
-                class="ballcat-pro-table-list-toolbar-setting-item"
-              >
-                <template slot="content">
-                  <a-icon type="setting"/>(施工中)
-                </template>
-                <template slot="title">
-                  <div style="width:20px"></div>
-                  <a-checkbox>
-                    列展示
-                  </a-checkbox>
-                  <a>重置</a>
-                </template>
-                <a-icon type="setting"/>
-              </a-popover>
+              <table-column-setting
+                columns={this.localColumns}
+                defaultColumnState={this.defaultColumnState}
+                onChange={ x => this.tableColumns = x}
+                class="ballcat-pro-table-list-toolbar-setting-item"/>
             )
           }
 
           if (finalToolbarOptions.fullScreen) {
             fullScreenOption = (
-              <a-icon
-                type={this.tableFullScreen ? 'fullscreen-exit' : 'fullscreen'}
-                class="ballcat-pro-table-list-toolbar-setting-item"
-                onClick={() => this.switchTableFullScreen()}
-              />
+              <a-tooltip title="全屏">
+                <a-icon
+                  type={this.tableFullScreen ? 'fullscreen-exit' : 'fullscreen'}
+                  class="ballcat-pro-table-list-toolbar-setting-item"
+                  onClick={() => this.switchTableFullScreen()}
+                />
+              </a-tooltip>
             )
           }
         }
 
         // toolbarTitle 优先使用 slot
         let toolbarTitleDom = this.$slots['toolbar-title']
-        if(toolbarTitleDom == null){
+        if (toolbarTitleDom == null) {
           toolbarTitleDom = this.toolbarTitle
         }
 
@@ -530,6 +556,9 @@ export default {
       }
     }
 
+    // 过滤掉不展示的列（列控制显隐）
+    props.columns =  this.tableColumns
+
     // 工具栏
     const toolbarListDom = this.renderToolbarList()
 
@@ -559,7 +588,7 @@ export default {
               <a-card
                 bordered={false}
                 body-style={toolbarListDom ? { paddingTop: 0 } : { padding: 0 }}
-                {...{ props: {...cardProps} }}
+                {...{ props: { ...cardProps } }}
               >
                 {tableDom}
               </a-card>

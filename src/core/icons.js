@@ -10,5 +10,7 @@ import i18nIcon from '@/assets/icons/i18n.svg?inline' // path to your '*.svg?inl
 import colorPicker from '@/assets/icons/colorPicker.svg?inline'
 import compress from '@/assets/icons/compress.svg?inline'
 import expend from '@/assets/icons/expend.svg?inline'
+import draggableIcon from '@/assets/icons/draggable.svg?inline'
 
-export { i18nIcon, colorPicker, compress, expend }
+
+export { i18nIcon, colorPicker, compress, expend, draggableIcon }
