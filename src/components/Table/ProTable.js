@@ -347,8 +347,9 @@ export default {
       this.search.collapsed = !this.search.collapsed
     },
     // 清空搜索条件
-    resetSearchForm () {
+    resetSearchForm (needReload = true) {
       this.queryParam = {}
+      needReload && this.reloadTable(true)
     },
     renderSearchForm () {
       let searchForm = null
