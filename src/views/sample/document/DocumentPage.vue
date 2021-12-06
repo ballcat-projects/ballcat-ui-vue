@@ -31,7 +31,6 @@
       <!-- 操作按钮区域 -->
       <template #toolbar-action>
         <a-button
-          v-has="'sample:document:add'"
           type="primary"
           icon="plus"
           @click="handleAdd()"
@@ -42,7 +41,6 @@
       <!--数据表格区域-->
       <template #action-slot="text, record">
         <a-popconfirm
-          v-has="'sample:document:del'"
           title="确认要删除吗？"
           @confirm="() => handleDel(record)"
         >
