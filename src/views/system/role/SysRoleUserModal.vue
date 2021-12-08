@@ -61,7 +61,7 @@
             <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
               <a-space>
                 <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
-                <a-button style="margin-left: 8px" @click="searchFormState.resetSearchForm">重置</a-button>
+                <a-button @click="searchFormState.resetSearchForm">重置</a-button>
               </a-space>
             </a-form-item>
           </a-col>
@@ -84,7 +84,7 @@
 
 <script>
 import ProTable from '@/components/Table/ProTable'
-import { delObj, getRoleUserPage, unbindRoleUser } from '@/api/system/role'
+import { getRoleUserPage, unbindRoleUser } from '@/api/system/role'
 import { getTree } from '@/api/system/organization'
 import { doRequest } from '@/utils/request'
 
@@ -162,8 +162,9 @@ export default {
     show (record) {
       this.visible = true
       this.roleCode = record.code
-      this.$refs.table.resetSearchForm()
-      this.reloadPageTable()
+      this.$nextTick(() => {
+        this.$refs.table.resetSearchForm(true)
+      })
     },
     handleOk (e) {
       this.confirmLoading = true
