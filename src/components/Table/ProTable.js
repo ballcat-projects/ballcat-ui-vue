@@ -139,6 +139,8 @@ export default {
   }),
   components: { TableColumnSetting },
   data () {
+    // 展示的表格列
+    let showColumns = this.loopColumn(this.columns, (x) => x.hideIntable)
     return {
       // 查询参数
       queryParam: {},
@@ -187,9 +189,9 @@ export default {
       // 数据数组
       localDataSource: this.dataSource,
       // 列设置，根据 hideInTable 属性，过滤掉当前不可见的元素
-      localColumns: this.loopColumn(this.columns, (x) => x.hideIntable),
+      localColumns: showColumns,
       // 字段的排序和显示属性, key: dataIndex, value（boolean）: 是否显示在表格中
-      tableColumns: this.localColumns,
+      tableColumns: showColumns,
       // 本地分页器
       localPagination: this.pagination instanceof Object ? Object.assign({}, this.pagination) : this.pagination
     }
@@ -423,7 +425,7 @@ export default {
       }
       return alert
     },
-    renderToolbarList (finalToolbarOptions) {
+    renderToolbarList () {
       let toolbarList = null
       if (this.toolbarEnabled) {
         // 表格刷新
