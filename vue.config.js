@@ -22,14 +22,20 @@ function isProd() {
 // 页面标题
 const name = projectConfig.projectTitle
 
+
+// cdn 前缀，免费的 cdn 有 unpkg 和 jsdelivr
+// 注意：免费 cdn 不稳定，建议生成使用付费 cdn，或者使用 oss 地址
+const cndPrefix = 'unpkg.com'
+// const cndPrefix = 'cdn.jsdelivr.net/npm'
+
 const assetsCDN = {
   css: [],
   // https://unpkg.com/browse/vue@2.6.10/
   js: [
-    '//cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.min.js',
-    '//cdn.jsdelivr.net/npm/vue-router@3.5.1/dist/vue-router.min.js',
-    '//cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
-    '//cdn.jsdelivr.net/npm/axios@0.21.1/dist/axios.min.js'
+    `//${cndPrefix}/vue@2.6.12/dist/vue.min.js`,
+    `//${cndPrefix}/vue-router@3.5.1/dist/vue-router.min.js`,
+    `//${cndPrefix}/vuex@3.6.2/dist/vuex.min.js`,
+    `//${cndPrefix}/axios@0.21.1/dist/axios.min.js`
   ]
 }
 
