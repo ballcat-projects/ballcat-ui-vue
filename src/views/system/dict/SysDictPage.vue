@@ -8,6 +8,7 @@
       :columns="columns"
       :request="tableRequest"
       :scroll="{ x: 800 }"
+      :response-data-process="responseDataProcess"
     >
       <!-- 查询表单 -->
       <template #search-form="searchFormState">
@@ -44,17 +45,24 @@
       </template>
 
       <!--数据表格区域-->
-      <template #type-slot="text">
-        <dict-tag dict-code="dict_property" :value="text" />
+      <template #status-slot="text, record">
+        <a-switch
+          v-model="record.showStatus"
+          :disabled="!$has('system:dict:updateStatus')"
+          @change="
+            (checked) => {
+              handleUpdateStatus(record, checked)
+            }
+          "
+        >
+          <a-icon slot="checkedChildren" type="check" />
+          <a-icon slot="unCheckedChildren" type="close" />
+        </a-switch>
       </template>
       <template #action-slot="text, record">
         <a v-has="'system:dict:edit'" @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="handleShowItem(record)">字典项</a>
-        <a-divider type="vertical" />
-        <a-popconfirm v-has="'system:dict:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
-          <a href="javascript:" class="ballcat-text-danger">删除</a>
-        </a-popconfirm>
       </template>
     </ProTable>
 
@@ -67,7 +75,7 @@
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/system/dict'
+import { getPage, statusObj } from '@/api/system/dict'
 import DictItemModal from './SysDictItemModal'
 import SysDictModalForm from '@/views/system/dict/SysDictModalForm'
 import ProTable from '@/components/Table/ProTable'
@@ -95,12 +103,6 @@ export default {
           ellipsis: true
         },
         {
-          title: '属性',
-          dataIndex: 'editable',
-          width: 60,
-          scopedSlots: { customRender: 'type-slot' }
-        },
-        {
           title: '备注',
           dataIndex: 'remarks',
           width: 250,
@@ -113,6 +115,13 @@ export default {
           sorter: true
         },
         {
+          title: '启用状态',
+          dataIndex: 'showStatus',
+          width: 80,
+          scopedSlots: { customRender: 'status-slot' },
+          align: 'center'
+        },
+        {
           key: 'operate',
           title: '操作',
           align: 'center',
@@ -121,8 +130,7 @@ export default {
         }
       ],
 
-      itemModalInited: false,
-      dictCodes: ['dict_property']
+      itemModalInited: false
     }
   },
   methods: {
@@ -138,17 +146,21 @@ export default {
     handleEdit(record) {
       this.$refs.formModal.update(record, { title: '编辑字典' })
     },
-    // 删除
-    handleDel (record) {
-      doRequest(delObj(record[this.rowKey]), {
-        onSuccess: () => {
-          this.reloadPageTable(false)
-        }
+    // 更新状态
+    handleUpdateStatus(record, checked) {
+      doRequest(statusObj(record[this.rowKey], checked ? 1 : 0), {
+        onSuccess: () => {}
       })
     },
     // 字典项表格弹窗
     handleShowItem(record) {
       this.$refs.dictItemModal.show(record)
+    },
+    responseDataProcess(data) {
+      data.records.forEach((item) => {
+        item.showStatus = item.status === 1
+      })
+      return data.records
     }
   }
 }
