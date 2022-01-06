@@ -24,7 +24,7 @@ export default {
       return  this.dictItems.find(dictItem => dictItem.value === this.value) || {};
     },
     showText() {
-      return (this.dictItem && this.dictItem.name) || this.value;
+      return (this.dictItem && this.dictItem.name) || this.value + '';
     }
   },
 }

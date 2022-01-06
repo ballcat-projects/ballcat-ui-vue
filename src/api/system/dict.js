@@ -39,10 +39,10 @@ export function getObj(id) {
   })
 }
 
-export function delObj(id) {
+export function statusObj(id, status) {
   return request({
-    url: '/system/dict/' + id,
-    method: 'delete'
+    url: '/system/dict/' + id + '/' + status,
+    method: 'patch'
   })
 }
 

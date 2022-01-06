@@ -25,20 +25,19 @@
         <a-input v-decorator="['title', decoratorOptions.title]" placeholder="字典名称" />
       </a-form-item>
 
-      <a-form-item label="字典类型">
-        <dict-radio-group
-          v-decorator="['editable',decoratorOptions.editable]"
-          placeholder="字典类型"
-          dict-code="dict_property"
-        />
-      </a-form-item>
-
       <a-form-item label="数据类型">
         <dict-radio-group
           v-decorator="['valueType',decoratorOptions.valueType]"
           placeholder="数据类型"
           dict-code="dict_value_type"
         />
+      </a-form-item>
+
+      <a-form-item label="状态">
+        <a-radio-group v-decorator="['status', decoratorOptions.status]" :disabled="!$has('system:dict:updateStatus')">
+          <a-radio :value="1"> 启用 </a-radio>
+          <a-radio :value="0"> 禁用 </a-radio>
+        </a-radio-group>
       </a-form-item>
 
       <a-form-item label="备注">
@@ -83,12 +82,12 @@ export default {
         title: {
           rules: [{ required: true, message: '请输入字典名称!' }]
         },
-        editable: {
-          rules: [{ required: true, message: '请选择字典类型!' }],
-          initialValue: 1
-        },
         valueType: {
           rules: [{ required: true, message: '请选择数据类型!' }],
+          initialValue: 1
+        },
+        status: {
+          rules: [{ required: true, message: '请选择状态!' }],
           initialValue: 1
         }
       }
