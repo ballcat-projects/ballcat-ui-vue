@@ -34,7 +34,7 @@
       </a-form-item>
 
       <a-form-item label="状态">
-        <a-radio-group v-decorator="['status', decoratorOptions.status]" :disabled="!$has('system:dict:updateStatus')">
+        <a-radio-group v-decorator="['status', decoratorOptions.status]">
           <a-radio :value="1"> 启用 </a-radio>
           <a-radio :value="0"> 禁用 </a-radio>
         </a-radio-group>

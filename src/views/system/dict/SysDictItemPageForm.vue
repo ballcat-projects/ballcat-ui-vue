@@ -18,7 +18,7 @@
     </a-form-item>
 
     <a-form-item label="数据值">
-      <a-input v-decorator="['value']" placeholder="数据值" />
+      <a-input v-decorator="['value']" placeholder="数据值提交后不可修改" :disabled="isUpdateForm" />
     </a-form-item>
 
     <a-row :gutter="16">

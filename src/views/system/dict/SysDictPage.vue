@@ -48,7 +48,7 @@
       <template #status-slot="text, record">
         <a-switch
           v-model="record.showStatus"
-          :disabled="!$has('system:dict:updateStatus')"
+          :disabled="!$has('system:dict:edit')"
           @change="
             (checked) => {
               handleUpdateStatus(record, checked)
