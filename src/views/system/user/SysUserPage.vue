@@ -148,7 +148,7 @@
               :src="fileAbsoluteUrl(record.avatar)"
               icon="user"
               size="large"
-              @click="beforeUpdateAvatar(record.userId)"
+              @click="beforeUpdateAvatar(record)"
             />
           </template>
           <template #action-slot="text, record">
@@ -365,25 +365,21 @@ export default {
         }
       })
     },
-    beforeUpdateAvatar (userId) {
+    beforeUpdateAvatar (record) {
       const _this = this
+      const userId = record.userId;
       _this.avatarUserId = userId
       _this.$refs.avatarModal.edit(fileObj => {
         return updateAvatar(userId, fileObj).then(res => {
-          _this.handleUpdateAvatar(res.data)
+          _this.handleUpdateAvatar(record, res.data)
           return res
         })
       })
     },
-    handleUpdateAvatar (avatar) {
+    handleUpdateAvatar (record, avatar) {
       const userId = this.avatarUserId
       // 更新表格头像
-      const newData = [...this.dataSource]
-      const target = newData.filter(item => userId === item.userId)[0]
-      if (target) {
-        target.avatar = avatar
-        this.dataSource = newData
-      }
+      record.avatar = avatar
       // 更新当前登陆用户
       if (this.userInfo.userId === userId) {
         this.userInfo.avatar = avatar
