@@ -244,7 +244,7 @@ export default {
     initDefaultSort () {
       if (this.defaultSortField !== false) {
         this.sortField = this.defaultSortField ? this.defaultSortField : littleCamelToUnderline(this.rowKey)
-        this.sortOrder = this.sortOrder ? this.defaultSortField : 'desc'
+        this.sortOrder = this.defaultSortOrder ? this.defaultSortOrder : 'desc'
       } else {
         this.sortField = null
         this.sortOrder = null
