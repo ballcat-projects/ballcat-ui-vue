@@ -15,7 +15,7 @@
     <lang-select v-if="enableI18n" class="ballcat-global-header-tool-action" />
 
     <!--    <lang-select class="ballcat-global-header-tool-action" />-->
-    <span class="ballcat-global-header-tool-action" @click="showSettingDrawer">
+    <span v-if="enableLayoutSetting" class="ballcat-global-header-tool-action" @click="showSettingDrawer">
       <a-icon type="more" style="font-size: 16px; font-weight: bolder" />
       <setting-drawer ref="settingDrawer" :show-handle="false" />
     </span>
@@ -41,7 +41,8 @@ export default {
   },
   data() {
     return {
-      enableI18n: projectConfig.enableI18n
+      enableI18n: projectConfig.enableI18n,
+      enableLayoutSetting: projectConfig.enableLayoutSetting
     }
   },
   methods: {

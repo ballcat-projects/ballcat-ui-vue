@@ -185,8 +185,7 @@ const vueConfig = {
   transpileDependencies: []
 }
 
-// preview.pro.loacg.com only do not use in your production;
-if (!isProd()) {
+if (projectConfig.enableLayoutSetting) {
   // add `ThemeColorReplacer` plugin to webpack plugins
   vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 }

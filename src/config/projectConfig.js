@@ -14,6 +14,9 @@ module.exports = {
   // 若服务端不支持，则本地启动时，抛出 socket 异常，导致 proxyServer 关闭
   enableWebsocket: true,
 
+  // 开启布局设置
+  enableLayoutSetting: true,
+
   // ------------- 国际化配置分隔符 -----------------
 
   // 是否开启国际化
