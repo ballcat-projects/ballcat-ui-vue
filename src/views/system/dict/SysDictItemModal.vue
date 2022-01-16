@@ -44,6 +44,18 @@
             <a href="javascript:" class="ballcat-text-danger">删除</a>
           </a-popconfirm>
         </template>
+
+        <!-- 状态 slot -->
+        <template #status-slot="text, record">
+          <a-switch
+            :checked="record.status === 1"
+            :disabled="!$has('system:dict:edit')"
+            @change="(checked) => handleUpdateStatus(record, checked)"
+          >
+            <a-icon slot="checkedChildren" type="check" />
+            <a-icon slot="unCheckedChildren" type="close" />
+          </a-switch>
+        </template>
       </pro-table>
     </div>
 
@@ -57,7 +69,7 @@
 </template>
 
 <script>
-import { getPage, delObj } from '@/api/system/dict-item'
+import { getPage, delObj, updateStatus } from '@/api/system/dict-item'
 import SysDictItemPageForm from '@/views/system/dict/SysDictItemPageForm'
 import ProTable from '@/components/Table/ProTable'
 import { doRequest } from '@/utils/request'
@@ -101,6 +113,13 @@ export default {
           title: '排序',
           dataIndex: 'sort',
           width: '45px',
+          align: 'center'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          width: 80,
+          scopedSlots: { customRender: 'status-slot' },
           align: 'center'
         },
         {
@@ -164,6 +183,15 @@ export default {
       doRequest(delObj(record[this.rowKey]), {
         onSuccess: () => {
           this.reloadPageTable(false)
+        }
+      })
+    },
+    // 更新状态
+    handleUpdateStatus(record, checked) {
+      let status = checked ? 1 : 0
+      doRequest(updateStatus(record[this.rowKey], status), {
+        onSuccess: () => {
+          record.status = status
         }
       })
     },

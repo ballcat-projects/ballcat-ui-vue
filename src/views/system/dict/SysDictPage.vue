@@ -8,7 +8,6 @@
       :columns="columns"
       :request="tableRequest"
       :scroll="{ x: 800 }"
-      :response-data-process="responseDataProcess"
     >
       <!-- 查询表单 -->
       <template #search-form="searchFormState">
@@ -26,7 +25,9 @@
           <a-col :md="8" :sm="24" class="table-page-search-wrapper">
             <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
               <a-space>
-                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">
+                  查询
+                </a-button>
                 <a-button @click="searchFormState.resetSearchForm">重置</a-button>
               </a-space>
             </a-form-item>
@@ -41,28 +42,19 @@
           type="primary"
           icon="plus"
           @click="handleAdd()"
-        >新建</a-button>
+        >新建
+        </a-button>
       </template>
 
-      <!--数据表格区域-->
-      <template #status-slot="text, record">
-        <a-switch
-          v-model="record.showStatus"
-          :disabled="!$has('system:dict:edit')"
-          @change="
-            (checked) => {
-              handleUpdateStatus(record, checked)
-            }
-          "
-        >
-          <a-icon slot="checkedChildren" type="check" />
-          <a-icon slot="unCheckedChildren" type="close" />
-        </a-switch>
-      </template>
+
       <template #action-slot="text, record">
         <a v-has="'system:dict:edit'" @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a @click="handleShowItem(record)">字典项</a>
+        <a-divider type="vertical" />
+        <a-popconfirm v-has="'system:dict:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
+          <a href="javascript:" class="ballcat-text-danger">删除</a>
+        </a-popconfirm>
       </template>
     </ProTable>
 
@@ -75,7 +67,7 @@
 </template>
 
 <script>
-import { getPage, statusObj } from '@/api/system/dict'
+import { getPage, delObj } from '@/api/system/dict'
 import DictItemModal from './SysDictItemModal'
 import SysDictModalForm from '@/views/system/dict/SysDictModalForm'
 import ProTable from '@/components/Table/ProTable'
@@ -84,7 +76,7 @@ import { doRequest } from '@/utils/request'
 export default {
   name: 'SysDictPage',
   components: { ProTable, SysDictModalForm, DictItemModal },
-  data() {
+  data () {
     return {
       rowKey: 'id',
       tableRequest: getPage,
@@ -115,13 +107,6 @@ export default {
           sorter: true
         },
         {
-          title: '启用状态',
-          dataIndex: 'showStatus',
-          width: 80,
-          scopedSlots: { customRender: 'status-slot' },
-          align: 'center'
-        },
-        {
           key: 'operate',
           title: '操作',
           align: 'center',
@@ -135,32 +120,28 @@ export default {
   },
   methods: {
     // 刷新表格
-    reloadPageTable(withFirstPage = true) {
+    reloadPageTable (withFirstPage = true) {
       this.$refs.table.reloadTable(withFirstPage)
     },
     // 新建字典
-    handleAdd() {
+    handleAdd () {
       this.$refs.formModal.add({ title: '新建字典' })
     },
     // 编辑字典
-    handleEdit(record) {
+    handleEdit (record) {
       this.$refs.formModal.update(record, { title: '编辑字典' })
     },
-    // 更新状态
-    handleUpdateStatus(record, checked) {
-      doRequest(statusObj(record[this.rowKey], checked ? 1 : 0), {
-        onSuccess: () => {}
+    // 删除字典
+    handleDel (record) {
+      doRequest(delObj(record[this.rowKey]), {
+        onSuccess: () => {
+          this.reloadPageTable(false)
+        }
       })
     },
     // 字典项表格弹窗
-    handleShowItem(record) {
+    handleShowItem (record) {
       this.$refs.dictItemModal.show(record)
-    },
-    responseDataProcess(data) {
-      data.records.forEach((item) => {
-        item.showStatus = item.status === 1
-      })
-      return data.records
     }
   }
 }

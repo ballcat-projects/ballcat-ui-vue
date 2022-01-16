@@ -31,3 +31,10 @@ export function putObj(obj) {
     data: obj
   })
 }
+
+export function updateStatus(id, status) {
+  return request({
+    url: `/system/dict/item/${id}?status=${status}`,
+    method: 'patch'
+  })
+}

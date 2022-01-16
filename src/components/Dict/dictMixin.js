@@ -13,9 +13,9 @@ export default {
     },
     itemIsDisabled: { // 给字典项添加是否禁用的属性
       type: Function,
-      default: (dictItem, dictStatus) => {
-        // 根据字典启用禁用设置是否可编辑
-        return dictStatus !== 1
+      default: (dictItem) => {
+        // 根据字典项启用禁用设置是否禁用
+        return dictItem.status !== 1
       }
     }
 
@@ -43,7 +43,7 @@ export default {
             continue
           }
           // 字典项是否 disable
-          item.disabled = this.itemIsDisabled && this.itemIsDisabled(item, this.dictData.status)
+          item.disabled = this.itemIsDisabled && this.itemIsDisabled(item)
           // 选择名称，国际化处理
           item.name = this.i18nName(item)
 
