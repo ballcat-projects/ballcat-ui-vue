@@ -23,7 +23,9 @@ export default {
   },
   watch: {
     '$route' () {
-      this.iframeInit()
+      if(this.id !== this.$route.path){
+        this.iframeInit()
+      }
     }
   },
   created () {
@@ -31,6 +33,16 @@ export default {
     window.addEventListener('resize', this.iframeResize)
   },
   mounted () {
+    const iframe = this.$refs.iframe
+    if (iframe.attachEvent) {
+      iframe.attachEvent('onload', () => {
+        this.iframeLoading = false
+      })
+    } else {
+      iframe.onload = () => {
+        this.iframeLoading = false
+      }
+    }
     this.iframeResize()
   },
   destroyed () {
@@ -44,19 +56,9 @@ export default {
     },
     iframeResize () {
       const iframe = this.$refs.iframe
-      console.log(iframe, 'resize')
       if (iframe) {
         const clientHeight = document.getElementsByClassName('ant-layout-content')[0].clientHeight - 10
         iframe.style.height = `${clientHeight}px`
-        if (iframe.attachEvent) {
-          iframe.attachEvent('onload', () => {
-            this.iframeLoading = false
-          })
-        } else {
-          iframe.onload = () => {
-            this.iframeLoading = false
-          }
-        }
       }
     }
   }
