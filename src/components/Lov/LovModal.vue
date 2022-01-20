@@ -2,7 +2,7 @@
   <a-modal
     :mask-closable="false"
     class="lov-model"
-    :confirm-loading="loading"
+    :confirm-loading="pageLoading"
     :centered="true"
     :title="enableI18n? $t(modalTitle): modalTitle"
     :width="modalWidth"
@@ -13,107 +13,118 @@
     @cancel="handleCancel"
   >
 
-    <!-- 搜索表单部分渲染 -->
-    <div v-if="searchOptions && searchOptions.length > 0" class="lov-search-wrapper">
-      <a-form-model>
-        <a-row :gutter="8">
-          <a-col
-            v-for="(item) in searchComponents"
-            :key="item.field"
-            :md="8"
-            :sm="16"
-          >
-            <a-form-model-item
-              :label="item.label"
-              :label-col="{ span: 7 }"
-              :wrapper-col="{ span: 16 }"
-              style="height:30px"
-            >
-              <a-input
-                v-if="item.type==='input'"
-                v-model="queryParam[item.field]"
-                :placeholder="item.placeholder"
-              />
-              <a-input-number
-                v-if="item.type==='number-input'"
-                v-model="queryParam[item.field]"
-                style="width: 100%"
-                :placeholder="item.placeholder"
-                :min="item.min || 1"
-                :max="item.max"
-              />
-              <a-select
-                v-if="item.type==='select'"
-                v-model="queryParam[item.field]"
-                allow-clear
-                :placeholder="item.placeholder"
-                :options="item.options"
-              />
-              <dict-select
-                v-if="item.type==='dict-select'"
-                v-model="queryParam[item.field]"
-                :placeholder="item.placeholder"
-                :dict-code="item.dictCode"
-              />
-            </a-form-model-item>
-          </a-col>
-          <!-- 搜索控制按钮 -->
-          <a-col
-            :xs="8"
-            :sm="4"
-            :md="8"
-            style="margin-top: 2px"
-          >
-            <div style="display:flex;">
-              <a-button
-                type="primary"
-                style="margin-left:5%"
-                :loading="loading"
-                @click="reloadTable"
-              >
-                {{ enableI18n? $t('action.query'): '查询' }}
-              </a-button>
-              <a-button style="margin-left:8px" @click="resetSearchForm">
-                {{ enableI18n? $t('action.reset'): '重置' }}
-              </a-button>
-            </div>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
-
-    <!-- 已选数据展示 -->
-    <div class="lov-selected-pool-wrapper">
-      <a-select
-        class="lov-select"
-        style="width: 100%"
-        :value="selectedRowKeys"
-        :open="false"
-        :mode="multiple? 'tags' : 'default'"
-        :options="selectOptions"
-        :placeholder="enableI18n? $t('lov.selectedData') :'已选数据'"
-        :show-search="false"
-        @change="handleDeselect"
-      />
-    </div>
-
-    <a-table
+    <pro-table
       ref="table"
-      style="margin-top:-10px;"
-      :size="tableSize"
       :row-key="rowKey"
       :columns="tableColumns"
-      :data-source="dataSource"
-      :pagination="false"
-      :loading="loading"
+      :request="tableRequest"
+      :default-sort-field="sortField"
+      :on-page-load-success="onPageLoadSuccess"
+      :pagination="pagination"
+      :show-pagination="false"
+      :on-pagination-change="(localPagination) => pagination = localPagination"
+      :custom-row="multiple? onClickRowMulti: onClickRow"
       :row-selection="{
         selectedRowKeys,
         type: multiple ? 'checkbox':'radio',
-        onChange: onSelectChange
+        onChange: (rowKeys, rows) => {
+          selectedRowKeys = rowKeys
+          selectedRows = rows
+        }
       }"
-      :custom-row="multiple? onClickRowMulti: onClickRow"
-      @change="handleTableChange"
-    />
+      :toolbar-enabled="false"
+      :table-alert-render="false"
+      :card-props="{bodyStyle : {padding: 0}}"
+      search-form-class-name="lov-search-wrapper"
+    >
+
+      <template v-if="searchOptions && searchOptions.length > 0" #search-form="searchFormState">
+        <!-- 搜索表单部分渲染 -->
+        <a-form-model>
+          <a-row :gutter="8">
+            <a-col
+              v-for="(item) in searchComponents"
+              :key="item.field"
+              :md="8"
+              :sm="16"
+            >
+              <a-form-model-item
+                :label="item.label"
+                :label-col="{ span: 7 }"
+                :wrapper-col="{ span: 16 }"
+                style="height:30px"
+              >
+                <a-input
+                  v-if="item.type==='input'"
+                  v-model="searchFormState.queryParam[item.field]"
+                  :placeholder="item.placeholder"
+                />
+                <a-input-number
+                  v-if="item.type==='number-input'"
+                  v-model="searchFormState.queryParam[item.field]"
+                  style="width: 100%"
+                  :placeholder="item.placeholder"
+                  :min="item.min || 1"
+                  :max="item.max"
+                />
+                <a-select
+                  v-if="item.type==='select'"
+                  v-model="searchFormState.queryParam[item.field]"
+                  allow-clear
+                  :placeholder="item.placeholder"
+                  :options="item.options"
+                />
+                <dict-select
+                  v-if="item.type==='dict-select'"
+                  v-model="searchFormState.queryParam[item.field]"
+                  :placeholder="item.placeholder"
+                  :dict-code="item.dictCode"
+                />
+              </a-form-model-item>
+            </a-col>
+            <!-- 搜索控制按钮 -->
+            <a-col
+              :xs="8"
+              :sm="4"
+              :md="8"
+            >
+              <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
+                <a-space size="middle">
+                  <a-space>
+                    <a-button
+                      type="primary"
+                      :loading="searchFormState.loading"
+                      @click="searchFormState.reloadTable(true)"
+                    >查询
+                    </a-button>
+                    <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+                  </a-space>
+                </a-space>
+              </a-form-item>
+            </a-col>
+          </a-row>
+        </a-form-model>
+      </template>
+
+
+      <template #extend-box>
+        <!-- 已选数据展示 -->
+        <div class="lov-selected-pool-wrapper">
+          <a-select
+            class="lov-select"
+            style="width: 100%"
+            :value="selectedRowKeys"
+            :open="false"
+            :mode="multiple? 'tags' : 'default'"
+            :options="selectOptions"
+            :placeholder="enableI18n? $t('lov.selectedData') :'已选数据'"
+            :show-search="false"
+            @change="handleDeselect"
+          />
+        </div>
+      </template>
+
+    </pro-table>
 
     <template slot="footer">
       <div class="lov-pagination-wrapper">
@@ -125,28 +136,28 @@
           show-size-changer
           size="small"
           style="margin-left: 3%"
-          @change="loadData"
+          @change="$refs.table.loadData()"
         />
       </div>
 
       <a-button @click="handleCancel">
-        {{ enableI18n? $t('action.cancel'): '取消' }}
+        {{ enableI18n ? $t('action.cancel') : '取消' }}
       </a-button>
-      <a-button type="primary" :loading="loading" @click="handleChoose">
-        {{ enableI18n? $t('action.choose'): '选择' }}
+      <a-button type="primary" :loading="pageLoading" @click="handleChoose">
+        {{ enableI18n ? $t('action.choose') : '选择' }}
       </a-button>
     </template>
   </a-modal>
 </template>
 
 <script>
-import tablePageMixin from '@/mixins/tablePageMixin'
 import { enableI18n } from '@/config/projectConfig'
 import { littleCamelToUnderline } from '@/utils/strUtil'
+import ProTable from '@/components/Table/ProTable'
 
 export default {
   name: 'LovModal',
-  mixins: [tablePageMixin],
+  components: { ProTable },
   props: {
     // 是否多选
     multiple: {
@@ -218,10 +229,34 @@ export default {
       // 默认排序字段
       sortField: littleCamelToUnderline(this.dataKey),
       // 表格分页 load 方法
-      getPage: this.getPageData
+      tableRequest: this.getPageData,
+
+      // 已选中数据
+      selectedRows: [],
+      selectedRowKeys: [],
+
+      // 分页器
+      pagination: {
+        total: 0,
+        current: 1,
+        pageSize: 10,
+        showSizeChanger: true,
+        showTotal: (total, range) => {
+          let rangeBegin = range[0]
+          let rangeEnd = range[1]
+          if (enableI18n) {
+            return this.$t('pagination.pageInfo', { rangeBegin: rangeBegin, rangeEnd: rangeEnd, total: total })
+          } else {
+            return rangeBegin + '-' + rangeEnd + ' ' + '共' + total + '条'
+          }
+        }
+      }
     }
   },
   computed: {
+    pageLoading () {
+      return this.$refs.table ? this.$refs.table.localLoading : false
+    },
     dataField () {
       return '$' + this.dataKey
     },
@@ -240,9 +275,9 @@ export default {
     selectedValue () {
       return this.multiple ? this.selectedRowKeys : this.selectedRowKeys[0]
     },
-    columns() {
+    columns () {
       let columns = this.tableColumns
-      if(enableI18n){
+      if (enableI18n) {
         columns = this.tableColumns.map(x => {
           let column = { ...x }
           column.title = this.$t(x.title)
@@ -251,9 +286,9 @@ export default {
       }
       return columns
     },
-    searchComponents() {
+    searchComponents () {
       let searchComponents = this.searchOptions
-      if(enableI18n){
+      if (enableI18n) {
         searchComponents = this.searchOptions.map(x => {
           let components = { ...x }
           components.label = this.$t(x.label)
@@ -264,10 +299,20 @@ export default {
       return searchComponents
     }
   },
+  watch: {
+    selectedRows() {
+      let tableRef = this.$refs.table
+      tableRef && tableRef.onSelectChange(this.selectedRowKeys, this.selectedRows)
+    },
+    selectedRowKeys () {
+      let tableRef = this.$refs.table
+      tableRef && tableRef.onSelectChange(this.selectedRowKeys, this.selectedRows)
+    }
+  },
   mounted () {
     // 禁止 select 框输入
     let element = document.querySelector('.lov-select .ant-select-search__field')
-    element && ( element.readOnly = true )
+    element && (element.readOnly = true)
   },
   methods: {
     /**
@@ -339,12 +384,13 @@ export default {
 .lov-search-wrapper {
   text-align: left;
   padding: 0 20px;
-  margin-top: 15px
+  margin-top: 15px;
+  margin-bottom: 0;
 }
 
 .lov-selected-pool-wrapper {
   padding: 0 20px;
-  margin-bottom: 24px
+  margin-bottom: 14px
 }
 
 .lov-pagination-wrapper {
