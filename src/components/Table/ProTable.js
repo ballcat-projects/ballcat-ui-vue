@@ -79,7 +79,7 @@ export default {
     // 分页数据加载成功钩子函数
     onPageLoadSuccess: {
       type: Function,
-      default: function (){
+      default: function (data) {
 
       }
     },
@@ -115,6 +115,11 @@ export default {
       type: String,
       default: 'desc'
     },
+    // 是否展示 pagination
+    showPagination: {
+      type: Boolean,
+      default: true
+    },
     // 分页器设置
     pagination: {
       type: [Object, Boolean],
@@ -133,6 +138,13 @@ export default {
               return rangeBegin + '-' + rangeEnd + ' ' + '共' + total + '条'
             }
           }
+        }
+      }
+    },
+    onPaginationChange: {
+      type: Function,
+      default () {
+        return () => {
         }
       }
     }
@@ -193,7 +205,12 @@ export default {
       // 字段的排序和显示属性, key: dataIndex, value（boolean）: 是否显示在表格中
       tableColumns: showColumns,
       // 本地分页器
-      localPagination: this.pagination instanceof Object ? Object.assign({}, this.pagination) : this.pagination
+      localPagination: this.pagination instanceof Object ? Object.assign({}, this.pagination) : false
+    }
+  },
+  watch: {
+    localPagination (localPagination) {
+      this.onPaginationChange(localPagination)
     }
   },
   computed: {
@@ -207,6 +224,7 @@ export default {
   created () {
     this.initDefaultSort()
     !this.lazyLoad && this.reloadTable()
+    this.onPaginationChange(this.localPagination)
   },
   methods: {
     loopColumn (columns, excluder) {
@@ -479,7 +497,7 @@ export default {
               <table-column-setting
                 columns={this.localColumns}
                 defaultColumnState={this.defaultColumnState}
-                onChange={ x => this.tableColumns = x}
+                onChange={x => this.tableColumns = x}
                 class="ballcat-pro-table-list-toolbar-setting-item"/>
             )
           }
@@ -541,8 +559,16 @@ export default {
       return props[k]
     })
 
+    // 关闭分页
+    if (!this.showPagination) {
+      props.pagination = false
+    }
+
     // 搜索表单
     let searchForm = this.renderSearchForm()
+
+    // 在搜索和表格之间的扩展区域
+    let extendBox = this.$slots['extend-box'] ? this.$slots['extend-box'] : null
 
     // 提醒
     let alert = this.renderAlert()
@@ -560,7 +586,7 @@ export default {
     }
 
     // 过滤掉不展示的列（列控制显隐）
-    props.columns =  this.tableColumns
+    props.columns = this.tableColumns
 
     // 工具栏
     const toolbarListDom = this.renderToolbarList()
@@ -584,6 +610,7 @@ export default {
     return (
       <div>
         {searchForm ? searchForm : null}
+        {extendBox}
         {
           cardProps === false ?
             (tableDom) :
