@@ -209,6 +209,9 @@ export default {
     }
   },
   watch: {
+    columns(){
+      this.localColumns = this.loopColumn(this.columns, (x) => x.hideIntable)
+    },
     localPagination (localPagination) {
       this.onPaginationChange(localPagination)
     }
