@@ -51,7 +51,7 @@
               <a-space size="middle">
                 <a-space>
                   <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable(true)">查询</a-button>
-                  <a-button @click="searchFormState.resetSearchForm && resetSearchTime()">重置</a-button>
+                  <a-button @click="searchFormState.resetSearchForm() && resetSearchTime()">重置</a-button>
                 </a-space>
                 <a @click="searchFormState.toggleSearchCollapsed">
                   {{ searchFormState.collapsed ? '展开': '收起' }}
