@@ -121,7 +121,7 @@ export default {
     // 自定义表格响应的数据处理
     responseDataProcess(data) {
       this.organizationTree = [{ id: 0, name: '根目录', children: data }]
-      return data
+      return { records: data }
     },
     // 折叠 icon 自定义渲染
     expandIconRender(props) {

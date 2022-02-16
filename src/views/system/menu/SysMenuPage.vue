@@ -34,7 +34,8 @@
             <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
               <a-space size="middle">
                 <a-space>
-                  <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable">查询</a-button>
+                  <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable">查询
+                  </a-button>
                   <a-button style="margin-left: 8px" @click="searchFormState.resetSearchForm">重置</a-button>
                 </a-space>
               </a-space>
@@ -187,13 +188,16 @@ export default {
   },
   methods: {
     // 刷新表格
-    reloadPageTable(withFirstPage = true) {
+    reloadPageTable (withFirstPage = true) {
       this.$refs.table.reloadTable(withFirstPage)
     },
     // 处理响应数据
     responseDataProcess (data) {
       this.menuList = data
-      return listToTree(data, 0)
+      return {
+        total: data.total,
+        records: listToTree(data, 0)
+      }
     },
     // 新建菜单权限
     handleAdd (record) {

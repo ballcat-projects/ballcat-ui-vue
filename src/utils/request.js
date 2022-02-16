@@ -3,7 +3,6 @@ import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
 import { message } from 'ant-design-vue'
 import { enableI18n } from '@/config/projectConfig'
-import { debug } from 'script-ext-html-webpack-plugin/lib/common'
 
 // 创建 axios 实例
 const axiosInstance = axios.create({

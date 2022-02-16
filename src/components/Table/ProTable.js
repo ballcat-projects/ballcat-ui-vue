@@ -72,9 +72,7 @@ export default {
     // request 的响应数据转换为 dataSource 的处理函数
     responseDataProcess: {
       type: Function,
-      default: (data) => {
-        return data.records
-      }
+      default: (data) => data
     },
     // 分页数据加载成功钩子函数
     onPageLoadSuccess: {
@@ -314,19 +312,21 @@ export default {
         onSuccess: (res) => {
           const data = res.data
 
+          const { records, total } = this.responseDataProcess(data)
+
           if (this.enablePagination) {
             // 为防止删除数据后导致页面当前页面数据长度为 0 ,自动翻页到上一页
-            if (data.records.length === 0 && this.localPagination.current > 1) {
+            if (records.length === 0 && this.localPagination.current > 1) {
               this.localPagination.current--
               this.loadData()
               return
             } else {
-              this.localPagination.total = data.total
+              this.localPagination.total = total
             }
           }
 
           // 处理响应数据，转换为 datasource
-          this.localDataSource = this.responseDataProcess(data)
+          this.localDataSource = records
           // 当分页加载成功时执行
           this.onPageLoadSuccess(data)
         },
