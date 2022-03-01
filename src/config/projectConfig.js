@@ -17,6 +17,9 @@ module.exports = {
   // 开启布局设置
   enableLayoutSetting: true,
 
+  // 开启登录验证码
+  enableLoginCaptcha: true,
+
   // ------------- 国际化配置分隔符 -----------------
 
   // 是否开启国际化

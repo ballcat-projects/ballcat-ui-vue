@@ -48,7 +48,7 @@
               type="password"
               autocomplete="false"
               placeholder="密码: a123456"
-              @pressEnter="showCaptchaBox"
+              @pressEnter="handleLogin"
             >
               <template #prefix>
                 <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
@@ -124,12 +124,13 @@
           class="login-button"
           :loading="state.loginBtn"
           :disabled="state.loginBtn"
-          @click.prevent="showCaptchaBox"
+          @click.prevent="handleLogin"
         >确定
         </a-button>
       </a-form-item>
 
       <Verify
+        v-if="enableLoginCaptcha"
         ref="verify"
         :mode="'pop'"
         :captcha-type="'blockPuzzle'"
@@ -159,6 +160,7 @@ import { mapActions } from 'vuex'
 import { timeFix } from '@/utils/util'
 import { passEncrypt } from '@/utils/password'
 import Verify from '@/components/Verifition/Verify'
+import projectConfig from '@/config/projectConfig'
 
 export default {
   components: { Verify },
@@ -179,7 +181,8 @@ export default {
         // login type: 0 email, 1 username, 2 telephone
         loginType: 0,
         smsSendBtn: false
-      }
+      },
+      enableLoginCaptcha: projectConfig.enableLoginCaptcha
     }
   },
   created() {},
@@ -200,6 +203,11 @@ export default {
       this.customActiveKey = key
       // this.form.resetFields()
     },
+    /** 处理登录 */
+    handleLogin(){
+      this.enableLoginCaptcha? this.showCaptchaBox(): this.handleSubmit()
+    },
+    /** 滑块验证码弹窗 */
     showCaptchaBox() {
       const {
         form: { validateFields },
