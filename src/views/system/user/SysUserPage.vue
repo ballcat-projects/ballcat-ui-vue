@@ -200,7 +200,7 @@
 
 <script>
 import { getPage, delObj, updateStatus, updateAvatar } from '@/api/system/user'
-import { getTree } from '@/api/system/organization'
+import { listOrganization } from '@/api/system/organization'
 import ScopeModal from './ScopeModal'
 import PasswordModal from './PasswordModal'
 import CropperModal from '@/components/CropperModal'
@@ -208,6 +208,7 @@ import { mapGetters } from 'vuex'
 import SysUserModalForm from '@/views/system/user/SysUserModalForm'
 import ProTable from '@/components/Table/ProTable'
 import { doRequest } from '@/utils/request'
+import { listToTree, matchedParentKeys } from '@/utils/treeUtil'
 
 export default {
   name: 'SysUserPage',
@@ -305,10 +306,10 @@ export default {
     ...mapGetters(['userInfo'])
   },
   created () {
-    getTree().then(res => {
-      this.organizationTree = res.data
+    listOrganization().then(res => {
+      this.organizationTree = listToTree(res.data, 0)
       // 默认展开一级组织
-      this.organizationExpandedKeys = res.data.map(x => x.id)
+      this.organizationExpandedKeys = this.organizationTree.map(x => x.id)
     })
   },
   mounted () {
@@ -367,7 +368,7 @@ export default {
     },
     beforeUpdateAvatar (record) {
       const _this = this
-      const userId = record.userId;
+      const userId = record.userId
       _this.avatarUserId = userId
       _this.$refs.avatarModal.edit(fileObj => {
         return updateAvatar(userId, fileObj).then(res => {
@@ -387,31 +388,17 @@ export default {
     },
     searchOrganization (e) {
       const value = e.target.value
+      this.searchValue = value
       let expandedKeys = []
       if (value) {
-        this.matchParentKey(0, this.organizationTree, expandedKeys)
+        expandedKeys = matchedParentKeys(this.organizationTree, node => node.name.indexOf(this.searchValue) > -1)
       } else {
         expandedKeys = this.organizationTree.map(x => x.id)
       }
       Object.assign(this, {
         organizationExpandedKeys: expandedKeys,
-        searchValue: value,
         autoExpandParent: true
       })
-    },
-    matchParentKey (pId, treeList, result) {
-      if (treeList) {
-        let matched = false
-        treeList.forEach(node => {
-          if (node.children && node.children.length > 0) {
-            this.matchParentKey(node.id, node.children, result)
-          }
-          if (!matched && node.name.indexOf(this.searchValue) > -1) {
-            matched = true
-            result.push(pId)
-          }
-        })
-      }
     },
     /**
      * 选择组织机构
