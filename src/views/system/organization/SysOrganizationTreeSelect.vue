@@ -18,7 +18,8 @@
 </template>
 
 <script>
-import { getTree } from '@/api/system/organization'
+import { listOrganization } from '@/api/system/organization'
+import { listToTree } from '@/utils/treeUtil'
 
 export default {
   name: 'SysOrganizationTreeSelect',
@@ -63,8 +64,8 @@ export default {
     if (this.organizationTree) {
       this.treeData = this.organizationTree
     } else {
-      getTree().then(res => {
-        this.treeData = res.data
+      listOrganization().then(res => {
+        this.treeData = listToTree(res.data, 0)
       })
     }
   },

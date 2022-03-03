@@ -43,21 +43,12 @@
             {{ selectData.name }}
           </a-select-option>
         </a-select>
-        <a-tree-select
+        <sys-organization-tree-select
           v-if="recipientFilterType === 3"
           v-decorator="['recipientFilterCondition', decoratorOptions.recipientFilterType]"
           placeholder="请选择组织"
-          style="width: 100%"
-          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-          :tree-data="organizationTree"
-          tree-default-expand-all
           allow-clear
           multiple
-          :replace-fields="{
-            title: 'name',
-            key: 'id',
-            value: 'id'
-          }"
         />
         <dict-select
           v-if="recipientFilterType === 4"
@@ -124,13 +115,13 @@
 import { PageFormMixin } from '@/mixins'
 import { addObj, putObj, uploadImage } from '@/api/notify/announcement'
 import { getSelectData } from '@/api/system/role'
-import { getTree } from '@/api/system/organization'
 import WangEditor from '@/components/Editor/WangEditor'
 import { sysUserLov } from '@/components/Lov/lovOptions'
+import SysOrganizationTreeSelect from '@/views/system/organization/SysOrganizationTreeSelect'
 
 export default {
   name: 'AnnouncementPageForm',
-  components: { WangEditor },
+  components: { SysOrganizationTreeSelect, WangEditor },
   mixins: [PageFormMixin],
   data () {
     return {
@@ -167,8 +158,6 @@ export default {
       newAnnouncementStatus: 0,
       // 角色选择框数据
       roleSelectData: [],
-      // 组织树
-      organizationTree: [],
       // 系统用户弹窗选择
       sysUserLov
     }
@@ -176,9 +165,6 @@ export default {
   created () {
     getSelectData({}).then(res => {
       this.roleSelectData = res.data
-    })
-    getTree().then(res => {
-      this.organizationTree = res.data
     })
   },
   methods: {

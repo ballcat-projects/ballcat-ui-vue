@@ -1,10 +1,9 @@
 import request from '@/utils/request'
 
-export function getTree(query) {
+export function listOrganization() {
   return request({
-    url: '/system/organization/tree',
-    method: 'get',
-    params: query
+    url: '/system/organization/list',
+    method: 'get'
   })
 }
 
