@@ -10,6 +10,7 @@
       :columns="columns"
       :pagination="false"
       :expand-icon="expandIconRender"
+      :expanded-row-keys.sync="expandedRowKeys"
       :scroll="{ x: 800 }"
     >
       <!-- 查询条件 -->
@@ -17,14 +18,15 @@
         <a-row :gutter="16">
           <a-col :md="8" :sm="24">
             <a-form-item label="组织名称">
-              <a-input v-model="searchFormState.queryParam.name" placeholder="请输入" />
+              <a-input v-model="searchName" placeholder="请输入" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item :wrapper-col="{flex: '1 1 0'}" class="search-actions-wrapper">
               <a-space>
-                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable">查询</a-button>
-                <a-button @click="searchFormState.resetSearchForm">重置</a-button>
+                <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable">查询
+                </a-button>
+                <a-button @click="resetSearch">重置</a-button>
               </a-space>
             </a-form-item>
           </a-col>
@@ -47,11 +49,21 @@
           type="primary"
           icon="plus"
           @click="handleAdd()"
-        >新建 </a-button>
+        >新建
+        </a-button>
       </template>
 
       <!--数据表格区域-->
-      <template slot="action-slot" slot-scope="text, record">
+      <template #title-slot="name">
+        <span v-if="searchName && name.indexOf(searchName) > -1">
+          {{ name.substr(0, name.indexOf(searchName)) }}
+          <span style="color: #f50">{{ searchName }}</span>
+          {{ name.substr(name.indexOf(searchName) + searchName.length) }}
+        </span>
+        <span v-else>{{ name }}</span>
+      </template>
+
+      <template #action-slot="text, record">
         <a v-has="'system:organization:edit'" @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
         <a-popconfirm v-has="'system:organization:del'" title="确认要删除吗？" @confirm="() => handleDel(record)">
@@ -61,29 +73,34 @@
     </pro-table>
 
     <!--表单页面-->
-    <organization-modal-form ref="formModal" :organization-tree="organizationTree" @reload-page-table="reloadPageTable" />
+    <organization-modal-form
+      ref="formModal"
+      @reload-page-table="reloadPageTable"
+    />
   </div>
 </template>
 
 <script>
-import { getTree, delObj, revised } from '@/api/system/organization'
+import { listOrganization, delObj, revised } from '@/api/system/organization'
 import OrganizationModalForm from './SysOrganizationModalForm'
 import ProTable from '@/components/Table/ProTable'
 import { doRequest } from '@/utils/request'
+import { listToTree, matchedParentKeys, pruneTree } from '@/utils/treeUtil'
 
 export default {
   name: 'SysOrganizationPage',
   components: { ProTable, OrganizationModalForm },
-  data() {
+  data () {
     return {
       rowKey: 'id',
-      tableRequest: getTree,
+      tableRequest: listOrganization,
 
       columns: [
         {
           title: '组织机构层级',
           width: 250,
-          dataIndex: 'name'
+          dataIndex: 'name',
+          scopedSlots: { customRender: 'title-slot' }
         },
         {
           title: '排序',
@@ -110,22 +127,48 @@ export default {
         }
       ],
 
-      organizationTree: []
+      // 组织机构树
+      organizationTree: [],
+      // 展开的节点 key
+      expandedRowKeys: [],
+      // 查询的条件
+      searchName: ''
     }
   },
   methods: {
+    // 重置搜素
+    resetSearch () {
+      this.searchName = ''
+      this.$refs.table.localDataSource = this.organizationTree
+      this.expandedRowKeys = this.organizationTree.map(x => x.id)
+    },
     // 刷新表格
-    reloadPageTable(withFirstPage = true) {
+    reloadPageTable (withFirstPage = true) {
       this.$refs.table.reloadTable(withFirstPage)
     },
     // 自定义表格响应的数据处理
-    responseDataProcess(data) {
-      this.organizationTree = [{ id: 0, name: '根目录', children: data }]
-      return { records: data }
+    responseDataProcess (data) {
+      let tree = listToTree(data, 0)
+      // 缓存下，重置的时候使用
+      this.organizationTree = listToTree(data, 0)
+      // 剪枝
+      let matcher = (node) => node.name.indexOf(this.searchName) > -1
+      tree = pruneTree(tree, matcher)
+      // 展开树
+      setTimeout(() => {
+        this.$nextTick(() => {
+          if (this.searchName) {
+            this.expandedRowKeys = matchedParentKeys(tree, matcher)
+          } else {
+            this.expandedRowKeys = tree.map(x => x.id)
+          }
+        })
+      })
+      return { records: tree }
     },
     // 折叠 icon 自定义渲染
-    expandIconRender(props) {
-      if (props.record.children.length > 0) {
+    expandIconRender (props) {
+      if (props.record.children?.length > 0) {
         if (props.expanded) {
           return (
             <span
@@ -134,7 +177,7 @@ export default {
                 props.onExpand(props.record, e)
               }}
             >
-              <a-icon type="caret-down" />
+              <a-icon type="caret-down"/>
             </span>
           )
         } else {
@@ -145,7 +188,7 @@ export default {
                 props.onExpand(props.record, e)
               }}
             >
-              <a-icon type="caret-right" />
+              <a-icon type="caret-right"/>
             </span>
           )
         }
@@ -153,18 +196,17 @@ export default {
         return <span class="expandIcon leafNode"></span>
       }
     },
-
     /**
      * 新建组织
      */
-    handleAdd() {
+    handleAdd () {
       this.$refs.formModal.add({ title: '新建组织' })
     },
     /**
      * 编辑组织
      * @param record 当前组织属性
      */
-    handleEdit(record) {
+    handleEdit (record) {
       this.$refs.formModal.update(record, { title: '编辑组织' })
     },
     // 删除
@@ -178,7 +220,7 @@ export default {
     /**
      * 校正层级深度
      */
-    handleRevised() {
+    handleRevised () {
       doRequest(revised(), {
         onSuccess: () => {
           this.reloadPageTable(false)
