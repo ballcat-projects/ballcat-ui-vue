@@ -69,7 +69,7 @@
     <role-grant-drawer ref="roleGrantDrawer" />
 
     <!-- 角色用户绑定弹窗 -->
-    <role-user-modal ref="roleUserModal" />
+    <role-user-modal ref="roleUserModal" :organization-tree="organizationTree" />
   </div>
 </template>
 
@@ -79,8 +79,9 @@ import { getPage, delObj } from '@/api/system/role'
 import RoleModalForm from './SysRoleModalForm'
 import RoleGrantDrawer from './SysRoleGrantDrawer'
 import RoleUserModal from '@/views/system/role/SysRoleUserModal'
-import { getTree } from '@/api/system/organization'
+import { listOrganization } from '@/api/system/organization'
 import { doRequest } from '@/utils/request'
+import { listToTree } from '@/utils/treeUtil'
 
 export default {
   name: 'SysRolePage',
@@ -149,8 +150,12 @@ export default {
     }
   },
   created () {
-    getTree().then(res => {
-      this.organizationTree = res.data
+    doRequest(listOrganization(), {
+      successMessage: false,
+      onSuccess: (res) => {
+        this.organizationTree.length = 0
+        this.organizationTree.push(...listToTree(res.data, 0))
+      }
     })
   },
   methods: {

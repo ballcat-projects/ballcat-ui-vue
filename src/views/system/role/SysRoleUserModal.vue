@@ -43,17 +43,10 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="组织">
-              <a-tree-select
+              <sys-organization-tree-select
                 v-model="searchFormState.queryParam.organizationId"
-                style="width: 100%"
-                :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
                 :tree-data="organizationTree"
                 :allow-clear="true"
-                :replace-fields="{
-                  title: 'name',
-                  key: 'id',
-                  value: 'id'
-                }"
               />
             </a-form-item>
           </a-col>
@@ -85,12 +78,18 @@
 <script>
 import ProTable from '@/components/Table/ProTable'
 import { getRoleUserPage, unbindRoleUser } from '@/api/system/role'
-import { getTree } from '@/api/system/organization'
 import { doRequest } from '@/utils/request'
+import SysOrganizationTreeSelect from '@/views/system/organization/SysOrganizationTreeSelect'
 
 export default {
   name: 'RoleUserModal',
-  components: { ProTable },
+  components: { SysOrganizationTreeSelect, ProTable },
+  props: {
+    organizationTree: {
+      type: [Array],
+      default: () => []
+    },
+  },
   data () {
     return {
       confirmLoading: false,
@@ -143,16 +142,7 @@ export default {
 
       // 角色标识
       roleCode: null,
-      // 组织树
-      organizationTree: []
     }
-  },
-  created () {
-    getTree().then(res => {
-      this.organizationTree = res.data
-      // 默认展开一级组织
-      this.organizationExpandedKeys = res.data.map(x => x.id)
-    })
   },
   methods: {
     // 刷新表格

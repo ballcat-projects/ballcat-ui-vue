@@ -594,15 +594,22 @@ export default {
     // 工具栏
     const toolbarListDom = this.renderToolbarList()
 
+    // 事件监听
+    let listeners = this.$listeners
+
     // 表格区域
     const tableDom = (
       <div class={[this.tableFullScreen ? 'table-fullscreen' : '']}>
         {toolbarListDom}
         {alert}
-        <a-table {...{ props, scopedSlots: { ...this.$scopedSlots } }} onChange={this.handleTableChange}
-                 onExpand={(expanded, record) => {
-                   this.$emit('expand', expanded, record)
-                 }}>
+        <a-table
+          {...{ props, scopedSlots: { ...this.$scopedSlots } }}
+          {...{ on: listeners }}
+           onChange={this.handleTableChange}
+           onExpand={(expanded, record) => {
+             this.$emit('expand', expanded, record)
+           }}
+        >
           {Object.keys(this.$slots).map(name => (<template slot={name}>{this.$slots[name]}</template>))}
         </a-table>
       </div>

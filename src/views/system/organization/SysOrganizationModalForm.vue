@@ -14,19 +14,12 @@
       </a-form-item>
 
       <a-form-item label="父级组织">
-        <a-tree-select
+        <sys-organization-tree-select
           v-decorator="['parentId', decoratorOptions.parentId]"
           placeholder="父级组织"
-          style="width: 100%"
-          :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
-          :tree-data="organizationTree"
+          :organization-tree="organizationTree"
           tree-default-expand-all
           allow-clear
-          :replace-fields="{
-            title: 'name',
-            key: 'id',
-            value: 'id'
-          }"
         />
       </a-form-item>
 
@@ -52,19 +45,15 @@
 
 <script>
 import { PopUpFormMixin } from '@/mixins'
-import { addObj, putObj } from '@/api/system/organization'
+import { listOrganization, addObj, putObj } from '@/api/system/organization'
+import { doRequest } from '@/utils/request'
+import { listToTree } from '@/utils/treeUtil'
+import SysOrganizationTreeSelect from '@/views/system/organization/SysOrganizationTreeSelect'
 
 export default {
   name: 'OrganizationModalForm',
+  components: { SysOrganizationTreeSelect },
   mixins: [PopUpFormMixin],
-  props: {
-    organizationTree: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    }
-  },
   data () {
     return {
       reqFunctions: {
@@ -96,7 +85,23 @@ export default {
         remarks: {
           rules: [{ max: 512 }]
         }
-      }
+      },
+
+      organizationTree: []
+    }
+  },
+  watch: {
+    visible(val) {
+      const organizationTree = this.organizationTree
+      // 每次打开的时候都重新 load 树
+      val && doRequest(listOrganization(), {
+        successMessage: false,
+        onSuccess(res) {
+          const tree = listToTree(res.data, 0)
+          organizationTree.length = 0
+          organizationTree.push({ id: 0, name: '根目录', children: tree })
+        }
+      })
     }
   },
   methods: {}

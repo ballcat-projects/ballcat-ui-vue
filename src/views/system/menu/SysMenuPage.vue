@@ -10,6 +10,7 @@
       :columns="columns"
       :expand-icon-column-index="1"
       :pagination="false"
+      :expanded-row-keys.sync="expandedRowKeys"
       :scroll="{ x: 1100 }"
     >
       <!-- 查询条件 -->
@@ -22,7 +23,7 @@
           </a-col>
           <a-col :xl="6" :md="12" :sm="24">
             <a-form-item label="菜单名称">
-              <a-input v-model="searchFormState.queryParam.title" placeholder="请输入" />
+              <a-input v-model="searchTitle" placeholder="请输入" />
             </a-form-item>
           </a-col>
           <a-col :xl="6" :md="12" :sm="24">
@@ -36,7 +37,7 @@
                 <a-space>
                   <a-button type="primary" :loading="searchFormState.loading" @click="searchFormState.reloadTable">查询
                   </a-button>
-                  <a-button style="margin-left: 8px" @click="searchFormState.resetSearchForm">重置</a-button>
+                  <a-button style="margin-left: 8px" @click="resetSearch">重置</a-button>
                 </a-space>
               </a-space>
             </a-form-item>
@@ -99,7 +100,7 @@
 <script>
 import { listMenu, delObj } from '@/api/system/menu'
 import SysMenuModalForm from '@/views/system/menu/SysMenuModalForm'
-import { listToTree } from '@/utils/treeUtil'
+import { listToTree, matchedParentKeys, pruneTree } from '@/utils/treeUtil'
 import I18nMessageModal from '@/views/i18n/I18nMessageModal'
 import projectConfig from '@/config/projectConfig'
 import ProTable from '@/components/Table/ProTable'
@@ -175,7 +176,11 @@ export default {
       // 懒加载，取消mixin中的自动加载，第一次加载交由组件自己处理
       lazyLoad: true,
       // 菜单列表
-      menuList: []
+      menuList: [],
+      // 检索的菜单名
+      searchTitle: '',
+      // 展开的节点 key
+      expandedRowKeys: []
     }
   },
   created () {
@@ -187,6 +192,11 @@ export default {
     this.enableI18n && this.$bus.$off('switch-language', this.reloadPageTable)
   },
   methods: {
+    // 重置搜索条件
+    resetSearch () {
+      this.searchTitle = ''
+      this.$refs.table.resetSearchForm()
+    },
     // 刷新表格
     reloadPageTable (withFirstPage = true) {
       this.$refs.table.reloadTable(withFirstPage)
@@ -194,9 +204,22 @@ export default {
     // 处理响应数据
     responseDataProcess (data) {
       this.menuList = data
+      let tree = listToTree(data, 0)
+      const matcher = (node) => {
+        const title = this.enableI18n ? node.i18nTitle : node.title
+        return title.indexOf(this.searchTitle) > -1
+      }
+      // 展开树
+      setTimeout(() => {
+        this.$nextTick(() => {
+          if (this.searchTitle) {
+            this.expandedRowKeys = matchedParentKeys(tree, matcher)
+          }
+        })
+      })
       return {
         total: data.total,
-        records: listToTree(data, 0)
+        records:  pruneTree(tree, matcher)
       }
     },
     // 新建菜单权限
