@@ -27,9 +27,7 @@ export const generatorDynamicRouter = () => {
       const { data } = res
 
       // 后端数据, 根级树数组,  根级 PID
-      const menuNav = listToTree(data, 0, (treeNode, item) => {
-        treeNode.key = item.routerName
-      })
+      const menuNav = listToTree(data, 0)
       homeRouter.children = generator(menuNav)
       fillRedirect(homeRouter)
 
