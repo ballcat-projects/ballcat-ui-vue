@@ -17,7 +17,7 @@ export const listToTree = (list, parentId, attributeFill) => {
  * @param parentId 父ID
  * @param attributeFill 属性填充函数
  */
-export const fillTree = (list, tree, parentId, attributeFill) => {
+export const fillTree = (list, tree, parentId) => {
   list.forEach(item => {
     // 判断是否为父级菜单
     if (item.parentId === parentId) {
@@ -27,13 +27,8 @@ export const fillTree = (list, tree, parentId, attributeFill) => {
         children: []
       }
 
-      // 额外的数据转换处理
-      if (typeof attributeFill === 'function') {
-        attributeFill(treeNode, item)
-      }
-
       // 迭代 list， 找到当前菜单相符合的所有子菜单
-      fillTree(list, treeNode.children, item.id, attributeFill)
+      fillTree(list, treeNode.children, item.id)
       // 删掉不存在 children 值的属性
       if (treeNode.children.length <= 0) {
         delete treeNode.children
