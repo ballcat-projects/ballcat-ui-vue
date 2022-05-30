@@ -46,7 +46,8 @@ const app = {
     // 侧边栏状态
     isDrawerMenu: state => state.sidebarType === SIDEBAR_TYPE.DRAWER_MENU,
     isSideMenu: state => state.sidebarType === SIDEBAR_TYPE.SIDE_MENU,
-    isMixMenu:state => state.sidebarType === SIDEBAR_TYPE.MIX_MENU,
+    isMixMenu: state => state.sidebarType === SIDEBAR_TYPE.MIX_MENU,
+    isNoneMenu: state => state.sidebarType === SIDEBAR_TYPE.NONE,
     sidebarCollapsed: state => state.sidebarCollapsed,
     contentFullScreen: state => state.contentFullScreen,
     keepAliveList:state => state.keepAliveList

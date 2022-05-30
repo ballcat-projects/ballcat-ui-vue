@@ -11,7 +11,7 @@
       <global-header :mode="layout" :menus="menus" :theme="navTheme" />
 
       <!-- 公告彩条 -->
-      <!--      <announcement-ribbon />-->
+      <announcement-ribbon />
 
       <!-- 多页签 -->
       <div v-if="multiTab" :style="multiTabWrapperStyle">
@@ -45,6 +45,7 @@ import SideBar from '@/components/SideBar'
 import GlobalHeader from '@/components/GlobalHeader'
 import GlobalFooter from '@/components/GlobalFooter'
 import GlobalWebSocket from '@/components/WebSocket/GlobalWebSocket'
+import AnnouncementRibbon from '@/components/Notify/AnnouncementRibbon'
 
 export default {
   name: 'BasicLayout',
@@ -52,7 +53,8 @@ export default {
     SideBar,
     GlobalHeader,
     GlobalFooter,
-    GlobalWebSocket
+    GlobalWebSocket,
+    AnnouncementRibbon
   },
   mixins: [mixin, mixinDevice],
   data () {
@@ -62,19 +64,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['sidebarCollapsed', 'contentFullScreen', 'isSideMenu', 'isMixMenu', 'userRouters']),
+    ...mapGetters(['sidebarCollapsed', 'contentFullScreen', 'isSideMenu', 'isMixMenu', 'isNoneMenu', 'userRouters']),
     contentPaddingLeft () {
-      if (!this.fixSiderbar || !this.isSideMenu) {
+      if (!this.isSideMenu) {
         if (this.isMixMenu) {
           return this.sidebarCollapsed ? '48px' : '208px'
         }
-        return '0'
+        return '0px'
       }
       return this.sidebarCollapsed ? '48px' : '208px'
     },
     multiTabWrapperStyle () {
+      // 有公告彩条的时候高度加高
+      const hasAnnouncementRibbon = true;
       let style = {
-        top: '48px',
+        top: hasAnnouncementRibbon ? '80px': '40px',
         width: '100%',
         zIndex: 16,
         right: 0,
@@ -83,7 +87,7 @@ export default {
       // 固定头部时，宽度需要减掉侧边菜单的宽度
       if(this.fixedHeader){
         style.position = 'fixed'
-        style.width = `calc(100% - ${this.contentPaddingLeft})`
+        style.width = this.isNoneMenu? '100%': `calc(100% - ${this.contentPaddingLeft})`
       }
       // 当内容全屏时，不需考虑侧标栏，直接 100% 展开，且没有 header 占位，top 修改为 0
       if(this.contentFullScreen){
