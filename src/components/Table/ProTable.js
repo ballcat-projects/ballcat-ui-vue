@@ -289,13 +289,12 @@ export default {
         , this.queryParam
         , this.enablePagination ?
           {
-            current: this.localPagination.current,
+            page: this.localPagination.current,
             size: this.localPagination.pageSize
           } : {}
         , {
           // TODO 多列排序支持
-          sortFields: this.sortField,
-          sortOrders: this.sortOrder
+          sort: `${this.sortField},${this.sortOrder}`,
         }
         , { ...this.filters }
       )

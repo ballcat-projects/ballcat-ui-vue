@@ -95,12 +95,10 @@ export default {
      */
     pageParams: function () {
       return Object.assign({}, this.queryParam, {
-        current: this.pagination.current,
+        page: this.pagination.current,
         size: this.pagination.pageSize
       }, {
-        // TODO 多列排序支持
-        sortFields: this.sortField,
-        sortOrders: this.sortOrder
+        sort: `${this.sortField},${this.sortOrder}`,
       }, { ...this.filters })
     },
     /**
