@@ -108,7 +108,7 @@
       </a-tabs>
 
       <a-form-item>
-        <a-checkbox v-decorator="['rememberMe']">自动登录</a-checkbox>
+        <a-checkbox v-model="rememberMe">自动登录</a-checkbox>
         <router-link
           :to="{ name: 'recover', params: { user: 'aaa' } }"
           class="forge-password"
@@ -182,7 +182,9 @@ export default {
         loginType: 0,
         smsSendBtn: false
       },
-      enableLoginCaptcha: projectConfig.enableLoginCaptcha
+      enableLoginCaptcha: projectConfig.enableLoginCaptcha,
+      // 记住我
+      rememberMe: false
     }
   },
   created() {},
