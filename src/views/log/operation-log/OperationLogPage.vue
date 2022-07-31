@@ -74,8 +74,7 @@
         <p>params:</p>
         <pre><span class="wordwrap">{{ record.params }}</span></pre>
         <p>userAgent:</p>
-        <pre><span class="wordwrap">{{ record.params }}</span></pre>
-        {{ record.userAgent }}
+        <pre><span class="wordwrap">{{ record.userAgent }}</span></pre>
       </template>
     </pro-table>
   </div>
