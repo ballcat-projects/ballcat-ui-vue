@@ -5,12 +5,18 @@
 @ant-global-header-zindex   : 105;
 
 // 修改全局表单的 label 和 wrapper 的行高为 32px
+.@{ant-prefix}-input {
+  height: auto !important;
+}
 .@{ant-prefix}-form-item-label{
-  line-height: 32px !important;
+  line-height: 31.9999px !important;
 }
 .@{ant-prefix}-form-item-control {
   // 这里不知道为什么写 32，就会导致 a-row colspan 8 时，第三个和第四个表单元素为连续两个 select，第二个 select 在 第二行最右侧的问题
-  line-height: 31.9999px !important;
+  line-height: 32px !important;
+}
+.@{ant-prefix}-select-selection {
+  border-top-width: 1px !important;
 }
 
 // 表格滚动条自动，防止宽度足够时也展示滚动条
