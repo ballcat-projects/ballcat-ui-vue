@@ -4,7 +4,7 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
+            <LogoSvg class="logo" />
             <span class="title">{{ projectTitle }}</span>
           </a>
         </div>
@@ -30,11 +30,15 @@
 </template>
 
 <script>
+import LogoSvg from '@/assets/logo.svg'
 import { mixinDevice } from '@/utils/mixin'
 import projectConfig from '@/config/projectConfig'
 
 export default {
   name: 'UserLayout',
+  components: {
+    LogoSvg
+  },
   mixins: [mixinDevice],
   data () {
     return {
