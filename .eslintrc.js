@@ -1,10 +1,8 @@
 // https://eslint.vuejs.org/user-guide
 module.exports = {
-  parser: 'vue-eslint-parser',
-  parserOptions: {
-    'parser': 'babel-eslint',
-    'ecmaVersion': 2020,
-    'sourceType': 'module'
+  root: true,
+  env: {
+    node: true,
   },
   extends: [
     // add more generic rulesets here, such as:
@@ -13,6 +11,9 @@ module.exports = {
     // 'plugin:vue/vue3-recommended'
     'plugin:vue/recommended' // Use this if you are using Vue.js 2.x.
   ],
+  parserOptions: {
+    parser: "@babel/eslint-parser",
+  },
   rules: {
     // override/add rules settings here, such as:
     // 'vue/no-unused-vars': 'error'
@@ -26,12 +27,15 @@ module.exports = {
     // 3个属性以上才进行换行
     'vue/max-attributes-per-line': ['error', {
       'singleline': 3,
-      'multiline': {
-        'max': 1,
-        'allowFirstLine': false
-      }
+      'multiline': 1
+    }],
+    "vue/first-attribute-linebreak": ["error", {
+      "singleline": "ignore",
+      "multiline": "below"
     }],
     'vue/singleline-html-element-content-newline': 'off',
-    'vue/multiline-html-element-content-newline': 'off'
+    'vue/multiline-html-element-content-newline': 'off',
+    // 关闭组件名称必须多单词
+    'vue/multi-word-component-names': 'off',
   }
 }

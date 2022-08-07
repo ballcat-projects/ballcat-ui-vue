@@ -3,6 +3,8 @@ const webpack = require('webpack')
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
 const projectConfig = require('./src/config/projectConfig')
 
+const { defineConfig } = require("@vue/cli-service");
+
 // 预览环境的服务端地址，没有启动后端时，可以通过此地址进行前端查看
 // const serverAddress = 'http://admin.ballcat.cn'
 const serverAddress = 'http://ballcat-admin:8080'
@@ -56,7 +58,10 @@ const vueConfig = {
     // webpack plugins
     plugins: [
       // Ignore all locale files of moment.js
-      new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+      new webpack.IgnorePlugin({
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/,
+      })
     ],
     // if prod is on, add externals
     externals: isProd() ? prodExternals : {}
@@ -64,15 +69,15 @@ const vueConfig = {
 
   chainWebpack: (config) => {
     // it can improve the speed of the first screen, it is recommended to turn on preload
-    config.plugin('preload').tap(() => [
-      {
-        rel: 'preload',
-        // to ignore runtime.js
-        // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
-        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include: 'initial'
-      }
-    ])
+    // config.plugin('preload').tap(() => [
+    //   {
+    //     rel: 'preload',
+    //     // to ignore runtime.js
+    //     // https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/cli-service/lib/config/app.js#L171
+    //     fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+    //     include: 'initial'
+    //   }
+    // ])
 
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete('prefetch')
@@ -83,19 +88,17 @@ const vueConfig = {
 
     const svgRule = config.module.rule('svg')
     svgRule.uses.clear()
+
+    // https://github.com/vuejs/vue-cli/issues/6785
+    svgRule.delete('type');
+    svgRule.delete('generator');
     svgRule
-      .oneOf('inline')
-      .resourceQuery(/inline/)
-      .use('vue-svg-icon-loader')
-      .loader('vue-svg-icon-loader')
+      .use('vue-loader')
+      .loader('vue-loader')
       .end()
-      .end()
-      .oneOf('external')
-      .use('file-loader')
-      .loader('file-loader')
-      .options({
-        name: 'assets/[name].[hash:8].[ext]'
-      })
+      .use('vue-svg-loader')
+      .loader('vue-svg-loader');
+
 
     // if prod is on
     // assets require on cdn
@@ -106,14 +109,14 @@ const vueConfig = {
       })
 
       // 内联 Manifest
-      config
-        .plugin('ScriptExtHtmlWebpackPlugin')
-        .after('html')
-        .use('script-ext-html-webpack-plugin', [{
-          // `runtime` must same as runtimeChunk name. default is `runtime`
-          inline: /runtime\..*\.js$/
-        }])
-        .end()
+      // config
+      //   .plugin('ScriptExtHtmlWebpackPlugin')
+      //   .after('html')
+      //   .use('script-ext-html-webpack-plugin', [{
+      //     // `runtime` must same as runtimeChunk name. default is `runtime`
+      //     inline: /runtime\..*\.js$/
+      //   }])
+      //   .end()
 
       config.optimization.splitChunks({
         chunks: 'all',
@@ -156,7 +159,9 @@ const vueConfig = {
             'layout-header-height': '48px', // layout 头高度
             'menu-collapsed-width': '48px' // inline 菜单收起宽度
           },
-          javascriptEnabled: true
+          javascriptEnabled: true,
+          // 兼容 less3 到 less4 的语法变动问题 https://github.com/vueComponent/ant-design-vue/issues/3665
+          math: 'always'
         }
       }
     }
@@ -182,7 +187,7 @@ const vueConfig = {
   productionSourceMap: false,
   lintOnSave: !isProd(),
   // babel-loader no-ignore node_modules/*
-  transpileDependencies: []
+  transpileDependencies: true
 }
 
 if (projectConfig.enableLayoutSetting) {
@@ -190,4 +195,4 @@ if (projectConfig.enableLayoutSetting) {
   vueConfig.configureWebpack.plugins.push(createThemeColorReplacerPlugin())
 }
 
-module.exports = vueConfig
+module.exports = defineConfig(vueConfig)
