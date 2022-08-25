@@ -72,14 +72,14 @@
 
       <a-form-item label="菜单名称">
         <a-input v-decorator="['title', decoratorOptions.title]" placeholder="菜单名称" style="width: 65%" />
-        <a v-if="enableI18n && isCreateForm" style="margin-left: 8px" @click="toggleI18nAdvanced">
+        <a v-if="showI18nTitle" style="margin-left: 8px" @click="toggleI18nAdvanced">
           {{ i18nAdvanced ? '收起' : '展开' }}国际化名称
           <a-icon :type="i18nAdvanced ? 'up' : 'down'" />
         </a>
       </a-form-item>
 
       <!-- 开启国际化 && 新建菜单 && 不是按钮时 -->
-      <a-form-item v-show="i18nAdvanced" v-if="enableI18n && isCreateForm && menuType !== 2">
+      <a-form-item v-show="i18nAdvanced" v-if="showI18nTitle">
         <span slot="label">
           名称国际化
           <a-tooltip title="菜单标题将作为国际化信息的标识">
@@ -271,6 +271,11 @@ export default {
           rules: [{ required: true, message: '请输入授权标识!' }]
         }
       }
+    }
+  },
+  computed: {
+    showI18nTitle() {
+      return this.enableI18n && this.isCreateForm && this.menuType !== 2
     }
   },
   watch: {
