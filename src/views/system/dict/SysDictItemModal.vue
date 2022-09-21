@@ -20,6 +20,7 @@
         default-sort-field="sort"
         default-sort-order="asc"
         :card-props="{bodyStyle : {padding: 0}}"
+        :lazy-load="true"
       >
         <!-- 操作按钮区域 -->
         <template #toolbar-title>
