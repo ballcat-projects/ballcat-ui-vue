@@ -212,7 +212,7 @@ export default {
 
 <style scoped>
 /** 保证切换时的高度不要相差太多 */
-/deep/ .ant-table-content {
+:deep(.ant-table-content) {
   height: 400px;
   overflow: auto;
 }
