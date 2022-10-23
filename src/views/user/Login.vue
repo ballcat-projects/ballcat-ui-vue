@@ -292,6 +292,7 @@ export default {
     },
     requestFailed(err) {
       this.isLoginError = true
+      this.$refs.verify.closeBox()
       let errorMessage = ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试'
       this.loginErrorMessage = errorMessage
       this.$notification['error']({
