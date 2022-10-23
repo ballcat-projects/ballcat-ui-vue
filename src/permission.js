@@ -20,6 +20,10 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/user/login') {
       next({ path: '/' })
       NProgress.done()
+    }
+    else if (to.path === '/oauth2/authorize') {
+      next()
+      NProgress.done()
     } else {
       if (store.getters.userRouters.length === 0) {
         store.dispatch('GenerateRoutes').then(() => {

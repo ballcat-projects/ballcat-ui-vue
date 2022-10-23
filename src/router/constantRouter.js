@@ -10,6 +10,10 @@ export const constantRouters = [
     component: () => import(/* webpackChunkName: "user" */ '@/views/redirect/index')
   },
   {
+    path: '/oauth2/authorize',
+    component: () => import(/* webpackChunkName: "oauth2" */ '@/views/oauth2/OAuth2Authorize')
+  },
+  {
     path: '/user',
     component: UserLayout,
     redirect: '/user/login',
