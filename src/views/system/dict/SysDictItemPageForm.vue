@@ -9,6 +9,10 @@
       <a-input v-decorator="['id']" />
     </a-form-item>
 
+    <a-form-item v-if="isCreateForm" style="display: none">
+      <a-input v-decorator="['status', { initialValue: 1 }]" />
+    </a-form-item>
+
     <a-form-item label="字典标识">
       <a-input v-decorator="['dictCode']" placeholder="字典标识" :disabled="true" />
     </a-form-item>
