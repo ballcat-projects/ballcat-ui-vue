@@ -19,7 +19,7 @@
         class="slider-move-btn"
         :style="`transform:translateX(${moveX}px)`"
         @mousedown="down"
-        @touchstart="down"
+        @touchstart.prevent="down"
       />
     </div>
   </div>
@@ -185,13 +185,6 @@ export default {
         trackList,
       }
       const { id } = this.verifyImgInfo
-      // reqCheck({ id }, captchaCheckConfig).then((res) => {
-      //   if (res) {
-      //     this.$emit("success",{id}, captchaCheckConfig)
-      //   } else {
-      //     this.refresh()
-      //   }
-      // })
       this.$emit('validVerify',id, captchaCheckConfig)
     },
     doMove(config) {
@@ -201,7 +194,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .slider-move-track {
   flex: 1;
   background-color: #dfe1e2;
