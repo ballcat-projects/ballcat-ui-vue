@@ -313,6 +313,16 @@ export default {
         attributes.textColor = ''
       }
       this.textColorAttribute = attributes.textColor
+
+      if (!attributes.badgeColor) {
+        attributes.badgeColor = ''
+      }
+      this.badgeColorAttribute = attributes.badgeColor
+
+      if (!attributes.badgeStatus) {
+        attributes.badgeStatus = 'default'
+      }
+      this.badgeStatus = attributes.badgeStatus
     },
     submitDataProcess(submitData) {
       submitData.attributes = {
