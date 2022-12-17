@@ -13,16 +13,16 @@ import { enableI18n } from '@/config/projectConfig'
 
 export default {
   mixins: [AppDeviceEnquire],
-  data () {
+  data() {
     return {}
   },
   computed: {
     ...mapGetters(['lang']),
-    locale () {
-      return enableI18n ? this.$i18n.getLocaleMessage(this.lang).antLocale : null
+    locale() {
+      return enableI18n ? this.$i18n.getLocaleMessage(this.lang).antLocale : this.$defaultAntLocale
     }
   },
-  mounted () {
+  mounted() {
 
   }
 }

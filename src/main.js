@@ -4,7 +4,7 @@ import router from './router'
 import store from './store/'
 // mock
 // import './mock'
-import { enableI18n } from '@/config/projectConfig'
+import { enableI18n, defaultLanguage } from '@/config/projectConfig'
 
 import bootstrap from './core/bootstrap'
 import './core/use'
@@ -47,5 +47,10 @@ if (enableI18n) {
     new Vue(vm).$mount('#app')
   })
 } else {
-  new Vue(vm).$mount('#app')
+  const antLocaleName = defaultLanguage.replace('-', '_')
+  import(`ant-design-vue/es/locale-provider/${antLocaleName}`).then(res => {
+    // 挂载到原型上，方便获取
+    Vue.prototype.$defaultAntLocale = res.default
+    new Vue(vm).$mount('#app')
+  })
 }
