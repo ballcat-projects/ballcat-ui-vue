@@ -109,7 +109,7 @@ export default {
     },
     move(event) {
       let touchMouseEvent = event
-      if (event instanceof TouchEvent) {
+      if (window.TouchEvent && event instanceof TouchEvent) {
         touchMouseEvent = event.touches[0]
       }
       const { currentCaptchaConfig } = this
@@ -144,7 +144,7 @@ export default {
       window.removeEventListener('mouseup', this.up)
       window.removeEventListener('touchmove', this.move)
       window.removeEventListener('touchend', this.up)
-      if (event instanceof TouchEvent) {
+      if (window.TouchEvent && event instanceof TouchEvent) {
         touchMouseEvent = event.changedTouches[0]
       }
       const { currentCaptchaConfig } = this
