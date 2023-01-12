@@ -10,6 +10,8 @@
 import { AppDeviceEnquire } from '@/utils/mixin'
 import { mapGetters } from 'vuex'
 import { enableI18n } from '@/config/projectConfig'
+import themeColor from '@/components/SettingDrawer/themeColor'
+import { updateColorWeak } from '@/components/SettingDrawer/settingConfig'
 
 export default {
   mixins: [AppDeviceEnquire],
@@ -17,13 +19,16 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters(['lang']),
+    ...mapGetters(['lang', 'primaryColor', 'colorWeak']),
     locale() {
       return enableI18n ? this.$i18n.getLocaleMessage(this.lang).antLocale : this.$defaultAntLocale
     }
   },
+  created() {
+    themeColor.changeColor(this.primaryColor)
+  },
   mounted() {
-
+    updateColorWeak(this.colorWeak)
   }
 }
 </script>

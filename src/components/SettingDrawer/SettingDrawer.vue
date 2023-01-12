@@ -216,12 +216,6 @@ export default {
       colorList
     }
   },
-  mounted() {
-    updateTheme(this.primaryColor)
-    if (this.colorWeak !== appDefaultSetting.colorWeak) {
-      updateColorWeak(this.colorWeak)
-    }
-  },
   methods: {
     ...mapMutations(Object.keys(APP_MUTATIONS)),
     showDrawer() {
