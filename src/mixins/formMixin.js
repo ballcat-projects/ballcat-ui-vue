@@ -177,7 +177,6 @@ export default {
      * @param res 服务端返回值
      */
     submitError (res) {
-      this.$message.error(res.message)
     }
   }
 }
