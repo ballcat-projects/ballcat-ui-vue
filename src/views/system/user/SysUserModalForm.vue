@@ -44,11 +44,11 @@
 
         <a-col :xs="24" :sm="24" :md="12">
           <a-form-item label="性别">
-            <dict-select v-decorator="['sex', decoratorOptions.sex]" dict-code="gender" />
+            <dict-select v-decorator="['gender', decoratorOptions.gender]" dict-code="gender" />
           </a-form-item>
 
           <a-form-item label="电话">
-            <a-input v-decorator="['phone']" placeholder="请输入" />
+            <a-input v-decorator="['phoneNumber']" placeholder="请输入" />
           </a-form-item>
 
           <a-form-item label="邮箱">
@@ -109,7 +109,7 @@ export default {
         nickname: {
           rules: [{ required: true, message: '请输入昵称!' }]
         },
-        sex: {
+        gender: {
           initialValue: 1
         },
         status: {

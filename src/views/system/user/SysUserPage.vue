@@ -70,7 +70,7 @@
                 </a-col>
                 <a-col :md="8" :sm="24">
                   <a-form-item label="电话">
-                    <a-input-number v-model="searchFormState.queryParam.phone" placeholder="请输入" style="width: 100%" />
+                    <a-input-number v-model="searchFormState.queryParam.phoneNumber" placeholder="请输入" style="width: 100%" />
                   </a-form-item>
                 </a-col>
               </template>
@@ -257,7 +257,7 @@ export default {
         },
         {
           title: '性别',
-          dataIndex: 'sex',
+          dataIndex: 'gender',
           align: 'center',
           scopedSlots: { customRender: 'gender-slot' }
         },
@@ -268,7 +268,7 @@ export default {
         },
         {
           title: '电话',
-          dataIndex: 'phone',
+          dataIndex: 'phoneNumber',
           align: 'center'
         },
         {
