@@ -3,6 +3,7 @@ import store from '@/store'
 import notification from 'ant-design-vue/es/notification'
 import { message } from 'ant-design-vue'
 import { enableI18n } from '@/config/projectConfig'
+import router from '@/router'
 
 // 创建 axios 实例
 const axiosInstance = axios.create({
@@ -28,9 +29,13 @@ const onRejected = (error) => {
       })
       error.resolved = true
       store.dispatch('CLEAN_USER_INFO').then(() => {
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000)
+        // 不是登录页的话，刷新跳登陆
+        const currentPath = router.currentRoute.path
+        if(currentPath !== '/user/login') {
+          setTimeout(() => {
+            window.location.reload()
+          }, 1000)
+        }
       })
     }
   }

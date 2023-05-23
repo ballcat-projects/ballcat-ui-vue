@@ -171,7 +171,7 @@ export default {
       // login type: 0 email, 1 username, 2 telephone
       loginType: 0,
       isLoginError: false,
-      loginErrorMessage: '',
+      loginErrorMessage: '登陆失败，请重试',
       requiredTwoStepCaptcha: false,
       stepCaptchaVisible: false,
       form: this.$form.createForm(this),
@@ -295,11 +295,13 @@ export default {
       this.$refs.verify.closeBox()
       let errorMessage = ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试'
       this.loginErrorMessage = errorMessage
-      this.$notification['error']({
-        message: '错误',
-        description: errorMessage,
-        duration: 4
-      })
+      if(!err.resolved) {
+        this.$notification['error']({
+          message: '错误',
+          description: errorMessage,
+          duration: 4
+        })
+      }
     }
   }
 }
