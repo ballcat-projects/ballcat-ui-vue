@@ -8,7 +8,7 @@
         <img
           ref="sliderImgRef"
           :style="`transform:translateX(${moveX}px)`"
-          :src="verifyImgInfo?.captcha?.sliderImage"
+          :src="verifyImgInfo?.captcha?.templateImage"
           alt=""
         >
       </div>
@@ -57,16 +57,16 @@ export default {
         const sliderImgEle = sliderImgRef
         const bgImageWidth = bgImgEle.offsetWidth
         const bgImageHeight = bgImgEle.offsetHeight
-        const sliderImageWidth = sliderImgEle.offsetWidth
-        const sliderImageHeight = sliderImgEle.offsetHeight
+        const templateImageWidth = sliderImgEle.offsetWidth
+        const templateImageHeight = sliderImgEle.offsetHeight
         this.currentCaptchaConfig = {
           startTime: new Date(),
           trackArr: [],
           movePercent: 0,
           bgImageWidth,
           bgImageHeight,
-          sliderImageWidth,
-          sliderImageHeight,
+          templateImageWidth,
+          templateImageHeight,
           end: 206,
         }
         this.hasGetImgInfo =true
@@ -169,8 +169,8 @@ export default {
       const {
         bgImageWidth,
         bgImageHeight,
-        sliderImageWidth,
-        sliderImageHeight,
+        templateImageWidth,
+        templateImageHeight,
         startTime: startSlidingTime,
         stopTime: endSlidingTime,
         trackArr: trackList,
@@ -178,8 +178,8 @@ export default {
       const captchaCheckConfig = {
         bgImageWidth,
         bgImageHeight,
-        sliderImageWidth,
-        sliderImageHeight,
+        templateImageWidth,
+        templateImageHeight,
         startSlidingTime,
         endSlidingTime,
         trackList,
