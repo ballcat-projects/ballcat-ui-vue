@@ -17,21 +17,31 @@ const DICT_TTL = 7 * 24 * 60 * 60 * 1000
  * @returns {number | boolean | string}
  */
 function convertValueType(value, valueType) {
-  let res = value
   // 如果没有type， 按number 处理
   valueType = valueType || 1
   if (valueType === 1) {
-    res = Number(value)         // 数字
+    return Number(value)         // 数字
   } else if (valueType === 2) {
-    res = String(value)         // 字符串
+    return String(value)         // 字符串
   } else if (valueType === 3) {
-    // 布尔
-    // 字符串 ”false“ 也会被转换为 true，所以要额外判断下
-    // 参看 https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Boolean
-    let b = Boolean(value)
-    res = b && value.toLowerCase() === 'false' ? false : b
+    if (!value) {
+      return false
+    }
+    value = value.toLowerCase()
+    if (['0', 'false', 'n', 'no'].includes(value)) {
+      return false
+    } else if (['1', 'true', 'y', 'yes', 'ok'].includes(value)) {
+      return true
+    } else {
+      const number = Number(value)
+      if (!Number.isNaN(number)) {
+        // 大于0 为 true
+        return number > 0
+      }
+
+      return Boolean(value)
+    }
   }
-  return res
 }
 
 
@@ -47,23 +57,23 @@ export default {
   },
 
   mutations: {
-    [DICT.SET_DICT_CACHE] (state, dictData) {
+    [DICT.SET_DICT_CACHE](state, dictData) {
       Vue.set(state.dictDataCache, dictData.dictCode, dictData)
     },
-    [DICT.DEL_DICT_CACHE] (state, dictCode) {
+    [DICT.DEL_DICT_CACHE](state, dictCode) {
       Vue.delete(state.dictDataCache, dictCode)
     },
-    [DICT.SET_DICT_REQUEST_FLAG] (state, dictCode) {
+    [DICT.SET_DICT_REQUEST_FLAG](state, dictCode) {
       state.dictRequestFlag[dictCode] = true
     },
-    [DICT.DEL_DICT_REQUEST_FLAG] (state, dictCode) {
+    [DICT.DEL_DICT_REQUEST_FLAG](state, dictCode) {
       state.dictRequestFlag[dictCode] = false
     }
   },
 
   actions: {
     // 获取字典数据
-    async fillDictCache ({ commit, state }, dictCodes = []) {
+    async fillDictCache({ commit, state }, dictCodes = []) {
       try {
         const noDataList = dictCodes.filter((dictCode) => {
           if (!state.dictDataCache[dictCode]) {
@@ -107,7 +117,7 @@ export default {
         console.error(e)
       }
     },
-    async checkDictStatus ({ commit, state }) {
+    async checkDictStatus({ commit, state }) {
       // 获取ls中的Hash表
       const hashes = Vue.ls.get(DICT_HASH_KEY)
       const map = hashes ? JSON.parse(hashes) : null
