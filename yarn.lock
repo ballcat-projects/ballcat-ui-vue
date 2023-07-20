@@ -7076,8 +7076,8 @@ wolfy87-eventemitter@^5.1.0:
   resolved "https://registry.npmmirror.com/wolfy87-eventemitter/-/wolfy87-eventemitter-5.2.9.tgz"
 
 word-wrap@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.npmmirror.com/word-wrap/-/word-wrap-1.2.3.tgz"
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/word-wrap/-/word-wrap-1.2.4.tgz#cb4b50ec9aca570abd1f52f33cd45b6c61739a9f"
 
 wrap-ansi@^3.0.1:
   version "3.0.1"
