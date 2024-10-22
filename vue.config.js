@@ -8,7 +8,7 @@ const { defineConfig } = require("@vue/cli-service");
 // 预览环境的服务端地址，没有启动后端时，可以通过此地址进行前端查看
 // const serverAddress = 'http://admin.ballcat.cn'
 // const serverAddress = 'http://ballcat-admin:8080'
-const serverAddress = 'http://localhost:8080'
+const serverAddress = 'https://localhost:8080'
 
 function resolve(dir) {
   return path.join(__dirname, dir)
